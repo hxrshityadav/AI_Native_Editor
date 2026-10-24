@@ -27,6 +27,14 @@ Playwright. No separate backend, queues, Redis or FFmpeg.wasm (`@ffmpeg/core` is
   Gotcha: `new Quality(32000)` is a quality factor, not a bitrate. Use `new Quality({ bitrate })`.
 - Check provider docs before relying on a price or limit, and record it in `docs/research/README.md`.
 
+## Project skills
+
+`.claude/skills/` holds vendored, text-only skills (sources and licenses are in `SOURCES.md`):
+`karpathy-guidelines` and `ponytail` for any code change, and `frontend-design` for UI work. When
+they conflict with this file or the user's brief, this file and the brief win. For example, the
+product brief rules out decorative gradients. Use the built-in `/code-review`, `/security-review`
+and `/simplify` for reviews.
+
 ## Commands
 
 - `npm run check`: typegen + `tsc`, ESLint, Vitest. Must pass before every commit.
