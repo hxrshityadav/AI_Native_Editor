@@ -48,3 +48,15 @@ render anyway. Bundled Indic fonts come with T-18.
 
 ## D-011: No shadcn/ui yet
 The lab is an internal test page. Add shadcn/ui with the Studio UI (T-16).
+
+## D-012: Vendored three skills as text; no Context7 (2026-10-24)
+`karpathy-guidelines`, `ponytail` (skill text only, no hooks or ledger) and Anthropic's
+`frontend-design` live in `.claude/skills/` with pinned sources (see `SOURCES.md`). context7.com is
+blocked by the cloud environment's network policy. Version-matched docs in `node_modules` are the
+primary API reference, backed by official sites.
+
+## D-013: Caption timing is edited by nudges, with in-memory undo
+50 ms steps clamped against neighbours, so words can't overlap and every word stays at least 50 ms
+long. Three presses cover the ±150 ms sync target. Drag-on-waveform editing waits until T-11 shows
+real sync errors are larger than nudges handle comfortably. Undo keeps the last 100 states in memory;
+persistence comes with T-17b.

@@ -36,7 +36,8 @@ ffmpeg-generated fixtures. No task is verified on a real phone yet.
 | ID | Task | Status |
 | --- | --- | --- |
 | T-16 | Studio UI: desktop three panes; mobile step flow; shadcn/ui | Not started |
-| T-17 | Transcript editor with shortcuts and autosave (IndexedDB) | Not started |
+| T-17a | Word editor in `/lab`: fix text, split, merge, delete, ±50 ms timing nudges, keyboard shortcuts, undo; preview, SRT and render use the edits | Tested (12 unit tests; E2E checks edits reach the SRT and the burned-in pixels; screenshots at 1280 px and 390 px) |
+| T-17b | Autosave transcript edits to IndexedDB, restore on reopening the same file | Not started |
 | T-18 | 4–6 caption styles with **bundled** Indic fonts (today: system fonts only) | Not started |
 | T-19 | One local brand kit (IndexedDB) | Not started |
 | T-20 | Render in a Web Worker; stream output instead of an in-memory buffer | Not started |
@@ -49,3 +50,5 @@ ffmpeg-generated fixtures. No task is verified on a real phone yet.
 - Caption fonts depend on what the system has installed; Devanagari may fall back on some devices.
 - The rate limiter is per server instance, and `X-Forwarded-For` is trusted (only safe behind Vercel's proxy).
 - The lab has no cancel for extraction, only for rendering.
+- Caption edits live in memory only until T-17b; a page reload loses them.
+- Timing is edited by nudging, not by dragging on a waveform or timeline.

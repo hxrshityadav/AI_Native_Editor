@@ -182,12 +182,35 @@ async function main() {
     await page.getByTestId("language-select").selectOption("hi");
     await page.getByTestId("transcribe-button").click();
     await page.getByTestId("transcribe-done").waitFor({ timeout: 15_000 });
-    check("transcribe: shows transcript", (await page.getByTestId("transcript-text").innerText()).includes("नमस्ते"));
+    const wordTexts = () => page.getByTestId("word").allInnerTexts();
+    check("transcribe: words appear in the editor", (await wordTexts()).join(" ") === "नमस्ते दोस्तों welcome");
     check("transcribe: upload is the extracted Ogg, not the video", uploaded !== null && uploaded.includes(Buffer.from("OpusHead")) && uploaded.length < 60_000, `${uploaded?.length} B`);
-    check("preview: captions now come from transcript", (await page.getByTestId("caption-source").innerText()).includes("real transcript"));
+    check("preview: captions now come from transcript", (await page.getByTestId("caption-source").innerText()).includes("from the transcript"));
+
+    // Editing: fix a word's text, nudge a timing with the keyboard, delete + undo + delete.
+    await page.getByTestId("word").nth(0).click();
+    await page.getByTestId("word-text").fill("Namaste");
+    await page.getByTestId("word-text").press("Enter");
+    check("edit: text fix applies", (await wordTexts())[0] === "Namaste");
+    await page.getByTestId("word").nth(1).click();
+    await page.keyboard.press("}");
+    check("edit: Shift+] moves end 50 ms later", (await page.getByTestId("word-end").innerText()) === "0:01.95");
+    await page.getByTestId("word").nth(2).click();
+    await page.keyboard.press("Delete");
+    const afterDelete = (await wordTexts()).length;
+    await page.keyboard.press("Control+z");
+    const afterUndo = (await wordTexts()).length;
+    check("edit: delete then undo", afterDelete === 2 && afterUndo === 3, `${afterDelete} → ${afterUndo}`);
+    await page.getByTestId("word").nth(2).click();
+    await page.keyboard.press("Delete");
+    check("edit: caption source says edited", (await page.getByTestId("caption-source").innerText()).includes("with your edits"));
 
     const srt = readFileSync(await download(page, "srt-link", f("out.srt")), "utf8");
-    check("srt: real words and timings", srt.startsWith("1\n00:00:00,500 --> ") && srt.includes("नमस्ते दोस्तों") && srt.includes("welcome"));
+    check(
+      "srt: reflects edits",
+      srt.startsWith("1\n00:00:00,500 --> 00:00:01,950\nNamaste दोस्तों\n") && !srt.includes("welcome"),
+      JSON.stringify(srt.slice(0, 60)),
+    );
 
     const t0 = Date.now();
     const outMp4 = await renderAndSave(page, f("out-vertical.mp4"));
@@ -203,8 +226,10 @@ async function main() {
 
     const captionBand = frameDiff(f("vertical.mp4"), outMp4, 1.0, 720, 1280, 0.62, 0.82);
     const topBand = frameDiff(f("vertical.mp4"), outMp4, 1.0, 720, 1280, 0.05, 0.3);
+    const deletedBand = frameDiff(f("vertical.mp4"), outMp4, 2.3, 720, 1280, 0.62, 0.82);
     const afterBand = frameDiff(f("vertical.mp4"), outMp4, 3.5, 720, 1280, 0.62, 0.82);
     check("render: captions burned in at 1.0 s", captionBand > 5 && topBand < 2, `caption band Δ${captionBand.toFixed(2)}, top Δ${topBand.toFixed(2)}`);
+    check("render: deleted word not burned in (2.3 s)", deletedBand < 2, `Δ${deletedBand.toFixed(2)}`);
     check("render: no caption after last word (3.5 s)", afterBand < 2, `Δ${afterBand.toFixed(2)}`);
 
     // 2. Rotation metadata (phone footage) is baked into the frames.

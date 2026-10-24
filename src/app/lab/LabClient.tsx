@@ -18,6 +18,7 @@ import type { Issue, ProbeResult } from "@/lib/media/types";
 import { issue, validateFileBasics, validateProbe } from "@/lib/media/validate";
 import { requestTranscription, TRANSCRIPTION_DISCLOSURE } from "@/lib/transcription/client";
 import type { TranscriptionLanguage } from "@/lib/transcription/types";
+import { TranscriptEditor } from "./TranscriptEditor";
 
 type Problem = { message: string; action: string };
 
@@ -39,6 +40,9 @@ type TranscriptState =
   | { status: "done"; words: Word[]; providerName: string }
   | { status: "error"; problem: Problem };
 
+/** User edits on top of the transcript (or placeholder words), with undo history. */
+type Edits = { words: Word[]; history: Word[][] };
+
 type RenderState =
   | { status: "idle" }
   | { status: "running"; progress: number }
@@ -53,6 +57,8 @@ export function LabClient() {
   const [language, setLanguage] = useState<TranscriptionLanguage>("auto");
   const [transcript, setTranscript] = useState<TranscriptState>({ status: "idle" });
   const [render, setRender] = useState<RenderState>({ status: "idle" });
+  const [edits, setEdits] = useState<Edits | null>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const renderHandle = useRef<RenderHandle | null>(null);
   const urls = useRef(new Set<string>());
 
@@ -69,10 +75,20 @@ export function LabClient() {
 
   const probe = check.status === "ready" ? check.probe : null;
   const realWords = transcript.status === "done" ? transcript.words : null;
-  const words = useMemo(
+  const sourceWords = useMemo(
     () => realWords ?? (probe ? makeTestWords(probe.durationSec) : []),
     [realWords, probe],
   );
+  const words = edits?.words ?? sourceWords;
+
+  function editWords(next: Word[]) {
+    setEdits({ words: next, history: [...(edits?.history ?? []), words].slice(-100) });
+  }
+  function undoEdit() {
+    if (!edits?.history.length) return;
+    const history = edits.history.slice(0, -1);
+    setEdits({ words: edits.history[edits.history.length - 1], history });
+  }
   const lines = useMemo(() => groupWords(words), [words]);
   const srtUrl = useMemo(
     () => (lines.length ? URL.createObjectURL(new Blob([toSrt(lines)], { type: "application/x-subrip" })) : null),
@@ -86,6 +102,7 @@ export function LabClient() {
     setFile(picked);
     setAudio({ status: "idle" });
     setTranscript({ status: "idle" });
+    setEdits(null);
     setRender({ status: "idle" });
     setVideoUrl(null);
     if (!picked) return setCheck({ status: "idle" });
@@ -116,8 +133,8 @@ export function LabClient() {
 
   async function onExtract() {
     if (!file) return;
+    // Same file, same audio: keep the transcript and the user's edits.
     setAudio({ status: "running", progress: 0 });
-    setTranscript({ status: "idle" });
     try {
       const blob = await extractSpeechAudio(file, (p) => setAudio({ status: "running", progress: p }));
       setAudio({ status: "done", blob, url: makeUrl(blob) });
@@ -138,6 +155,7 @@ export function LabClient() {
     const result = await requestTranscription(audio.blob, language);
     if (result.ok) {
       setTranscript({ status: "done", words: result.words, providerName: result.providerName });
+      setEdits(null);
     } else {
       setTranscript({ status: "error", problem: { message: result.message, action: result.action } });
     }
@@ -175,7 +193,7 @@ export function LabClient() {
   const ready = check.status === "ready";
 
   return (
-    <main className="mx-auto flex w-full max-w-3xl flex-col gap-8 px-4 py-8">
+    <main className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 py-8">
       <header className="flex flex-col gap-1">
         <h1 className="text-2xl font-semibold">Render lab</h1>
         <p className="text-sm text-zinc-500">
@@ -276,27 +294,41 @@ export function LabClient() {
           </button>
         </div>
         {audio.status !== "done" && <p className="text-sm text-zinc-500">Extract the audio first.</p>}
+        {audio.status === "done" && edits && (
+          <p data-testid="retranscribe-warning" className="text-sm text-amber-800 dark:text-amber-300">
+            Transcribing again replaces your caption edits.
+          </p>
+        )}
         {transcript.status === "running" && <Status testId="transcribe-status">Uploading audio and transcribing…</Status>}
         {transcript.status === "error" && <ProblemBox testId="transcribe-error" problem={transcript.problem} />}
         {transcript.status === "done" && (
-          <div data-testid="transcribe-done" className="flex flex-col gap-1 text-sm">
-            <p>
-              {transcript.words.length} words from {transcript.providerName}.
-            </p>
-            <p data-testid="transcript-text" className="rounded bg-zinc-100 p-3 dark:bg-zinc-900">
-              {transcript.words.map((w) => w.text).join(" ") || "(no speech detected)"}
-            </p>
-          </div>
+          <p data-testid="transcribe-done" className="text-sm">
+            {transcript.words.length > 0
+              ? `${transcript.words.length} words from ${transcript.providerName}. Review them in step 4.`
+              : `${transcript.providerName} found no speech. Check the clip has audible speech, or pick the language manually and try again.`}
+          </p>
         )}
       </Step>
 
-      <Step n={4} title="Preview">
+      <Step n={4} title="Edit captions and preview">
         <p data-testid="caption-source" className="text-sm">
           {realWords
-            ? `Captions from the real transcript (${lines.length} lines).`
+            ? `Captions from the transcript${edits ? ", with your edits" : ""} (${lines.length} lines).`
             : "Captions are placeholder test words. They do not match the speech. Transcribe to use real captions."}
         </p>
-        {videoUrl && <Preview src={videoUrl} lines={lines} />}
+        {videoUrl && probe && (
+          <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,auto)_minmax(0,1fr)]">
+            <Preview src={videoUrl} lines={lines} videoRef={videoRef} />
+            <TranscriptEditor
+              words={words}
+              onChange={editWords}
+              onUndo={undoEdit}
+              canUndo={!!edits?.history.length}
+              videoRef={videoRef}
+              maxEnd={probe.durationSec}
+            />
+          </div>
+        )}
       </Step>
 
       <Step n={5} title="Export">
@@ -332,8 +364,15 @@ export function LabClient() {
   );
 }
 
-function Preview({ src, lines }: { src: string; lines: ReturnType<typeof groupWords> }) {
-  const videoRef = useRef<HTMLVideoElement>(null);
+function Preview({
+  src,
+  lines,
+  videoRef,
+}: {
+  src: string;
+  lines: ReturnType<typeof groupWords>;
+  videoRef: React.RefObject<HTMLVideoElement | null>;
+}) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -356,7 +395,7 @@ function Preview({ src, lines }: { src: string; lines: ReturnType<typeof groupWo
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [lines]);
+  }, [lines, videoRef]);
 
   return (
     <div className="relative mx-auto w-fit max-w-full">

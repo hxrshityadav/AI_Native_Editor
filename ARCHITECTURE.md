@@ -28,6 +28,8 @@ request memory. Logs carry error codes only.
 | Path | Runs in | Purpose |
 | --- | --- | --- |
 | `src/lib/captions` | both | `Word`/`CaptionLine` types, grouping, `lineAt`, word wrap, canvas drawing, SRT |
+| `src/lib/captions/edit.ts` | both | Pure word edits: replace/split, remove, merge, clamped edge nudges, `wordIndexAt` |
+| `src/app/lab/TranscriptEditor.tsx` | browser | Word editor UI with keyboard shortcuts; the lab keeps the edits and undo history |
 | `src/lib/media/probe.ts` | browser | Mediabunny metadata read → `ProbeResult` |
 | `src/lib/media/validate.ts` | both | Pure limits → `Issue {code, reason, action}` |
 | `src/lib/media/capabilities.ts` | browser | WebCodecs/OffscreenCanvas and encoder checks at the real size |
