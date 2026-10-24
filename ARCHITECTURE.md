@@ -20,7 +20,8 @@
                                                        └─▶ toSrt ─▶ SRT (local)
 ```
 
-The video never leaves the device. The server keeps no audio or transcript: they live only in
+The video never leaves the device. Transcripts and edits are saved in the browser's IndexedDB,
+keyed by a SHA-256 of the file's size plus its first and last MiB, so no file names are stored. The server keeps no audio or transcript: they live only in
 request memory. Logs carry error codes only.
 
 ## Modules
@@ -30,6 +31,7 @@ request memory. Logs carry error codes only.
 | `src/lib/captions` | both | `Word`/`CaptionLine` types, grouping, `lineAt`, word wrap, canvas drawing, SRT |
 | `src/lib/captions/edit.ts` | both | Pure word edits: replace/split, remove, merge, clamped edge nudges, `wordIndexAt` |
 | `src/app/lab/TranscriptEditor.tsx` | browser | Word editor UI with keyboard shortcuts; the lab keeps the edits and undo history |
+| `src/lib/drafts.ts` | browser | Caption drafts in IndexedDB (`idb`), keyed by a content hash, Zod-validated on read, pruned to 20 |
 | `src/lib/media/probe.ts` | browser | Mediabunny metadata read → `ProbeResult` |
 | `src/lib/media/validate.ts` | both | Pure limits → `Issue {code, reason, action}` |
 | `src/lib/media/capabilities.ts` | browser | WebCodecs/OffscreenCanvas and encoder checks at the real size |

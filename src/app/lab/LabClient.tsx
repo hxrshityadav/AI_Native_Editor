@@ -18,6 +18,7 @@ import type { Issue, ProbeResult } from "@/lib/media/types";
 import { issue, validateFileBasics, validateProbe } from "@/lib/media/validate";
 import { requestTranscription, TRANSCRIPTION_DISCLOSURE } from "@/lib/transcription/client";
 import type { TranscriptionLanguage } from "@/lib/transcription/types";
+import { deleteDraft, fingerprintFile, loadDraft, saveDraft } from "@/lib/drafts";
 import { TranscriptEditor } from "./TranscriptEditor";
 
 type Problem = { message: string; action: string };
@@ -43,6 +44,8 @@ type TranscriptState =
 /** User edits on top of the transcript (or placeholder words), with undo history. */
 type Edits = { words: Word[]; history: Word[][] };
 
+type SaveState = "idle" | "saving" | "saved" | "error";
+
 type RenderState =
   | { status: "idle" }
   | { status: "running"; progress: number }
@@ -58,6 +61,12 @@ export function LabClient() {
   const [transcript, setTranscript] = useState<TranscriptState>({ status: "idle" });
   const [render, setRender] = useState<RenderState>({ status: "idle" });
   const [edits, setEdits] = useState<Edits | null>(null);
+  /** Content hash of the current file, used as the draft key. Null when autosave is unavailable. */
+  const [fingerprint, setFingerprint] = useState<string | null>(null);
+  const [saveState, setSaveState] = useState<SaveState>("idle");
+  const [restoredAt, setRestoredAt] = useState<number | null>(null);
+  /** Increments on every pick, so results from an older pick are ignored. */
+  const pickId = useRef(0);
   const videoRef = useRef<HTMLVideoElement>(null);
   const renderHandle = useRef<RenderHandle | null>(null);
   const urls = useRef(new Set<string>());
@@ -90,6 +99,27 @@ export function LabClient() {
     setEdits({ words: edits.history[edits.history.length - 1], history });
   }
   const lines = useMemo(() => groupWords(words), [words]);
+
+  // Autosave the real transcript and edits, debounced so a burst of nudges is one write.
+  const savedTranscript = transcript.status === "done" ? transcript : null;
+  useEffect(() => {
+    if (!fingerprint || !savedTranscript) return;
+    const timer = setTimeout(() => {
+      setSaveState("saving");
+      saveDraft({
+        version: 1,
+        fingerprint,
+        savedAt: Date.now(),
+        providerName: savedTranscript.providerName,
+        transcript: savedTranscript.words,
+        edited: edits?.words ?? null,
+      }).then(
+        () => setSaveState("saved"),
+        () => setSaveState("error"),
+      );
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [fingerprint, savedTranscript, edits]);
   const srtUrl = useMemo(
     () => (lines.length ? URL.createObjectURL(new Blob([toSrt(lines)], { type: "application/x-subrip" })) : null),
     [lines],
@@ -97,6 +127,11 @@ export function LabClient() {
   useEffect(() => () => void (srtUrl && URL.revokeObjectURL(srtUrl)), [srtUrl]);
 
   async function onPick(picked: File | null) {
+    const id = ++pickId.current;
+    const stale = () => id !== pickId.current;
+    setFingerprint(null);
+    setSaveState("idle");
+    setRestoredAt(null);
     await renderHandle.current?.cancel();
     revokeAll();
     setFile(picked);
@@ -115,12 +150,15 @@ export function LabClient() {
     try {
       probed = await probeFile(picked);
     } catch {
+      if (stale()) return;
       return setCheck({ status: "rejected", problem: toProblem(issue("UNSUPPORTED_FORMAT")) });
     }
+    if (stale()) return;
     const result = validateProbe(probed);
     if (!result.ok) return setCheck({ status: "rejected", problem: toProblem(result.error) });
 
     const device = await checkDevice({ width: probed.video!.width, height: probed.video!.height });
+    if (stale()) return;
     if (device.blockers.length) {
       return setCheck({
         status: "rejected",
@@ -129,6 +167,34 @@ export function LabClient() {
     }
     setVideoUrl(makeUrl(picked));
     setCheck({ status: "ready", probe: probed, warnings: result.warnings, device });
+
+    try {
+      const fp = await fingerprintFile(picked);
+      const draft = await loadDraft(fp);
+      if (stale()) return;
+      setFingerprint(fp);
+      if (draft) {
+        setTranscript({ status: "done", words: draft.transcript, providerName: draft.providerName });
+        setEdits(draft.edited ? { words: draft.edited, history: [] } : null);
+        setRestoredAt(draft.savedAt);
+        setSaveState("saved");
+      }
+    } catch {
+      if (!stale()) setSaveState("error");
+    }
+  }
+
+  async function onStartOver() {
+    if (!fingerprint || !window.confirm("Delete the saved transcript and your edits for this video?")) return;
+    try {
+      await deleteDraft(fingerprint);
+    } catch {
+      // The in-memory reset below still applies; a leftover draft is overwritten on the next save.
+    }
+    setTranscript({ status: "idle" });
+    setEdits(null);
+    setRestoredAt(null);
+    setSaveState("idle");
   }
 
   async function onExtract() {
@@ -263,8 +329,8 @@ export function LabClient() {
         <p data-testid="transcribe-disclosure" className="text-sm text-zinc-600 dark:text-zinc-400">
           Sends only the extracted speech audio
           {audio.status === "done" ? ` (${formatBytes(audio.blob.size)})` : ""}, never the video, to our server, which
-          forwards it to {TRANSCRIPTION_DISCLOSURE.providerName} for transcription. We don&apos;t store the audio or
-          the transcript.{" "}
+          forwards it to {TRANSCRIPTION_DISCLOSURE.providerName} for transcription. Our servers don&apos;t store the
+          audio or the transcript.{" "}
           <a className="underline" href={TRANSCRIPTION_DISCLOSURE.privacyUrl} target="_blank" rel="noreferrer">
             {TRANSCRIPTION_DISCLOSURE.providerName}&apos;s privacy policy
           </a>{" "}
@@ -316,6 +382,26 @@ export function LabClient() {
             ? `Captions from the transcript${edits ? ", with your edits" : ""} (${lines.length} lines).`
             : "Captions are placeholder test words. They do not match the speech. Transcribe to use real captions."}
         </p>
+        {realWords && (
+          <div data-testid="save-status" role="status" className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+            {saveState === "error" ? (
+              <span className="text-red-800 dark:text-red-300">
+                Couldn&apos;t save on this device (private browsing or full storage). Your edits will be lost if you
+                reload or close this tab.
+              </span>
+            ) : (
+              <span className="text-zinc-600 dark:text-zinc-400">
+                {restoredAt ? `Restored your captions saved ${new Date(restoredAt).toLocaleString()}. ` : ""}
+                {saveState === "saving" ? "Saving…" : saveState === "saved" ? "Saved in this browser only." : ""}
+              </span>
+            )}
+            {fingerprint && (
+              <button type="button" data-testid="start-over" onClick={() => void onStartOver()} className="underline">
+                Start over
+              </button>
+            )}
+          </div>
+        )}
         {videoUrl && probe && (
           <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,auto)_minmax(0,1fr)]">
             <Preview src={videoUrl} lines={lines} videoRef={videoRef} />

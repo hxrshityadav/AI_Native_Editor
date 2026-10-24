@@ -175,7 +175,9 @@ async function main() {
 
     // Mocked provider response through the real client wiring.
     let uploaded = null;
+    let uploads = 0;
     await page.route("**/api/transcribe", async (route) => {
+      uploads++;
       uploaded = route.request().postDataBuffer();
       await route.fulfill({ json: { provider: { id: "groq", displayName: "Groq (mock)" }, words: MOCK_WORDS } });
     });
@@ -212,6 +214,16 @@ async function main() {
       JSON.stringify(srt.slice(0, 60)),
     );
 
+    // Autosave: reload, re-pick the same file, edits come back without a new upload.
+    await page.getByTestId("save-status").filter({ hasText: "Saved in this browser only" }).waitFor({ timeout: 5_000 });
+    const uploadsBefore = uploads;
+    await page.reload();
+    await pick(page, f("vertical.mp4"));
+    await page.getByTestId("save-status").filter({ hasText: "Restored" }).waitFor({ timeout: 10_000 });
+    check("autosave: edits restored after reload", (await wordTexts()).join(" ") === "Namaste दोस्तों");
+    check("autosave: restore needs no new upload", uploads === uploadsBefore, `${uploads - uploadsBefore} uploads`);
+
+    // Render from the restored draft: proves restored edits drive the export.
     const t0 = Date.now();
     const outMp4 = await renderAndSave(page, f("out-vertical.mp4"));
     const info = probe(outMp4);
@@ -231,6 +243,20 @@ async function main() {
     check("render: captions burned in at 1.0 s", captionBand > 5 && topBand < 2, `caption band Δ${captionBand.toFixed(2)}, top Δ${topBand.toFixed(2)}`);
     check("render: deleted word not burned in (2.3 s)", deletedBand < 2, `Δ${deletedBand.toFixed(2)}`);
     check("render: no caption after last word (3.5 s)", afterBand < 2, `Δ${afterBand.toFixed(2)}`);
+
+    // Start over deletes the draft: a fresh pick shows placeholder words again.
+    page.once("dialog", (d) => d.accept());
+    await page.getByTestId("start-over").click();
+    const backToPlaceholder = await page
+      .getByTestId("caption-source")
+      .filter({ hasText: "placeholder" })
+      .waitFor({ timeout: 5_000 })
+      .then(() => true, () => false);
+    check("start over: back to placeholder words", backToPlaceholder);
+    await page.reload();
+    await pick(page, f("vertical.mp4"));
+    await page.waitForTimeout(1_000); // give a (wrong) restore time to happen
+    check("start over: draft deleted", (await page.getByTestId("caption-source").innerText()).includes("placeholder"));
 
     // 2. Rotation metadata (phone footage) is baked into the frames.
     await pick(page, f("rotated.mp4"));

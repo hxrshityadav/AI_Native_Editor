@@ -60,3 +60,10 @@ primary API reference, backed by official sites.
 long. Three presses cover the ±150 ms sync target. Drag-on-waveform editing waits until T-11 shows
 real sync errors are larger than nudges handle comfortably. Undo keeps the last 100 states in memory;
 persistence comes with T-17b.
+
+## D-014: Caption drafts: IndexedDB via `idb`, keyed by a content hash
+`idb` (ISC, ~1 KB gzipped) is the stack's named choice and will also hold brand kits (T-19). The key
+is SHA-256(size + first MiB + last MiB): it's stable across renames and re-downloads and stores no
+file name, and it costs about 2 MB of reads. Only real transcripts are saved; placeholder words never
+are. Records are Zod-validated on read, so a bad or old record is ignored instead of breaking the
+editor. At most 20 drafts are kept, oldest pruned first. Writes are debounced by 400 ms.
