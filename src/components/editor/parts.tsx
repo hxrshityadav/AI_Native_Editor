@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { CAPTION_STYLES, drawCaption, lineAt, type CaptionLine, type CaptionStyle } from "@/lib/captions";
+import { removedRangeAt, toOutputTimeSnapped, type TimeMap } from "@/lib/edit/timeline";
 import type { Problem } from "@/lib/media/errors";
 import {
   EXPORT_PRESETS,
@@ -32,10 +33,14 @@ export function Preview({
   videoRef,
   onError,
   frame,
+  timeMap,
   heightClassName = "[--preview-h:70vh]",
 }: {
   src: string;
+  /** In output time. */
   lines: CaptionLine[];
+  /** Cuts: playback jumps over removed source time, and captions follow the output clock. */
+  timeMap: TimeMap;
   style: CaptionStyle;
   /** Until the bundled font loads, captions are not drawn rather than drawn in a misleading fallback font. */
   fontReady: boolean;
@@ -58,6 +63,9 @@ export function Preview({
       const video = videoRef.current;
       const canvas = canvasRef.current;
       const ctx = canvas?.getContext("2d");
+      // Playing into a cut jumps to its end, so the preview plays what the export will contain.
+      const cut = video && !video.paused ? removedRangeAt(timeMap, video.currentTime) : null;
+      if (video && cut) video.currentTime = cut.end;
       const key = video ? `${video.currentTime}|${video.videoWidth}` : "";
       if (video && canvas && ctx && video.videoWidth && key !== drawn) {
         drawn = key;
@@ -66,7 +74,7 @@ export function Preview({
           canvas.height = height;
         }
         ctx.clearRect(0, 0, width, height);
-        const t = video.currentTime;
+        const t = toOutputTimeSnapped(timeMap, video.currentTime);
         const line = lineAt(lines, t);
         if (line && fontReady) drawCaption(ctx, line, t, style, width, height);
       }
@@ -74,7 +82,7 @@ export function Preview({
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [lines, style, fontReady, videoRef, width, height]);
+  }, [lines, style, fontReady, videoRef, width, height, timeMap]);
 
   return (
     <div
@@ -136,6 +144,16 @@ export function ExportPresetPicker({ session: s }: { session: ReelSession }) {
       {s.plan && (
         <p data-testid="export-size" className="text-sm">
           Exports at {s.plan.width}×{s.plan.height}.
+        </p>
+      )}
+      {s.appliedMap.removed.length > 0 && (
+        <p data-testid="export-cuts" data-output-sec={s.appliedMap.outputDuration} className="text-sm">
+          With your cuts: {s.appliedMap.outputDuration.toFixed(1)} s of the original {s.appliedMap.sourceDuration.toFixed(1)} s.
+        </p>
+      )}
+      {s.silence.reviewing && (
+        <p data-testid="export-blocked" className="rounded bg-amber-100 px-3 py-2 text-sm text-amber-900">
+          {s.exportBlocked}
         </p>
       )}
       {s.plan && s.planEncodable === false && (

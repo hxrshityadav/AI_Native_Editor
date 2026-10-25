@@ -2,6 +2,7 @@ import { BufferTarget, StreamTarget } from "mediabunny";
 import { loadCaptionFont } from "@/lib/captions/fonts";
 import { moveMoovToFront } from "./faststart";
 import { renderCaptionedMp4 } from "./render";
+import { renderEditedMp4 } from "./renderEdited";
 import type { RenderMessage, RenderRequest } from "./renderInWorker";
 
 // The project's TS lib is "dom"; type only the worker globals we use instead of adding "webworker".
@@ -11,7 +12,7 @@ const scope = self as unknown as {
   fonts: FontFaceSet;
 };
 
-scope.onmessage = async ({ data: { file, lines, style, plan } }) => {
+scope.onmessage = async ({ data: { file, lines, style, plan, segments } }) => {
   let lastPercent = -1;
   const onProgress = (p: number) => {
     const percent = Math.floor(p * 100);
@@ -20,6 +21,12 @@ scope.onmessage = async ({ data: { file, lines, style, plan } }) => {
     scope.postMessage({ type: "progress", value: p });
   };
 
+  // With cuts, only the kept segments are decoded and re-timed; without, one proven Conversion pass.
+  const render = (target: BufferTarget | StreamTarget) =>
+    segments
+      ? renderEditedMp4(file, segments, lines, style, plan, target, onProgress)
+      : renderCaptionedMp4(file, lines, style, plan, target, onProgress);
+
   try {
     // Workers don't see the page's fonts; without this the captions would silently use a system font.
     await loadCaptionFont(style.font, scope.fonts).catch(() => {
@@ -27,7 +34,7 @@ scope.onmessage = async ({ data: { file, lines, style, plan } }) => {
     });
     const disk = await openDiskTarget();
     if (disk) {
-      const { audioCodec } = await renderCaptionedMp4(file, lines, style, plan, disk.target, onProgress);
+      const { audioCodec } = await render(disk.target);
       const raw = await disk.handle.getFile();
       if (raw.size === 0) throw new Error("Render produced no data.");
       // Streaming leaves moov at the end; move it to the front. If that fails, the original still plays.
@@ -36,7 +43,7 @@ scope.onmessage = async ({ data: { file, lines, style, plan } }) => {
       scope.postMessage({ type: "done", blob: fast ?? raw, storage: "disk", fastStart: !!fast, audioCodec });
     } else {
       const target = new BufferTarget();
-      const { audioCodec } = await renderCaptionedMp4(file, lines, style, plan, target, onProgress);
+      const { audioCodec } = await render(target);
       if (!target.buffer?.byteLength) throw new Error("Render produced no data.");
       // BufferTarget renders use fastStart: 'in-memory', so moov is already at the front.
       const blob = new Blob([target.buffer], { type: "video/mp4" });

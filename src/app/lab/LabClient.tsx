@@ -2,6 +2,7 @@
 
 import { BrandKitPanel } from "@/components/editor/BrandKitPanel";
 import { HumanCheck } from "@/components/editor/HumanCheck";
+import { SilenceTool } from "@/components/editor/SilenceTool";
 import {
   btn,
   btnSecondary,
@@ -153,8 +154,12 @@ export function LabClient() {
         )}
       </Step>
 
+      <Step n={4} title="Remove silence" flow={null}>
+        {ready ? <SilenceTool session={s} /> : <p className="text-sm text-zinc-500">Pick a video first.</p>}
+      </Step>
+
       <Step
-        n={4}
+        n={5}
         title="Edit captions and preview"
         flow={<DataFlow testId="flow-4">Your transcript, edits, style and brand kit are saved in this browser only.</DataFlow>}
       >
@@ -173,7 +178,8 @@ export function LabClient() {
               <PreviewError session={s} />
               <Preview
                 src={s.videoUrl}
-                lines={s.lines}
+                lines={s.previewLines}
+                timeMap={s.previewMap}
                 style={s.style}
                 fontReady={s.fontReady}
                 videoRef={s.videoRef}
@@ -194,7 +200,7 @@ export function LabClient() {
       </Step>
 
       <Step
-        n={5}
+        n={6}
         title="Export"
         flow={
           <DataFlow testId="flow-5">
@@ -206,7 +212,7 @@ export function LabClient() {
         <div className="flex flex-wrap gap-3">
           <button
             data-testid="render-button"
-            disabled={!ready || !s.fontReady || render.status === "running" || s.planEncodable !== true}
+            disabled={!ready || !s.fontReady || render.status === "running" || !!s.exportBlocked}
             onClick={() => void s.startRender()}
             className={btn}
           >

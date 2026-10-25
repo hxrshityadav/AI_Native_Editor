@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { BrandKitPanel } from "@/components/editor/BrandKitPanel";
 import { HumanCheck } from "@/components/editor/HumanCheck";
+import { SilenceTool } from "@/components/editor/SilenceTool";
 import {
   btnSecondary,
   DataFlow,
@@ -25,9 +26,10 @@ import { TranscriptEditor } from "@/components/editor/TranscriptEditor";
 import { useReelSession, type ReelSession } from "@/components/editor/useReelSession";
 import { EXPORT_PRESETS } from "@/lib/media/exportPresets";
 
-type StepId = "video" | "captions" | "style" | "export";
+type StepId = "video" | "silence" | "captions" | "style" | "export";
 const STEPS: { id: StepId; title: string }[] = [
   { id: "video", title: "Video" },
+  { id: "silence", title: "Silence" },
   { id: "captions", title: "Captions" },
   { id: "style", title: "Style" },
   { id: "export", title: "Export" },
@@ -119,7 +121,8 @@ export function StudioClient() {
               <PreviewError session={s} />
               <Preview
                 src={s.videoUrl}
-                lines={s.lines}
+                lines={s.previewLines}
+                timeMap={s.previewMap}
                 style={s.style}
                 fontReady={s.fontReady}
                 videoRef={s.videoRef}
@@ -143,6 +146,7 @@ export function StudioClient() {
               {STEPS[index].title}
             </h2>
             {step === "video" && <VideoPanel session={s} onContinue={() => go("captions")} />}
+            {step === "silence" && <SilenceTool session={s} />}
             {step === "captions" && <CaptionsPanel session={s} />}
             {step === "style" && <StylePanel session={s} />}
             {step === "export" && <ExportPanel session={s} />}
@@ -193,7 +197,7 @@ function ExportAction({ session: s }: { session: ReelSession }) {
     <button
       type="button"
       data-testid="render-button"
-      disabled={!s.fontReady || s.planEncodable !== true}
+      disabled={!s.fontReady || !!s.exportBlocked}
       onClick={() => void s.startRender()}
       className={render.status === "done" ? btnSecondary + " disabled:opacity-40" : primary}
     >
@@ -209,6 +213,12 @@ function stepStatus(id: StepId, s: ReelSession): string {
       if (s.check.status === "checking") return "Checking";
       if (s.check.status === "rejected") return "Can't use this file";
       return "Not picked";
+    case "silence": {
+      const cuts = s.cuts.value.intervals.filter((i) => i.origin === "silence" && i.action === "remove").length;
+      if (s.silence.analysis.status === "running") return "Analysing";
+      if (s.silence.reviewing) return "Reviewing";
+      return cuts ? `${cuts} cuts, ${s.appliedMap.outputDuration.toFixed(0)} s` : "Optional";
+    }
     case "captions":
       if (s.audio.status === "running" || s.transcript.status === "running") return "Working";
       if (s.realWords) return `${s.realWords.length} words${s.edits ? ", edited" : ""}`;

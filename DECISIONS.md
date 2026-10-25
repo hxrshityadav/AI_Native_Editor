@@ -240,3 +240,29 @@ apps and tabs" advice.
 - **Caveat.** The phone's actual error wasn't captured: the run report records the error names
   (`EXTRACT: …`), and that is how to confirm the fix on the device. The fallback holds the decoded audio in
   memory: about 100 MB for 3 minutes of stereo.
+
+## D-028: Cuts are a non-destructive edit decision list with one time map; the export really cuts (2026-10-25)
+- **Model.** `EditDecisionList` = source-time intervals, each `remove` or `keep` (a rejected suggestion)
+  with an origin (`silence`, `manual`, `ai`). `buildTimeMap` merges removals, drops slivers under 40 ms,
+  and gives source↔output conversion. Words stay in source time (the word editor works there). Captions
+  are grouped after `mapWords`, so the preview, SRT, word highlights and export share one output timeline.
+  Interval rules: entirely cut → dropped; cut at an edge → clipped; spanning a cut → shortened;
+  under 50 ms left → dropped. Applied cuts are one undoable value (`useUndoable`), saved in the draft.
+- **Detection.** Analyses the speech audio the app already extracts locally (reusing its fallback chain;
+  nothing is uploaded), in a worker, streaming: 10 ms RMS levels. Auto threshold = floor + ⅓(speech − floor),
+  clamped to [−65, −40] dBFS, so background music and quiet speech are kept unless the user raises it.
+  Defaults: silences ≥ 0.6 s, keep 0.15 s after and 0.1 s before speech, pauses never shorter than 0.25 s,
+  clicks under 80 ms ignored. Suggestions only; nothing is cut until Apply.
+- **Preview.** Plays the source and jumps over removed ranges, driven by the same time map, with captions
+  on the output clock. It's a playback preview; the export contains the actual cuts.
+- **Export.** With cuts, a second renderer decodes only the kept segments (`VideoSampleSink`/`AudioSampleSink`
+  ranges), re-times frames, and cuts audio sample-accurately with a sample-counting clock and 5 ms join fades.
+  Both tracks are re-encoded (AAC where the browser can, else Opus). Without cuts, the existing single
+  `Conversion` pass (AAC copied) is unchanged. Measured: output length within 0.01 s of the EDL, flash vs
+  sound within 10 ms after cuts.
+- **Known artefact.** Chromium's Opus encoder leaves a short decay tail after an abrupt stop. It shows up in the
+  extracted speech audio, so suggested cuts start about 0.1 s after speech ends (errs towards keeping speech),
+  and in cut exports where there is no AAC encoder (Linux).
+- **Duration limit.** The brief says "existing 10-minute limit"; the existing limit is 3 minutes (D-009).
+  Nothing here changed it, and every new path reads `LIMITS.maxDurationSec`. Raising it is a product and cost
+  decision for the owner.

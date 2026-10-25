@@ -163,13 +163,15 @@ async function main() {
     await p.getByTestId("file-input").first().setInputFiles(f("vertical.mp4"));
     await p.getByTestId("check-ok").waitFor({ timeout: 30_000 });
     await p.getByTestId("next-button").click();
-    check("phone: Next goes to Captions", (await title()) === "Captions");
+    check("phone: Next goes to the optional Silence step", (await title()) === "Silence" && (await p.getByTestId("silence-analyze").isVisible()));
+    await p.getByTestId("next-button").click();
+    check("phone: Silence can be skipped; Next goes to Captions", (await title()) === "Captions");
     await p.getByTestId("make-captions").click();
     await p.getByTestId("word").first().waitFor({ timeout: 60_000 });
     await p.getByTestId("word").first().scrollIntoViewIfNeeded();
     check("phone: word editor reachable under the preview", await p.getByTestId("word").first().isVisible());
     await p.getByTestId("back-button").click();
-    check("phone: Back returns to Video", (await title()) === "Video");
+    check("phone: Back returns to the previous step (Silence)", (await title()) === "Silence");
     await p.getByTestId("next-button").click();
     await p.getByTestId("next-button").click();
     await p.getByTestId("next-button").click();

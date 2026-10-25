@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { editDecisionListSchema } from "./edit/timeline";
 import { localDb as db } from "./localDb";
 
 /**
@@ -19,6 +20,8 @@ export const draftSchema = z.object({
   edited: z.array(wordSchema).nullable(),
   /** Caption style id; absent in drafts saved before styles existed. */
   styleId: z.string().optional(),
+  /** Applied cuts (source time); absent before silence removal existed. */
+  edl: editDecisionListSchema.optional(),
 });
 export type Draft = z.infer<typeof draftSchema>;
 

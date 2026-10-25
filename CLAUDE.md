@@ -59,6 +59,8 @@ and `/simplify` for reviews.
 
 - `src/lib/captions/`: Word type, grouping, layout, canvas drawing, SRT (pure, unit-tested).
 - `src/lib/media/`: probe, validation, device check, audio extraction, render (browser only).
+- `src/lib/edit/`: edit decision list and source↔output time map (every time-based element goes
+  through it), silence detection, level analysis worker.
 - `src/lib/transcription/`: provider interface, Groq and Sarvam adapters, route handler logic, rate limit,
   byte sniffing (server), plus `client.ts` (browser fetch helper; must not import node modules).
 - `src/app/api/transcribe/route.ts`: wires the handler to env config.

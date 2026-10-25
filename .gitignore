@@ -49,6 +49,7 @@ next-env.d.ts
 /tests/e2e/.out-studio/
 /tests/e2e/.out-server/
 /tests/e2e/.out-phone/
+/tests/e2e/.out-silence/
 /tests/compat/.out/
 /tests/sync/.out/
 /tests/bakeoff/.out/

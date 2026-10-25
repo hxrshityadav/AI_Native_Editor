@@ -1,8 +1,17 @@
 import type { CaptionLine, CaptionStyle } from "@/lib/captions/types";
+import type { KeptSegment } from "@/lib/edit/timeline";
 import type { ExportPlan } from "./exportPresets";
 import { RenderError } from "./render";
 
-export type RenderRequest = { file: Blob; lines: CaptionLine[]; style: CaptionStyle; plan: ExportPlan };
+export type RenderRequest = {
+  file: Blob;
+  /** In output time. */
+  lines: CaptionLine[];
+  style: CaptionStyle;
+  plan: ExportPlan;
+  /** The kept parts of the source when there are cuts; null renders the whole video. */
+  segments: KeptSegment[] | null;
+};
 /** "disk": streamed to the origin private file system. "memory": fallback when OPFS is unavailable. */
 export type RenderStorage = "disk" | "memory";
 export type RenderMessage =

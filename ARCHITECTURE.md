@@ -56,6 +56,10 @@ unmetered spend. On Vercel, transcription stays off unless `DATABASE_URL` and bo
 | `src/lib/media/capabilities.ts` | browser | WebCodecs/OffscreenCanvas and encoder checks at the real size |
 | `src/lib/media/extractAudio.ts` | browser | Mediabunny `Conversion` → Ogg Opus mono |
 | `src/lib/media/render.ts` | browser | Mediabunny `Conversion` with `video.process` drawing captions; audio copied |
+| `src/lib/edit/timeline.ts` | both | Edit decision list (Zod), `buildTimeMap`, source↔output time, `mapInterval`/`mapWords` (pure) |
+| `src/lib/edit/silence.ts` | both | Level stats and silence suggestions from 10 ms levels (pure) |
+| `src/lib/edit/audioLevels.ts` (+ worker, `analyzeInWorker.ts`) | browser | Streams the speech audio through a decoder in a worker → 10 ms levels |
+| `src/lib/media/renderEdited.ts` | browser | Export with cuts: decodes only kept segments, re-times frames and samples, captions on output time |
 | `src/lib/transcription/handler.ts` | server | Validation, rate limit, sniff, provider call, error mapping |
 | `src/lib/transcription/groq.ts` | server | Groq Whisper adapter (`verbose_json`, word timestamps) |
 | `src/lib/transcription/sarvam.ts` | server | Sarvam adapter (bake-off): translit mode, phrase timestamps → estimated word times, ≤ 30 s |

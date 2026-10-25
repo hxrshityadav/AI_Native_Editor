@@ -24,6 +24,9 @@ import { RenderCanceledError, renderInWorker, type RenderHandle, type RenderStor
 import type { Issue, ProbeResult } from "@/lib/media/types";
 import { issue, validateFileBasics, validateProbe } from "@/lib/media/validate";
 import { fetchTranscribeConfig, requestTranscription } from "@/lib/transcription/client";
+import { buildTimeMap, EMPTY_EDL, mapWords, type EditDecisionList } from "@/lib/edit/timeline";
+import { useSilenceTool } from "./useSilenceTool";
+import { useUndoable } from "./useUndoable";
 import type { CaptionLanguage, TranscribeConfigResponse, TranscribeResponse } from "@/lib/transcription/types";
 
 export type CheckState =
@@ -176,6 +179,17 @@ export function useReelSession({ placeholders }: { placeholders: boolean }) {
   useEffect(() => revokeAll, []);
 
   const probe = check.status === "ready" ? check.probe : null;
+  /** Applied cuts: the non-destructive edit decision list, with undo and redo. */
+  const cuts = useUndoable<EditDecisionList>(EMPTY_EDL);
+  const silence = useSilenceTool({
+    durationSec: probe?.durationSec ?? 0,
+    applied: cuts.value,
+    getSpeechAudio: () => (audio.status === "done" ? Promise.resolve(audio.blob) : extract()),
+    onApply: cuts.set,
+  });
+  // A 10-minute analysis is real work: warn before leaving and keep the screen on, as for render.
+  useLeaveWarning(silence.analysis.status === "running");
+  useWakeLock(silence.analysis.status === "running");
   const [exportPreset, setExportPreset] = useState<ExportPresetId>("reels");
   const [framing, setFraming] = useState<Framing>("fill");
   /** The exact output frame; the preview shows the same crop or bars. */
@@ -196,6 +210,15 @@ export function useReelSession({ placeholders }: { placeholders: boolean }) {
     };
   }, [plan]);
   const planEncodable = planSize !== null && encodeCheck?.size === planSize ? encodeCheck.ok : null;
+  /** Why Export is unavailable right now, or null. Null-but-checking blocks silently. */
+  const exportBlocked: string | null =
+    planEncodable === false
+      ? "This device can't encode this export size."
+      : silence.reviewing
+        ? "Apply or cancel the suggested silence cuts first."
+        : planEncodable === null
+          ? "Checking this device…"
+          : null;
   const realWords = transcript.status === "done" ? transcript.words : null;
   const sourceWords = useMemo(
     () => realWords ?? (placeholders && probe ? makeTestWords(probe.durationSec) : []),
@@ -211,7 +234,19 @@ export function useReelSession({ placeholders }: { placeholders: boolean }) {
     const history = edits.history.slice(0, -1);
     setEdits({ words: edits.history[edits.history.length - 1], history });
   }
-  const lines = useMemo(() => groupWords(words, { ...DEFAULT_GROUP_OPTIONS, ...style.group }), [words, style]);
+  // Words stay in source time (the word editor works there); captions are built on the output
+  // timeline, so the preview, SRT and export all show them where they land after the cuts.
+  const appliedMap = useMemo(() => buildTimeMap(probe?.durationSec ?? 0, cuts.value), [probe, cuts.value]);
+  const lines = useMemo(
+    () => groupWords(mapWords(appliedMap, words), { ...DEFAULT_GROUP_OPTIONS, ...style.group }),
+    [appliedMap, words, style],
+  );
+  /** While cuts are being reviewed, the preview shows the proposed result. */
+  const previewMap = silence.reviewMap ?? appliedMap;
+  const previewLines = useMemo(
+    () => (previewMap === appliedMap ? lines : groupWords(mapWords(previewMap, words), { ...DEFAULT_GROUP_OPTIONS, ...style.group })),
+    [previewMap, appliedMap, lines, words, style],
+  );
 
   // Autosave the real transcript and edits, debounced so a burst of nudges is one write.
   const savedTranscript = transcript.status === "done" ? transcript : null;
@@ -227,13 +262,14 @@ export function useReelSession({ placeholders }: { placeholders: boolean }) {
         transcript: savedTranscript.words,
         edited: edits?.words ?? null,
         styleId,
+        edl: cuts.value,
       }).then(
         () => setSaveState("saved"),
         () => setSaveState("error"),
       );
     }, 400);
     return () => clearTimeout(timer);
-  }, [fingerprint, savedTranscript, edits, styleId]);
+  }, [fingerprint, savedTranscript, edits, styleId, cuts.value]);
   const srtUrl = useMemo(
     () => (lines.length ? URL.createObjectURL(new Blob([toSrt(lines)], { type: "application/x-subrip" })) : null),
     [lines],
@@ -252,6 +288,8 @@ export function useReelSession({ placeholders }: { placeholders: boolean }) {
     setAudio({ status: "idle" });
     setTranscript({ status: "idle" });
     setEdits(null);
+    cuts.reset(EMPTY_EDL);
+    silence.reset();
     setRender({ status: "idle" });
     setVideoUrl(null);
     setPreviewFailed(false);
@@ -319,6 +357,7 @@ export function useReelSession({ placeholders }: { placeholders: boolean }) {
         setEdits(draft.edited ? { words: draft.edited, history: [] } : null);
         setRestoredAt(draft.savedAt);
         setStyleId(getCaptionStyle(draft.styleId).id);
+        cuts.reset(draft.edl ?? EMPTY_EDL);
         setSaveState("saved");
       }
     } catch {
@@ -386,10 +425,11 @@ export function useReelSession({ placeholders }: { placeholders: boolean }) {
   }
 
   async function startRender() {
-    if (!file || !plan || planEncodable !== true) return;
+    if (!file || !plan || exportBlocked) return;
     setRender({ status: "running", progress: 0 });
     const started = performance.now();
-    const handle = renderInWorker({ file, lines, style, plan }, (p) => setRender({ status: "running", progress: p }));
+    const segments = appliedMap.removed.length ? appliedMap.segments : null;
+    const handle = renderInWorker({ file, lines, style, plan, segments }, (p) => setRender({ status: "running", progress: p }));
     renderHandle.current = handle;
     try {
       const { blob, storage, fastStart, audioCodec } = await handle.result;
@@ -456,6 +496,12 @@ export function useReelSession({ placeholders }: { placeholders: boolean }) {
     setFraming,
     plan,
     planEncodable,
+    exportBlocked,
+    cuts,
+    silence,
+    appliedMap,
+    previewMap,
+    previewLines,
     online,
     previewFailed,
     setPreviewFailed,
