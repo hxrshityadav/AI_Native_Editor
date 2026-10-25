@@ -36,7 +36,7 @@ ffmpeg-generated fixtures. No task is verified on a real phone yet.
 
 | ID | Task | Status |
 | --- | --- | --- |
-| T-16 | Studio UI: desktop three panes; mobile step flow; shadcn/ui | Not started |
+| T-16 | Studio UI at `/studio`: desktop three panes (steps rail with live status, video stage, step panel); phone step-by-step flow with sticky Back/Next; drag-and-drop pick; one-click "Make captions"; logic shared with `/lab` via `useReelSession` | Tested (studio E2E 24/24 at 1440×900 and Pixel 7: locking, rejection, upload contents, fold-away disclosure, edit, style, export ffprobe + pixels, SRT, restore without upload, 40 px targets, no sideways scroll; screenshots reviewed). shadcn/ui not installed (registry blocked here; native controls used, see D-021) |
 | T-17a | Word editor in `/lab`: fix text, split, merge, delete, ±50 ms timing nudges, keyboard shortcuts, undo; preview, SRT and render use the edits | Tested (12 unit tests; E2E checks edits reach the SRT and the burned-in pixels; screenshots at 1280 px and 390 px) |
 | T-17b | Autosave transcript and edits to IndexedDB (debounced), restore on re-picking the same file, "Start over" deletes the draft | Tested (5 unit tests; E2E: reload → re-pick restores edits with no new upload, render uses restored edits, Start over deletes) |
 | T-18 | 5 caption styles (Clean, Pop, Boxed, Bold yellow, Subtitle) with bundled Devanagari+Latin fonts (Poppins, Baloo 2, Mukta, Hind; OFL); style saved in the draft; fonts loaded in the page and in the render worker | Tested (8 unit tests incl. draw calls per style and font files on disk; E2E: style restored with draft, Boxed fonts fetched and dark band burned in; every style checked by eye in rendered MP4 frames and in the live preview) |

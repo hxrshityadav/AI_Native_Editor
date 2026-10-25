@@ -1,0 +1,149 @@
+// End-to-end test for /studio: the desktop three-pane flow and the phone step-by-step flow.
+// Requires `npm run build` first, plus ffmpeg and ffprobe on PATH. Run: npm run e2e
+
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+import { chromium, devices } from "playwright";
+import { createChecks, download, frameDiff, makeFixtures, probe, ROOT, startServer, stopServer, streams } from "./helpers.mjs";
+
+const OUT = join(ROOT, "tests/e2e/.out-studio");
+const PORT = 3115;
+const URL_ = `http://localhost:${PORT}/studio`;
+const { check, finish } = createChecks();
+
+const WORDS = [
+  { text: "namaste", start: 0.5, end: 1.2 },
+  { text: "doston", start: 1.2, end: 1.9 },
+  { text: "aaj", start: 2.0, end: 2.6 },
+];
+
+/** Opens the studio with a mocked transcription route; records what was uploaded. */
+async function openStudio(browser, contextOptions) {
+  const context = await browser.newContext({ ...contextOptions, acceptDownloads: true });
+  const page = await context.newPage();
+  page.on("pageerror", (e) => console.log("pageerror:", e.message));
+  const uploads = [];
+  await page.route("**/api/transcribe", async (route) => {
+    uploads.push(route.request().postDataBuffer());
+    await route.fulfill({ json: { provider: { id: "groq", displayName: "Groq (mock)" }, words: WORDS, warning: null } });
+  });
+  await page.goto(URL_);
+  return { context, page, uploads };
+}
+
+const noSideScroll = (page) => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth);
+
+async function main() {
+  const f = makeFixtures(OUT);
+  const server = await startServer(PORT);
+  const browser = await chromium.launch();
+  try {
+    // ---------- Desktop: three panes ----------
+    const { context, page, uploads } = await openStudio(browser, { viewport: { width: 1440, height: 900 } });
+
+    check("desktop: steps rail visible", await page.getByRole("navigation", { name: "Steps" }).isVisible());
+    check(
+      "desktop: later steps locked until a video is picked",
+      (await page.getByTestId("nav-captions").getAttribute("aria-disabled")) === "true" &&
+        (await page.getByTestId("next-button").isDisabled()),
+    );
+
+    await page.getByTestId("file-input").first().setInputFiles(f("garbage.mp4"));
+    await page.getByTestId("check-error").waitFor({ timeout: 30_000 });
+    check("desktop: unreadable file rejected with a reason and a way out", (await page.getByText("Choose another video").isVisible()));
+
+    await page.getByTestId("file-input").first().setInputFiles(f("vertical.mp4"));
+    await page.getByTestId("check-ok").waitFor({ timeout: 30_000 });
+    check("desktop: video step shows the clip in the rail", (await page.getByTestId("nav-video").innerText()).includes("720×1280"));
+
+    await page.getByTestId("continue-captions").click();
+    check("desktop: full disclosure shown before anything is sent", await page.getByTestId("transcribe-disclosure").isVisible());
+    check("desktop: export locked until captions exist", (await page.getByTestId("nav-export").getAttribute("aria-disabled")) === "true");
+    await page.getByTestId("make-captions").click();
+    await page.getByTestId("word").first().waitFor({ timeout: 60_000 });
+    check(
+      "desktop: one click extracts locally, then uploads only Ogg Opus speech audio, as Hinglish",
+      uploads.length === 1 &&
+        uploads[0].includes(Buffer.from("OpusHead")) &&
+        uploads[0].length < 60_000 &&
+        /name="language"\r\n\r\nhinglish/.test(uploads[0].toString("latin1")),
+      `${uploads[0]?.length} B`,
+    );
+    check("desktop: disclosure folds away after captions are made", !(await page.getByTestId("transcribe-disclosure").isVisible()));
+    check("desktop: rail shows the word count", (await page.getByTestId("nav-captions").innerText()).includes("3 words"));
+
+    await page.getByTestId("word").nth(0).click();
+    await page.getByTestId("word-text").fill("Namaste");
+    await page.getByTestId("word-text").press("Enter");
+    check("desktop: word edited", (await page.getByTestId("word").nth(0).innerText()) === "Namaste");
+
+    await page.getByTestId("next-button").click();
+    await page.locator("label", { has: page.getByTestId("style-boxed") }).click();
+    check("desktop: style chosen", (await page.getByTestId("nav-style").innerText()).includes("Boxed"));
+
+    await page.getByTestId("next-button").click();
+    await page.getByTestId("render-button").click();
+    await page.getByTestId("render-done").waitFor({ timeout: 120_000 });
+    const mp4 = await download(page, "mp4-link", f("studio-out.mp4"));
+    const info = probe(mp4);
+    const v = streams(info, "video")[0];
+    check(
+      "desktop: export is H.264 720×1280 with the original AAC audio",
+      v?.codec_name === "h264" && v?.width === 720 && v?.height === 1280 && streams(info, "audio")[0]?.codec_name === "aac",
+    );
+    const band = frameDiff(f("vertical.mp4"), mp4, 1.0, 720, 1280, 0.7, 0.78);
+    check("desktop: Boxed captions burned in", band > 15, `Δ${band.toFixed(2)}`);
+    const srt = readFileSync(await download(page, "srt-link", f("studio-out.srt")), "utf8");
+    check("desktop: SRT has the edited words", srt.includes("Namaste doston"));
+
+    await page.getByTestId("save-status").count(); // draft is saved by now (debounced write long past)
+    await page.reload();
+    await page.getByTestId("file-input").first().setInputFiles(f("vertical.mp4"));
+    await page.getByTestId("check-ok").waitFor({ timeout: 30_000 });
+    await page.getByTestId("continue-captions").click();
+    await page.getByTestId("save-status").filter({ hasText: "Restored" }).waitFor({ timeout: 10_000 });
+    check(
+      "desktop: reopening the same video restores captions and edits without uploading",
+      (await page.getByTestId("word").nth(0).innerText()) === "Namaste" && uploads.length === 1,
+    );
+    check("desktop: no sideways scroll", await noSideScroll(page));
+    await context.close();
+
+    // ---------- Phone: step by step ----------
+    const phone = await openStudio(browser, devices["Pixel 7"]);
+    const p = phone.page;
+    const title = () => p.getByTestId("mobile-step-title").innerText();
+    check("phone: rail hidden, step header shown", !(await p.getByRole("navigation", { name: "Steps" }).isVisible()) && (await title()) === "Video");
+    await p.getByTestId("file-input").first().setInputFiles(f("vertical.mp4"));
+    await p.getByTestId("check-ok").waitFor({ timeout: 30_000 });
+    await p.getByTestId("next-button").click();
+    check("phone: Next goes to Captions", (await title()) === "Captions");
+    await p.getByTestId("make-captions").click();
+    await p.getByTestId("word").first().waitFor({ timeout: 60_000 });
+    await p.getByTestId("word").first().scrollIntoViewIfNeeded();
+    check("phone: word editor reachable under the preview", await p.getByTestId("word").first().isVisible());
+    await p.getByTestId("back-button").click();
+    check("phone: Back returns to Video", (await title()) === "Video");
+    await p.getByTestId("next-button").click();
+    await p.getByTestId("next-button").click();
+    await p.getByTestId("next-button").click();
+    check("phone: reaches Export", (await title()) === "Export");
+    await p.getByTestId("render-button").click();
+    await p.getByTestId("render-done").waitFor({ timeout: 120_000 });
+    const phoneMp4 = probe(await download(p, "mp4-link", f("studio-phone.mp4")));
+    check("phone: export works", streams(phoneMp4, "video")[0]?.codec_name === "h264");
+    const nav = await Promise.all(["back-button", "render-button", "mp4-link"].map((id) => p.getByTestId(id).boundingBox()));
+    check("phone: main buttons are at least 40 px tall", nav.every((b) => b && b.height >= 40), nav.map((b) => b?.height.toFixed(0)).join(", "));
+    check("phone: no sideways scroll", await noSideScroll(p));
+    await phone.context.close();
+  } finally {
+    await browser.close();
+    stopServer(server);
+  }
+  finish();
+}
+
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});

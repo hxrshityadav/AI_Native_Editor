@@ -10,7 +10,7 @@ Status: Phase 2 technical proof of concept. See `TASKS.md`.
 ```bash
 npm install
 cp .env.example .env.local   # then set GROQ_API_KEY
-npm run dev                  # open http://localhost:3000/lab
+npm run dev                  # open http://localhost:3000/studio (or /lab for the internal test page)
 ```
 
 ## Checks

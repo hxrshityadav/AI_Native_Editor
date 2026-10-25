@@ -129,3 +129,21 @@ for extraction and for renders. The worker now sends the error `name`, which `po
 otherwise drop. Long local work holds a screen wake lock (best effort) and warns before the page is
 left. Transcription can be cancelled, and a late reply after a cancel is ignored. The lab error
 boundary uses Next 16's `retry` prop, not `reset`, and logs only the error name.
+
+## D-021: Studio over a shared session hook; native controls instead of shadcn/ui for now (2026-10-25)
+- All workflow logic moved into `useReelSession`. `/studio` (product) and `/lab` (internal test page,
+  every step exposed) are layouts over it, so a fix lands once and the lab's E2E keeps guarding the
+  logic the studio uses.
+- In the studio, "Make captions" runs local audio extraction and then transcription as one action;
+  extraction is an implementation detail to a creator. No placeholder captions in the studio; the
+  preview shows captions only once a transcript exists.
+- The full data disclosure is always shown before the first upload. Once captions exist, it folds
+  into a "Leaves this device: what was sent" line, so the word editor fits under the preview on a
+  phone.
+- shadcn/ui isn't installed. Its registry (ui.shadcn.com) is blocked by this environment's network
+  policy, and copying components from memory would break the "verify APIs" rule. The studio only
+  needs buttons, radios, selects, sliders, details and progress; native elements are accessible,
+  keyboard-ready and light on phones. Add shadcn (Radix) when a component needs it (dialog, sheet,
+  popover) and the registry is reachable.
+- Visual direction: a light, quiet chrome around a dark video stage. The caption yellow is used only
+  for primary actions and the current step, tying the UI to what it makes.

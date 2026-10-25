@@ -39,8 +39,9 @@ and `/simplify` for reviews.
 
 - `npm run check`: typegen + `tsc`, ESLint, Vitest. Must pass before every commit.
 - `npm run build`: production build.
-- `npm run e2e`: needs a fresh `npm run build`, plus ffmpeg/ffprobe. Drives `/lab` in Chromium
-  against generated fixtures and verifies outputs with ffprobe. Run it for every media change.
+- `npm run e2e`: needs a fresh `npm run build`, plus ffmpeg/ffprobe. Drives `/lab` and then
+  `/studio` (desktop and Pixel 7) in Chromium against generated fixtures and verifies outputs with
+  ffprobe. Run it for every media or UI change.
 - `npm run perf`: needs a fresh build. An emulated mid-range phone pass (Pixel 7 profile, CPU ÷4,
   60 s 1080p clip) that prints step timings, idle main-thread load, the longest stall and Chromium
   memory. `PERF_SECONDS` and `PERF_SIZE` change the clip. It is not a real-device result.
@@ -52,4 +53,6 @@ and `/simplify` for reviews.
 - `src/lib/transcription/`: provider interface, Groq adapter, route handler logic, rate limit,
   byte sniffing (server), plus `client.ts` (browser fetch helper; must not import node modules).
 - `src/app/api/transcribe/route.ts`: wires the handler to env config.
-- `src/app/lab/`: the render lab, the Phase 2 proof-of-concept UI.
+- `src/components/editor/`: `useReelSession` (all workflow state and actions) and shared UI parts.
+- `src/app/studio/`: the product UI (layout only, over `useReelSession`).
+- `src/app/lab/`: the internal render lab (every step exposed separately; the main E2E target).

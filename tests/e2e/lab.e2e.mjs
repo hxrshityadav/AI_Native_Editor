@@ -2,81 +2,26 @@
 // Requires `npm run build` first, plus ffmpeg and ffprobe on PATH.
 // Run: npm run e2e
 
-import { execFileSync, spawn } from "node:child_process";
-import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { chromium } from "playwright";
+import {
+  countPixels,
+  createChecks,
+  download,
+  frameDiff,
+  makeFixtures,
+  probe,
+  ROOT,
+  startServer,
+  stopServer,
+  streams,
+} from "./helpers.mjs";
 
-const ROOT = new URL("../..", import.meta.url).pathname;
 const OUT = join(ROOT, "tests/e2e/.out");
 const PORT = 3107;
 const BASE = `http://localhost:${PORT}`;
-
-const results = [];
-function check(name, ok, detail = "") {
-  results.push({ name, ok });
-  console.log(`${ok ? "PASS" : "FAIL"}  ${name}${detail ? `  (${detail})` : ""}`);
-}
-
-// ---------- fixtures ----------
-
-function ff(...args) {
-  execFileSync("ffmpeg", ["-hide_banner", "-loglevel", "error", "-y", ...args], { stdio: "inherit" });
-}
-
-function probe(file) {
-  return JSON.parse(
-    execFileSync("ffprobe", ["-v", "error", "-show_streams", "-show_format", "-of", "json", file]).toString(),
-  );
-}
-
-function makeFixtures() {
-  rmSync(OUT, { recursive: true, force: true });
-  mkdirSync(OUT, { recursive: true });
-  const f = (name) => join(OUT, name);
-  const bg = "color=c=0x2a4d69:s=720x1280:r=30:d=4";
-  const tone = "sine=frequency=440:sample_rate=48000:duration=4";
-
-  ff("-f", "lavfi", "-i", bg, "-f", "lavfi", "-i", tone, "-c:v", "libx264", "-pix_fmt", "yuv420p", "-c:a", "aac", "-shortest", f("vertical.mp4"));
-  ff("-f", "lavfi", "-i", "color=c=0x2a4d69:s=1280x720:r=30:d=3", "-f", "lavfi", "-i", tone, "-c:v", "libx264", "-pix_fmt", "yuv420p", "-c:a", "aac", "-shortest", f("landscape.mp4"));
-  ff("-display_rotation", "90", "-i", f("landscape.mp4"), "-c", "copy", f("rotated.mp4"));
-  ff("-f", "lavfi", "-i", "color=c=0x2a4d69:s=540x960:r=30:d=3", "-f", "lavfi", "-i", tone, "-c:v", "libvpx-vp9", "-b:v", "500k", "-c:a", "libopus", "-shortest", f("vp9-opus.webm"));
-  ff("-f", "lavfi", "-i", bg, "-c:v", "libx264", "-pix_fmt", "yuv420p", f("no-audio.mp4"));
-  // HDR (PQ, BT.2020, 10-bit), as phones record by default, and HEVC, which many Android phones use.
-  ff("-f", "lavfi", "-i", "color=c=0x2a4d69:s=540x960:r=30:d=2", "-f", "lavfi", "-i", tone, "-c:v", "libvpx-vp9", "-profile:v", "2", "-pix_fmt", "yuv420p10le", "-color_primaries", "bt2020", "-color_trc", "smpte2084", "-colorspace", "bt2020nc", "-b:v", "500k", "-c:a", "libopus", "-shortest", f("hdr.webm"));
-  ff("-f", "lavfi", "-i", "color=c=0x2a4d69:s=540x960:r=30:d=2", "-f", "lavfi", "-i", tone, "-c:v", "libx265", "-tag:v", "hvc1", "-pix_fmt", "yuv420p", "-c:a", "aac", "-shortest", f("hevc.mp4"));
-  ff("-f", "lavfi", "-i", tone, "-c:a", "aac", f("audio-only.m4a"));
-  writeFileSync(f("garbage.mp4"), Buffer.from(Array.from({ length: 4096 }, (_, i) => (i * 7919) % 256)));
-  return f;
-}
-
-// ---------- server ----------
-
-async function startServer() {
-  const env = { ...process.env, PORT: String(PORT) };
-  delete env.GROQ_API_KEY; // the real route must report NOT_CONFIGURED
-  const server = spawn(join(ROOT, "node_modules/.bin/next"), ["start", "-p", String(PORT)], {
-    cwd: ROOT,
-    env,
-    stdio: "pipe",
-    detached: true, // own process group, so stopServer() also kills next-server children
-  });
-  server.stderr.on("data", (d) => process.stderr.write(d));
-  for (let i = 0; i < 60; i++) {
-    try {
-      if ((await fetch(`${BASE}/lab`)).ok) return server;
-    } catch {}
-    await new Promise((r) => setTimeout(r, 500));
-  }
-  stopServer(server);
-  throw new Error("next start did not become ready. Did you run `npm run build`?");
-}
-
-function stopServer(server) {
-  try {
-    process.kill(-server.pid, "SIGTERM");
-  } catch {}
-}
+const { check, finish } = createChecks();
 
 // ---------- helpers ----------
 
@@ -90,12 +35,6 @@ async function pick(page, file) {
   await page.goto(`${BASE}/lab`);
   await page.getByTestId("file-input").setInputFiles(file);
   await page.locator('[data-testid="check-ok"], [data-testid="check-error"]').first().waitFor({ timeout: 30_000 });
-}
-
-async function download(page, testId, dest) {
-  const [dl] = await Promise.all([page.waitForEvent("download"), page.getByTestId(testId).click()]);
-  await dl.saveAs(dest);
-  return dest;
 }
 
 /** Picks a caption style the way a user does: by clicking its label. */
@@ -113,43 +52,11 @@ async function renderAndSave(page, dest) {
   return download(page, "mp4-link", dest);
 }
 
-/** Mean absolute luma difference between two files' frames at time t, within a horizontal band. */
-function frameDiff(a, b, t, width, height, bandTop, bandBottom) {
-  const gray = (file) =>
-    execFileSync("ffmpeg", ["-v", "error", "-ss", String(t), "-i", file, "-frames:v", "1", "-f", "rawvideo", "-pix_fmt", "gray", "-"], { maxBuffer: 64 << 20 });
-  const ga = gray(a);
-  const gb = gray(b);
-  let sum = 0;
-  let n = 0;
-  for (let y = Math.floor(height * bandTop); y < Math.floor(height * bandBottom); y++) {
-    for (let x = 0; x < width; x++) {
-      sum += Math.abs(ga[y * width + x] - gb[y * width + x]);
-      n++;
-    }
-  }
-  return sum / n;
-}
-
-/** Counts pixels in a horizontal band of the frame at time t whose RGB matches `match`. */
-function countPixels(file, t, width, height, bandTop, bandBottom, match) {
-  const rgb = execFileSync("ffmpeg", ["-v", "error", "-ss", String(t), "-i", file, "-frames:v", "1", "-f", "rawvideo", "-pix_fmt", "rgb24", "-"], { maxBuffer: 64 << 20 });
-  let n = 0;
-  for (let y = Math.floor(height * bandTop); y < Math.floor(height * bandBottom); y++) {
-    for (let x = 0; x < width; x++) {
-      const i = (y * width + x) * 3;
-      if (match(rgb[i], rgb[i + 1], rgb[i + 2])) n++;
-    }
-  }
-  return n;
-}
-
-const streams = (info, type) => info.streams.filter((s) => s.codec_type === type);
-
 // ---------- tests ----------
 
 async function main() {
-  const f = makeFixtures();
-  const server = await startServer();
+  const f = makeFixtures(OUT);
+  const server = await startServer(PORT);
   const browser = await chromium.launch();
   try {
     const context = await browser.newContext({ acceptDownloads: true });
@@ -441,9 +348,7 @@ async function main() {
     stopServer(server);
   }
 
-  const failed = results.filter((r) => !r.ok);
-  console.log(`\n${results.length - failed.length}/${results.length} checks passed`);
-  process.exit(failed.length ? 1 : 0);
+  finish();
 }
 
 main().catch((err) => {

@@ -29,6 +29,9 @@ request memory. Logs carry error codes only.
 | Path | Runs in | Purpose |
 | --- | --- | --- |
 | `src/lib/captions` | both | `Word`/`CaptionLine` types, grouping, `lineAt`, word wrap, canvas drawing, SRT |
+| `src/components/editor/useReelSession.ts` | browser | The whole workflow as one hook (check, extract, transcribe, edits, drafts, style, kit, render, report); `/lab` and `/studio` are layouts over it |
+| `src/components/editor/parts.tsx` | browser | Shared pieces: Preview, DataFlow, TranscribeDisclosure, StylePicker, RenderStatus, … |
+| `src/app/studio/StudioClient.tsx` | browser | The product UI: desktop three panes, phone step flow |
 | `src/lib/captions/edit.ts` | both | Pure word edits: replace/split, remove, merge, clamped edge nudges, `wordIndexAt` |
 | `src/app/lab/TranscriptEditor.tsx` | browser | Word editor UI with keyboard shortcuts; the lab keeps the edits and undo history |
 | `src/lib/captions/fonts.ts` | both | Bundled caption fonts (`public/fonts`, OFL) and a loader for `document.fonts` or the worker's `self.fonts` |

@@ -8,11 +8,11 @@ export default function Home() {
         Turn a raw talking-head video into a captioned Reel or Short. Your video is processed in your browser and
         never uploaded.
       </p>
-      <p className="text-sm text-zinc-500">
-        The studio is not built yet. The technical proof of concept lives in the render lab.
-      </p>
-      <Link href="/lab" className="w-fit rounded-md bg-foreground px-4 py-2 text-background">
-        Open the render lab
+      <Link href="/studio" className="w-fit rounded-md bg-accent px-4 py-2.5 font-semibold text-accent-ink">
+        Open the studio
+      </Link>
+      <Link href="/lab" className="w-fit text-sm text-zinc-500 underline">
+        Render lab (internal test page)
       </Link>
     </main>
   );

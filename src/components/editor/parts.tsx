@@ -7,9 +7,10 @@ import { TRANSCRIPTION_DISCLOSURE } from "@/lib/transcription/client";
 import type { CaptionLanguage } from "@/lib/transcription/types";
 import type { ReelSession } from "./useReelSession";
 
+// min-h-10: 40px touch targets on phones.
 export const btn =
-  "rounded-md bg-foreground px-4 py-2 text-sm text-background disabled:cursor-not-allowed disabled:opacity-40";
-export const btnSecondary = "rounded-md border px-4 py-2 text-sm";
+  "inline-flex min-h-10 items-center rounded-md bg-foreground px-4 py-2 text-sm text-background disabled:cursor-not-allowed disabled:opacity-40";
+export const btnSecondary = "inline-flex min-h-10 items-center rounded-md border px-4 py-2 text-sm";
 
 /** The video with captions drawn live on top, exactly as the export will draw them. */
 export function Preview({
@@ -237,7 +238,13 @@ export function OfflineNote({ online }: { online: boolean }) {
   );
 }
 
-export function RenderStatus({ session: s }: { session: ReelSession }) {
+export function RenderStatus({
+  session: s,
+  downloadClassName = btnSecondary + " w-fit",
+}: {
+  session: ReelSession;
+  downloadClassName?: string;
+}) {
   const { render } = s;
   return (
     <>
@@ -260,7 +267,7 @@ export function RenderStatus({ session: s }: { session: ReelSession }) {
               ? "Saved to this browser's private storage on your device until your next render."
               : "This browser can't write to device storage, so the video is held in memory. Long or 4K videos may fail here; try Chrome."}
           </p>
-          <a data-testid="mp4-link" href={render.url} download={s.fileBaseName + "-captioned.mp4"} className={btnSecondary + " w-fit"}>
+          <a data-testid="mp4-link" href={render.url} download={s.fileBaseName + "-captioned.mp4"} className={downloadClassName}>
             Download MP4
           </a>
         </div>
