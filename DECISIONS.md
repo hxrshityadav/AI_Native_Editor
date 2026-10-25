@@ -159,3 +159,13 @@ box at the output's aspect ratio and a canvas at the output resolution, so what 
 exports. Quality uses Mediabunny's resolution-aware levels instead of fixed bitrates, so there's no
 size estimate before export; the real size is shown after. The preset isn't saved per video or per
 user yet.
+
+## D-023: Exports aim at the strictest documented spec: AAC audio and fast start (2026-10-25)
+Meta's documented specs (Instagram Reels API, Facebook Reels, WhatsApp Business) list AAC audio only;
+YouTube recommends moov at the front. AAC sources are copied, and other audio is converted to AAC
+where the browser can encode it (Chrome on Android, Windows and Mac). Otherwise it's kept, with a
+warning, rather than failing the export. Fast start is a separate qt-faststart-style pass after the
+streamed render: it keeps memory flat and costs about 2 s per minute of 1080p, and if it fails the
+moov-at-end file is kept. Mediabunny's own `fastStart: 'reserve'` needs per-track packet counts
+that its Conversion API doesn't expose. Real uploads are still unverified: the test pack and
+checklist in `docs/research/platform-uploads.md` are how we find out.

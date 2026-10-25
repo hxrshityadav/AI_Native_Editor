@@ -45,6 +45,8 @@ and `/simplify` for reviews.
 - `npm run perf`: needs a fresh build. An emulated mid-range phone pass (Pixel 7 profile, CPU ÷4,
   60 s 1080p clip) that prints step timings, idle main-thread load, the longest stall and Chromium
   memory. `PERF_SECONDS` and `PERF_SIZE` change the clip. It is not a real-device result.
+- `npm run compat-pack`: needs a fresh build. Builds the platform upload test pack (zip) for manual
+  uploads; see `docs/research/platform-uploads.md`.
 
 ## Layout
 

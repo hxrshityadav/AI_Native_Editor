@@ -8,6 +8,8 @@ import { chromium } from "playwright";
 import {
   countPixels,
   createChecks,
+  decodeErrors,
+  topLevelBoxes,
   download,
   frameDiff,
   makeFixtures,
@@ -234,6 +236,15 @@ async function main() {
     check("render: original AAC audio copied", a?.codec_name === "aac", a?.codec_name);
     check("render: duration ≈ source", Math.abs(Number(info.format.duration) - 4) < 0.15, info.format.duration);
     check("render: MP4 container", info.format.format_name.includes("mp4"), info.format.format_name);
+    const boxes = topLevelBoxes(outMp4).filter((t) => ["ftyp", "moov", "mdat"].includes(t));
+    check("render: fast start (moov before mdat), as YouTube recommends", boxes.join(",") === "ftyp,moov,mdat", boxes.join(","));
+    const decodeErr = decodeErrors(outMp4);
+    check("render: every frame and sample decodes after the moov move", decodeErr === "", decodeErr.slice(0, 200));
+    const done = page.getByTestId("render-done");
+    check(
+      "render: AAC source audio copied, no compatibility warning",
+      (await done.getAttribute("data-audio")) === "aac" && !(await page.getByTestId("audio-compat-warning").isVisible()),
+    );
     console.log(`      render took ${Date.now() - t0} ms`);
 
     const captionBand = frameDiff(f("vertical.mp4"), outMp4, 1.0, 720, 1280, 0.62, 0.82);
@@ -319,7 +330,12 @@ async function main() {
     );
 
     const webm = probe(await renderAndSave(page, f("out-webm.mp4")));
-    check("webm: H.264 + Opus-in-MP4", streams(webm, "video")[0]?.codec_name === "h264" && streams(webm, "audio")[0]?.codec_name === "opus");
+    // This Linux Chromium can't encode AAC, so the Opus source stays Opus, and the user is told.
+    // Chrome on Android, Windows and Mac can encode AAC; there the output is AAC (not testable here).
+    const webmAudio = streams(webm, "audio")[0]?.codec_name;
+    const reported = await page.getByTestId("render-done").getAttribute("data-audio");
+    check("webm: H.264 video; audio codec matches what the app reports", streams(webm, "video")[0]?.codec_name === "h264" && webmAudio === reported, `${webmAudio} / ${reported}`);
+    check("webm: non-AAC audio comes with a compatibility warning", webmAudio === "aac" || (await page.getByTestId("audio-compat-warning").isVisible()));
 
     // 4. Phone formats: HDR is accepted with a warning; HEVC depends on the browser's decoder.
     await pick(page, f("hdr.webm"));

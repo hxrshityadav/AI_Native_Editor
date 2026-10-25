@@ -371,7 +371,12 @@ export function RenderStatus({
       )}
       {render.status === "error" && <ProblemBox testId="render-error" problem={render.problem} />}
       {render.status === "done" && (
-        <div data-testid="render-done" className="flex flex-col gap-2 text-sm">
+        <div
+          data-testid="render-done"
+          data-audio={render.audioCodec ?? "none"}
+          data-faststart={render.fastStart}
+          className="flex flex-col gap-2 text-sm"
+        >
           <p>
             {formatBytes(render.sizeBytes)} in {(render.ms / 1000).toFixed(1)} s. No watermark.
           </p>
@@ -380,6 +385,13 @@ export function RenderStatus({
               ? "Saved to this browser's private storage on your device until your next render."
               : "This browser can't write to device storage, so the video is held in memory. Long or 4K videos may fail here; try Chrome."}
           </p>
+          {render.audioCodec && render.audioCodec !== "aac" && (
+            <p data-testid="audio-compat-warning" role="status" className="rounded bg-amber-100 px-3 py-2 text-amber-900">
+              This browser can&apos;t make AAC audio, so the audio is {render.audioCodec.toUpperCase()}. YouTube accepts
+              that, but Instagram and WhatsApp document AAC only. If an upload fails, export again in Chrome on your phone
+              or on a Windows or Mac computer.
+            </p>
+          )}
           <a data-testid="mp4-link" href={render.url} download={s.fileBaseName + "-captioned.mp4"} className={downloadClassName}>
             Download MP4
           </a>

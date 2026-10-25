@@ -52,7 +52,7 @@ export type SaveState = "idle" | "saving" | "saved" | "error";
 export type RenderState =
   | { status: "idle" }
   | { status: "running"; progress: number }
-  | { status: "done"; url: string; sizeBytes: number; ms: number; storage: RenderStorage }
+  | { status: "done"; url: string; sizeBytes: number; ms: number; storage: RenderStorage; fastStart: boolean; audioCodec: string | null }
   | { status: "error"; problem: Problem };
 
 /**
@@ -345,9 +345,9 @@ export function useReelSession({ placeholders }: { placeholders: boolean }) {
     const handle = renderInWorker({ file, lines, style, plan }, (p) => setRender({ status: "running", progress: p }));
     renderHandle.current = handle;
     try {
-      const { blob, storage } = await handle.result;
+      const { blob, storage, fastStart, audioCodec } = await handle.result;
       const ms = performance.now() - started;
-      setRender({ status: "done", url: makeUrl(blob), sizeBytes: blob.size, ms, storage });
+      setRender({ status: "done", url: makeUrl(blob), sizeBytes: blob.size, ms, storage, fastStart, audioCodec });
       recordStep({ renderMs: ms, renderStorage: storage, outputMb: Math.round((blob.size / 1024 / 1024) * 10) / 10 });
     } catch (err) {
       const canceled = err instanceof RenderCanceledError;

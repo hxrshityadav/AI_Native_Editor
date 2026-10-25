@@ -11,7 +11,8 @@
     "test": "vitest run",
     "check": "npm run typecheck && npm run lint && npm run test",
     "e2e": "node tests/e2e/lab.e2e.mjs && node tests/e2e/studio.e2e.mjs",
-    "perf": "node tests/perf/phone-sim.mjs"
+    "perf": "node tests/perf/phone-sim.mjs",
+    "compat-pack": "node tests/compat/make-pack.mjs"
   },
   "dependencies": {
     "idb": "^8.0.4",

@@ -32,8 +32,13 @@ Facts we rely on, with source and date checked. Recheck before pricing or launch
 
 - Function request and response bodies are capped at 4.5 MB. This drives D-005.
 
+## Platform upload specs (checked 2026-10-25)
+
+See `platform-uploads.md`: YouTube recommends MP4 with moov at the front, AAC or Opus. Meta's
+Instagram, Facebook and WhatsApp specs say AAC. WhatsApp's app defaults to 100 MB and 720p.
+
 ## To do
 
 - Sarvam speech-to-text: API, word timestamps?, Hinglish/Roman output, price (T-12).
-- Instagram, YouTube and WhatsApp acceptance of H.264 + Opus in MP4 (T-13).
+- Real upload results for the T-13 test pack (`platform-uploads.md`).
 - Vercel plan terms for commercial use before charging money.

@@ -2,6 +2,7 @@ import {
   ALL_FORMATS,
   BlobSource,
   BufferTarget,
+  canEncodeAudio,
   Conversion,
   Input,
   Mp4OutputFormat,
@@ -29,7 +30,7 @@ export async function renderCaptionedMp4(
   plan: ExportPlan,
   target: BufferTarget | StreamTarget,
   onProgress?: (fraction: number) => void,
-): Promise<void> {
+): Promise<{ audioCodec: string | null }> {
   const input = new Input({ source: new BlobSource(file), formats: ALL_FORMATS });
   const output = new Output({
     format: new Mp4OutputFormat({ fastStart: target instanceof BufferTarget ? "in-memory" : false }),
@@ -37,6 +38,7 @@ export async function renderCaptionedMp4(
   });
   let canvas: OffscreenCanvas | null = null;
   let ctx: OffscreenCanvasRenderingContext2D | null = null;
+  let audioCodec: string | null = null;
 
   try {
     const conversion = await Conversion.init({
@@ -65,7 +67,21 @@ export async function renderCaptionedMp4(
           return canvas;
         },
       },
-      audio: {},
+      // Instagram, Facebook and WhatsApp document AAC audio only. AAC sources (most phone footage)
+      // are copied untouched; anything else becomes AAC where this browser can encode it.
+      audio: async (track) => {
+        const source = await track.getCodec();
+        if (source === "aac") {
+          audioCodec = "aac";
+          return {};
+        }
+        const aac = await canEncodeAudio("aac", {
+          numberOfChannels: await track.getNumberOfChannels(),
+          sampleRate: await track.getSampleRate(),
+        }).catch(() => false);
+        audioCodec = aac ? "aac" : source;
+        return aac ? { codec: "aac" } : {};
+      },
       showWarnings: false,
     });
 
@@ -76,6 +92,8 @@ export async function renderCaptionedMp4(
     }
     if (onProgress) conversion.onProgress = (p) => onProgress(p);
     await conversion.execute();
+    const audioKept = conversion.utilizedTracks.some((t) => t.type === "audio");
+    return { audioCodec: audioKept ? audioCodec : null };
   } finally {
     input.dispose();
   }

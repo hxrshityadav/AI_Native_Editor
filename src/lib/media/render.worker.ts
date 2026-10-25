@@ -1,5 +1,6 @@
 import { BufferTarget, StreamTarget } from "mediabunny";
 import { loadCaptionFont } from "@/lib/captions/fonts";
+import { moveMoovToFront } from "./faststart";
 import { renderCaptionedMp4 } from "./render";
 import type { RenderMessage, RenderRequest } from "./renderInWorker";
 
@@ -26,15 +27,20 @@ scope.onmessage = async ({ data: { file, lines, style, plan } }) => {
     });
     const disk = await openDiskTarget();
     if (disk) {
-      await renderCaptionedMp4(file, lines, style, plan, disk.target, onProgress);
-      const blob = await disk.handle.getFile();
-      if (blob.size === 0) throw new Error("Render produced no data.");
-      scope.postMessage({ type: "done", blob, storage: "disk" });
+      const { audioCodec } = await renderCaptionedMp4(file, lines, style, plan, disk.target, onProgress);
+      const raw = await disk.handle.getFile();
+      if (raw.size === 0) throw new Error("Render produced no data.");
+      // Streaming leaves moov at the end; move it to the front. If that fails, the original still plays.
+      const fast = await fastStartCopy(disk.dir, raw).catch(() => null);
+      if (fast) await disk.dir.removeEntry(disk.handle.name).catch(() => {});
+      scope.postMessage({ type: "done", blob: fast ?? raw, storage: "disk", fastStart: !!fast, audioCodec });
     } else {
       const target = new BufferTarget();
-      await renderCaptionedMp4(file, lines, style, plan, target, onProgress);
+      const { audioCodec } = await renderCaptionedMp4(file, lines, style, plan, target, onProgress);
       if (!target.buffer?.byteLength) throw new Error("Render produced no data.");
-      scope.postMessage({ type: "done", blob: new Blob([target.buffer], { type: "video/mp4" }), storage: "memory" });
+      // BufferTarget renders use fastStart: 'in-memory', so moov is already at the front.
+      const blob = new Blob([target.buffer], { type: "video/mp4" });
+      scope.postMessage({ type: "done", blob, storage: "memory", fastStart: true, audioCodec });
     }
   } catch (err) {
     const e = err instanceof Error || err instanceof DOMException ? err : new Error(String(err));
@@ -55,8 +61,27 @@ async function openDiskTarget() {
     await root.removeEntry("renders", { recursive: true }).catch(() => {});
     const dir = await root.getDirectoryHandle("renders", { create: true });
     const handle = await dir.getFileHandle(`render-${Date.now()}.mp4`, { create: true });
-    return { handle, target: new StreamTarget(await handle.createWritable(), { chunked: true }) };
+    return { dir, handle, target: new StreamTarget(await handle.createWritable(), { chunked: true }) };
   } catch {
     return null;
+  }
+}
+
+/** Writes a fast-start copy of `raw` next to it. Null when `raw` is already fast-start. */
+async function fastStartCopy(dir: FileSystemDirectoryHandle, raw: File): Promise<File | null> {
+  const handle = await dir.getFileHandle(`render-${Date.now()}-faststart.mp4`, { create: true });
+  const writable = await handle.createWritable();
+  try {
+    const moved = await moveMoovToFront(raw, { write: (d) => writable.write(d as Uint8Array<ArrayBuffer>) });
+    await writable.close();
+    if (!moved) {
+      await dir.removeEntry(handle.name);
+      return null;
+    }
+    return await handle.getFile();
+  } catch (err) {
+    await writable.abort().catch(() => {});
+    await dir.removeEntry(handle.name).catch(() => {});
+    throw err;
   }
 }

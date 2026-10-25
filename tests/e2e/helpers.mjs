@@ -1,6 +1,6 @@
 // Shared helpers for the E2E suites: ffmpeg fixtures, a production Next server, ffprobe, checks.
 import { execFileSync, spawn } from "node:child_process";
-import { mkdirSync, rmSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 export const ROOT = new URL("../..", import.meta.url).pathname;
@@ -120,3 +120,27 @@ export function countPixels(file, t, width, height, bandTop, bandBottom, match) 
 }
 
 export const streams = (info, type) => info.streams.filter((s) => s.codec_type === type);
+
+/** Top-level MP4 box types in file order (fast start means moov comes before mdat). */
+export function topLevelBoxes(file) {
+  const buf = readFileSync(file);
+  const types = [];
+  for (let pos = 0; pos + 8 <= buf.length; ) {
+    let size = buf.readUInt32BE(pos);
+    if (size === 1) size = Number(buf.readBigUInt64BE(pos + 8));
+    else if (size === 0) size = buf.length - pos;
+    types.push(buf.toString("latin1", pos + 4, pos + 8));
+    pos += size;
+  }
+  return types;
+}
+
+/** Decodes every frame and sample; returns ffmpeg's error output (empty when the file is clean). */
+export function decodeErrors(file) {
+  try {
+    execFileSync("ffmpeg", ["-v", "error", "-i", file, "-f", "null", "-"], { stdio: ["ignore", "ignore", "pipe"] });
+    return "";
+  } catch (err) {
+    return String(err.stderr || err.message);
+  }
+}
