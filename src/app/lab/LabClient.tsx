@@ -15,6 +15,7 @@ import {
   Status,
   StylePicker,
   TranscribeDisclosure,
+  ExportPresetPicker,
   LanguageSelect,
   OfflineNote,
   RenderStatus,
@@ -164,7 +165,7 @@ export function LabClient() {
         <StylePicker session={s} />
         <BrandKitPanel kit={s.kit} style={s.baseStyle} onChange={s.changeKit} saveFailed={s.kitSaveFailed} />
         <FontError session={s} />
-        {s.videoUrl && probe && (
+        {s.videoUrl && probe && s.plan && (
           <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,auto)_minmax(0,1fr)]">
             <div className="flex flex-col gap-2">
               <PreviewError session={s} />
@@ -175,6 +176,7 @@ export function LabClient() {
                 fontReady={s.fontReady}
                 videoRef={s.videoRef}
                 onError={() => s.setPreviewFailed(true)}
+                frame={s.plan}
               />
             </div>
             <TranscriptEditor
@@ -198,6 +200,7 @@ export function LabClient() {
           </DataFlow>
         }
       >
+        <ExportPresetPicker session={s} />
         <div className="flex flex-wrap gap-3">
           <button
             data-testid="render-button"

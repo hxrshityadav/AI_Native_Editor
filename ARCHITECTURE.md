@@ -32,6 +32,7 @@ request memory. Logs carry error codes only.
 | `src/components/editor/useReelSession.ts` | browser | The whole workflow as one hook (check, extract, transcribe, edits, drafts, style, kit, render, report); `/lab` and `/studio` are layouts over it |
 | `src/components/editor/parts.tsx` | browser | Shared pieces: Preview, DataFlow, TranscribeDisclosure, StylePicker, RenderStatus, … |
 | `src/app/studio/StudioClient.tsx` | browser | The product UI: desktop three panes, phone step flow |
+| `src/lib/media/exportPresets.ts` | both | Presets and `planExport` (source + preset + framing → output size and fit) |
 | `src/lib/captions/edit.ts` | both | Pure word edits: replace/split, remove, merge, clamped edge nudges, `wordIndexAt` |
 | `src/app/lab/TranscriptEditor.tsx` | browser | Word editor UI with keyboard shortcuts; the lab keeps the edits and undo history |
 | `src/lib/captions/fonts.ts` | both | Bundled caption fonts (`public/fonts`, OFL) and a loader for `document.fonts` or the worker's `self.fonts` |

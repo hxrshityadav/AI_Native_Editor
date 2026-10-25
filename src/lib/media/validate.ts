@@ -61,7 +61,7 @@ const MESSAGES: Record<IssueCode, Omit<Issue, "code">> = {
   },
   NOT_VERTICAL: {
     reason: "This video is not vertical. Reels and Shorts look best at 9:16.",
-    action: "You can continue; captions will be placed on the original frame.",
+    action: "You can continue. When you export, choose Fill (crop to 9:16), Fit (bars above and below) or Original size.",
   },
 };
 

@@ -12,6 +12,7 @@ import {
 import { drawCaption } from "@/lib/captions/draw";
 import { lineAt } from "@/lib/captions/group";
 import type { CaptionLine, CaptionStyle } from "@/lib/captions/types";
+import type { ExportPlan } from "./exportPresets";
 
 export class RenderError extends Error {}
 
@@ -25,6 +26,7 @@ export async function renderCaptionedMp4(
   file: Blob,
   lines: readonly CaptionLine[],
   style: CaptionStyle,
+  plan: ExportPlan,
   target: BufferTarget | StreamTarget,
   onProgress?: (fraction: number) => void,
 ): Promise<void> {
@@ -45,7 +47,10 @@ export async function renderCaptionedMp4(
         codec: "avc",
         forceTranscode: true,
         allowTransformationMetadata: false,
-        quality: new Quality("high"),
+        quality: new Quality(plan.quality),
+        // Mediabunny resizes, crops or letterboxes each frame before `process`, so captions are
+        // drawn on the output frame at its final size.
+        ...(plan.resize ? { width: plan.width, height: plan.height, fit: plan.fit } : {}),
         process: (sample) => {
           const w = sample.displayWidth;
           const h = sample.displayHeight;

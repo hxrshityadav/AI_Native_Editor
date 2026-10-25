@@ -17,6 +17,7 @@ import { buildRunReport, readDeviceInfo, type DeviceInfo, type RunSteps } from "
 import { deleteDraft, fingerprintFile, loadDraft, saveDraft } from "@/lib/drafts";
 import { checkDevice, type DeviceReport } from "@/lib/media/capabilities";
 import { describeMediaError, type Problem } from "@/lib/media/errors";
+import { planExport, type ExportPresetId, type Framing } from "@/lib/media/exportPresets";
 import { extractSpeechAudio } from "@/lib/media/extractAudio";
 import { probeFile } from "@/lib/media/probe";
 import { RenderCanceledError, renderInWorker, type RenderHandle, type RenderStorage } from "@/lib/media/renderInWorker";
@@ -145,6 +146,13 @@ export function useReelSession({ placeholders }: { placeholders: boolean }) {
   useEffect(() => revokeAll, []);
 
   const probe = check.status === "ready" ? check.probe : null;
+  const [exportPreset, setExportPreset] = useState<ExportPresetId>("reels");
+  const [framing, setFraming] = useState<Framing>("fill");
+  /** The exact output frame; the preview shows the same crop or bars. */
+  const plan = useMemo(
+    () => (probe?.video ? planExport(probe.video, exportPreset, framing) : null),
+    [probe, exportPreset, framing],
+  );
   const realWords = transcript.status === "done" ? transcript.words : null;
   const sourceWords = useMemo(
     () => realWords ?? (placeholders && probe ? makeTestWords(probe.durationSec) : []),
@@ -331,10 +339,10 @@ export function useReelSession({ placeholders }: { placeholders: boolean }) {
   }
 
   async function startRender() {
-    if (!file) return;
+    if (!file || !plan) return;
     setRender({ status: "running", progress: 0 });
     const started = performance.now();
-    const handle = renderInWorker({ file, lines, style }, (p) => setRender({ status: "running", progress: p }));
+    const handle = renderInWorker({ file, lines, style, plan }, (p) => setRender({ status: "running", progress: p }));
     renderHandle.current = handle;
     try {
       const { blob, storage } = await handle.result;
@@ -395,6 +403,11 @@ export function useReelSession({ placeholders }: { placeholders: boolean }) {
     retryFont: () => setFontRetry((n) => n + 1),
     render,
     srtUrl,
+    exportPreset,
+    setExportPreset,
+    framing,
+    setFraming,
+    plan,
     online,
     previewFailed,
     setPreviewFailed,

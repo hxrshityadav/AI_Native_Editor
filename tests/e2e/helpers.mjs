@@ -44,6 +44,7 @@ export function makeFixtures(dir) {
   ff("-display_rotation", "90", "-i", f("landscape.mp4"), "-c", "copy", f("rotated.mp4"));
   ff("-f", "lavfi", "-i", "color=c=0x2a4d69:s=540x960:r=30:d=3", "-f", "lavfi", "-i", tone, "-c:v", "libvpx-vp9", "-b:v", "500k", "-c:a", "libopus", "-shortest", f("vp9-opus.webm"));
   ff("-f", "lavfi", "-i", bg, "-c:v", "libx264", "-pix_fmt", "yuv420p", f("no-audio.mp4"));
+  ff("-f", "lavfi", "-i", "color=c=0x2a4d69:s=1080x1920:r=30:d=2", "-f", "lavfi", "-i", tone, "-c:v", "libx264", "-pix_fmt", "yuv420p", "-c:a", "aac", "-shortest", f("vertical-1080.mp4"));
   // HDR (PQ, BT.2020, 10-bit), as phones record by default, and HEVC, which many Android phones use.
   ff("-f", "lavfi", "-i", "color=c=0x2a4d69:s=540x960:r=30:d=2", "-f", "lavfi", "-i", tone, "-c:v", "libvpx-vp9", "-profile:v", "2", "-pix_fmt", "yuv420p10le", "-color_primaries", "bt2020", "-color_trc", "smpte2084", "-colorspace", "bt2020nc", "-b:v", "500k", "-c:a", "libopus", "-shortest", f("hdr.webm"));
   ff("-f", "lavfi", "-i", "color=c=0x2a4d69:s=540x960:r=30:d=2", "-f", "lavfi", "-i", tone, "-c:v", "libx265", "-x265-params", "log-level=error", "-tag:v", "hvc1", "-pix_fmt", "yuv420p", "-c:a", "aac", "-shortest", f("hevc.mp4"));

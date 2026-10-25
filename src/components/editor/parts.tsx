@@ -3,6 +3,13 @@
 import { useEffect, useRef } from "react";
 import { CAPTION_STYLES, drawCaption, lineAt, type CaptionLine, type CaptionStyle } from "@/lib/captions";
 import type { Problem } from "@/lib/media/errors";
+import {
+  EXPORT_PRESETS,
+  isNineSixteen,
+  type ExportPlan,
+  type ExportPresetId,
+  type Framing,
+} from "@/lib/media/exportPresets";
 import { TRANSCRIPTION_DISCLOSURE } from "@/lib/transcription/client";
 import type { CaptionLanguage } from "@/lib/transcription/types";
 import type { ReelSession } from "./useReelSession";
@@ -12,7 +19,10 @@ export const btn =
   "inline-flex min-h-10 items-center rounded-md bg-foreground px-4 py-2 text-sm text-background disabled:cursor-not-allowed disabled:opacity-40";
 export const btnSecondary = "inline-flex min-h-10 items-center rounded-md border px-4 py-2 text-sm";
 
-/** The video with captions drawn live on top, exactly as the export will draw them. */
+/**
+ * The video as the export will frame it: the output's aspect ratio, the same crop (cover) or bars
+ * (contain), and captions drawn on a canvas at the output resolution, exactly as the export draws them.
+ */
 export function Preview({
   src,
   lines,
@@ -20,7 +30,8 @@ export function Preview({
   fontReady,
   videoRef,
   onError,
-  videoClassName = "block max-h-[70vh] max-w-full",
+  frame,
+  heightClassName = "[--preview-h:70vh]",
 }: {
   src: string;
   lines: CaptionLine[];
@@ -29,43 +40,145 @@ export function Preview({
   fontReady: boolean;
   videoRef: React.RefObject<HTMLVideoElement | null>;
   onError: () => void;
-  videoClassName?: string;
+  frame: ExportPlan;
+  /** Sets --preview-h, the most height the preview may take; width follows the output aspect ratio. */
+  heightClassName?: string;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const { width, height, fit } = frame;
 
   useEffect(() => {
     let raf = 0;
     // Redraw only when the frame time or size changes: a paused preview then costs nothing,
     // instead of a full-frame clear and draw 60 times a second (measured 47% main-thread busy
-    // at idle with a 4× CPU throttle). Effect deps cover lines, style and font changes.
+    // at idle with a 4× CPU throttle). Effect deps cover lines, style, font and frame changes.
     let drawn = "";
     const tick = () => {
       const video = videoRef.current;
       const canvas = canvasRef.current;
       const ctx = canvas?.getContext("2d");
-      const key = video ? `${video.currentTime}|${video.videoWidth}x${video.videoHeight}` : "";
+      const key = video ? `${video.currentTime}|${video.videoWidth}` : "";
       if (video && canvas && ctx && video.videoWidth && key !== drawn) {
         drawn = key;
-        if (canvas.width !== video.videoWidth || canvas.height !== video.videoHeight) {
-          canvas.width = video.videoWidth;
-          canvas.height = video.videoHeight;
+        if (canvas.width !== width || canvas.height !== height) {
+          canvas.width = width;
+          canvas.height = height;
         }
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.clearRect(0, 0, width, height);
         const t = video.currentTime;
         const line = lineAt(lines, t);
-        if (line && fontReady) drawCaption(ctx, line, t, style, canvas.width, canvas.height);
+        if (line && fontReady) drawCaption(ctx, line, t, style, width, height);
       }
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [lines, style, fontReady, videoRef]);
+  }, [lines, style, fontReady, videoRef, width, height]);
 
   return (
-    <div className="relative mx-auto w-fit max-w-full">
-      <video ref={videoRef} src={src} controls playsInline onError={onError} className={videoClassName} />
+    <div
+      data-testid="preview-frame"
+      data-frame={`${width}x${height}`}
+      className={`relative overflow-hidden rounded-lg bg-black ${heightClassName}`}
+      style={{ aspectRatio: `${width} / ${height}`, width: `min(100%, calc(var(--preview-h) * ${width / height}))` }}
+    >
+      <video
+        ref={videoRef}
+        src={src}
+        controls
+        playsInline
+        onError={onError}
+        className="absolute inset-0 h-full w-full"
+        style={{ objectFit: fit === "contain" ? "contain" : fit === "cover" ? "cover" : "fill" }}
+      />
       <canvas ref={canvasRef} className="pointer-events-none absolute inset-0 h-full w-full" />
     </div>
+  );
+}
+
+/** Choose how the video is exported; for non-vertical clips, also how it is framed. */
+export function ExportPresetPicker({ session: s }: { session: ReelSession }) {
+  const source = s.probe?.video;
+  const preset = EXPORT_PRESETS.find((p) => p.id === s.exportPreset)!;
+  const asksFraming = !!source && !!preset.box && !isNineSixteen(source.width, source.height);
+  return (
+    <div className="flex flex-col gap-3">
+      <OptionGroup
+        legend="Export for"
+        name="export-preset"
+        options={EXPORT_PRESETS.map((p) => ({ id: p.id, label: p.name }))}
+        value={s.exportPreset}
+        onChange={(id) => s.setExportPreset(id as ExportPresetId)}
+        testIdPrefix="preset"
+      />
+      <p className="text-sm text-zinc-600 dark:text-zinc-400">{preset.description}</p>
+      {asksFraming && (
+        <>
+          <OptionGroup
+            legend="Your video isn't vertical"
+            name="framing"
+            options={[
+              { id: "fill", label: "Fill (crop the sides)" },
+              { id: "fit", label: "Fit (bars above and below)" },
+            ]}
+            value={s.framing}
+            onChange={(id) => s.setFraming(id as Framing)}
+            testIdPrefix="framing"
+          />
+          <p className="text-sm text-zinc-600 dark:text-zinc-400">
+            {s.framing === "fill"
+              ? "Fill keeps the centre of your video, so check the speaker stays in frame in the preview."
+              : "Fit keeps everything; captions may sit on the bar below the video."}
+          </p>
+        </>
+      )}
+      {s.plan && (
+        <p data-testid="export-size" className="text-sm">
+          Exports at {s.plan.width}×{s.plan.height}.
+        </p>
+      )}
+    </div>
+  );
+}
+
+function OptionGroup({
+  legend,
+  name,
+  options,
+  value,
+  onChange,
+  testIdPrefix,
+}: {
+  legend: string;
+  name: string;
+  options: { id: string; label: string }[];
+  value: string;
+  onChange: (id: string) => void;
+  testIdPrefix: string;
+}) {
+  return (
+    <fieldset>
+      <legend className="mb-2 text-sm font-medium">{legend}</legend>
+      <div className="flex flex-wrap gap-2">
+        {options.map((o) => (
+          <label
+            key={o.id}
+            className="relative cursor-pointer rounded-md border px-3 py-1.5 text-sm has-checked:border-foreground has-checked:bg-foreground has-checked:text-background has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-blue-600"
+          >
+            <input
+              type="radio"
+              name={name}
+              value={o.id}
+              data-testid={`${testIdPrefix}-${o.id}`}
+              checked={o.id === value}
+              onChange={() => onChange(o.id)}
+              className="sr-only"
+            />
+            {o.label}
+          </label>
+        ))}
+      </div>
+    </fieldset>
   );
 }
 

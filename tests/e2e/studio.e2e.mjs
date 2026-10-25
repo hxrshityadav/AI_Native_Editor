@@ -4,7 +4,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { chromium, devices } from "playwright";
-import { createChecks, download, frameDiff, makeFixtures, probe, ROOT, startServer, stopServer, streams } from "./helpers.mjs";
+import { countPixels, createChecks, download, frameDiff, makeFixtures, probe, ROOT, startServer, stopServer, streams } from "./helpers.mjs";
 
 const OUT = join(ROOT, "tests/e2e/.out-studio");
 const PORT = 3115;
@@ -107,6 +107,51 @@ async function main() {
       (await page.getByTestId("word").nth(0).innerText()) === "Namaste" && uploads.length === 1,
     );
     check("desktop: no sideways scroll", await noSideScroll(page));
+
+    // ---------- Export presets ----------
+    /** Picks a clip, makes captions, opens Export, applies the choices, renders; returns the ffprobe video stream. */
+    async function exportWith(file, choices, out) {
+      await page.getByTestId("nav-video").click(); // as a user would: back to Video, "Use a different video"
+      await page.getByTestId("file-input").first().setInputFiles(f(file));
+      await page.getByTestId("check-ok").waitFor({ timeout: 30_000 });
+      await page.getByTestId("continue-captions").click();
+      if (!(await page.getByTestId("word").first().isVisible())) {
+        await page.getByTestId("make-captions").click();
+        await page.getByTestId("word").first().waitFor({ timeout: 60_000 });
+      }
+      await page.getByTestId("nav-export").click();
+      for (const id of choices) await page.locator("label", { has: page.getByTestId(id) }).click();
+      const shown = (await page.getByTestId("export-size").innerText()).match(/(\d+)×(\d+)/).slice(1).join("x");
+      const framed = await page.getByTestId("preview-frame").getAttribute("data-frame");
+      await page.getByTestId("render-button").click();
+      await page.getByTestId("render-done").waitFor({ timeout: 120_000 });
+      const path = await download(page, "mp4-link", f(out));
+      const v = streams(probe(path), "video")[0];
+      return { shown, framed, actual: `${v.width}x${v.height}`, path };
+    }
+
+    const fill = await exportWith("landscape.mp4", ["preset-reels", "framing-fill"], "preset-fill.mp4");
+    check("preset: landscape Fill crops to 9:16 without upscaling", fill.actual === "404x720" && fill.shown === "404x720", JSON.stringify(fill));
+    check("preset: preview frame matches the export", fill.framed === fill.actual, fill.framed);
+
+    const fit = await exportWith("landscape.mp4", ["preset-reels", "framing-fit"], "preset-fit.mp4");
+    const nearBlack = (r, g, b) => r < 24 && g < 24 && b < 24;
+    const topBlack = countPixels(fit.path, 1.0, 1080, 1920, 0.05, 0.2, nearBlack) / (1080 * 1920 * 0.15);
+    const middleBlack = countPixels(fit.path, 1.0, 1080, 1920, 0.45, 0.55, nearBlack) / (1080 * 1920 * 0.1);
+    check(
+      "preset: landscape Fit is 1080×1920 with bars above and the video in the middle",
+      fit.actual === "1080x1920" && fit.framed === "1080x1920" && topBlack > 0.95 && middleBlack < 0.05,
+      `bars ${(topBlack * 100).toFixed(0)}% black, middle ${(middleBlack * 100).toFixed(0)}% black`,
+    );
+
+    const original = await exportWith("landscape.mp4", ["preset-original"], "preset-original.mp4");
+    check(
+      "preset: Original keeps 1280×720 and asks no framing question",
+      original.actual === "1280x720" && !(await page.getByTestId("framing-fill").count()),
+    );
+
+    const small = await exportWith("vertical-1080.mp4", ["preset-small"], "preset-small.mp4");
+    check("preset: Smaller file brings 1080×1920 down to 720×1280", small.actual === "720x1280" && small.shown === "720x1280", small.actual);
     await context.close();
 
     // ---------- Phone: step by step ----------

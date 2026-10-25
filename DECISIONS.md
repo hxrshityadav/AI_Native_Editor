@@ -147,3 +147,15 @@ boundary uses Next 16's `retry` prop, not `reset`, and logs only the error name.
   popover) and the registry is reachable.
 - Visual direction: a light, quiet chrome around a dark video stage. The caption yellow is used only
   for primary actions and the current step, tying the UI to what it makes.
+
+## D-022: Export presets are sizes, not platform promises; the preview shows the output frame (2026-10-25)
+Three presets: Reels & Shorts (9:16, at most 1080×1920, high quality), Smaller file (9:16, at most
+720×1280, medium quality; "quicker to send on WhatsApp", with no claim about WhatsApp's limits, which
+we haven't verified), and Original size. Presets never upscale: a 720p clip stays 720p, because
+upscaling adds file size and encode time but no detail. Non-9:16 clips choose Fill (centred 9:16
+crop, Mediabunny `cover`) or Fit (bars, `contain`). Mediabunny resizes before our caption `process`
+step, so captions are drawn on the final frame. The preview mirrors this with CSS `object-fit` in a
+box at the output's aspect ratio and a canvas at the output resolution, so what you see is what
+exports. Quality uses Mediabunny's resolution-aware levels instead of fixed bitrates, so there's no
+size estimate before export; the real size is shown after. The preset isn't saved per video or per
+user yet.

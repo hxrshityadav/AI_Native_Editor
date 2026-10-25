@@ -1,7 +1,8 @@
 import type { CaptionLine, CaptionStyle } from "@/lib/captions/types";
+import type { ExportPlan } from "./exportPresets";
 import { RenderError } from "./render";
 
-export type RenderRequest = { file: Blob; lines: CaptionLine[]; style: CaptionStyle };
+export type RenderRequest = { file: Blob; lines: CaptionLine[]; style: CaptionStyle; plan: ExportPlan };
 /** "disk": streamed to the origin private file system. "memory": fallback when OPFS is unavailable. */
 export type RenderStorage = "disk" | "memory";
 export type RenderMessage =

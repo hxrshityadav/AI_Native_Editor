@@ -18,9 +18,11 @@ import {
   Status,
   StylePicker,
   TranscribeDisclosure,
+  ExportPresetPicker,
 } from "@/components/editor/parts";
 import { TranscriptEditor } from "@/components/editor/TranscriptEditor";
 import { useReelSession, type ReelSession } from "@/components/editor/useReelSession";
+import { EXPORT_PRESETS } from "@/lib/media/exportPresets";
 
 type StepId = "video" | "captions" | "style" | "export";
 const STEPS: { id: StepId; title: string }[] = [
@@ -111,7 +113,7 @@ export function StudioClient() {
           aria-label="Preview"
           className="flex shrink-0 items-center justify-center bg-stage p-3 lg:min-h-0 lg:p-6"
         >
-          {s.videoUrl ? (
+          {s.videoUrl && s.plan ? (
             <div className="flex w-full flex-col items-center gap-2">
               <PreviewError session={s} />
               <Preview
@@ -121,7 +123,8 @@ export function StudioClient() {
                 fontReady={s.fontReady}
                 videoRef={s.videoRef}
                 onError={() => s.setPreviewFailed(true)}
-                videoClassName="block max-h-[38dvh] max-w-full rounded-lg lg:max-h-[calc(100dvh-8rem)]"
+                frame={s.plan}
+                heightClassName="[--preview-h:38dvh] lg:[--preview-h:calc(100dvh-8rem)]"
               />
             </div>
           ) : (
@@ -153,6 +156,7 @@ export function StudioClient() {
             >
               Back
             </button>
+            {!next && <ExportAction session={s} />}
             {next && (
               <div className="flex items-center gap-3">
                 {lockedBecause(next.id) && <span className="text-sm text-muted">{lockedBecause(next.id)}</span>}
@@ -174,6 +178,29 @@ export function StudioClient() {
   );
 }
 
+/** The export button lives in the sticky bar, so it stays in reach on a phone below the options. */
+function ExportAction({ session: s }: { session: ReelSession }) {
+  const { render } = s;
+  if (render.status === "running") {
+    return (
+      <button type="button" className={btnSecondary} onClick={s.cancelRender}>
+        Cancel export
+      </button>
+    );
+  }
+  return (
+    <button
+      type="button"
+      data-testid="render-button"
+      disabled={!s.fontReady}
+      onClick={() => void s.startRender()}
+      className={render.status === "done" ? btnSecondary + " disabled:opacity-40" : primary}
+    >
+      {render.status === "done" ? "Export again" : "Export MP4"}
+    </button>
+  );
+}
+
 function stepStatus(id: StepId, s: ReelSession): string {
   switch (id) {
     case "video":
@@ -190,7 +217,7 @@ function stepStatus(id: StepId, s: ReelSession): string {
     case "export":
       if (s.render.status === "running") return `${Math.round(s.render.progress * 100)}%`;
       if (s.render.status === "done") return "Ready to download";
-      return "Not exported";
+      return EXPORT_PRESETS.find((p) => p.id === s.exportPreset)?.name ?? "Not exported";
   }
 }
 
@@ -278,6 +305,7 @@ function ChangeVideo({ session: s, label }: { session: ReelSession; label: strin
       <input
         type="file"
         accept="video/*"
+        data-testid="file-input"
         className="sr-only"
         onChange={(e) => void s.pickFile(e.target.files?.[0] ?? null)}
       />
@@ -374,33 +402,17 @@ function StylePanel({ session: s }: { session: ReelSession }) {
 }
 
 function ExportPanel({ session: s }: { session: ReelSession }) {
-  const { render } = s;
   return (
     <>
       <DataFlow testId="flow-5">
         The video is made in this browser and kept in its private storage until you download it. No watermark.
       </DataFlow>
-      <div className="flex flex-wrap items-center gap-3">
-        <button
-          type="button"
-          data-testid="render-button"
-          disabled={!s.fontReady || render.status === "running"}
-          onClick={() => void s.startRender()}
-          className={render.status === "done" ? btnSecondary + " disabled:opacity-40" : primary}
-        >
-          {render.status === "done" ? "Export again" : "Export MP4"}
-        </button>
-        {render.status === "running" && (
-          <button type="button" className={btnSecondary} onClick={s.cancelRender}>
-            Cancel
-          </button>
-        )}
-        {s.srtUrl && (
-          <a data-testid="srt-link" href={s.srtUrl} download={s.fileBaseName + ".srt"} className="text-sm underline">
-            Download captions (SRT)
-          </a>
-        )}
-      </div>
+      <ExportPresetPicker session={s} />
+      {s.srtUrl && (
+        <a data-testid="srt-link" href={s.srtUrl} download={s.fileBaseName + ".srt"} className="w-fit text-sm underline">
+          Download captions (SRT)
+        </a>
+      )}
       {/* Once exported, downloading is the main action. */}
       <RenderStatus session={s} downloadClassName={primary + " w-fit"} />
     </>

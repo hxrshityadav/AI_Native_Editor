@@ -10,7 +10,7 @@ const scope = self as unknown as {
   fonts: FontFaceSet;
 };
 
-scope.onmessage = async ({ data: { file, lines, style } }) => {
+scope.onmessage = async ({ data: { file, lines, style, plan } }) => {
   let lastPercent = -1;
   const onProgress = (p: number) => {
     const percent = Math.floor(p * 100);
@@ -26,13 +26,13 @@ scope.onmessage = async ({ data: { file, lines, style } }) => {
     });
     const disk = await openDiskTarget();
     if (disk) {
-      await renderCaptionedMp4(file, lines, style, disk.target, onProgress);
+      await renderCaptionedMp4(file, lines, style, plan, disk.target, onProgress);
       const blob = await disk.handle.getFile();
       if (blob.size === 0) throw new Error("Render produced no data.");
       scope.postMessage({ type: "done", blob, storage: "disk" });
     } else {
       const target = new BufferTarget();
-      await renderCaptionedMp4(file, lines, style, target, onProgress);
+      await renderCaptionedMp4(file, lines, style, plan, target, onProgress);
       if (!target.buffer?.byteLength) throw new Error("Render produced no data.");
       scope.postMessage({ type: "done", blob: new Blob([target.buffer], { type: "video/mp4" }), storage: "memory" });
     }
