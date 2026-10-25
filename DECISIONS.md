@@ -202,3 +202,23 @@ Replaces D-008 for deployments.
   Cloudflare and what it sees (IP, browser details). The widget is `interaction-only`.
 - **Known gap.** `X-Forwarded-For` is trusted, which is right on Vercel and spoofable elsewhere. There
   is no global daily budget cap yet. A distributed attack that passes Turnstile is limited only per IP.
+
+## D-026: Hinglish bake-off method; Sarvam behind a server switch, gated on its training opt-out (2026-10-25)
+- **Same pipeline.** The bake-off (`npm run bakeoff`) sends each clip through our own `/api/transcribe`
+  once per provider (`TRANSCRIBE_PROVIDER=groq|sarvam`), so it scores what users would get. That includes
+  sniffing and romanizing. Every clip is cut to its first 30 s, Sarvam's REST limit, so both providers hear
+  the same audio.
+- **Scores.** Strict WER, plus a lenient CER that collapses repeated letters and ignores spaces, because Roman
+  Hinglish has no standard spelling. Also the share of words left in Hindi script, phrase-start sync
+  (D-024's metric), latency and list price. Instagram Edits has no API, so it is compared on text only, from
+  captions the user types or pastes.
+- **Sarvam's timing is estimated inside phrases.** Its API has no word timestamps, so each phrase's span is
+  shared by word length. Phrase starts are Sarvam's own. If Sarvam wins on text but karaoke timing suffers,
+  a hybrid (Sarvam text, Groq timings) is the next thing to test. That is not built.
+- **Sarvam needs `SARVAM_TRAINING_OPT_OUT=confirmed`.** Its privacy policy trains on API inputs by default.
+  The env var records that the account has opted out; without it the provider counts as not configured.
+- **The disclosure comes from the server.** `GET /api/transcribe` names the provider and its privacy policy,
+  and the romanizer if any. Uploads are blocked until that answer arrives, so the UI can't name the wrong
+  company.
+- **30 s limit enforced before calling.** The handler reads the Ogg duration and refuses longer audio with
+  the limit stated. Supporting longer clips on Sarvam means its Batch API; we build that only if Sarvam wins.

@@ -10,10 +10,11 @@
     "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest run",
     "check": "npm run typecheck && npm run lint && npm run test",
-    "e2e": "node tests/e2e/lab.e2e.mjs && node tests/e2e/studio.e2e.mjs && node tests/e2e/abuse.e2e.mjs",
+    "e2e": "node tests/e2e/lab.e2e.mjs && node tests/e2e/studio.e2e.mjs && node tests/e2e/server.e2e.mjs",
     "perf": "node tests/perf/phone-sim.mjs",
     "compat-pack": "node tests/compat/make-pack.mjs",
-    "sync-check": "node tests/sync/sync-check.mjs"
+    "sync-check": "node tests/sync/sync-check.mjs",
+    "bakeoff": "node tests/bakeoff/bakeoff.mjs"
   },
   "dependencies": {
     "idb": "^8.0.4",

@@ -9,7 +9,7 @@ import { oggOpusFile } from "./oggFixtures";
 const WORDS: Word[] = [{ text: "नमस्ते", start: 0, end: 0.4 }];
 
 function mockProvider(impl?: TranscriptionProvider["transcribe"]): TranscriptionProvider {
-  return { id: "mock", displayName: "Mock", transcribe: vi.fn(impl ?? (async () => WORDS)) };
+  return { id: "mock", displayName: "Mock", privacy: { name: "Mock", url: "https://example.com" }, transcribe: vi.fn(impl ?? (async () => WORDS)) };
 }
 
 function setup(
@@ -308,6 +308,36 @@ describe("POST /api/transcribe handler", () => {
       expect(res.status).toBe(503);
       expect(await errorCode(res)).toBe("ABUSE_CONTROLS_MISSING");
       expect(provider!.transcribe).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("provider limits and hints", () => {
+    /** An Ogg Opus file whose last page says it lasts `seconds`. */
+    function opusOf(seconds: number) {
+      const bytes = oggOpusFile();
+      const lastPage = bytes.length - 68; // the fixture's last page: 28-byte header + 40-byte payload
+      new DataView(bytes.buffer).setBigInt64(lastPage + 6, BigInt(seconds * 48_000 + 312), true);
+      return new Blob([bytes as BlobPart]);
+    }
+
+    it("refuses audio longer than the provider takes, saying the limit", async () => {
+      const provider = { ...mockProvider(), maxSeconds: 30 };
+      const { handler } = setup({ provider });
+      const res = await handler(upload(opusOf(45)));
+      expect(res.status).toBe(413);
+      const body = (await res.json()) as { error: { code: string; action: string } };
+      expect(body.error.code).toBe("AUDIO_TOO_LONG_FOR_PROVIDER");
+      expect(body.error.action).toContain("30 seconds");
+      expect(provider.transcribe).not.toHaveBeenCalled();
+      expect((await handler(upload(opusOf(29)))).status).toBe(200);
+    });
+
+    it("asks for Roman script only for Hinglish", async () => {
+      const { handler, provider } = setup({ romanizer: { romanize: async (t) => t } });
+      await handler(upload(opus()));
+      expect(provider!.transcribe).toHaveBeenLastCalledWith(expect.objectContaining({ preferRoman: true }));
+      await handler(upload(opus(), { language: "hi" }));
+      expect(provider!.transcribe).toHaveBeenLastCalledWith(expect.objectContaining({ preferRoman: false }));
     });
   });
 });

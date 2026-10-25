@@ -27,6 +27,11 @@ export const POST = createTranscribeHandler({
 
 export async function GET() {
   await connection(); // read the environment per request, not once at build time
-  const body: TranscribeConfigResponse = { humanCheckSiteKey: getConfiguredHumanCheck()?.siteKey ?? null };
+  const provider = getConfiguredProvider();
+  const body: TranscribeConfigResponse = {
+    humanCheckSiteKey: getConfiguredHumanCheck()?.siteKey ?? null,
+    provider: provider && { name: provider.privacy.name, privacyUrl: provider.privacy.url },
+    romanizerName: getConfiguredRomanizer() ? "Groq" : null,
+  };
   return Response.json(body, { headers: { "Cache-Control": "no-store" } });
 }

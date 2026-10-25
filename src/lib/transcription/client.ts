@@ -7,10 +7,8 @@ import {
   type TranscribeResponse,
 } from "./types";
 
-/** Shown before any upload. Must stay accurate if the provider changes. */
+/** The bot check named in the disclosure. The provider itself comes from the server's config. */
 export const TRANSCRIPTION_DISCLOSURE = {
-  providerName: "Groq",
-  privacyUrl: "https://groq.com/privacy-policy/",
   humanCheckName: "Cloudflare Turnstile",
   humanCheckPrivacyUrl: "https://www.cloudflare.com/turnstile-privacy-policy/",
 } as const;
@@ -21,7 +19,10 @@ export async function fetchTranscribeConfig(): Promise<TranscribeConfigResponse 
     const res = await fetch("/api/transcribe", { cache: "no-store" });
     if (!res.ok) return null;
     const json = (await res.json()) as TranscribeConfigResponse;
-    return typeof json.humanCheckSiteKey === "string" || json.humanCheckSiteKey === null ? json : null;
+    const ok =
+      (typeof json.humanCheckSiteKey === "string" || json.humanCheckSiteKey === null) &&
+      (json.provider === null || (typeof json.provider?.name === "string" && typeof json.provider.privacyUrl === "string"));
+    return ok ? json : null;
   } catch {
     return null;
   }

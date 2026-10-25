@@ -1,5 +1,5 @@
-// End-to-end test for the abuse controls (T-14): Turnstile gating in the browser, the token header,
-// the server's refusals, and the shared limiter. Cloudflare's script is replaced by a stand-in,
+// End-to-end test for what the server decides: the abuse controls (T-14: Turnstile gating in the
+// browser, the token header, refusals, the shared limiter) and which provider the disclosure names (T-12). Cloudflare's script is replaced by a stand-in,
 // because automated browsers can't run the real one (and this container can't reach Cloudflare).
 // Requires `npm run build`. Optional: E2E_DATABASE_URL=postgres://... to check the stored rows.
 // Run: npm run e2e
@@ -9,7 +9,7 @@ import { chromium } from "playwright";
 import postgres from "postgres";
 import { createChecks, makeFixtures, ROOT, startServer, stopServer } from "./helpers.mjs";
 
-const OUT = join(ROOT, "tests/e2e/.out-abuse");
+const OUT = join(ROOT, "tests/e2e/.out-server");
 const PORT = 3119;
 const BASE = `http://localhost:${PORT}`;
 const { check, finish } = createChecks();
@@ -69,7 +69,13 @@ async function main() {
     await page.goto(`${BASE}/lab`);
     await page.getByTestId("file-input").setInputFiles(f("vertical.mp4"));
     await page.getByTestId("check-ok").waitFor({ timeout: 30_000 });
-    check("disclosure names Cloudflare Turnstile and what it sees", (await page.getByTestId("transcribe-disclosure").innerText()).includes("Cloudflare Turnstile"));
+    const disclosure = await page.getByTestId("transcribe-disclosure").innerText();
+    check("disclosure names Cloudflare Turnstile and what it sees", disclosure.includes("Cloudflare Turnstile"));
+    check(
+      "disclosure names the configured provider (Groq) and links its policy",
+      disclosure.includes("forwards it to Groq") &&
+        (await page.getByTestId("transcribe-disclosure").getByRole("link", { name: "Groq's privacy policy" }).getAttribute("href")) === "https://groq.com/privacy-policy/",
+    );
     await page.getByTestId("extract-button").click();
     await page.getByTestId("extract-done").waitFor({ timeout: 60_000 });
 
@@ -132,6 +138,32 @@ async function main() {
     const down = await post({ "x-turnstile-token": DUMMY_TOKEN });
     check("limiter database down: refused with 503, not let through", down.status === 503 && down.code === "RATE_LIMIT_UNAVAILABLE", JSON.stringify(down));
   } finally {
+    stopServer(server);
+  }
+
+  // ---------- Sarvam selected: the disclosure must say Sarvam, and only after the opt-out is confirmed ----------
+  server = await startServer(PORT, { env: { TRANSCRIBE_PROVIDER: "sarvam", SARVAM_API_KEY: "e2e-not-a-real-key" } });
+  try {
+    const config = await (await fetch(`${BASE}/api/transcribe`)).json();
+    check("Sarvam stays off until its training opt-out is confirmed", config.provider === null, JSON.stringify(config.provider));
+  } finally {
+    stopServer(server);
+  }
+  server = await startServer(PORT, {
+    env: { TRANSCRIBE_PROVIDER: "sarvam", SARVAM_API_KEY: "e2e-not-a-real-key", SARVAM_TRAINING_OPT_OUT: "confirmed" },
+  });
+  const browser2 = await chromium.launch();
+  try {
+    const config = await (await fetch(`${BASE}/api/transcribe`)).json();
+    check("config names Sarvam AI as the receiver", config.provider?.name === "Sarvam AI" && config.romanizerName === null, JSON.stringify(config));
+    const page = await browser2.newPage();
+    await page.goto(`${BASE}/lab`);
+    const text = page.getByTestId("transcribe-disclosure");
+    await text.getByText("forwards it to Sarvam AI").waitFor({ timeout: 10_000 });
+    check("disclosure names Sarvam AI, links its policy, and doesn't mention Groq", !(await text.innerText()).includes("Groq") &&
+      (await text.getByRole("link", { name: "Sarvam AI's privacy policy" }).getAttribute("href")) === "https://www.sarvam.ai/privacy-policy");
+  } finally {
+    await browser2.close();
     stopServer(server);
   }
 

@@ -1,15 +1,24 @@
 import { createGroqProvider } from "./groq";
 import { createGroqRomanizer } from "./groqRomanize";
+import { createSarvamProvider } from "./sarvam";
 import { createTurnstileVerifier, type HumanVerifier } from "./humanCheck";
 import type { Romanizer, TranscriptionProvider } from "./types";
 
 /**
- * Returns the configured provider, or null when no key is set. Keys are read
- * from server environment variables only and never reach the client bundle.
+ * Returns the configured provider (TRANSCRIBE_PROVIDER: groq by default, or sarvam), or null when
+ * it isn't fully configured. Keys are read from server environment variables only and never reach
+ * the client bundle.
+ *
+ * Sarvam trains on API inputs unless the account opts out (privacy policy, checked 2026-10-25), so
+ * it stays off until SARVAM_TRAINING_OPT_OUT=confirmed records that the opt-out is done.
  */
 export function getConfiguredProvider(
   env: Record<string, string | undefined> = process.env,
 ): TranscriptionProvider | null {
+  if (env.TRANSCRIBE_PROVIDER === "sarvam") {
+    if (!env.SARVAM_API_KEY || env.SARVAM_TRAINING_OPT_OUT !== "confirmed") return null;
+    return createSarvamProvider({ apiKey: env.SARVAM_API_KEY, model: env.SARVAM_MODEL || undefined });
+  }
   if (env.GROQ_API_KEY) return createGroqProvider({ apiKey: env.GROQ_API_KEY, model: env.GROQ_MODEL || undefined });
   return null;
 }

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isAudioOnlyOggOpus } from "@/lib/transcription/sniff";
+import { isAudioOnlyOggOpus, oggOpusDurationSec } from "@/lib/transcription/sniff";
 import { concat, oggOpusFile, oggPage, opusHead, opusTags, theoraHead } from "./oggFixtures";
 
 describe("isAudioOnlyOggOpus", () => {
@@ -27,5 +27,23 @@ describe("isAudioOnlyOggOpus", () => {
 
   it("rejects an Ogg page without the BOS flag first", () => {
     expect(isAudioOnlyOggOpus(oggPage(opusHead, { bos: false }))).toBe(false);
+  });
+});
+
+describe("oggOpusDurationSec", () => {
+  /** Last page with the given granule position (48 kHz samples). */
+  function withGranule(granule: number) {
+    const last = oggPage(new Uint8Array(40));
+    new DataView(last.buffer).setBigInt64(6, BigInt(granule), true);
+    return concat(oggPage(opusHead, { bos: true }), oggPage(opusTags), last);
+  }
+
+  it("reads the duration from the last page, minus the pre-skip", () => {
+    // The fixture's OpusHead pre-skip is 312 samples.
+    expect(oggOpusDurationSec(withGranule(48_000 * 31 + 312))).toBe(31);
+  });
+
+  it("returns null for bytes that aren't Ogg Opus", () => {
+    expect(oggOpusDurationSec(new Uint8Array(100))).toBeNull();
   });
 });

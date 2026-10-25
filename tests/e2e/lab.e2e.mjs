@@ -89,7 +89,9 @@ async function main() {
     check("extract: duration ≈ 4 s", Math.abs(Number(audioInfo.format.duration) - 4) < 0.15, audioInfo.format.duration);
     check("extract: small (< 40 KB for 4 s)", audioBytes.length < 40_000, `${audioBytes.length} B`);
 
-    check("transcribe: disclosure names provider before upload", (await page.getByTestId("transcribe-disclosure").innerText()).includes("Groq"));
+    // This server has no provider key, so the disclosure must say nothing will be sent (named providers: server.e2e).
+    await page.getByTestId("transcribe-disclosure").getByText("isn't set up").waitFor({ timeout: 10_000 });
+    check("transcribe: disclosure follows the server's config (no provider here, so nothing is sent)", true);
     const flows = await Promise.all(
       ["flow-1", "flow-2", "transcribe-disclosure", "flow-4", "flow-5"].map((id) => page.getByTestId(id).getAttribute("data-leaves-device")),
     );
@@ -106,7 +108,7 @@ async function main() {
     await page.getByTestId("transcribe-button").click();
     await page.getByTestId("transcribe-error").waitFor({ timeout: 15_000 });
     const notConfigured = await page.getByTestId("transcribe-error").innerText();
-    check("transcribe: unconfigured server reports it", /not configured/i.test(notConfigured) && /GROQ_API_KEY/.test(notConfigured));
+    check("transcribe: unconfigured server reports it", /not configured/i.test(notConfigured) && /API key/.test(notConfigured));
 
     // Real route rejects a non-Opus upload (byte sniffing).
     const sniff = await page.evaluate(async () => {

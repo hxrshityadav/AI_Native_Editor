@@ -2,7 +2,7 @@ import { z } from "zod";
 import { getClientIp, hashClientKey, type RateLimiter } from "./rateLimit";
 import { hasDevanagari } from "./groqRomanize";
 import type { HumanVerifier } from "./humanCheck";
-import { isAudioOnlyOggOpus } from "./sniff";
+import { isAudioOnlyOggOpus, oggOpusDurationSec } from "./sniff";
 import {
   ProviderError,
   CAPTION_LANGUAGES,
@@ -51,6 +51,11 @@ const ERRORS = {
     message: "Only audio-only Ogg Opus is accepted.",
     action: "Use the app's audio extraction step; don't upload other files.",
   },
+  AUDIO_TOO_LONG_FOR_PROVIDER: {
+    status: 413,
+    message: "The transcription service on this server takes shorter clips.",
+    action: "Use a shorter clip.",
+  },
   RATE_LIMITED: {
     status: 429,
     message: "Too many transcriptions from this network.",
@@ -84,7 +89,7 @@ const ERRORS = {
   NOT_CONFIGURED: {
     status: 503,
     message: "Transcription is not configured on this server.",
-    action: "Set GROQ_API_KEY in .env.local and restart the server.",
+    action: "Set the transcription provider's API key (see .env.example) and restart the server.",
   },
   PROVIDER_UNAVAILABLE: {
     status: 502,
@@ -143,10 +148,10 @@ export function createTranscribeHandler(deps: TranscribeHandlerDeps) {
   const now = deps.now ?? (() => new Date());
   const logError = deps.logError ?? ((code) => console.warn(`[transcribe] ${code}`));
 
-  const fail = (code: TranscribeErrorCode, headers?: HeadersInit): Response => {
+  const fail = (code: TranscribeErrorCode, headers?: HeadersInit, action?: string): Response => {
     const spec: ErrorSpec = ERRORS[code];
     if (spec.status >= 500) logError(code);
-    const body: TranscribeErrorResponse = { error: { code, message: spec.message, action: spec.action } };
+    const body: TranscribeErrorResponse = { error: { code, message: spec.message, action: action ?? spec.action } };
     return Response.json(body, { status: spec.status, headers: { "Cache-Control": "no-store", ...headers } });
   };
 
@@ -201,12 +206,19 @@ export function createTranscribeHandler(deps: TranscribeHandlerDeps) {
     // Sniff the real bytes; the client-declared type is ignored.
     const bytes = new Uint8Array(await audio.arrayBuffer());
     if (!isAudioOnlyOggOpus(bytes)) return fail("UNSUPPORTED_AUDIO");
+    if (provider.maxSeconds !== undefined) {
+      const seconds = oggOpusDurationSec(bytes);
+      if (seconds !== null && seconds > provider.maxSeconds + 0.5) {
+        return fail("AUDIO_TOO_LONG_FOR_PROVIDER", undefined, `Use a clip of ${provider.maxSeconds} seconds or less.`);
+      }
+    }
 
     try {
       // The audio exists only in memory for the duration of this request.
       let words = await provider.transcribe({
         audio: new Blob([bytes], { type: "audio/ogg" }),
         language: SPEECH_LANGUAGE[language],
+        preferRoman: language === "hinglish",
         signal: request.signal,
       });
       let warning: TranscribeResponse["warning"] = null;

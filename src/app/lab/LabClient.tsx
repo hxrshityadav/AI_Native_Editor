@@ -109,7 +109,7 @@ export function LabClient() {
         )}
       </Step>
 
-      <Step n={3} title="Transcribe" flow={<TranscribeDisclosure audioSize={audio.status === "done" ? audio.blob.size : null} humanCheck={s.humanCheck.status === "on"} />}>
+      <Step n={3} title="Transcribe" flow={<TranscribeDisclosure audioSize={audio.status === "done" ? audio.blob.size : null} config={s.uploadConfig} />}>
         <div className="flex flex-wrap items-center gap-3">
           <LanguageSelect value={s.language} onChange={s.setLanguage} />
           <button

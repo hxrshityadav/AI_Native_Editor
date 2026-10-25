@@ -66,7 +66,7 @@ export function makeFixtures(dir) {
  */
 export async function startServer(port, { withKey = false, env: extra = {} } = {}) {
   const env = { ...process.env, PORT: String(port) };
-  if (!withKey) env.GROQ_API_KEY = "";
+  if (!withKey) for (const k of ["GROQ_API_KEY", "SARVAM_API_KEY", "TRANSCRIBE_PROVIDER"]) env[k] = "";
   for (const k of ["DATABASE_URL", "TURNSTILE_SITE_KEY", "TURNSTILE_SECRET_KEY", "VERCEL"]) env[k] = "";
   Object.assign(env, extra);
   const server = spawn(join(ROOT, "node_modules/.bin/next"), ["start", "-p", String(port)], {

@@ -33,3 +33,22 @@ function startsWith(bytes: Uint8Array, offset: number, magic: number[]): boolean
   for (let i = 0; i < magic.length; i++) if (bytes[offset + i] !== magic[i]) return false;
   return true;
 }
+
+/**
+ * Duration of an Ogg Opus file in seconds, from the last page's granule position (48 kHz samples)
+ * minus the OpusHead pre-skip. Null when the bytes don't allow it.
+ */
+export function oggOpusDurationSec(bytes: Uint8Array): number | null {
+  if (bytes.length < 47 || !startsWith(bytes, 0, OGGS)) return null;
+  const headStart = 27 + bytes[26];
+  if (!startsWith(bytes, headStart, OPUS_HEAD) || headStart + 12 > bytes.length) return null;
+  const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  const preSkip = view.getUint16(headStart + 10, true);
+  for (let i = bytes.length - 27; i >= 0; i--) {
+    if (!startsWith(bytes, i, OGGS)) continue;
+    const granule = view.getBigInt64(i + 6, true);
+    if (granule < BigInt(0)) return null;
+    return Math.max(0, Number(granule) - preSkip) / 48_000;
+  }
+  return null;
+}

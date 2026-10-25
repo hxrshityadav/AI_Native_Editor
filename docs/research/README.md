@@ -54,8 +54,29 @@ Instagram, Facebook and WhatsApp specs say AAC. WhatsApp's app defaults to 100 M
   TLS fingerprint, User-Agent, and site key with its origin. Used for bot detection and improving it.
 - Pricing: free for managed widgets, but not rechecked here. Check the dashboard before launch.
 
+## Sarvam speech-to-text (checked 2026-10-25)
+
+- REST (https://docs.sarvam.ai/api-reference/speech-to-text/transcribe): `POST https://api.sarvam.ai/speech-to-text`,
+  multipart, header `api-subscription-key`. Accepts OGG/OPUS among others. Models `saaras:v4` (default)
+  and `saaras:v3`.
+- `mode`: transcribe, translate, verbatim, **translit** (Roman script only: "mera phone number hai") and codemix
+  (Devanagari plus English words). The docs say `mode` applies to saaras:v3 only, yet describe v4 as supporting
+  all modes. We default to v3; `SARVAM_MODEL` can switch.
+- **Under 30 s per REST request.** Longer audio uses the Batch API (job, upload, poll; up to 2 h per file,
+  20 files per job).
+- **No word-level timestamps**, in REST or Batch. `with_timestamps=true` gives chunk (phrase) start/end only.
+- Price (https://docs.sarvam.ai/api/getting-started/pricing): ₹0.49/min pay-as-you-go, billed per second
+  (₹1.47 per 3-min clip). Groq whisper-large-v3 is $0.111/h (about $0.0056 per 3 min).
+- **Privacy** (https://www.sarvam.ai/privacy-policy): uses your content, including inputs and uploads, to train
+  and improve its models **unless you opt out** in account settings or by emailing privacy@sarvam.ai. The
+  Trust Center says audio storage can be opted out of. We require `SARVAM_TRAINING_OPT_OUT=confirmed`.
+- Not verified here: api.sarvam.ai is blocked from this container, so no live call has been made.
+
+## Instagram Edits
+
+- No public API. The bake-off compares it by text only: type or paste its captions into `<clip>.edits.txt`.
+
 ## To do
 
-- Sarvam speech-to-text: API, word timestamps?, Hinglish/Roman output, price (T-12).
 - Real upload results for the T-13 test pack (`platform-uploads.md`).
 - Vercel plan terms for commercial use before charging money.

@@ -11,6 +11,7 @@ import {
   type Framing,
 } from "@/lib/media/exportPresets";
 import { TRANSCRIPTION_DISCLOSURE } from "@/lib/transcription/client";
+import type { TranscribeConfigResponse } from "@/lib/transcription/types";
 import type { CaptionLanguage } from "@/lib/transcription/types";
 import type { ReelSession } from "./useReelSession";
 
@@ -195,18 +196,47 @@ export function DataFlow({ testId, leaves = false, children }: { testId: string;
 }
 
 /** The exact data that transcription sends, shown before the button that sends it. */
-export function TranscribeDisclosure({ audioSize, humanCheck }: { audioSize: number | null; humanCheck: boolean }) {
-  const name = TRANSCRIPTION_DISCLOSURE.providerName;
+export function TranscribeDisclosure({
+  audioSize,
+  config,
+}: {
+  audioSize: number | null;
+  /** The server's answer to where uploads go; null until it arrives. */
+  config: TranscribeConfigResponse | null;
+}) {
+  const provider = config?.provider;
+  const audio = `the extracted speech audio${audioSize !== null ? ` (${formatBytes(audioSize)})` : ""}`;
+  if (!config) {
+    return (
+      <DataFlow testId="transcribe-disclosure" leaves>
+        Sends only {audio}, never the video, to our server for transcription. Where it goes next is shown here once our
+        server responds; nothing is sent before that.
+      </DataFlow>
+    );
+  }
+  if (!provider) {
+    return (
+      <DataFlow testId="transcribe-disclosure" leaves>
+        Transcription isn&apos;t set up on this server, so nothing will be sent.
+      </DataFlow>
+    );
+  }
   return (
     <DataFlow testId="transcribe-disclosure" leaves>
-      Sends only the extracted speech audio{audioSize !== null ? ` (${formatBytes(audioSize)})` : ""}, never the video,
-      to our server, which forwards it to {name} for transcription. For Hinglish, the transcribed words (text only) also
-      go to {name} to be written in Roman script. Our servers don&apos;t store the audio or the transcript.{" "}
-      <a className="underline" href={TRANSCRIPTION_DISCLOSURE.privacyUrl} target="_blank" rel="noreferrer">
-        {name}&apos;s privacy policy
+      Sends only {audio}, never the video, to our server, which forwards it to {provider.name} for transcription.
+      {config.romanizerName && (
+        <>
+          {" "}
+          For Hinglish, any words in Hindi script (text only) also go to {config.romanizerName} to be written in Roman
+          script.
+        </>
+      )}{" "}
+      Our servers don&apos;t store the audio or the transcript.{" "}
+      <a className="underline" href={provider.privacyUrl} target="_blank" rel="noreferrer">
+        {provider.name}&apos;s privacy policy
       </a>{" "}
       applies to their processing.
-      {humanCheck && (
+      {config.humanCheckSiteKey && (
         <>
           {" "}
           To stop abuse, {TRANSCRIPTION_DISCLOSURE.humanCheckName} first checks this browser isn&apos;t a bot. Cloudflare

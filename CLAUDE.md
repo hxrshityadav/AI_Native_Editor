@@ -41,9 +41,9 @@ and `/simplify` for reviews.
 - `npm run build`: production build.
 - `npm run e2e`: needs a fresh `npm run build`, plus ffmpeg/ffprobe. Drives `/lab` and then
   `/studio` (desktop and Pixel 7) in Chromium against generated fixtures and verifies outputs with
-  ffprobe, then the abuse controls (Turnstile stand-in). Run it for every media or UI change.
+  ffprobe, then server config (abuse controls with a Turnstile stand-in, provider disclosure). Run it for every media or UI change.
 - Postgres tests: `TEST_DATABASE_URL=postgres://... npm test` runs the limiter against a real
-  database (skipped without it). `E2E_DATABASE_URL` does the same for the abuse E2E.
+  database (skipped without it). `E2E_DATABASE_URL` does the same for the server-config E2E.
 - `npm run perf`: needs a fresh build. An emulated mid-range phone pass (Pixel 7 profile, CPU ÷4,
   60 s 1080p clip) that prints step timings, idle main-thread load, the longest stall and Chromium
   memory. `PERF_SECONDS` and `PERF_SIZE` change the clip. It is not a real-device result.
@@ -52,12 +52,14 @@ and `/simplify` for reviews.
 - `npm run sync-check -- --self-test`: needs a fresh build. Validates the caption-sync measurement.
   `npm run sync-check -- <clips>` measures real clips through `/api/transcribe` (needs `GROQ_API_KEY`
   in `.env.local`; billable); see `docs/research/caption-sync.md`.
+- `npm run bakeoff -- <clips>`: needs a fresh build and provider keys (billable). Hinglish bake-off,
+  Groq vs Sarvam (plus Instagram Edits by text); see `docs/research/hinglish-bakeoff.md`.
 
 ## Layout
 
 - `src/lib/captions/`: Word type, grouping, layout, canvas drawing, SRT (pure, unit-tested).
 - `src/lib/media/`: probe, validation, device check, audio extraction, render (browser only).
-- `src/lib/transcription/`: provider interface, Groq adapter, route handler logic, rate limit,
+- `src/lib/transcription/`: provider interface, Groq and Sarvam adapters, route handler logic, rate limit,
   byte sniffing (server), plus `client.ts` (browser fetch helper; must not import node modules).
 - `src/app/api/transcribe/route.ts`: wires the handler to env config.
 - `src/components/editor/`: `useReelSession` (all workflow state and actions) and shared UI parts.

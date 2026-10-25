@@ -47,6 +47,7 @@ export function createGroqProvider(options: GroqOptions): TranscriptionProvider 
   return {
     id: "groq",
     displayName: `Groq (${model})`,
+    privacy: { name: "Groq", url: "https://groq.com/privacy-policy/" },
     async transcribe({ audio, language, signal }) {
       const form = new FormData();
       form.append("file", audio, "speech.ogg");

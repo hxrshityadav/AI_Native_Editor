@@ -14,12 +14,18 @@ export type TranscribeInput = {
   /** Audio-only Ogg Opus, already validated by the route. */
   audio: Blob;
   language: SpeechLanguage;
+  /** Captions are wanted in Roman script; a provider that can output it directly should. */
+  preferRoman?: boolean;
   signal?: AbortSignal;
 };
 
 export interface TranscriptionProvider {
   readonly id: string;
   readonly displayName: string;
+  /** Who receives the audio, for the disclosure shown before upload. */
+  readonly privacy: { name: string; url: string };
+  /** Longest audio the provider accepts, if it has a limit. */
+  readonly maxSeconds?: number;
   transcribe(input: TranscribeInput): Promise<Word[]>;
 }
 
@@ -66,4 +72,8 @@ export const HUMAN_CHECK_HEADER = "x-turnstile-token";
 export type TranscribeConfigResponse = {
   /** Turnstile site key when the server checks for bots; null when it doesn't. */
   humanCheckSiteKey: string | null;
+  /** Where the speech audio goes (null when transcription isn't configured). */
+  provider: { name: string; privacyUrl: string } | null;
+  /** Who romanizes Hindi-script words for Hinglish, if anyone. */
+  romanizerName: string | null;
 };

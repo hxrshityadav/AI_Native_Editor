@@ -24,7 +24,7 @@ import { RenderCanceledError, renderInWorker, type RenderHandle, type RenderStor
 import type { Issue, ProbeResult } from "@/lib/media/types";
 import { issue, validateFileBasics, validateProbe } from "@/lib/media/validate";
 import { fetchTranscribeConfig, requestTranscription } from "@/lib/transcription/client";
-import type { CaptionLanguage, TranscribeResponse } from "@/lib/transcription/types";
+import type { CaptionLanguage, TranscribeConfigResponse, TranscribeResponse } from "@/lib/transcription/types";
 
 export type CheckState =
   | { status: "idle" }
@@ -134,12 +134,24 @@ export function useReelSession({ placeholders }: { placeholders: boolean }) {
   const renderHandle = useRef<RenderHandle | null>(null);
   const transcribeAbort = useRef<AbortController | null>(null);
   const [humanCheck, setHumanCheck] = useState<HumanCheckState>({ status: "loading" });
+  /** Where uploads go, from the server; null until it answers. */
+  const [uploadConfig, setUploadConfig] = useState<TranscribeConfigResponse | null>(null);
+  const applyServerConfig = useCallback((config: TranscribeConfigResponse | null) => {
+    setUploadConfig(config);
+    setHumanCheck(
+      config === null
+        ? { status: "error" }
+        : config.humanCheckSiteKey
+          ? { status: "on", siteKey: config.humanCheckSiteKey, token: null, round: 0 }
+          : { status: "off" },
+    );
+  }, []);
   // The latest token, read at upload time: extraction can take long enough for a token to be replaced.
   const humanToken = useRef<string | null>(null);
   const humanReady = humanCheck.status === "off" || (humanCheck.status === "on" && humanCheck.token !== null);
   useEffect(() => {
-    void readHumanCheck().then(setHumanCheck);
-  }, []);
+    void fetchTranscribeConfig().then(applyServerConfig);
+  }, [applyServerConfig]);
   const setHumanCheckToken = useCallback((token: string | null) => {
     humanToken.current = token;
     setHumanCheck((h) => (h.status === "on" ? { ...h, token } : h));
@@ -437,11 +449,12 @@ export function useReelSession({ placeholders }: { placeholders: boolean }) {
     extract,
     transcribe,
     humanCheck,
+    uploadConfig,
     humanReady,
     setHumanCheckToken,
     retryHumanCheck: () => {
       setHumanCheck({ status: "loading" });
-      void readHumanCheck().then(setHumanCheck);
+      void fetchTranscribeConfig().then(applyServerConfig);
     },
     cancelTranscribe: () => transcribeAbort.current?.abort(),
     makeCaptions,
@@ -451,13 +464,6 @@ export function useReelSession({ placeholders }: { placeholders: boolean }) {
 }
 
 export type ReelSession = ReturnType<typeof useReelSession>;
-
-async function readHumanCheck(): Promise<HumanCheckState> {
-  const config = await fetchTranscribeConfig();
-  if (config === null) return { status: "error" };
-  if (config.humanCheckSiteKey) return { status: "on", siteKey: config.humanCheckSiteKey, token: null, round: 0 };
-  return { status: "off" };
-}
 
 function useOnline(): boolean {
   return useSyncExternalStore(

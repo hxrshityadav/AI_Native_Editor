@@ -328,11 +328,11 @@ function CaptionsPanel({ session: s }: { session: ReelSession }) {
             what was sent to make these captions
           </summary>
           <div className="mt-2">
-            <TranscribeDisclosure audioSize={audio.status === "done" ? audio.blob.size : null} humanCheck={s.humanCheck.status === "on"} />
+            <TranscribeDisclosure audioSize={audio.status === "done" ? audio.blob.size : null} config={s.uploadConfig} />
           </div>
         </details>
       ) : (
-        <TranscribeDisclosure audioSize={audio.status === "done" ? audio.blob.size : null} humanCheck={s.humanCheck.status === "on"} />
+        <TranscribeDisclosure audioSize={audio.status === "done" ? audio.blob.size : null} config={s.uploadConfig} />
       )}
       <div className="flex flex-wrap items-center gap-3">
         <LanguageSelect value={s.language} onChange={s.setLanguage} />

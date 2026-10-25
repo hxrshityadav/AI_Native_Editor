@@ -58,6 +58,7 @@ unmetered spend. On Vercel, transcription stays off unless `DATABASE_URL` and bo
 | `src/lib/media/render.ts` | browser | Mediabunny `Conversion` with `video.process` drawing captions; audio copied |
 | `src/lib/transcription/handler.ts` | server | Validation, rate limit, sniff, provider call, error mapping |
 | `src/lib/transcription/groq.ts` | server | Groq Whisper adapter (`verbose_json`, word timestamps) |
+| `src/lib/transcription/sarvam.ts` | server | Sarvam adapter (bake-off): translit mode, phrase timestamps → estimated word times, ≤ 30 s |
 | `src/lib/transcription/rateLimit.ts` | server | In-memory limiter (development), salted daily IP hash |
 | `src/lib/transcription/pgRateLimit.ts` | server | Shared Postgres limiter (`DATABASE_URL`): atomic upsert per key and hour |
 | `src/lib/transcription/humanCheck.ts` | server | Turnstile siteverify → passed / failed / unavailable |
