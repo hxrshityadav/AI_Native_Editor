@@ -99,7 +99,7 @@ export function createSarvamProvider(options: SarvamOptions): TranscriptionProvi
         // The body may echo request details; we read only the status.
         if (res.status === 429) throw new ProviderError("PROVIDER_RATE_LIMITED", "Sarvam rate limit or quota reached.");
         if (res.status === 401 || res.status === 403)
-          throw new ProviderError("PROVIDER_UNAVAILABLE", `Sarvam rejected the API key (${res.status}).`);
+          throw new ProviderError("PROVIDER_AUTH_FAILED", "Sarvam rejected the server API key.");
         if (res.status >= 500) throw new ProviderError("PROVIDER_UNAVAILABLE", `Sarvam error ${res.status}.`);
         throw new ProviderError("PROVIDER_REJECTED", `Sarvam rejected the audio (${res.status}).`);
       }

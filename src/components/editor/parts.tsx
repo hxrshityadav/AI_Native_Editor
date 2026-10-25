@@ -1,8 +1,10 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { drawComposition } from "@/lib/media/composition";
+import { editedToSource, inInterval, remapCaptionLines, sourceToEdited } from "@/lib/editor/timeline";
+import { drawOverlays } from "@/lib/captions/overlays";
 import { CAPTION_STYLES, drawCaption, lineAt, type CaptionLine, type CaptionStyle } from "@/lib/captions";
-import { removedRangeAt, toOutputTimeSnapped, type TimeMap } from "@/lib/edit/timeline";
 import type { Problem } from "@/lib/media/errors";
 import {
   EXPORT_PRESETS,
@@ -15,6 +17,8 @@ import { TRANSCRIPTION_DISCLOSURE } from "@/lib/transcription/client";
 import type { TranscribeConfigResponse } from "@/lib/transcription/types";
 import type { CaptionLanguage } from "@/lib/transcription/types";
 import type { ReelSession } from "./useReelSession";
+import { moveOverlay, snapPosition } from "@/lib/editor/operations";
+import type { TextBounds } from "@/lib/captions/draw";
 
 // min-h-10: 40px touch targets on phones.
 export const btn =
@@ -33,25 +37,34 @@ export function Preview({
   videoRef,
   onError,
   frame,
-  timeMap,
+  guides = false,
+  onPositionChange,
+  editor,
   heightClassName = "[--preview-h:70vh]",
 }: {
   src: string;
-  /** In output time. */
   lines: CaptionLine[];
-  /** Cuts: playback jumps over removed source time, and captions follow the output clock. */
-  timeMap: TimeMap;
   style: CaptionStyle;
   /** Until the bundled font loads, captions are not drawn rather than drawn in a misleading fallback font. */
   fontReady: boolean;
   videoRef: React.RefObject<HTMLVideoElement | null>;
   onError: () => void;
   frame: ExportPlan;
+  guides?: boolean;
+  onPositionChange?: (x: number, y: number) => void;
+  editor?: ReelSession;
   /** Sets --preview-h, the most height the preview may take; width follows the output aspect ratio. */
   heightClassName?: string;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { width, height, fit } = frame;
+  const controlledPlayback = !!editor || !!frame.composition || !!frame.cuts?.length;
+  const mappedLines = useMemo(() => remapCaptionLines(lines, frame.cuts ?? []), [lines, frame.cuts]);
+  const [playing, setPlaying] = useState(false);
+  const [time, setTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [bounds, setBounds] = useState<(TextBounds & { id: string; kind: "caption" | "overlay" })[]>([]);
+  useEffect(() => { const video = videoRef.current; if (video) { video.muted = frame.audio?.muted ?? false; video.volume = frame.audio?.volume ?? 1; } }, [frame.audio, src, videoRef]);
 
   useEffect(() => {
     let raf = 0;
@@ -63,28 +76,37 @@ export function Preview({
       const video = videoRef.current;
       const canvas = canvasRef.current;
       const ctx = canvas?.getContext("2d");
-      // Playing into a cut jumps to its end, so the preview plays what the export will contain.
-      const cut = video && !video.paused ? removedRangeAt(timeMap, video.currentTime) : null;
-      if (video && cut) video.currentTime = cut.end;
       const key = video ? `${video.currentTime}|${video.videoWidth}` : "";
       if (video && canvas && ctx && video.videoWidth && key !== drawn) {
+        const cut = frame.cuts?.find((cut) => video.currentTime >= cut.start && video.currentTime < cut.end);
+        if (cut) { video.currentTime = Math.min(cut.end, video.duration); raf = requestAnimationFrame(tick); return; }
         drawn = key;
         if (canvas.width !== width || canvas.height !== height) {
           canvas.width = width;
           canvas.height = height;
         }
         ctx.clearRect(0, 0, width, height);
-        const t = toOutputTimeSnapped(timeMap, video.currentTime);
-        const line = lineAt(lines, t);
-        if (line && fontReady) drawCaption(ctx, line, t, style, width, height);
+        const gap = inInterval(video.currentTime, frame.gaps ?? []);
+        video.volume = gap ? 0 : frame.audio?.volume ?? 1;
+        if (gap) { ctx.fillStyle = "#000000"; ctx.fillRect(0, 0, width, height); }
+        else if (frame.composition) drawComposition(ctx, video.videoWidth, video.videoHeight, frame,
+          (x, y, width, height) => ctx.drawImage(video, x, y, width, height));
+        const t = video.currentTime;
+        const captionTime = sourceToEdited(t, frame.cuts ?? []);
+        const line = lineAt(mappedLines, captionTime);
+        const nextBounds: typeof bounds = [];
+        if (line && fontReady) drawCaption(ctx, line, captionTime, style, width, height, (box) => { if (line.id) nextBounds.push({ ...box, id: line.id, kind: "caption" }); });
+        if (fontReady) drawOverlays(ctx, frame.overlays ?? [], t, style, width, height, (id, box) => nextBounds.push({ ...box, id, kind: "overlay" }), frame.cuts ?? []);
+        setBounds((previous) => JSON.stringify(previous) === JSON.stringify(nextBounds) ? previous : nextBounds);
       }
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [lines, style, fontReady, videoRef, width, height, timeMap]);
+  }, [mappedLines, style, fontReady, videoRef, width, height, frame]);
 
   return (
+    <>
     <div
       data-testid="preview-frame"
       data-frame={`${width}x${height}`}
@@ -94,14 +116,67 @@ export function Preview({
       <video
         ref={videoRef}
         src={src}
-        controls
+        controls={!controlledPlayback}
+        onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)}
+        onLoadedMetadata={(e) => setDuration(e.currentTarget.duration)}
+        onTimeUpdate={(e) => setTime(sourceToEdited(e.currentTarget.currentTime, frame.cuts ?? []))}
         playsInline
         onError={onError}
         className="absolute inset-0 h-full w-full"
-        style={{ objectFit: fit === "contain" ? "contain" : fit === "cover" ? "cover" : "fill" }}
+        style={{ opacity: frame.composition ? 0 : 1, objectFit: fit === "contain" ? "contain" : fit === "cover" ? "cover" : "fill" }}
       />
       <canvas ref={canvasRef} className="pointer-events-none absolute inset-0 h-full w-full" />
+      {editor && bounds.map((box) => {
+        const selected = editor.selection?.kind === box.kind && "id" in editor.selection && editor.selection.id === box.id;
+        const caption = editor.captionSegments.find((x) => x.id === box.id);
+        const overlay = editor.editing.settings.overlays.find((x) => x.id === box.id);
+        const locked = box.kind === "caption" ? caption?.locked || editor.editing.settings.captionPositionLocked : overlay?.locked;
+        const position = (x: number, y: number) => {
+          if (box.kind === "overlay") editor.editing.update({ overlays: moveOverlay(editor.editing.settings.overlays, box.id, x, y) });
+          else editor.applyEdit([{ type: "caption_style", id: box.id, appearance: { horizontalPosition: snapPosition(x), verticalPosition: snapPosition(y) } }]);
+        };
+        return <button key={box.kind + box.id} aria-label={`Move ${box.kind}: ${caption?.words.map((w) => w.text).join(" ") ?? overlay?.text ?? ""}`} aria-pressed={selected}
+          className={`absolute touch-none ${locked ? "cursor-default" : "cursor-move"} ${selected ? "border-2 border-blue-400 bg-blue-400/5" : "border border-transparent hover:border-white/60"}`}
+          style={{ left: `${box.x / width * 100}%`, top: `${box.y / height * 100}%`, width: `${box.width / width * 100}%`, height: `${box.height / height * 100}%` }}
+          onPointerDown={(e) => {
+            editor.setSelection({ kind: box.kind, id: box.id }); if (locked) return;
+            e.preventDefault(); e.currentTarget.setPointerCapture(e.pointerId); editor.editing.beginGesture();
+            const element = e.currentTarget; const frameBox = element.parentElement!.getBoundingClientRect();
+            const originX = e.clientX, originY = e.clientY;
+            const x = box.kind === "overlay" ? overlay!.x : caption?.appearance.horizontalPosition ?? style.horizontalPosition ?? 0.5;
+            const y = box.kind === "overlay" ? overlay!.y : caption?.appearance.verticalPosition ?? style.verticalPosition;
+            // A captured gesture uses its original metadata snapshot; the latest position replaces it.
+            const move = (event: PointerEvent) => position(x + (event.clientX - originX) / frameBox.width, y + (event.clientY - originY) / frameBox.height);
+            const finish = () => { element.removeEventListener("pointermove", move); element.removeEventListener("pointerup", finish); element.removeEventListener("pointercancel", finish); editor.editing.endGesture(); };
+            element.addEventListener("pointermove", move); element.addEventListener("pointerup", finish); element.addEventListener("pointercancel", finish);
+          }}
+          onKeyDown={(e) => { if (locked || !["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)) return; e.preventDefault(); const x = overlay?.x ?? caption?.appearance.horizontalPosition ?? style.horizontalPosition ?? 0.5; const y = overlay?.y ?? caption?.appearance.verticalPosition ?? style.verticalPosition; position(x + (e.key === "ArrowRight" ? 0.025 : e.key === "ArrowLeft" ? -0.025 : 0), y + (e.key === "ArrowDown" ? 0.025 : e.key === "ArrowUp" ? -0.025 : 0)); }} />;
+      })}
+      {guides && <div className={`absolute inset-0 ${editor ? "pointer-events-none" : "cursor-move touch-none"}`} aria-label="Drag subtitle position"
+        onPointerDown={(e) => { e.currentTarget.setPointerCapture(e.pointerId); }}
+        onPointerMove={(e) => {
+          if (!e.currentTarget.hasPointerCapture(e.pointerId)) return;
+          const box = e.currentTarget.getBoundingClientRect();
+          const snap = (value: number) => Math.abs(value - 0.5) < 0.025 ? 0.5 : Math.max(0.05, Math.min(0.95, value));
+          onPositionChange?.(snap((e.clientX - box.left) / box.width), snap((e.clientY - box.top) / box.height));
+        }}>
+        <div className="pointer-events-none absolute border border-dashed border-white/70" style={{ inset: "15% 10%" }} />
+        <div className="pointer-events-none absolute inset-y-0 left-1/2 border-l border-dashed border-yellow-300/70" />
+        <div className="pointer-events-none absolute inset-x-0 top-1/2 border-t border-dashed border-yellow-300/70" />
+        <span className="pointer-events-none absolute size-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-yellow-300 bg-black/50"
+          style={{ left: `${(style.horizontalPosition ?? 0.5) * 100}%`, top: `${style.verticalPosition * 100}%` }} />
+      </div>}
     </div>
+    {controlledPlayback && <div className="flex w-full max-w-lg items-center gap-2 text-white">
+      <button className={btnSecondary} type="button" onClick={() => {
+        const video = videoRef.current;
+        if (video?.paused) void video.play().catch(onError); else video?.pause();
+      }}>{playing ? "Pause" : "Play"}</button>
+      <input aria-label="Preview time" type="range" min={0} max={Number.isFinite(duration) ? sourceToEdited(duration, frame.cuts ?? []) : 0} step={0.01} value={time}
+        onChange={(e) => { if (videoRef.current) videoRef.current.currentTime = editedToSource(Number(e.target.value), frame.cuts ?? []); }} className="min-w-0 flex-1" />
+      <span className="text-xs">{time.toFixed(1)} s</span>
+    </div>}
+    </>
   );
 }
 
@@ -144,16 +219,6 @@ export function ExportPresetPicker({ session: s }: { session: ReelSession }) {
       {s.plan && (
         <p data-testid="export-size" className="text-sm">
           Exports at {s.plan.width}×{s.plan.height}.
-        </p>
-      )}
-      {s.appliedMap.removed.length > 0 && (
-        <p data-testid="export-cuts" data-output-sec={s.appliedMap.outputDuration} className="text-sm">
-          With your cuts: {s.appliedMap.outputDuration.toFixed(1)} s of the original {s.appliedMap.sourceDuration.toFixed(1)} s.
-        </p>
-      )}
-      {s.silence.reviewing && (
-        <p data-testid="export-blocked" className="rounded bg-amber-100 px-3 py-2 text-sm text-amber-900">
-          {s.exportBlocked}
         </p>
       )}
       {s.plan && s.planEncodable === false && (
@@ -248,12 +313,14 @@ export function TranscribeDisclosure({
     return (
       <DataFlow testId="transcribe-disclosure" leaves>
         Transcription isn&apos;t set up on this server, so nothing will be sent.
+          {" "}{config.setupError ?? "Set GROQ_API_KEY in .env.local at the project root, then restart the server."}
       </DataFlow>
     );
   }
   return (
     <DataFlow testId="transcribe-disclosure" leaves>
       Sends only {audio}, never the video, to our server, which forwards it to {provider.name} for transcription.
+      {config.setupError && <> {config.setupError}</>}
       {config.romanizerName && (
         <>
           {" "}

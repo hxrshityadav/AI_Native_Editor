@@ -44,11 +44,23 @@ export function oggOpusDurationSec(bytes: Uint8Array): number | null {
   if (!startsWith(bytes, headStart, OPUS_HEAD) || headStart + 12 > bytes.length) return null;
   const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
   const preSkip = view.getUint16(headStart + 10, true);
-  for (let i = bytes.length - 27; i >= 0; i--) {
-    if (!startsWith(bytes, i, OGGS)) continue;
-    const granule = view.getBigInt64(i + 6, true);
-    if (granule < BigInt(0)) return null;
-    return Math.max(0, Number(granule) - preSkip) / 48_000;
+  const serial = view.getUint32(14, true);
+  let offset = 0;
+  while (offset + 27 <= bytes.length) {
+    if (!startsWith(bytes, offset, OGGS) || bytes[offset + 4] !== 0 || view.getUint32(offset + 14, true) !== serial) return null;
+    if (offset > 0 && (bytes[offset + 5] & BOS_FLAG)) return null; // no chained streams
+    const count = bytes[offset + 26];
+    const payload = offset + 27 + count;
+    if (payload > bytes.length) return null;
+    let end = payload;
+    for (let i = 0; i < count; i++) end += bytes[offset + 27 + i];
+    if (end > bytes.length) return null;
+    if (bytes[offset + 5] & 0x04) {
+      const granule = view.getBigInt64(offset + 6, true);
+      if (end !== bytes.length || granule <= BigInt(preSkip)) return null;
+      return (Number(granule) - preSkip) / 48_000;
+    }
+    offset = end;
   }
   return null;
 }

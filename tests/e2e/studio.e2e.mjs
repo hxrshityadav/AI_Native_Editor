@@ -1,10 +1,10 @@
 // End-to-end test for /studio: the desktop three-pane flow and the phone step-by-step flow.
 // Requires `npm run build` first, plus ffmpeg and ffprobe on PATH. Run: npm run e2e
 
-import { readFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { chromium, devices } from "playwright";
-import { countPixels, createChecks, download, frameDiff, makeFixtures, probe, ROOT, startServer, stopServer, streams } from "./helpers.mjs";
+import { countPixels, createChecks, decodeErrors, download, ff, frameDiff, makeFixtures, probe, ROOT, startServer, stopServer, streams } from "./helpers.mjs";
 
 const OUT = join(ROOT, "tests/e2e/.out-studio");
 const PORT = 3115;
@@ -24,7 +24,7 @@ async function openStudio(browser, contextOptions) {
   page.on("pageerror", (e) => console.log("pageerror:", e.message));
   const uploads = [];
   await page.route("**/api/transcribe", async (route) => {
-    if (route.request().method() !== "POST") return route.fallback(); // the config GET goes to the real server
+    if (route.request().method() !== "POST") return route.fulfill({ json: { humanCheckSiteKey: null, provider: { name: "Groq", privacyUrl: "https://groq.com/privacy-policy/" }, romanizerName: "Groq" } });
     uploads.push(route.request().postDataBuffer());
     await route.fulfill({ json: { provider: { id: "groq", displayName: "Groq (mock)" }, words: WORDS, warning: null } });
   });
@@ -36,13 +36,61 @@ const noSideScroll = (page) => page.evaluate(() => document.documentElement.scro
 
 async function main() {
   const f = makeFixtures(OUT);
+  for (const seconds of [600, 601]) {
+    ff("-f", "lavfi", "-i", `color=s=32x64:r=1:d=${seconds}`, "-f", "lavfi", "-i", `anullsrc=r=48000:cl=mono`,
+      "-t", String(seconds), "-c:v", "libx264", "-pix_fmt", "yuv420p", "-c:a", "aac", f(`duration-${seconds}.mp4`));
+  }
   const server = await startServer(PORT);
   const browser = await chromium.launch();
   try {
+    const missing = await browser.newContext();
+    const missingPage = await missing.newPage();
+    let unexpectedUploads = 0;
+    missingPage.on("request", (request) => {
+      if (request.method() === "POST" && request.url().endsWith("/api/transcribe")) unexpectedUploads++;
+    });
+    await missingPage.goto(URL_);
+    await missingPage.getByTestId("file-input").first().setInputFiles(f("vertical.mp4"));
+    await missingPage.getByTestId("check-ok").waitFor();
+    await missingPage.getByTestId("continue-captions").click();
+    await missingPage.getByText("AI transcription & word editor", { exact: true }).evaluate((el) => { el.parentElement.open = true; });
+    await missingPage.getByTestId("make-captions").click();
+    await missingPage.getByTestId("transcribe-error").waitFor();
+    const setup = await missingPage.getByTestId("transcribe-error").innerText();
+    check("setup: missing key names GROQ_API_KEY and .env.local before extraction or upload",
+      setup.includes("GROQ_API_KEY") && setup.includes(".env.local") && unexpectedUploads === 0 &&
+      !(await missingPage.getByTestId("extract-progress").count()));
+    await missing.close();
+
+    const boundary = await openStudio(browser, { viewport: { width: 1440, height: 900 } });
+    await boundary.page.getByTestId("file-input").first().setInputFiles(f("duration-600.mp4"));
+    await boundary.page.getByTestId("check-ok").waitFor();
+    await boundary.page.getByTestId("continue-captions").click();
+    await boundary.page.getByText("AI transcription & word editor", { exact: true }).evaluate((el) => { el.parentElement.open = true; });
+    await boundary.page.getByTestId("make-captions").click();
+    await boundary.page.getByTestId("word").first().waitFor({ timeout: 120_000 });
+    const multipart = boundary.uploads[0];
+    const start = multipart.indexOf(Buffer.from("OggS"));
+    let end = start;
+    let granule = 0;
+    while (multipart.toString("ascii", end, end + 4) === "OggS") {
+      granule = Number(multipart.readBigInt64LE(end + 6));
+      const count = multipart[end + 26];
+      let length = 27 + count;
+      for (let i = 0; i < count; i++) length += multipart[end + 27 + i];
+      end += length;
+    }
+    const skip = multipart.readUInt16LE(start + 27 + multipart[start + 26] + 10);
+    const audioSeconds = (granule - skip) / 48_000;
+    writeFileSync(f("duration-600-speech.ogg"), multipart.subarray(start, end));
+    check("duration: exact 600-second video produces audio within the API duration boundary", audioSeconds > 599.9 && audioSeconds <= 600, `${audioSeconds} s`);
+    check("duration: corrected Opus end marker and checksum decode cleanly", decodeErrors(f("duration-600-speech.ogg")) === "");
+    await boundary.context.close();
+
     // ---------- Desktop: three panes ----------
     const { context, page, uploads } = await openStudio(browser, { viewport: { width: 1440, height: 900 } });
 
-    check("desktop: steps rail visible", await page.getByRole("navigation", { name: "Steps" }).isVisible());
+    check("desktop: steps rail visible", await page.getByRole("navigation", { name: "Editor tools" }).isVisible());
     check(
       "desktop: later steps locked until a video is picked",
       (await page.getByTestId("nav-captions").getAttribute("aria-disabled")) === "true" &&
@@ -57,9 +105,24 @@ async function main() {
     await page.getByTestId("check-ok").waitFor({ timeout: 30_000 });
     check("desktop: video step shows the clip in the rail", (await page.getByTestId("nav-video").innerText()).includes("720×1280"));
 
+    await page.getByTestId("file-input").first().setInputFiles(f("duration-600.mp4"));
+    await page.getByTestId("check-ok").waitFor({ timeout: 30_000 });
+    check("duration: exactly 600 seconds accepted", await page.getByTestId("continue-captions").isEnabled());
+    await page.getByTestId("file-input").first().setInputFiles(f("duration-601.mp4"));
+    await page.getByTestId("check-error").waitFor({ timeout: 30_000 });
+    check("duration: valid to invalid clears preview and locks processing", (await page.getByTestId("check-error").innerText()).includes("10 minutes") &&
+      await page.getByTestId("next-button").isDisabled() &&
+      (await page.getByTestId("nav-captions").getAttribute("aria-disabled")) === "true" &&
+      (await page.getByTestId("nav-export").getAttribute("aria-disabled")) === "true" && uploads.length === 0);
+    await page.screenshot({ path: f("desktop-duration-error.png"), fullPage: true });
+    await page.getByTestId("file-input").first().setInputFiles(f("vertical.mp4"));
+    await page.getByTestId("check-ok").waitFor({ timeout: 30_000 });
+    check("duration: invalid to valid permits continuing", await page.getByTestId("continue-captions").isEnabled());
+
     await page.getByTestId("continue-captions").click();
+    await page.getByText("AI transcription & word editor", { exact: true }).evaluate((el) => { el.parentElement.open = true; });
     check("desktop: full disclosure shown before anything is sent", await page.getByTestId("transcribe-disclosure").isVisible());
-    check("desktop: export locked until captions exist", (await page.getByTestId("nav-export").getAttribute("aria-disabled")) === "true");
+    check("desktop: export accepts video-only edits", (await page.getByTestId("nav-export").getAttribute("aria-disabled")) === "false");
     await page.getByTestId("make-captions").click();
     await page.getByTestId("word").first().waitFor({ timeout: 60_000 });
     check(
@@ -102,6 +165,7 @@ async function main() {
     await page.getByTestId("file-input").first().setInputFiles(f("vertical.mp4"));
     await page.getByTestId("check-ok").waitFor({ timeout: 30_000 });
     await page.getByTestId("continue-captions").click();
+    await page.getByText("AI transcription & word editor", { exact: true }).evaluate((el) => { el.parentElement.open = true; });
     await page.getByTestId("save-status").filter({ hasText: "Restored" }).waitFor({ timeout: 10_000 });
     check(
       "desktop: reopening the same video restores captions and edits without uploading",
@@ -116,6 +180,7 @@ async function main() {
       await page.getByTestId("file-input").first().setInputFiles(f(file));
       await page.getByTestId("check-ok").waitFor({ timeout: 30_000 });
       await page.getByTestId("continue-captions").click();
+    await page.getByText("AI transcription & word editor", { exact: true }).evaluate((el) => { el.parentElement.open = true; });
       if (!(await page.getByTestId("word").first().isVisible())) {
         await page.getByTestId("make-captions").click();
         await page.getByTestId("word").first().waitFor({ timeout: 60_000 });
@@ -155,23 +220,49 @@ async function main() {
     check("preset: Smaller file brings 1080×1920 down to 720×1280", small.actual === "720x1280" && small.shown === "720x1280", small.actual);
     await context.close();
 
+    const retry = await openStudio(browser, { viewport: { width: 1440, height: 900 } });
+    let submissions = 0;
+    let respondEmpty = false;
+    await retry.page.route("**/api/transcribe", async (route) => {
+      if (route.request().method() !== "POST") return route.fallback();
+      submissions++;
+      await new Promise((r) => setTimeout(r, 700));
+      if (submissions === 1) return route.fulfill({ status: 504, json: { error: { code: "PROVIDER_TIMEOUT", message: "Transcription took too long.", action: "Try again." } } });
+      return route.fulfill({ json: { provider: { id: "groq", displayName: "Groq (mock)" }, words: respondEmpty ? [] : WORDS, warning: null } });
+    });
+    await retry.page.getByTestId("file-input").first().setInputFiles(f("vertical.mp4"));
+    await retry.page.getByTestId("check-ok").waitFor();
+    await retry.page.getByTestId("continue-captions").click();
+    await retry.page.getByText("AI transcription & word editor", { exact: true }).evaluate((el) => { el.parentElement.open = true; });
+    await retry.page.getByTestId("make-captions").evaluate((button) => { button.click(); button.click(); });
+    await retry.page.getByTestId("transcribe-error").waitFor({ timeout: 60_000 });
+    check("transcription: duplicate clicks send only one request and timeout has recovery", submissions === 1 &&
+      (await retry.page.getByTestId("transcribe-error").innerText()).includes("Try again"));
+    await retry.page.getByTestId("make-captions").click();
+    await retry.page.getByTestId("word").first().waitFor();
+    check("transcription: retry succeeds after timeout", submissions === 2);
+    respondEmpty = true;
+    await retry.page.getByTestId("make-captions").click();
+    await retry.page.getByTestId("no-speech").waitFor();
+    check("transcription: empty result shows no speech and retains video-only export", (await retry.page.getByTestId("nav-export").getAttribute("aria-disabled")) === "false");
+    await retry.context.close();
+
     // ---------- Phone: step by step ----------
     const phone = await openStudio(browser, devices["Pixel 7"]);
     const p = phone.page;
     const title = () => p.getByTestId("mobile-step-title").innerText();
-    check("phone: rail hidden, step header shown", !(await p.getByRole("navigation", { name: "Steps" }).isVisible()) && (await title()) === "Video");
+    check("phone: tool selector and heading shown", (await p.getByRole("navigation", { name: "Editor tools" }).isVisible()) && (await title()) === "Video");
     await p.getByTestId("file-input").first().setInputFiles(f("vertical.mp4"));
     await p.getByTestId("check-ok").waitFor({ timeout: 30_000 });
     await p.getByTestId("next-button").click();
-    check("phone: Next goes to the optional Silence step", (await title()) === "Silence" && (await p.getByTestId("silence-analyze").isVisible()));
-    await p.getByTestId("next-button").click();
-    check("phone: Silence can be skipped; Next goes to Captions", (await title()) === "Captions");
+    check("phone: Next goes to Captions", (await title()) === "Captions");
+    await p.getByText("AI transcription & word editor", { exact: true }).evaluate((el) => { el.parentElement.open = true; });
     await p.getByTestId("make-captions").click();
     await p.getByTestId("word").first().waitFor({ timeout: 60_000 });
     await p.getByTestId("word").first().scrollIntoViewIfNeeded();
     check("phone: word editor reachable under the preview", await p.getByTestId("word").first().isVisible());
     await p.getByTestId("back-button").click();
-    check("phone: Back returns to the previous step (Silence)", (await title()) === "Silence");
+    check("phone: Back returns to Video", (await title()) === "Video");
     await p.getByTestId("next-button").click();
     await p.getByTestId("next-button").click();
     await p.getByTestId("next-button").click();
@@ -183,6 +274,14 @@ async function main() {
     const nav = await Promise.all(["back-button", "render-button", "mp4-link"].map((id) => p.getByTestId(id).boundingBox()));
     check("phone: main buttons are at least 40 px tall", nav.every((b) => b && b.height >= 40), nav.map((b) => b?.height.toFixed(0)).join(", "));
     check("phone: no sideways scroll", await noSideScroll(p));
+    await p.screenshot({ path: f("phone-export.png"), fullPage: true });
+    await p.getByTestId("back-button").click();
+    await p.getByTestId("back-button").click();
+    await p.getByTestId("back-button").click();
+    await p.getByTestId("file-input").first().setInputFiles(f("duration-601.mp4"));
+    await p.getByTestId("check-error").waitFor();
+    check("phone: long video rejected with Next disabled", await p.getByTestId("next-button").isDisabled() && await noSideScroll(p));
+    await p.screenshot({ path: f("phone-duration-error.png"), fullPage: true });
     await phone.context.close();
   } finally {
     await browser.close();

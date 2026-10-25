@@ -78,7 +78,7 @@ describe("createSarvamProvider", () => {
   it("maps HTTP errors to provider codes without reading the body", async () => {
     const cases: [number, string][] = [
       [429, "PROVIDER_RATE_LIMITED"],
-      [403, "PROVIDER_UNAVAILABLE"],
+      [403, "PROVIDER_AUTH_FAILED"],
       [503, "PROVIDER_UNAVAILABLE"],
       [400, "PROVIDER_REJECTED"],
     ];

@@ -108,7 +108,7 @@ async function main() {
     await page.getByTestId("transcribe-button").click();
     await page.getByTestId("transcribe-error").waitFor({ timeout: 15_000 });
     const notConfigured = await page.getByTestId("transcribe-error").innerText();
-    check("transcribe: unconfigured server reports it", /not configured/i.test(notConfigured) && /API key/.test(notConfigured));
+    check("transcribe: unconfigured server reports it", /not configured/i.test(notConfigured) && /GROQ_API_KEY/.test(notConfigured));
 
     // Real route rejects a non-Opus upload (byte sniffing).
     const sniff = await page.evaluate(async () => {
@@ -125,7 +125,7 @@ async function main() {
     let holdNext = false;
     let uploads = 0;
     await page.route("**/api/transcribe", async (route) => {
-      if (route.request().method() !== "POST") return route.fallback(); // the config GET goes to the real server
+      if (route.request().method() !== "POST") return route.fulfill({ json: { humanCheckSiteKey: null, provider: { name: "Groq", privacyUrl: "https://groq.com/privacy-policy/" }, romanizerName: "Groq" } });
       uploads++;
       uploaded = route.request().postDataBuffer();
       if (holdNext) {
@@ -142,6 +142,9 @@ async function main() {
       }
       await route.fulfill({ json: { provider: { id: "groq", displayName: "Groq (mock)" }, words: MOCK_WORDS, warning: null } });
     });
+    await pick(page, f("vertical.mp4"));
+    await page.getByTestId("extract-button").click();
+    await page.getByTestId("extract-done").waitFor({ timeout: 60_000 });
     check("hinglish: is the default caption language", (await page.getByTestId("language-select").inputValue()) === "hinglish");
 
     // A failed romanization is shown honestly, with the Hindi-script words and a way forward.
@@ -254,9 +257,13 @@ async function main() {
     const topBand = frameDiff(f("vertical.mp4"), outMp4, 1.0, 720, 1280, 0.05, 0.3);
     const deletedBand = frameDiff(f("vertical.mp4"), outMp4, 2.3, 720, 1280, 0.62, 0.82);
     const afterBand = frameDiff(f("vertical.mp4"), outMp4, 3.5, 720, 1280, 0.62, 0.82);
-    check("render: captions burned in at 1.0 s", captionBand > 5 && topBand < 2, `caption band Δ${captionBand.toFixed(2)}, top Δ${topBand.toFixed(2)}`);
-    check("render: deleted word not burned in (2.3 s)", deletedBand < 2, `Δ${deletedBand.toFixed(2)}`);
-    check("render: no caption after last word (3.5 s)", afterBand < 2, `Δ${afterBand.toFixed(2)}`);
+    // Windows' H.264 encoder shifts this solid background by ~3 luma levels; use an untouched
+    // region as the same-frame control, while still rejecting large colour changes.
+    const deletedTop = frameDiff(f("vertical.mp4"), outMp4, 2.3, 720, 1280, 0.05, 0.3);
+    const afterTop = frameDiff(f("vertical.mp4"), outMp4, 3.5, 720, 1280, 0.05, 0.3);
+    check("render: captions burned in at 1.0 s", captionBand - topBand > 5 && topBand < 5, `caption band Δ${captionBand.toFixed(2)}, top Δ${topBand.toFixed(2)}`);
+    check("render: deleted word not burned in (2.3 s)", Math.abs(deletedBand - deletedTop) < 2 && deletedTop < 5, `Δ${deletedBand.toFixed(2)}, control Δ${deletedTop.toFixed(2)}`);
+    check("render: no caption after last word (3.5 s)", Math.abs(afterBand - afterTop) < 2 && afterTop < 5, `Δ${afterBand.toFixed(2)}, control Δ${afterTop.toFixed(2)}`);
 
     // Start over deletes the draft: a fresh pick shows placeholder words again.
     page.once("dialog", (d) => d.accept());

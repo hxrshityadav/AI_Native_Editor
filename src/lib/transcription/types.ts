@@ -35,6 +35,7 @@ export interface Romanizer {
 }
 
 export type ProviderErrorCode =
+  | "PROVIDER_AUTH_FAILED"
   | "PROVIDER_UNAVAILABLE"
   | "PROVIDER_RATE_LIMITED"
   | "PROVIDER_REJECTED"
@@ -70,6 +71,7 @@ export const HUMAN_CHECK_HEADER = "x-turnstile-token";
 
 /** The JSON body of GET /api/transcribe: what the browser needs before it can transcribe. */
 export type TranscribeConfigResponse = {
+  setupError?: string | null;
   /** Turnstile site key when the server checks for bots; null when it doesn't. */
   humanCheckSiteKey: string | null;
   /** Where the speech audio goes (null when transcription isn't configured). */

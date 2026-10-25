@@ -1,3 +1,4 @@
+import type { Composition, Cut, TextOverlay } from "../editor/project";
 export type ExportPresetId = "reels" | "small" | "original";
 /** For sources that aren't 9:16: "fill" crops to 9:16, "fit" keeps the whole frame with bars. */
 export type Framing = "fill" | "fit";
@@ -37,6 +38,11 @@ export const EXPORT_PRESETS: readonly ExportPreset[] = [
 
 /** What the encoder should produce. `fit` uses Mediabunny's names: cover crops, contain adds bars. */
 export type ExportPlan = {
+  audio?: { muted: boolean; volume: number };
+  cuts?: Cut[];
+  gaps?: Cut[];
+  overlays?: TextOverlay[];
+  composition?: Composition;
   width: number;
   height: number;
   fit: "fill" | "cover" | "contain";

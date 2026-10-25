@@ -92,9 +92,12 @@ async function main() {
     await page.getByTestId("transcribe-button").click();
     await page.getByTestId("transcribe-error").waitFor({ timeout: 20_000 });
     check("the upload carries the token in its header", sentTokens.length === 1 && sentTokens[0] === DUMMY_TOKEN, JSON.stringify(sentTokens));
-    // Siteverify is unreachable from this container, so the server must refuse, not let it through.
+    // Cloudflare's test key may pass when reachable. The deliberately invalid provider key must
+    // then fail with setup instructions; when offline, verification itself must fail closed.
     const errorText = await page.getByTestId("transcribe-error").innerText();
-    check("an unverifiable token is refused with a reason and a next step", errorText.includes("anti-bot check couldn't be completed") && errorText.includes("Try again"), errorText);
+    check("a failed verification or invalid provider key has a reason and next step",
+      (errorText.includes("anti-bot check couldn't be completed") && errorText.includes("Try again")) ||
+      (errorText.includes("provider rejected the server API key") && errorText.includes(".env.local")), errorText);
     check(
       "the spent token is dropped and the widget reset for a new one",
       (await page.evaluate(() => window.turnstile.calls.reset)) === 1 && (await page.getByTestId("transcribe-button").isDisabled()),

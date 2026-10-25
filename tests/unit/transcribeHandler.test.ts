@@ -243,6 +243,18 @@ describe("POST /api/transcribe handler", () => {
     expect((await handler(upload(opus()))).status).toBe(500);
   });
 
+  it("bounds chunked bodies even without Content-Length", async () => {
+    const { handler, provider } = setup();
+    const request = new Request("http://localhost/api/transcribe", {
+      method: "POST",
+      headers: { "content-type": "multipart/form-data; boundary=test" },
+      body: new Uint8Array(MAX_AUDIO_BYTES + 64 * 1024 + 1),
+    });
+    expect(request.headers.has("content-length")).toBe(false);
+    expect((await handler(request)).status).toBe(413);
+    expect(provider!.transcribe).not.toHaveBeenCalled();
+  });
+
   describe("abuse controls", () => {
     const verifier = (result: HumanCheckResult) => ({ verify: vi.fn(async () => result) });
     const withToken = (token = "tok") => upload(opus(), {}, { "x-turnstile-token": token });
@@ -319,6 +331,29 @@ describe("POST /api/transcribe handler", () => {
       new DataView(bytes.buffer).setBigInt64(lastPage + 6, BigInt(seconds * 48_000 + 312), true);
       return new Blob([bytes as BlobPart]);
     }
+
+    it.each([30, 300, 600])("accepts verified audio duration %s", async (seconds) => {
+      const { handler } = setup();
+      expect((await handler(upload(opusOf(seconds)))).status).toBe(200);
+    });
+
+    it.each([0, 600.01, 601])("blocks invalid audio duration %s before the provider", async (seconds) => {
+      const { handler, provider } = setup();
+      const response = await handler(upload(opusOf(seconds)));
+      expect(response.status).toBe(422);
+      expect((await response.json()).error.code).toBe("INVALID_DURATION");
+      expect(provider!.transcribe).not.toHaveBeenCalled();
+    });
+
+    it("rejects unreadable duration and chained streams", async () => {
+      const { handler, provider } = setup();
+      const bytes = oggOpusFile();
+      bytes[bytes.length - 68 + 5] = 0; // missing EOS
+      expect((await handler(upload(new Blob([bytes as BlobPart])))).status).toBe(422);
+      const chained = new Blob([oggOpusFile() as BlobPart, oggOpusFile() as BlobPart]);
+      expect((await handler(upload(chained))).status).toBe(422);
+      expect(provider!.transcribe).not.toHaveBeenCalled();
+    });
 
     it("refuses audio longer than the provider takes, saying the limit", async () => {
       const provider = { ...mockProvider(), maxSeconds: 30 };

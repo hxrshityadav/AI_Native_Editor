@@ -11,6 +11,9 @@ import {
   Output,
   Quality,
 } from "mediabunny";
+import { assertVideoDuration } from "./duration";
+import { probeFile } from "./probe";
+import { discardOpusPadding } from "./opusPadding";
 
 export const SPEECH_AUDIO = {
   codec: "opus",
@@ -33,20 +36,22 @@ export class ExtractionError extends Error {
  * the audio is decoded a second way, through Web Audio, before giving up.
  */
 export async function extractSpeechAudio(file: Blob, onProgress?: (fraction: number) => void): Promise<Blob> {
+  const duration = (await probeFile(file)).durationSec;
+  assertVideoDuration(duration);
   try {
-    return await extractWithWebCodecs(file, onProgress);
+    return await extractWithWebCodecs(file, duration, onProgress);
   } catch (first) {
     if (isFileAccessError(first)) throw first; // the file itself is gone; a second decoder won't help
     onProgress?.(0);
     try {
-      return await extractWithWebAudio(file, onProgress);
+      return await extractWithWebAudio(file, duration, onProgress);
     } catch (second) {
       throw new ExtractionError(`WebCodecs: ${label(first)}; Web Audio: ${label(second)}`);
     }
   }
 }
 
-async function extractWithWebCodecs(file: Blob, onProgress?: (fraction: number) => void): Promise<Blob> {
+async function extractWithWebCodecs(file: Blob, duration: number, onProgress?: (fraction: number) => void): Promise<Blob> {
   const input = new Input({ source: new BlobSource(file), formats: ALL_FORMATS });
   const output = new Output({ format: new OggOutputFormat(), target: new BufferTarget() });
   try {
@@ -72,14 +77,14 @@ async function extractWithWebCodecs(file: Blob, onProgress?: (fraction: number) 
     }
     if (onProgress) conversion.onProgress = (p) => onProgress(p);
     await conversion.execute();
-    return toBlob(output.target.buffer);
+    return toBlob(output.target.buffer, duration);
   } finally {
     input.dispose();
   }
 }
 
 /** Copies the audio track out (no decoding), decodes it with Web Audio, then encodes Opus. */
-async function extractWithWebAudio(file: Blob, onProgress?: (fraction: number) => void): Promise<Blob> {
+async function extractWithWebAudio(file: Blob, duration: number, onProgress?: (fraction: number) => void): Promise<Blob> {
   // 1. Audio only, packets copied: a few MB even for a 3-minute 4K recording.
   const input = new Input({ source: new BlobSource(file), formats: ALL_FORMATS });
   const audioOnly = new Output({ format: new Mp4OutputFormat({ fastStart: "in-memory" }), target: new BufferTarget() });
@@ -132,11 +137,12 @@ async function extractWithWebAudio(file: Blob, onProgress?: (fraction: number) =
     onProgress?.(0.4 + 0.6 * Math.min(1, (i + step) / mono.length));
   }
   await output.finalize();
-  return toBlob(output.target.buffer);
+  return toBlob(output.target.buffer, duration);
 }
 
-function toBlob(buffer: ArrayBuffer | null): Blob {
+function toBlob(buffer: ArrayBuffer | null, duration: number): Blob {
   if (!buffer || buffer.byteLength === 0) throw new ExtractionError("Audio extraction produced no data.");
+  discardOpusPadding(buffer, duration);
   return new Blob([buffer], { type: SPEECH_AUDIO.mimeType });
 }
 

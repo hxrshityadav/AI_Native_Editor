@@ -8,10 +8,11 @@ const TIMEOUT_MS = 60_000;
 
 /** The subset of Groq's verbose_json response we rely on. */
 export const groqResponseSchema = z.object({
+  text: z.string().optional(),
   words: z
     .array(z.object({ word: z.string(), start: z.number(), end: z.number() }))
     .optional(),
-});
+}).refine((value) => value.words !== undefined || value.text === "", "Missing word timestamps");
 export type GroqResponse = z.infer<typeof groqResponseSchema>;
 
 /**
@@ -75,7 +76,7 @@ export function createGroqProvider(options: GroqOptions): TranscriptionProvider 
         // The body may echo request details; we read only the status.
         if (res.status === 429) throw new ProviderError("PROVIDER_RATE_LIMITED", "Groq rate limit reached.");
         if (res.status === 401 || res.status === 403)
-          throw new ProviderError("PROVIDER_UNAVAILABLE", `Groq rejected the API key (${res.status}).`);
+          throw new ProviderError("PROVIDER_AUTH_FAILED", "Groq rejected the server API key.");
         if (res.status >= 500) throw new ProviderError("PROVIDER_UNAVAILABLE", `Groq error ${res.status}.`);
         throw new ProviderError("PROVIDER_REJECTED", `Groq rejected the audio (${res.status}).`);
       }
@@ -84,6 +85,7 @@ export function createGroqProvider(options: GroqOptions): TranscriptionProvider 
       try {
         json = await res.json();
       } catch {
+        if (timeout.aborted) throw new ProviderError("PROVIDER_TIMEOUT", "Groq did not finish responding in time.");
         throw new ProviderError("PROVIDER_BAD_RESPONSE", "Groq returned invalid JSON.");
       }
       const parsed = groqResponseSchema.safeParse(json);

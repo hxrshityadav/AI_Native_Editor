@@ -1,5 +1,6 @@
 import { BufferTarget, StreamTarget } from "mediabunny";
 import { loadCaptionFont } from "@/lib/captions/fonts";
+import { loadLibraryFont } from "@/lib/editor/fontLibrary";
 import { moveMoovToFront } from "./faststart";
 import { renderCaptionedMp4 } from "./render";
 import { renderEditedMp4 } from "./renderEdited";
@@ -32,6 +33,8 @@ scope.onmessage = async ({ data: { file, lines, style, plan, segments } }) => {
     await loadCaptionFont(style.font, scope.fonts).catch(() => {
       throw new Error("Couldn't load the caption font. Check your connection and try again.");
     });
+    if (style.customFont) await loadLibraryFont(style.customFont, scope.fonts);
+    await Promise.all((style.additionalFonts ?? []).map((font) => loadLibraryFont(font, scope.fonts)));
     const disk = await openDiskTarget();
     if (disk) {
       const { audioCodec } = await render(disk.target);

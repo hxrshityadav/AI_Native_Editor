@@ -1,121 +1,50 @@
 import { describe, expect, it } from "vitest";
-import {
-  buildTimeMap,
-  editDecisionListSchema,
-  mapInterval,
-  mapWords,
-  removedRangeAt,
-  toOutputTime,
-  toOutputTimeSnapped,
-  toSourceTime,
-  type EditInterval,
-} from "@/lib/edit/timeline";
+import { detectSilences, editedToSource, normalizeCuts, remapCaptionLines, remapWords, retainedPieces, sourceToEdited } from "@/lib/editor/timeline";
 
-const cut = (start: number, end: number, action: EditInterval["action"] = "remove"): EditInterval => ({
-  start,
-  end,
-  action,
-  origin: "silence",
-});
-const edl = (...intervals: EditInterval[]) => ({ version: 1 as const, intervals });
-
-describe("buildTimeMap", () => {
-  it("is the identity with no cuts", () => {
-    const map = buildTimeMap(30, edl());
-    expect(map.outputDuration).toBe(30);
-    expect(toOutputTime(map, 17.5)).toBe(17.5);
+describe("non-destructive cut timeline", () => {
+  const cuts = [{ start: 1, end: 2 }, { start: 3, end: 4 }];
+  it("merges overlapping cuts, sorts them, and clamps to the source", () => {
+    expect(normalizeCuts([{ start: 3, end: 20 }, { start: 1, end: 2 }, { start: 1.5, end: 4 }], 8)).toEqual([{ start: 1, end: 8 }]);
   });
-
-  it("shifts everything after a 12–15 s cut three seconds earlier", () => {
-    const map = buildTimeMap(30, edl(cut(12, 15)));
-    expect(map.outputDuration).toBe(27);
-    expect(toOutputTime(map, 11)).toBe(11);
-    expect(toOutputTime(map, 13)).toBeNull();
-    expect(toOutputTime(map, 15)).toBe(12);
-    expect(toOutputTime(map, 20)).toBe(17);
+  it("maps source and edited time at cut edges without drift", () => {
+    expect(sourceToEdited(5, cuts)).toBe(3);
+    expect(sourceToEdited(1.5, cuts)).toBe(1);
+    expect(editedToSource(1, cuts)).toBe(2);
+    expect(editedToSource(3, cuts)).toBe(5);
+    for (const time of [0, 0.5, 2.1, 2.5, 4.1, 5]) expect(editedToSource(sourceToEdited(time, cuts), cuts)).toBeCloseTo(time);
   });
-
-  it("handles several non-adjacent cuts", () => {
-    const map = buildTimeMap(20, edl(cut(2, 3), cut(10, 12), cut(15, 15.5)));
-    expect(map.outputDuration).toBe(16.5);
-    expect(toOutputTime(map, 5)).toBe(4);
-    expect(toOutputTime(map, 13)).toBe(10);
-    expect(toOutputTime(map, 19)).toBe(15.5);
+  it("clips frame/audio samples that straddle edits, with no gaps in output time", () => {
+    expect(retainedPieces(0.9, 2.1, cuts)).toEqual([{ start: 0.9, end: 1 }, { start: 2, end: 2.1 }]);
+    expect(retainedPieces(1.1, 1.9, cuts)).toEqual([]);
+    expect(retainedPieces(2.2, 2.8, cuts)).toEqual([{ start: 2.2, end: 2.8 }]);
   });
-
-  it("merges overlapping and adjacent cuts, and drops slivers between them", () => {
-    const map = buildTimeMap(20, edl(cut(5, 8), cut(7, 9), cut(9.02, 11)));
-    expect(map.removed).toEqual([{ start: 5, end: 11 }]);
-    expect(map.outputDuration).toBe(14);
+  it("remaps captions and removes entirely cut words without modifying their source data", () => {
+    const words = [{ text: "first", start: 0, end: 0.8 }, { text: "removed", start: 1.2, end: 1.8 }, { text: "last", start: 4, end: 5 }];
+    expect(remapWords(words, cuts)).toEqual([{ text: "first", start: 0, end: 0.8 }, { text: "last", start: 2, end: 3 }]);
+    expect(words[2].start).toBe(4);
   });
-
-  it("handles cuts at the very start and end", () => {
-    const map = buildTimeMap(10, edl(cut(0, 1.5), cut(8.99, 10)));
-    expect(map.removed).toEqual([{ start: 0, end: 1.5 }, { start: 8.99, end: 10 }]);
-    expect(toOutputTime(map, 1.5)).toBe(0);
-    expect(map.outputDuration).toBeCloseTo(7.49, 3);
+  it("keeps portions of words crossing a cut, without duplicating text", () => {
+    expect(remapWords([{ text: "hello", start: 0.8, end: 2.2 }], cuts)).toEqual([{ text: "hello", start: 0.8, end: 1.2000000000000002 }]);
   });
-
-  it("ignores suggestions the user chose to keep, and clamps to the video", () => {
-    const map = buildTimeMap(10, edl(cut(2, 4, "keep"), cut(9, 12)));
-    expect(map.removed).toEqual([{ start: 9, end: 10 }]);
-  });
-
-  it("maps output time back to source time", () => {
-    const map = buildTimeMap(30, edl(cut(12, 15), cut(20, 21)));
-    for (const t of [0, 11.9, 15, 19.5, 21, 29]) expect(toSourceTime(map, toOutputTime(map, t)!)).toBeCloseTo(t, 6);
-  });
-
-  it("tells the preview where to jump", () => {
-    const map = buildTimeMap(30, edl(cut(12, 15)));
-    expect(removedRangeAt(map, 13)).toEqual({ start: 12, end: 15 });
-    expect(removedRangeAt(map, 15)).toBeNull();
-    expect(toOutputTimeSnapped(map, 13)).toBe(12);
-  });
-
-  it("rejects malformed intervals at the boundary", () => {
-    expect(editDecisionListSchema.safeParse(edl(cut(5, 4))).success).toBe(false);
-    expect(editDecisionListSchema.safeParse({ version: 1, intervals: [{ start: 1, end: 2, action: "delete", origin: "silence" }] }).success).toBe(false);
+  it("preserves caption blocks across cuts so SRT and video cannot regroup differently", () => {
+    const lines = [
+      { text: "one", start: 0, end: 0.8, words: [{ text: "one", start: 0, end: 0.8 }] },
+      { text: "two", start: 2.1, end: 2.5, words: [{ text: "two", start: 2.1, end: 2.5 }] },
+    ];
+    const mapped = remapCaptionLines(lines, cuts);
+    expect(mapped).toHaveLength(2);
+    expect(mapped[1].start).toBeCloseTo(1.1);
   });
 });
-
-describe("captions and words across cuts", () => {
-  const map = buildTimeMap(30, edl(cut(12, 15), cut(20, 21)));
-
-  it("shifts words after a cut and leaves earlier ones alone", () => {
-    const words = mapWords(map, [
-      { text: "pehle", start: 10, end: 11 },
-      { text: "baad", start: 16, end: 16.5 },
-      { text: "aakhri", start: 25, end: 25.4 },
-    ]);
-    expect(words).toEqual([
-      { text: "pehle", start: 10, end: 11 },
-      { text: "baad", start: 13, end: 13.5 },
-      { text: "aakhri", start: 21, end: 21.4 },
-    ]);
+describe("RMS pause candidates", () => {
+  const options = { threshold: -40, minimum: 0.5, padding: 0.08, keep: 0.2 };
+  it("preserves short natural pauses and audible sound", () => {
+    expect(detectSilences([{ start: 0, end: 0.2, db: -70 }, { start: 0.2, end: 1, db: -25 }], options)).toEqual([]);
   });
-
-  it("drops a word entirely inside a cut", () => {
-    expect(mapWords(map, [{ text: "umm", start: 13, end: 13.4 }])).toEqual([]);
+  it("detects a quiet interval and preserves edge padding plus the requested pause", () => {
+    expect(detectSilences([{ start: 0, end: 1, db: -20 }, { start: 1, end: 2, db: -70 }, { start: 2, end: 3, db: -20 }], options)).toEqual([{ start: 1.18, end: 1.82 }]);
   });
-
-  it("clips a word that overlaps a cut edge", () => {
-    expect(mapInterval(map, { start: 11.8, end: 12.4 })).toEqual({ start: 11.8, end: 12 });
-    expect(mapInterval(map, { start: 14.6, end: 15.5 })).toEqual({ start: 12, end: 12.5 });
-  });
-
-  it("shortens a caption that spans a whole cut", () => {
-    expect(mapInterval(map, { start: 11, end: 16 })).toEqual({ start: 11, end: 13 });
-  });
-
-  it("drops what survives a cut only as a sliver", () => {
-    expect(mapInterval(map, { start: 11.98, end: 13 })).toBeNull();
-  });
-
-  it("keeps word order and non-overlap after several cuts", () => {
-    const words = Array.from({ length: 60 }, (_, i) => ({ text: `w${i}`, start: i * 0.5, end: i * 0.5 + 0.4 }));
-    const mapped = mapWords(map, words);
-    for (let i = 1; i < mapped.length; i++) expect(mapped[i].start).toBeGreaterThanOrEqual(mapped[i - 1].end);
-    expect(mapped.at(-1)!.end).toBeLessThanOrEqual(map.outputDuration);
+  it("does not bridge an unmeasured gap", () => {
+    expect(detectSilences([{ start: 0, end: 0.3, db: -70 }, { start: 1, end: 1.3, db: -70 }], options)).toEqual([]);
   });
 });

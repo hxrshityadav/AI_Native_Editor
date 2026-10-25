@@ -34,6 +34,7 @@ describe("oggOpusDurationSec", () => {
   /** Last page with the given granule position (48 kHz samples). */
   function withGranule(granule: number) {
     const last = oggPage(new Uint8Array(40));
+    last[5] = 0x04;
     new DataView(last.buffer).setBigInt64(6, BigInt(granule), true);
     return concat(oggPage(opusHead, { bos: true }), oggPage(opusTags), last);
   }

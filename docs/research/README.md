@@ -2,6 +2,55 @@
 
 Facts we rely on, with source and date checked. Recheck before pricing or launch decisions.
 
+## Studio fonts and subject-mask evaluation (2026-10-25)
+
+- Extra fonts come from the official `google/fonts` repository, with each unmodified OFL-1.1 license
+  bundled beside the binary. Sources and SHA-256 hashes: `public/fonts/catalog/SOURCES.md`.
+  Licenses checked: https://raw.githubusercontent.com/google/fonts/main/ofl/notoserif/OFL.txt,
+  https://raw.githubusercontent.com/google/fonts/main/ofl/robotomono/OFL.txt,
+  https://raw.githubusercontent.com/google/fonts/main/ofl/caveat/OFL.txt,
+  https://raw.githubusercontent.com/google/fonts/main/ofl/anton/OFL.txt.
+- Mediabunny's installed declarations were checked before using `processedWidth/Height`, frame
+  drawing, `VideoSample`, `AudioSample.trim/setTimestamp`, `AudioSampleSink`, and conversion callbacks.
+  Custom composition runs before captions; source/display dimensions are preserved through rotation.
+- MediaPipe web guide: https://developers.google.com/edge/mediapipe/solutions/vision/image_segmenter/web_js.
+  `segmentForVideo` is synchronous and the guide recommends workers to avoid UI blocking.
+- Model options/benchmarks: https://developers.google.com/edge/mediapipe/solutions/vision/image_segmenter.
+  Person masks are available from SelfieSegmenter (256×256 or 144×256). The reported Pixel 6 CPU
+  timings are about 33–34 ms, **not** browser/WebCodecs measurements. Our inference is that browser
+  inference plus encoding needs a separate performance pass before promising real-time behavior.
+- Model card: https://storage.googleapis.com/mediapipe-assets/Model%20Card%20MediaPipe%20Selfie%20Segmentation.pdf.
+  It describes 249 KB/244 KB models and Apache-2.0 licensing, with thin-feature, occlusion and lighting
+  limitations. This historical card does not pin the latest model binary; verify the chosen artifact
+  and license before redistribution.
+- Runtime metadata was inspected using `npm view @mediapipe/tasks-vision version dist.unpackedSize --json`:
+  version 1.1.1, 42,064,546 unpacked bytes. Unpacked size is not network transfer size or resident RAM.
+  Nothing was installed. The core editor has no new ML dependency, API spend or video upload path.
+- Segmentation evaluation gates: pin the model/runtime and licenses; measure worker CPU/GPU and memory
+  alongside encoding; compare masks during seek and chronological export; test hair/fast movement/low
+  light; add deterministic temporal smoothing with reset after seeks/cuts; verify cancellation and
+  mid-range Android. Until then the ordinary overlay layer ships with masking explicitly unavailable.
+
+## Ten-minute integration review (2026-10-25)
+
+- Rechecked Groq's official speech guide: https://console.groq.com/docs/speech-to-text.
+  Existing multilingual Whisper, Ogg uploads, `verbose_json`, and word granularities remain appropriate.
+- Rechecked Vercel's function limits: https://vercel.com/docs/functions/limitations.
+  Request/response payload ceiling is 4.5 MB. Our 4 MiB audio + 64 KiB multipart ceiling stays below it.
+- Next.js environment loading, Route Handlers, and `maxDuration` were checked against the installed
+  `node_modules/next/dist/docs/` reference. `.env.local` belongs at the project root; provider keys
+  must never use `NEXT_PUBLIC_`. A 180-second function budget is requested; deployment acceptance
+  still needs validation on the actual host.
+- No successful live transcription: this checkout has neither real provider key nor `.env.local`.
+  Successful responses use mocked adapters/browser interception; server E2E may reach Groq's
+  authentication rejection using a deliberately invalid key. These checks do not establish speech
+  quality or synchronization on real clips.
+- Exact-boundary browser regression: WebCodecs/Mediabunny produced 600.0135 seconds of Opus from
+  a validated 600-second source. RFC 7845 §4.4 (https://www.rfc-editor.org/rfc/rfc7845#section-4.4)
+  defines EOS granule end trimming for encoder padding. Our extractor caps only this end marker
+  at the validated source duration and recomputes that page's Ogg CRC; it never accepts or trims a
+  video longer than the limit. E2E checks the resulting duration and clean ffmpeg decoding.
+
 ## Groq speech-to-text (checked 2026-10-24, https://console.groq.com/docs/speech-to-text)
 
 - Endpoint: `POST https://api.groq.com/openai/v1/audio/transcriptions`, OpenAI-compatible.

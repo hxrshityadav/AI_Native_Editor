@@ -32,5 +32,8 @@ export const theoraHead = concat(new Uint8Array([0x80]), ascii("theora"), new Ui
 
 /** A valid-looking audio-only Ogg Opus file header. */
 export function oggOpusFile(): Uint8Array {
-  return concat(oggPage(opusHead, { bos: true }), oggPage(opusTags), oggPage(new Uint8Array(40)));
+  const last = oggPage(new Uint8Array(40));
+  last[5] = 0x04;
+  new DataView(last.buffer).setBigInt64(6, BigInt(48_000 + 312), true);
+  return concat(oggPage(opusHead, { bos: true }), oggPage(opusTags), last);
 }

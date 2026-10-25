@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { validateVideoDuration } from "../media/duration";
 import { getClientIp, hashClientKey, type RateLimiter } from "./rateLimit";
 import { hasDevanagari } from "./groqRomanize";
 import type { HumanVerifier } from "./humanCheck";
@@ -17,7 +18,7 @@ import {
 
 /**
  * Vercel caps function request bodies at 4.5 MB, so an app cap above that never
- * applies. 3 minutes of 32 kbps mono Opus is ~0.7 MB.
+ * applies. 10 minutes of 32 kbps mono Opus is ~2.4 MB.
  */
 export const MAX_AUDIO_BYTES = 4 * 1024 * 1024;
 const MULTIPART_OVERHEAD_BYTES = 64 * 1024;
@@ -44,7 +45,7 @@ const ERRORS = {
   AUDIO_TOO_LARGE: {
     status: 413,
     message: "The audio is larger than 4 MB.",
-    action: "Use a clip of 3 minutes or less.",
+    action: "Re-extract compressed speech audio using the app. Videos must be 10 minutes or shorter.",
   },
   UNSUPPORTED_AUDIO: {
     status: 415,
@@ -55,6 +56,11 @@ const ERRORS = {
     status: 413,
     message: "The transcription service on this server takes shorter clips.",
     action: "Use a shorter clip.",
+  },
+  INVALID_DURATION: {
+    status: 422,
+    message: "The audio duration is missing, unreadable, or longer than 10 minutes.",
+    action: "Choose a video of 10 minutes or less and re-extract its speech audio in the app.",
   },
   RATE_LIMITED: {
     status: 429,
@@ -89,7 +95,12 @@ const ERRORS = {
   NOT_CONFIGURED: {
     status: 503,
     message: "Transcription is not configured on this server.",
-    action: "Set the transcription provider's API key (see .env.example) and restart the server.",
+    action: "Set GROQ_API_KEY in .env.local at the project root (see .env.example), then restart. For hosting, set it in the server environment and redeploy.",
+  },
+  PROVIDER_AUTH_FAILED: {
+    status: 503,
+    message: "The transcription provider rejected the server API key.",
+    action: "Replace the selected provider's GROQ_API_KEY or SARVAM_API_KEY in .env.local or your hosting environment, verify account permissions, then restart or redeploy.",
   },
   PROVIDER_UNAVAILABLE: {
     status: 502,
@@ -131,6 +142,7 @@ const ROMANIZE_WARNING = {
 
 export type TranscribeHandlerDeps = {
   getProvider: () => TranscriptionProvider | null;
+  getSetupError?: () => string | null;
   /** Needed for Hinglish; without it Hinglish falls back to Hindi script with a warning. */
   getRomanizer?: () => Romanizer | null;
   limiter: RateLimiter;
@@ -165,7 +177,7 @@ export function createTranscribeHandler(deps: TranscribeHandlerDeps) {
     }
 
     const provider = deps.getProvider();
-    if (!provider) return fail("NOT_CONFIGURED");
+    if (!provider) return fail("NOT_CONFIGURED", undefined, deps.getSetupError?.() ?? undefined);
     if (deps.abuseControlsMissing) return fail("ABUSE_CONTROLS_MISSING");
 
     // A missing token costs nothing; only requests that carry one count against the limit.
@@ -189,7 +201,26 @@ export function createTranscribeHandler(deps: TranscribeHandlerDeps) {
 
     let form: FormData;
     try {
-      form = await request.formData();
+      // Bound actual bytes too: Content-Length may be absent or false on chunked requests.
+      const reader = request.body?.getReader();
+      if (!reader) return fail("INVALID_REQUEST");
+      const chunks: Uint8Array<ArrayBuffer>[] = [];
+      let total = 0;
+      try {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          total += value.byteLength;
+          if (total > MAX_AUDIO_BYTES + MULTIPART_OVERHEAD_BYTES) {
+            await reader.cancel();
+            return fail("AUDIO_TOO_LARGE");
+          }
+          chunks.push(new Uint8Array(value));
+        }
+      } finally {
+        reader.releaseLock();
+      }
+      form = await new Response(new Blob(chunks), { headers: { "content-type": request.headers.get("content-type")! } }).formData();
     } catch {
       return fail("INVALID_REQUEST");
     }
@@ -206,9 +237,10 @@ export function createTranscribeHandler(deps: TranscribeHandlerDeps) {
     // Sniff the real bytes; the client-declared type is ignored.
     const bytes = new Uint8Array(await audio.arrayBuffer());
     if (!isAudioOnlyOggOpus(bytes)) return fail("UNSUPPORTED_AUDIO");
+    const seconds = oggOpusDurationSec(bytes);
+    if (!validateVideoDuration(seconds)) return fail("INVALID_DURATION");
     if (provider.maxSeconds !== undefined) {
-      const seconds = oggOpusDurationSec(bytes);
-      if (seconds !== null && seconds > provider.maxSeconds + 0.5) {
+      if (seconds > provider.maxSeconds) {
         return fail("AUDIO_TOO_LONG_FOR_PROVIDER", undefined, `Use a clip of ${provider.maxSeconds} seconds or less.`);
       }
     }

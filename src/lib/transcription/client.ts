@@ -1,4 +1,5 @@
 import type { Word } from "@/lib/captions/types";
+import { z } from "zod";
 import {
   HUMAN_CHECK_HEADER,
   type CaptionLanguage,
@@ -32,6 +33,14 @@ export type TranscribeResult =
   | { ok: true; words: Word[]; providerName: string; warning: TranscribeResponse["warning"] }
   | { ok: false; code: string; message: string; action: string };
 
+const responseSchema = z.object({
+  provider: z.object({ displayName: z.string() }),
+  words: z.array(z.object({ text: z.string(), start: z.number().nonnegative(), end: z.number().nonnegative() })
+    .refine((word) => word.end >= word.start)),
+  warning: z.object({ message: z.string(), action: z.string() }).nullish(),
+});
+const errorSchema = z.object({ error: z.object({ code: z.string(), message: z.string(), action: z.string() }) });
+
 export async function requestTranscription(
   audio: Blob,
   language: CaptionLanguage,
@@ -60,10 +69,12 @@ export async function requestTranscription(
   }
 
   const json = (await res.json().catch(() => null)) as TranscribeResponse | TranscribeErrorResponse | null;
-  if (res.ok && json && "words" in json) {
-    return { ok: true, words: json.words, providerName: json.provider.displayName, warning: json.warning ?? null };
+  const parsed = responseSchema.safeParse(json);
+  if (res.ok && parsed.success) {
+    return { ok: true, words: parsed.data.words, providerName: parsed.data.provider.displayName, warning: parsed.data.warning ?? null };
   }
-  if (json && "error" in json) return { ok: false, ...json.error };
+  const error = errorSchema.safeParse(json);
+  if (error.success) return { ok: false, ...error.data.error };
   return {
     ok: false,
     code: `HTTP_${res.status}`,

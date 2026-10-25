@@ -1,5 +1,7 @@
 import type { CaptionFontId } from "./fonts";
 import type { GroupOptions } from "./group";
+import type { Appearance, Animation } from "../editor/project";
+import type { FontRecord } from "../editor/fontLibrary";
 
 /** A single spoken word with timings in seconds, relative to the start of the source video. */
 export type Word = {
@@ -10,6 +12,9 @@ export type Word = {
 
 /** A group of words shown on screen together. */
 export type CaptionLine = {
+  id?: string;
+  appearance?: Appearance;
+  animation?: Animation;
   words: Word[];
   text: string;
   start: number;
@@ -17,6 +22,9 @@ export type CaptionLine = {
 };
 
 export type CaptionStyle = {
+  additionalFonts?: FontRecord[];
+  customFont?: FontRecord;
+  animation?: Animation;
   id: string;
   name: string;
   /** One line telling the user when to pick it. */
@@ -40,4 +48,4 @@ export type CaptionStyle = {
   maxWidthRatio: number;
   /** How many words and characters fit on screen at once. */
   group: Pick<GroupOptions, "maxWords" | "maxChars">;
-};
+} & Omit<Appearance, "font">;

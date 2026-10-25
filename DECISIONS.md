@@ -1,5 +1,28 @@
 # Decisions
 
+## 2026-10-25: Extend the existing renderer for the professional studio
+
+Keep `useReelSession`, Mediabunny, Canvas, IndexedDB and worker/OPFS export. A versioned editing model
+owns settings/history; source words and metadata remain in the existing workflow and are exposed as
+a typed project snapshot. One shared geometry/drawing model serves preview and export. Caption blocks
+are remapped through the EDL without regrouping, so SRT and burned-in timing stay consistent.
+New fonts use the existing FontFace path in both document and worker, with explicit Devanagari fallback.
+Four extra OFL families add no runtime package dependency. User font bytes never leave the browser.
+
+Silence analysis is streamed in a separate worker and only proposes cuts. Export transcodes cut audio
+and adjusts video sample timestamps; real-device precision and memory remain release gates. Subject
+masking is staged behind a schema value of `off`, with an explicit unavailable explanation. Adding a
+42 MB unpacked vision runtime before measuring masks, encoding contention and seeking consistency
+would put the reliable core editor at risk; revisit with a genuine tested person-mask prototype.
+
+## 2026-10-25: Ten-minute input limit (supersedes D-009's duration)
+
+Accept positive, finite durations through 600 seconds. Shared validation absorbs only machine epsilon
+at the boundary; the old one-second slack and one-second minimum are removed. Revalidate before local
+extraction and worker rendering. The API independently reads complete, single-stream Ogg Opus pages
+and the final EOS granule; missing duration and chained streams are refused before provider calls.
+The independent 1 GB memory guard, 4K guard, and landscape warning remain.
+
 Newest last. Each entry: decision, why, and what would change it.
 
 ## D-001: Rebuild from scratch (2026-10-24)
@@ -266,3 +289,9 @@ apps and tabs" advice.
 - **Duration limit.** The brief says "existing 10-minute limit"; the existing limit is 3 minutes (D-009).
   Nothing here changed it, and every new path reads `LIMITS.maxDurationSec`. Raising it is a product and cost
   decision for the owner.
+
+## 2026-10-25 — Shared manual/AI operations and Windows production compiler
+
+Manual and AI edits use a strict structured operation reducer over metadata snapshots. AI plans are reviewed before atomic application; they cannot execute code. Caption records hold stable identity, timing and explicit overrides. The existing cut map drives preview, worker video/audio and SRT. This avoids separate implementations of AI and manual export behavior.
+
+The standard production build selects webpack after repeatedly reproducing the Windows Turbopack CSS child-process connection failure. The already-installed Tailwind compiler integration is retained. No new dependency or media-processing backend was introduced. This is a production build choice, not a claim that Turbopack is fixed.

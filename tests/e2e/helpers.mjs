@@ -2,8 +2,9 @@
 import { execFileSync, spawn } from "node:child_process";
 import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 
-export const ROOT = new URL("../..", import.meta.url).pathname;
+export const ROOT = fileURLToPath(new URL("../..", import.meta.url));
 
 /** Records PASS/FAIL lines; `finish()` prints the total and exits non-zero on any failure. */
 export function createChecks() {
@@ -69,7 +70,7 @@ export async function startServer(port, { withKey = false, env: extra = {} } = {
   if (!withKey) for (const k of ["GROQ_API_KEY", "SARVAM_API_KEY", "TRANSCRIBE_PROVIDER"]) env[k] = "";
   for (const k of ["DATABASE_URL", "TURNSTILE_SITE_KEY", "TURNSTILE_SECRET_KEY", "VERCEL"]) env[k] = "";
   Object.assign(env, extra);
-  const server = spawn(join(ROOT, "node_modules/.bin/next"), ["start", "-p", String(port)], {
+  const server = spawn(process.execPath, [join(ROOT, "node_modules/next/dist/bin/next"), "start", "-p", String(port)], {
     cwd: ROOT,
     env,
     stdio: "pipe",
@@ -88,7 +89,8 @@ export async function startServer(port, { withKey = false, env: extra = {} } = {
 
 export function stopServer(server) {
   try {
-    process.kill(-server.pid, "SIGTERM");
+    if (process.platform === "win32") execFileSync("taskkill", ["/pid", String(server.pid), "/T", "/F"], { stdio: "ignore" });
+    else process.kill(-server.pid, "SIGTERM");
   } catch {}
 }
 

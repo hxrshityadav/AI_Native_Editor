@@ -39,6 +39,23 @@ describe("mapGroqWords", () => {
 describe("createGroqProvider", () => {
   const audio = new Blob([new Uint8Array([1, 2, 3])], { type: "audio/ogg" });
 
+  it("reports timeout and permits retry after failure", async () => {
+    const timeout = new AbortController();
+    const spy = vi.spyOn(AbortSignal, "timeout").mockReturnValue(timeout.signal);
+    const fetchMock = vi.fn<typeof fetch>().mockImplementationOnce(async () => {
+      timeout.abort();
+      throw new DOMException("Timed out", "TimeoutError");
+    }).mockResolvedValueOnce(Response.json({ words: [] }));
+    try {
+      const provider = createGroqProvider({ apiKey: "test-key", fetch: fetchMock });
+      await expect(provider.transcribe({ audio, language: "hi" })).rejects.toMatchObject({ code: "PROVIDER_TIMEOUT" });
+      spy.mockReturnValue(new AbortController().signal);
+      await expect(provider.transcribe({ audio, language: "en" })).resolves.toEqual([]);
+    } finally {
+      spy.mockRestore();
+    }
+  });
+
   it("requests word timestamps with the configured model and language", async () => {
     const fetchMock = vi.fn(async (_url: string | URL | Request, init?: RequestInit) => {
       const form = init!.body as FormData;
@@ -64,7 +81,7 @@ describe("createGroqProvider", () => {
 
   it.each([
     [429, "PROVIDER_RATE_LIMITED"],
-    [401, "PROVIDER_UNAVAILABLE"],
+    [401, "PROVIDER_AUTH_FAILED"],
     [500, "PROVIDER_UNAVAILABLE"],
     [400, "PROVIDER_REJECTED"],
   ])("maps HTTP %i to %s", async (status, code) => {

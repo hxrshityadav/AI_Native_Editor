@@ -1,10 +1,9 @@
 import type { Issue, IssueCode, ProbeResult, ValidationResult } from "./types";
+import { MAX_VIDEO_DURATION_SECONDS, validateVideoDuration } from "./duration";
 
 export const LIMITS = {
   maxBytes: 1024 * 1024 * 1024,
-  minDurationSec: 1,
-  /** Reels and Shorts both cap at 3 minutes; allow a little slack for container rounding. */
-  maxDurationSec: 181,
+  maxDurationSec: MAX_VIDEO_DURATION_SECONDS,
   /** Longest edge. Above 4K, phone encoders commonly refuse to configure. */
   maxLongEdge: 3840,
 } as const;
@@ -16,7 +15,7 @@ const MESSAGES: Record<IssueCode, Omit<Issue, "code">> = {
   },
   FILE_TOO_LARGE: {
     reason: "This file is larger than 1 GB.",
-    action: "Trim it to under 3 minutes or export it at 1080p from your camera or editor, then try again.",
+    action: "Export a smaller file at 1080p from your camera or editor, then try again. This memory limit is separate from the 10-minute duration limit.",
   },
   UNSUPPORTED_FORMAT: {
     reason: "We couldn't read this file as a video.",
@@ -43,13 +42,13 @@ const MESSAGES: Record<IssueCode, Omit<Issue, "code">> = {
     reason: "This browser can't decode the audio in this file.",
     action: "Re-export the video with AAC audio, or try Chrome or Edge.",
   },
-  TOO_SHORT: {
-    reason: "This video is shorter than 1 second.",
-    action: "Pick a longer clip.",
+  INVALID_DURATION: {
+    reason: "We couldn't read a valid duration for this video.",
+    action: "Choose another video or re-save the original as MP4 and try again.",
   },
   TOO_LONG: {
-    reason: "This video is longer than 3 minutes, the limit for Reels and Shorts.",
-    action: "Trim it to 3 minutes or less in your gallery or editor, then try again.",
+    reason: "Videos must be 10 minutes or shorter.",
+    action: "Choose a shorter video to continue.",
   },
   RESOLUTION_TOO_HIGH: {
     reason: "This video is larger than 4K, which most devices can't re-encode.",
@@ -76,7 +75,7 @@ export function validateFileBasics(file: { size: number }): ValidationResult {
   return { ok: true, warnings: [] };
 }
 
-export function validateProbe(probe: ProbeResult): ValidationResult {
+export function validateProbe(probe: ProbeResult, options: { requireAudio?: boolean } = {}): ValidationResult {
   const basics = validateFileBasics({ size: probe.fileSizeBytes });
   if (!basics.ok) return basics;
 
@@ -85,10 +84,12 @@ export function validateProbe(probe: ProbeResult): ValidationResult {
 
   if (!probe.video) return fail("NO_VIDEO_TRACK");
   if (!probe.video.canDecode) return fail(probe.video.codec === "hevc" ? "HEVC_UNDECODABLE" : "VIDEO_UNDECODABLE");
-  if (!probe.audio) return fail("NO_AUDIO_TRACK");
-  if (!probe.audio.canDecode) return fail("AUDIO_UNDECODABLE");
-  if (probe.durationSec < LIMITS.minDurationSec) return fail("TOO_SHORT");
-  if (probe.durationSec > LIMITS.maxDurationSec) return fail("TOO_LONG");
+  if (!probe.audio && options.requireAudio !== false) return fail("NO_AUDIO_TRACK");
+  if (!probe.audio) warnings.push({ code: "NO_AUDIO_TRACK", reason: "This video has no audio. Manual captions and video export still work.", action: "Use manual captions, or choose a video with speech for transcription." });
+  if (probe.audio && !probe.audio.canDecode) return fail("AUDIO_UNDECODABLE");
+  if (!validateVideoDuration(probe.durationSec)) {
+    return fail(Number.isFinite(probe.durationSec) && probe.durationSec > 0 ? "TOO_LONG" : "INVALID_DURATION");
+  }
   if (Math.max(probe.video.width, probe.video.height) > LIMITS.maxLongEdge) return fail("RESOLUTION_TOO_HIGH");
 
   if (probe.video.height <= probe.video.width) warnings.push(issue("NOT_VERTICAL"));

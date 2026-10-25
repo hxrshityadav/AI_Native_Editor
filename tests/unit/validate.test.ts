@@ -16,6 +16,13 @@ function codeOf(p: ProbeResult) {
 }
 
 describe("validateProbe", () => {
+  it("accepts silent footage for manual studio editing while preserving speech-only validation", () => { expect(validateProbe({ ...good, audio: null }, { requireAudio: false }).ok).toBe(true); expect(validateProbe({ ...good, audio: null }).ok).toBe(false); });
+  it.each([0.5, 30, 300, 600])("accepts %s seconds independently of file size", (durationSec) => {
+    expect(validateProbe({ ...good, durationSec, fileSizeBytes: LIMITS.maxBytes }).ok).toBe(true);
+  });
+  it.each([NaN, Infinity, -Infinity, 0, -1, undefined])("rejects invalid metadata: %s", (durationSec) => {
+    expect(codeOf({ ...good, durationSec } as ProbeResult)).toBe("INVALID_DURATION");
+  });
   it("accepts a vertical clip with no warnings", () => {
     expect(validateProbe(good)).toEqual({ ok: true, warnings: [] });
   });
@@ -26,7 +33,7 @@ describe("validateProbe", () => {
     ["HEVC_UNDECODABLE", { video: { ...good.video!, codec: "hevc", canDecode: false } }],
     ["NO_AUDIO_TRACK", { audio: null }],
     ["AUDIO_UNDECODABLE", { audio: { ...good.audio!, canDecode: false } }],
-    ["TOO_SHORT", { durationSec: 0.5 }],
+    ["INVALID_DURATION", { durationSec: 0 }],
     ["TOO_LONG", { durationSec: LIMITS.maxDurationSec + 1 }],
     ["RESOLUTION_TOO_HIGH", { video: { ...good.video!, width: 4320, height: 7680 } }],
     ["FILE_TOO_LARGE", { fileSizeBytes: LIMITS.maxBytes + 1 }],

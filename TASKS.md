@@ -6,6 +6,10 @@ Statuses: **Not started** · **In progress** · **Implemented** (code exists, no
 "Tested" for media tasks means headless Chromium 153 on Linux (Playwright 1.63) against
 ffmpeg-generated fixtures. No task is verified on a real phone yet.
 
+## Manual studio upgrade (2026-10-25)
+
+Manual captions, selectable preview positioning, contextual properties, clip/caption/text timeline edits, shared history, audio gain/mute and validated AI-plan review are implemented. `npm run check` passes 274 tests; `npm run build` passes with webpack; the new manual browser suite passes 42/42. All six browser/media suites pass 218/218 checks. See `docs/MANUAL_STUDIO.md`. These are Windows Chromium/Pixel emulation results; real-device verification remains open.
+
 ## Phase 1: render lab (rebuilt from scratch 2026-10-24; the GitHub repo was empty)
 
 | ID | Task | Status | Evidence |
@@ -48,6 +52,34 @@ ffmpeg-generated fixtures. No task is verified on a real phone yet.
 | T-25 | Remove Silence: on-device level analysis (worker) of the extracted speech audio; suggestions with auto/manual threshold, shortest silence, padding before/after speech, shortest pause left, all/only-long mode; timeline + list review, per-cut keep, reset; preview plays the proposed result; apply/cancel, undo/redo; non-destructive EDL with one source→output time map for captions, word highlights and SRT; export decodes only kept segments and re-times video and audio (real cuts); cuts saved in the draft | Tested (15 timeline + 10 detection unit tests; silence E2E 19/19: 3 real silences found and the 0.3 s pause kept, only-long mode, keep a cut, preview jumps a cut, apply/undo/redo, export duration within 0.01 s of the EDL, flash vs sound within 10 ms after cuts, pause survives, SRT on the cut timeline, no-silence clip; studio E2E 30/30 with the new step). Not tested on a real phone or on real speech. Text overlays don't exist yet, so only captions/words/SRT are remapped |
 
 ## Known limitations
+
+### Professional studio increment (2026-10-25)
+
+| Milestone | Status | Evidence / limit |
+| --- | --- | --- |
+| S-01 Typed editing state, project persistence, settings undo/redo | Tested | Project schema/history tests; caption/style restore; stale-export invalidation. Original media must be re-picked after reload. |
+| S-02 Four aspect ratios, Fill/Fit/Original, position/scale/color/blur | Tested | Geometry unit tests, all-ratio MP4s with ffprobe and clean decode, crop/color pixel tests. No blur throughput claim on phones. |
+| S-03 Font catalog/uploads and typography | Tested | Eight licensed families/five categories; TTF/WOFF2 MP4 rendering; malformed font rejection; favorites/search/rename/delete; deletion frees active face. WOFF/OTF acceptance is browser-parsing-dependent, without dedicated binary fixtures yet. |
+| S-04 Placement and saved subtitle presets | Tested | Drag/center snap, source-relative position, saved preset application/reload without composition loss, desktop/mobile screenshots. |
+| S-05 Deterministic subtitle effects | Tested | Eight effects with individual preview/export pixel comparisons. No CSS-only export effects. |
+| S-06 Reviewed silence cuts / shared timeline mapping | Tested | Worker RMS proposals, real generated audio, caption/SRT remapping, MP4 duration/decode, phrase-onset drift ≤10 ms on the fixture, Undo/Redo. Not a real-device precision guarantee. |
+| S-07 Ordinary titles; genuine subject segmentation | Titles Tested; segmentation Not started (researched/staged) | Titles burned into MP4; local model/runtime evaluation documented; masking is explicitly unavailable. No vision dependency installed. |
+| S-08 Release verification | In progress | 254 unit tests passed (six DB tests skipped), full regression 172/172, final expanded advanced suite Chromium 40/40 and Edge 40/40. Webpack production fallback passes. Remaining real-device, long-session/performance, hosted deployment and segmentation gates are documented. |
+
+Per-milestone files, manual test instructions, limitations and next steps: `docs/STUDIO_MILESTONES.md`.
+
+### 2026-10-25 fix verification on Windows
+
+- Ten-minute duration enforcement, finite/positive metadata validation, processing boundary guards,
+  Ogg EOS duration checks, and encoder-padding correction: Tested in unit tests and Chromium 153.
+- Provider setup diagnostics, unknown/placeholder configuration, rejected-key response, duplicate
+  submission prevention, retry, empty output, language/timestamp preservation, and stale-result
+  cleanup: Tested with mocked success responses; no successful live transcription without a real key.
+- Verification: `npm run check` (219 passed, six Postgres tests skipped); Webpack fallback production
+  build; lab 67/67, studio 42/42, server 20/20, phone simulations 8/8. Screenshots checked at desktop
+  and Pixel 7 sizes. The server database-row check is skipped without `E2E_DATABASE_URL`.
+- Default `npm run build` fails in the Turbopack CSS worker on this Windows checkout. The fallback
+  command is in README. No real-device, hosted deployment, or live speech-quality verification.
 
 - Rendering is in a worker and streamed to disk, but peak memory on a real phone has not been measured (needs T-15). On desktop headless Chromium, renders add a fixed ~650–800 MB to the renderer process regardless of clip length.
 - HEVC is only accepted where the browser can decode it; elsewhere the user is told how to record H.264.

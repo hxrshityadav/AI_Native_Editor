@@ -2,6 +2,14 @@
 
 Task-level status lives in `TASKS.md`.
 
+## Professional studio increment (2026-10-25)
+
+The typed editing foundation, four-ratio composition, font library/uploads, detailed styling,
+placement/presets, deterministic animation, ordinary titles and reviewed silence EDL are implemented.
+See `docs/STUDIO_MILESTONES.md` for per-milestone files, tests, manual checks and limitations.
+Subject segmentation remains staged and explicitly unavailable. Next gates are real-device QA,
+long-session memory/performance measurements and a genuine local segmentation prototype.
+
 ## Phase 1: render lab (done; rebuilt 2026-10-24)
 
 File probe and validation, device check, local speech-audio extraction, burned-in caption render to

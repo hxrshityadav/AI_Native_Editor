@@ -49,7 +49,7 @@ export function LabClient() {
           data-testid="file-input"
           type="file"
           accept="video/*"
-          onChange={(e) => void s.pickFile(e.target.files?.[0] ?? null)}
+          onChange={(e) => { void s.pickFile(e.target.files?.[0] ?? null); e.target.value = ""; }}
           className="block w-full text-sm"
         />
         {check.status === "checking" && <Status testId="check-status">Checking file and device…</Status>}

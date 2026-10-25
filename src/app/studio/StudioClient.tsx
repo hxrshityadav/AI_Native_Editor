@@ -1,9 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { Timeline } from "@/components/editor/Timeline";
+import { SelectionProperties, AddCaption } from "@/components/editor/SelectionProperties";
+import { AnimationPanel } from "@/components/editor/AnimationPanel";
+import { AIEditorPanel } from "@/components/editor/AIEditorPanel";
 import { BrandKitPanel } from "@/components/editor/BrandKitPanel";
 import { HumanCheck } from "@/components/editor/HumanCheck";
-import { SilenceTool } from "@/components/editor/SilenceTool";
 import {
   btnSecondary,
   DataFlow,
@@ -24,163 +27,60 @@ import {
 } from "@/components/editor/parts";
 import { TranscriptEditor } from "@/components/editor/TranscriptEditor";
 import { useReelSession, type ReelSession } from "@/components/editor/useReelSession";
-import { EXPORT_PRESETS } from "@/lib/media/exportPresets";
 
-type StepId = "video" | "silence" | "captions" | "style" | "export";
+import { CompositionPanel } from "@/components/editor/CompositionPanel";
+import { TypographyPanel } from "@/components/editor/TypographyPanel";
+import { SilencePanel } from "@/components/editor/SilencePanel";
+import { OverlayPanel } from "@/components/editor/OverlayPanel";
+
+type StepId = "video" | "captions" | "style" | "text" | "animations" | "silence" | "ai" | "export";
 const STEPS: { id: StepId; title: string }[] = [
-  { id: "video", title: "Video" },
-  { id: "silence", title: "Silence" },
-  { id: "captions", title: "Captions" },
-  { id: "style", title: "Style" },
-  { id: "export", title: "Export" },
+  { id: "video", title: "Video" }, { id: "captions", title: "Captions" }, { id: "text", title: "Text & overlays" },
+  { id: "style", title: "Subtitle styles" }, { id: "animations", title: "Animations" }, { id: "silence", title: "Silence removal" }, { id: "ai", title: "AI editor" }, { id: "export", title: "Export" },
 ];
-
-const primary =
-  "inline-flex min-h-10 items-center rounded-md bg-accent px-4 py-2.5 text-sm font-semibold text-accent-ink hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600";
-
+const primary = "inline-flex min-h-10 items-center rounded-md bg-accent px-4 py-2.5 text-sm font-semibold text-accent-ink disabled:opacity-40";
 export function StudioClient() {
   const s = useReelSession({ placeholders: false });
   const [step, setStep] = useState<StepId>("video");
   const index = STEPS.findIndex((x) => x.id === step);
-  const hasCaptions = !!s.realWords?.length;
-
-  /** Why a step can't be opened yet, or null when it can. */
-  const lockedBecause = (id: StepId): string | null => {
-    if (id === "video") return null;
-    if (!s.ready) return "Pick a video first.";
-    if (id === "export" && !hasCaptions) return "Make captions first.";
-    return null;
-  };
-  const go = (id: StepId) => lockedBecause(id) === null && setStep(id);
-  const next = STEPS[index + 1];
-  const prev = STEPS[index - 1];
-
-  return (
-    <div className="flex h-dvh flex-col bg-surface text-foreground">
-      <header className="flex h-14 shrink-0 items-center justify-between gap-4 border-b border-line bg-panel px-4">
-        <span className="font-semibold">Reel Finisher</span>
-        <span className="text-sm text-muted">Your video stays on this device</span>
-      </header>
-
-      <div className="flex min-h-0 flex-1 flex-col lg:grid lg:grid-cols-[14rem_minmax(0,1fr)_26rem]">
-        {/* Steps: a rail on desktop, a compact header on phones. */}
-        <nav aria-label="Steps" className="hidden border-r border-line bg-panel p-3 lg:block">
-          <ol className="flex flex-col gap-1">
-            {STEPS.map((x, i) => {
-              const locked = lockedBecause(x.id);
-              return (
-                <li key={x.id}>
-                  <button
-                    type="button"
-                    data-testid={`nav-${x.id}`}
-                    aria-current={x.id === step ? "step" : undefined}
-                    aria-disabled={locked !== null}
-                    title={locked ?? undefined}
-                    onClick={() => go(x.id)}
-                    className={[
-                      "flex w-full items-start gap-3 rounded-md px-3 py-2.5 text-left focus-visible:outline-2 focus-visible:outline-blue-600",
-                      x.id === step ? "bg-surface" : "hover:bg-surface/60",
-                      locked ? "cursor-not-allowed opacity-50" : "",
-                    ].join(" ")}
-                  >
-                    <span
-                      className={[
-                        "mt-0.5 grid size-6 shrink-0 place-items-center rounded-full text-xs font-semibold",
-                        x.id === step ? "bg-accent text-accent-ink" : "border border-line",
-                      ].join(" ")}
-                    >
-                      {i + 1}
-                    </span>
-                    <span className="flex flex-col">
-                      <span className="text-sm font-medium">{x.title}</span>
-                      <span className="text-xs text-muted">{stepStatus(x.id, s)}</span>
-                    </span>
-                  </button>
-                </li>
-              );
-            })}
-          </ol>
-        </nav>
-
-        <div className="flex items-baseline justify-between border-b border-line bg-panel px-4 py-2 lg:hidden">
-          <h1 data-testid="mobile-step-title" className="font-medium">
-            {STEPS[index].title}
-          </h1>
-          <span className="text-sm text-muted">
-            Step {index + 1} of {STEPS.length}
-          </span>
+  const go = (id: StepId) => { if (id === "video" || s.ready) setStep(id); };
+  const next = step === "video" ? "captions" : step === "captions" ? "style" : step === "style" ? "export" : null;
+  const prev = step === "export" ? "style" : step === "style" ? "captions" : step === "captions" ? "video" : null;
+  return <div className="flex h-dvh flex-col overflow-hidden bg-surface text-foreground">
+    <header className="flex min-h-14 shrink-0 items-center justify-between gap-2 border-b border-line bg-panel px-3">
+      <span className="font-semibold">Reel Finisher <span className="hidden text-xs font-normal text-muted sm:inline">/ Editing studio</span></span>
+      <div className="flex gap-2"><button className={btnSecondary} disabled={!s.editing.canUndo} onClick={s.editing.undo}>Undo settings</button><button className={btnSecondary} disabled={!s.editing.canRedo} onClick={s.editing.redo}>Redo</button><button className={primary} disabled={!s.ready} onClick={() => go("export")}>Export</button></div>
+    </header>
+    <div className="flex min-h-0 flex-1 flex-col lg:grid lg:grid-cols-[10rem_minmax(0,1fr)_22rem]">
+      <nav aria-label="Editor tools" className="flex shrink-0 gap-1 overflow-x-auto border-b border-line bg-panel p-2 lg:flex-col lg:overflow-y-auto lg:border-r lg:border-b-0">
+        {STEPS.map((tool) => <button key={tool.id} data-testid={"nav-" + tool.id} aria-current={step === tool.id ? "step" : undefined} aria-disabled={tool.id !== "video" && !s.ready} onClick={() => go(tool.id)} className={"min-h-10 shrink-0 rounded-md px-3 py-2 text-left text-sm lg:shrink " + (step === tool.id ? "bg-foreground text-background" : "hover:bg-surface")}>{tool.title}<span className="hidden text-xs opacity-65 lg:block">{tool.id === "video" && s.probe?.video ? `${s.probe.video.width}×${s.probe.video.height}` : tool.id === "captions" ? `${s.realWords?.length ?? 0} words` : tool.id === "style" ? s.style.name : tool.id === "export" && s.render.status === "done" ? "Ready to download" : ""}</span></button>)}
+        <p className="mt-auto hidden p-3 text-xs text-muted lg:block">Local video editing. Your original stays on this device.</p>
+      </nav>
+      <section aria-label="Preview" className="flex shrink-0 items-center justify-center overflow-hidden bg-stage p-3 lg:min-h-0">
+        {s.videoUrl && s.previewPlan ? <div className="flex w-full flex-col items-center gap-2"><PreviewError session={s} /><Preview src={s.videoUrl} lines={s.lines} style={s.style} fontReady={s.fontReady} videoRef={s.videoRef} onError={() => s.setPreviewFailed(true)} frame={s.previewPlan} guides={s.showGuides} editor={s} heightClassName="[--preview-h:24dvh] lg:[--preview-h:calc(100dvh-26rem)]" /><label className="text-xs text-white"><input type="checkbox" checked={s.showGuides} onChange={(e) => s.setShowGuides(e.target.checked)} /> Safe area & snapping guides</label>{s.previewSuggestions && <p className="text-xs text-amber-200">Previewing proposed cuts. Export uses applied edits.</p>}</div> : <DropZone session={s} />}
+      </section>
+      <section aria-labelledby="panel-title" className="flex min-h-0 flex-1 flex-col border-line bg-panel lg:border-l">
+        <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto p-4">
+          <h1 id="panel-title" data-testid="mobile-step-title" className="text-lg font-semibold">{STEPS[index].title}</h1>
+          {s.editProblem && <p role="alert" className="rounded border border-red-400 p-2 text-sm">{s.editProblem} <button className="underline" onClick={() => s.setEditProblem(null)}>Dismiss</button></p>}
+          <SelectionProperties session={s} />
+          {step === "video" && <VideoPanel session={s} onContinue={() => go("captions")} />}
+          {step === "captions" && <><AddCaption session={s} /><p className="text-xs text-muted">Add and edit manual captions without an API key. Select a caption below or in the timeline for text, timing and individual styles.</p><div className="flex max-h-40 flex-col gap-1 overflow-y-auto">{s.captionSegments.map((caption) => <button className="min-h-10 rounded border border-line px-2 text-left text-sm" key={caption.id} onClick={() => { s.setSelection({ kind: "caption", id: caption.id }); if (s.videoRef.current) s.videoRef.current.currentTime = caption.start; }}>{caption.start.toFixed(2)}s · {caption.words.map((word) => word.text).join(" ")}</button>)}</div><details><summary className="min-h-10 cursor-pointer text-sm font-medium">AI transcription & word editor</summary><div className="mt-3 flex flex-col gap-3"><CaptionsPanel session={s} /></div></details></>}
+          {step === "style" && <StylePanel session={s} />}
+          {step === "text" && <OverlayPanel session={s} />}
+          {step === "animations" && <AnimationPanel expanded session={s} />}
+          {step === "silence" && <SilencePanel session={s} />}
+          {step === "ai" && <AIEditorPanel session={s} onSilence={() => go("silence")} />}
+          {step === "export" && <ExportPanel session={s} />}
         </div>
-
-        {/* Stage: the video, framed like a phone screen. */}
-        <section
-          aria-label="Preview"
-          className="flex shrink-0 items-center justify-center bg-stage p-3 lg:min-h-0 lg:p-6"
-        >
-          {s.videoUrl && s.plan ? (
-            <div className="flex w-full flex-col items-center gap-2">
-              <PreviewError session={s} />
-              <Preview
-                src={s.videoUrl}
-                lines={s.previewLines}
-                timeMap={s.previewMap}
-                style={s.style}
-                fontReady={s.fontReady}
-                videoRef={s.videoRef}
-                onError={() => s.setPreviewFailed(true)}
-                frame={s.plan}
-                heightClassName="[--preview-h:38dvh] lg:[--preview-h:calc(100dvh-8rem)]"
-              />
-            </div>
-          ) : (
-            <DropZone session={s} />
-          )}
-        </section>
-
-        {/* Controls for the current step. */}
-        <section
-          aria-labelledby="panel-title"
-          className="flex min-h-0 flex-1 flex-col border-line bg-panel lg:border-l"
-        >
-          <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto p-4">
-            <h2 id="panel-title" className="hidden text-lg font-semibold lg:block">
-              {STEPS[index].title}
-            </h2>
-            {step === "video" && <VideoPanel session={s} onContinue={() => go("captions")} />}
-            {step === "silence" && <SilenceTool session={s} />}
-            {step === "captions" && <CaptionsPanel session={s} />}
-            {step === "style" && <StylePanel session={s} />}
-            {step === "export" && <ExportPanel session={s} />}
-          </div>
-
-          <div className="flex items-center justify-between gap-3 border-t border-line p-3">
-            <button
-              type="button"
-              data-testid="back-button"
-              className={btnSecondary + (prev ? "" : " invisible")}
-              onClick={() => prev && go(prev.id)}
-            >
-              Back
-            </button>
-            {!next && <ExportAction session={s} />}
-            {next && (
-              <div className="flex items-center gap-3">
-                {lockedBecause(next.id) && <span className="text-sm text-muted">{lockedBecause(next.id)}</span>}
-                <button
-                  type="button"
-                  data-testid="next-button"
-                  disabled={lockedBecause(next.id) !== null}
-                  className={btnSecondary + " disabled:cursor-not-allowed disabled:opacity-40"}
-                  onClick={() => go(next.id)}
-                >
-                  Next: {next.title}
-                </button>
-              </div>
-            )}
-          </div>
-        </section>
-      </div>
+        <div className="flex shrink-0 items-center justify-between gap-2 border-t border-line p-2">
+          <button data-testid="back-button" className={btnSecondary + (prev ? "" : " invisible")} onClick={() => prev && go(prev)}>Back</button>
+          {step === "export" ? <ExportAction session={s} /> : next && <button data-testid="next-button" className={btnSecondary} disabled={!s.ready} onClick={() => go(next)}>Next: {STEPS.find((x) => x.id === next)?.title}</button>}
+        </div>
+      </section>
     </div>
-  );
+    <Timeline session={s} />
+  </div>;
 }
 
 /** The export button lives in the sticky bar, so it stays in reach on a phone below the options. */
@@ -197,39 +97,13 @@ function ExportAction({ session: s }: { session: ReelSession }) {
     <button
       type="button"
       data-testid="render-button"
-      disabled={!s.fontReady || !!s.exportBlocked}
+      disabled={!s.fontReady || s.planEncodable !== true}
       onClick={() => void s.startRender()}
       className={render.status === "done" ? btnSecondary + " disabled:opacity-40" : primary}
     >
       {render.status === "done" ? "Export again" : "Export MP4"}
     </button>
   );
-}
-
-function stepStatus(id: StepId, s: ReelSession): string {
-  switch (id) {
-    case "video":
-      if (s.check.status === "ready") return `${s.check.probe.durationSec.toFixed(0)} s, ${s.check.probe.video?.width}×${s.check.probe.video?.height}`;
-      if (s.check.status === "checking") return "Checking";
-      if (s.check.status === "rejected") return "Can't use this file";
-      return "Not picked";
-    case "silence": {
-      const cuts = s.cuts.value.intervals.filter((i) => i.origin === "silence" && i.action === "remove").length;
-      if (s.silence.analysis.status === "running") return "Analysing";
-      if (s.silence.reviewing) return "Reviewing";
-      return cuts ? `${cuts} cuts, ${s.appliedMap.outputDuration.toFixed(0)} s` : "Optional";
-    }
-    case "captions":
-      if (s.audio.status === "running" || s.transcript.status === "running") return "Working";
-      if (s.realWords) return `${s.realWords.length} words${s.edits ? ", edited" : ""}`;
-      return "Not made";
-    case "style":
-      return s.style.name + (s.kit?.enabled ? " with brand kit" : "");
-    case "export":
-      if (s.render.status === "running") return `${Math.round(s.render.progress * 100)}%`;
-      if (s.render.status === "done") return "Ready to download";
-      return EXPORT_PRESETS.find((p) => p.id === s.exportPreset)?.name ?? "Not exported";
-  }
 }
 
 function DropZone({ session: s }: { session: ReelSession }) {
@@ -257,11 +131,11 @@ function DropZone({ session: s }: { session: ReelSession }) {
         accept="video/*"
         data-testid="file-input"
         className="sr-only"
-        onChange={(e) => void s.pickFile(e.target.files?.[0] ?? null)}
+        onChange={(e) => { void s.pickFile(e.target.files?.[0] ?? null); e.target.value = ""; }}
       />
       <span className="text-lg font-semibold text-white">Choose a video</span>
       <span className="text-sm text-zinc-400">
-        or drop it here. A vertical talking-head clip, up to 3 minutes. It stays on this device.
+        or drop it here. A vertical talking-head clip, up to 10 minutes. It stays on this device.
       </span>
     </label>
   );
@@ -306,6 +180,7 @@ function VideoPanel({ session: s, onContinue }: { session: ReelSession; onContin
           <ChangeVideo session={s} label="Use a different video" />
         </div>
       )}
+      <CompositionPanel session={s} />
     </>
   );
 }
@@ -318,7 +193,7 @@ function ChangeVideo({ session: s, label }: { session: ReelSession; label: strin
         accept="video/*"
         data-testid="file-input"
         className="sr-only"
-        onChange={(e) => void s.pickFile(e.target.files?.[0] ?? null)}
+        onChange={(e) => { void s.pickFile(e.target.files?.[0] ?? null); e.target.value = ""; }}
       />
       {label}
     </label>
@@ -330,7 +205,7 @@ function CaptionsPanel({ session: s }: { session: ReelSession }) {
   const working = audio.status === "running" || transcript.status === "running";
   return (
     <>
-      {s.realWords ? (
+      {transcript.status === "done" ? (
         // Shown in full before the first upload; afterwards one tap away, so the word editor fits on a phone.
         <details className="text-sm">
           <summary className="cursor-pointer">
@@ -349,7 +224,7 @@ function CaptionsPanel({ session: s }: { session: ReelSession }) {
         <button
           type="button"
           data-testid="make-captions"
-          disabled={working || !s.online || !s.humanReady}
+          disabled={!s.ready || !probe?.audio || working || !s.online || !s.humanReady}
           onClick={() => void s.makeCaptions()}
           className={s.realWords ? btnSecondary + " disabled:opacity-40" : primary}
         >
@@ -387,7 +262,7 @@ function CaptionsPanel({ session: s }: { session: ReelSession }) {
         </div>
       )}
       <SaveStatus session={s} />
-      {s.realWords && s.realWords.length > 0 && probe && (
+      {s.realWords && s.realWords.length > 0 && probe && !s.editing.settings.captions && (
         <TranscriptEditor
           words={s.words}
           onChange={s.editWords}
@@ -409,6 +284,7 @@ function StylePanel({ session: s }: { session: ReelSession }) {
       <StylePicker session={s} />
       <BrandKitPanel kit={s.kit} style={s.baseStyle} onChange={s.changeKit} saveFailed={s.kitSaveFailed} />
       <FontError session={s} />
+      <TypographyPanel session={s} />
     </>
   );
 }
