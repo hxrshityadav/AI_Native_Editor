@@ -2,7 +2,7 @@
 
 import { BrandKitPanel } from "@/components/editor/BrandKitPanel";
 import { HumanCheck } from "@/components/editor/HumanCheck";
-import { SilenceTool } from "@/components/editor/SilenceTool";
+import { SilencePanel } from "@/components/editor/SilencePanel";
 import {
   btn,
   btnSecondary,
@@ -155,7 +155,7 @@ export function LabClient() {
       </Step>
 
       <Step n={4} title="Remove silence" flow={null}>
-        {ready ? <SilenceTool session={s} /> : <p className="text-sm text-zinc-500">Pick a video first.</p>}
+        {ready ? <SilencePanel session={s} /> : <p className="text-sm text-zinc-500">Pick a video first.</p>}
       </Step>
 
       <Step
@@ -172,19 +172,18 @@ export function LabClient() {
         <StylePicker session={s} />
         <BrandKitPanel kit={s.kit} style={s.baseStyle} onChange={s.changeKit} saveFailed={s.kitSaveFailed} />
         <FontError session={s} />
-        {s.videoUrl && probe && s.plan && (
+        {s.videoUrl && probe && s.previewPlan && (
           <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,auto)_minmax(0,1fr)]">
             <div className="flex flex-col gap-2">
               <PreviewError session={s} />
               <Preview
                 src={s.videoUrl}
-                lines={s.previewLines}
-                timeMap={s.previewMap}
+                lines={s.lines}
                 style={s.style}
                 fontReady={s.fontReady}
                 videoRef={s.videoRef}
                 onError={() => s.setPreviewFailed(true)}
-                frame={s.plan}
+                frame={s.previewPlan}
               />
             </div>
             <TranscriptEditor
@@ -212,7 +211,7 @@ export function LabClient() {
         <div className="flex flex-wrap gap-3">
           <button
             data-testid="render-button"
-            disabled={!ready || !s.fontReady || render.status === "running" || !!s.exportBlocked}
+            disabled={!ready || !s.fontReady || render.status === "running" || s.planEncodable !== true}
             onClick={() => void s.startRender()}
             className={btn}
           >

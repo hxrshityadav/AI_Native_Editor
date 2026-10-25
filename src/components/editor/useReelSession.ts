@@ -537,7 +537,7 @@ export function useReelSession({ placeholders }: { placeholders: boolean }) {
     const job = ++renderId.current;
     setRender({ status: "running", progress: 0 });
     const started = performance.now();
-    const handle = renderInWorker({ file, lines, style, plan }, (p) => {
+    const handle = renderInWorker({ file, lines, style, plan, segments: null }, (p) => {
       if (id === pickId.current && job === renderId.current) setRender({ status: "running", progress: p });
     });
     renderHandle.current = handle;
