@@ -31,6 +31,14 @@ describe("describeMediaError", () => {
     expect(p.action).toMatch(/connection/);
   });
 
+  it("never gives extraction video-encoder or storage advice", () => {
+    for (const err of [domError("EncodingError"), domError("OperationError"), domError("QuotaExceededError"), new Error("WebCodecs: QuotaExceededError; Web Audio: EncodingError")]) {
+      const p = describeMediaError("extract", err);
+      expect(p.message).toMatch(/speech audio/);
+      expect(`${p.message} ${p.action}`).not.toMatch(/video processor|other apps|tabs|storage|1080p/);
+    }
+  });
+
   it("falls back per step, keeping the raw message for device reports", () => {
     expect(describeMediaError("extract", new Error("boom")).message).toBe("Couldn't extract the speech audio on this device (boom).");
     expect(describeMediaError("render", "weird").message).toBe("The export failed (weird).");

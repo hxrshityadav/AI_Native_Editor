@@ -16,6 +16,7 @@ const report = buildRunReport({
     webCodecs: true,
     offscreenCanvas: true,
     canEncodeH264: true,
+    encodeSize: { width: 720, height: 1280 },
     canEncodeOpus: true,
     deviceMemoryGb: 8,
     cpuCores: 8,

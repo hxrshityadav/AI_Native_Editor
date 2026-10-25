@@ -193,7 +193,7 @@ function ExportAction({ session: s }: { session: ReelSession }) {
     <button
       type="button"
       data-testid="render-button"
-      disabled={!s.fontReady}
+      disabled={!s.fontReady || s.planEncodable !== true}
       onClick={() => void s.startRender()}
       className={render.status === "done" ? btnSecondary + " disabled:opacity-40" : primary}
     >

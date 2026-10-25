@@ -71,7 +71,7 @@ export function LabClient() {
               <dd>{formatBytes(check.probe.fileSizeBytes)}</dd>
               <dt className="text-zinc-500">Device</dt>
               <dd>
-                H.264 encode ✓ · Opus encode ✓
+                H.264 encode ✓ (from {check.device.encodeSize.width}×{check.device.encodeSize.height}) · Opus encode ✓
                 {check.device.deviceMemoryGb !== null ? ` · ${check.device.deviceMemoryGb} GB RAM` : ""}
                 {check.device.cpuCores !== null ? ` · ${check.device.cpuCores} cores` : ""}
               </dd>
@@ -206,7 +206,7 @@ export function LabClient() {
         <div className="flex flex-wrap gap-3">
           <button
             data-testid="render-button"
-            disabled={!ready || !s.fontReady || render.status === "running"}
+            disabled={!ready || !s.fontReady || render.status === "running" || s.planEncodable !== true}
             onClick={() => void s.startRender()}
             className={btn}
           >

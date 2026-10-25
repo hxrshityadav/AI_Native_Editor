@@ -15,7 +15,7 @@ import {
 import { applyBrandKit, loadBrandKit, saveBrandKit, type BrandKit } from "@/lib/brandKit";
 import { buildRunReport, readDeviceInfo, type DeviceInfo, type RunSteps } from "@/lib/deviceReport";
 import { deleteDraft, fingerprintFile, loadDraft, saveDraft } from "@/lib/drafts";
-import { checkDevice, type DeviceReport } from "@/lib/media/capabilities";
+import { canEncodeH264At, checkDevice, type DeviceReport } from "@/lib/media/capabilities";
 import { describeMediaError, type Problem } from "@/lib/media/errors";
 import { planExport, type ExportPresetId, type Framing } from "@/lib/media/exportPresets";
 import { extractSpeechAudio } from "@/lib/media/extractAudio";
@@ -183,6 +183,19 @@ export function useReelSession({ placeholders }: { placeholders: boolean }) {
     () => (probe?.video ? planExport(probe.video, exportPreset, framing) : null),
     [probe, exportPreset, framing],
   );
+  // Can this device encode the chosen export size? Null while checking.
+  const [encodeCheck, setEncodeCheck] = useState<{ size: string; ok: boolean } | null>(null);
+  const planSize = plan ? `${plan.width}×${plan.height}` : null;
+  useEffect(() => {
+    if (!plan) return;
+    let current = true;
+    const size = `${plan.width}×${plan.height}`;
+    canEncodeH264At(plan).then((ok) => current && setEncodeCheck({ size, ok }));
+    return () => {
+      current = false;
+    };
+  }, [plan]);
+  const planEncodable = planSize !== null && encodeCheck?.size === planSize ? encodeCheck.ok : null;
   const realWords = transcript.status === "done" ? transcript.words : null;
   const sourceWords = useMemo(
     () => realWords ?? (placeholders && probe ? makeTestWords(probe.durationSec) : []),
@@ -271,7 +284,8 @@ export function useReelSession({ placeholders }: { placeholders: boolean }) {
 
     let device: DeviceReport;
     try {
-      device = await checkDevice({ width: probed.video!.width, height: probed.video!.height });
+      // The smallest export, so a 4K clip isn't refused on a phone that can only encode 1080p.
+      device = await checkDevice(planExport(probed.video!, "small", "fill"));
     } catch {
       if (stale()) return;
       recordProblem("DEVICE: check failed");
@@ -372,7 +386,7 @@ export function useReelSession({ placeholders }: { placeholders: boolean }) {
   }
 
   async function startRender() {
-    if (!file || !plan) return;
+    if (!file || !plan || planEncodable !== true) return;
     setRender({ status: "running", progress: 0 });
     const started = performance.now();
     const handle = renderInWorker({ file, lines, style, plan }, (p) => setRender({ status: "running", progress: p }));
@@ -441,6 +455,7 @@ export function useReelSession({ placeholders }: { placeholders: boolean }) {
     framing,
     setFraming,
     plan,
+    planEncodable,
     online,
     previewFailed,
     setPreviewFailed,

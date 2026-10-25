@@ -222,3 +222,21 @@ Replaces D-008 for deployments.
   company.
 - **30 s limit enforced before calling.** The handler reads the Ogg duration and refuses longer audio with
   the limit stated. Supporting longer clips on Sarvam means its Batch API; we build that only if Sarvam wins.
+
+## D-027: Check the export size, not the source size; a second audio decoder for extraction (2026-10-25)
+Reported from a phone: 4K clips were refused at pick time, and audio extraction failed with "close other
+apps and tabs" advice.
+- **4K.** The device check asked whether the phone could encode H.264 at the source size (2160×3840).
+  Many phone encoders stop at 1080p, but the default exports are 1080×1920 or smaller, so 4K never needed
+  encoding. The check now uses the smallest export (720×1280) at pick time, and each export size is
+  checked when it is chosen. An unsupported size (usually Original size on a 4K clip) disables Export
+  with the reason and the presets that work.
+- **Extraction.** On Android, the AAC decoder behind WebCodecs is the platform's own and can fail with
+  `EncodingError` or `OperationError`. That was mapped to video-encoder advice ("close other apps and tabs…
+  record at 1080p"). Now, if WebCodecs extraction fails, the audio track is copied out without decoding
+  (a few MB), decoded by Web Audio (`decodeAudioData`, a separate decoder path), mixed down and encoded to
+  Opus. Measured timing matches the main path (phrase starts within ±10 ms). Extraction errors no longer get
+  storage or video advice. Chrome also uses `QuotaExceededError` for a reclaimed codec.
+- **Caveat.** The phone's actual error wasn't captured: the run report records the error names
+  (`EXTRACT: …`), and that is how to confirm the fix on the device. The fallback holds the decoded audio in
+  memory: about 100 MB for 3 minutes of stereo.

@@ -10,7 +10,8 @@ export function describeMediaError(step: "extract" | "render", err: unknown): Pr
   const name = err instanceof Error || err instanceof DOMException ? err.name : "";
   const raw = err instanceof Error || err instanceof DOMException ? err.message : String(err);
 
-  if (name === "QuotaExceededError" || /quota/i.test(raw)) {
+  // Only export writes to storage. (Chrome also uses QuotaExceededError for a reclaimed codec.)
+  if (step === "render" && (name === "QuotaExceededError" || /quota/i.test(raw))) {
     return {
       message: "There isn't enough free storage on this device to save the video.",
       action: "Free up some space (old videos, downloads or unused apps), then try again.",
@@ -22,7 +23,7 @@ export function describeMediaError(step: "extract" | "render", err: unknown): Pr
       action: "Pick the video again. If it's in Google Drive or another cloud app, save it to your phone first.",
     };
   }
-  if (name === "EncodingError" || name === "OperationError") {
+  if (step === "render" && (name === "EncodingError" || name === "OperationError")) {
     return {
       message: "This device's video processor stopped partway.",
       action: "Close other apps and tabs and try again. If it keeps happening, record at 1080p instead of 4K.",

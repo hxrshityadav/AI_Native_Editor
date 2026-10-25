@@ -138,6 +138,18 @@ export function ExportPresetPicker({ session: s }: { session: ReelSession }) {
           Exports at {s.plan.width}×{s.plan.height}.
         </p>
       )}
+      {s.plan && s.planEncodable === false && (
+        <ProblemBox
+          testId="encode-unsupported"
+          problem={{
+            message: `This device can't encode video at ${s.plan.width}×${s.plan.height}.`,
+            action:
+              preset.id === "reels"
+                ? "Choose Smaller file (up to 720×1280)."
+                : "Choose Reels & Shorts (up to 1080×1920) or Smaller file.",
+          }}
+        />
+      )}
     </div>
   );
 }
