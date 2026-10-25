@@ -47,9 +47,13 @@ request memory. Logs carry error codes only.
 `renderCaptionedMp4` runs one Mediabunny `Conversion`. Each decoded frame (rotation already baked
 in) is drawn to an `OffscreenCanvas`, the active caption line is drawn on top, and the canvas is
 re-encoded as H.264. Audio packets are copied when MP4 can hold them (AAC, Opus, MP3), otherwise
-transcoded. Output goes to an in-memory buffer with fast start.
-
-It currently runs on the main thread. Moving it to a Web Worker is a Phase 3 task (T-20).
+transcoded. It runs in a dedicated module worker (`render.worker.ts`, started by `renderInWorker.ts`). The
+worker streams the MP4 into the origin private file system (OPFS) through a Mediabunny
+`StreamTarget`, with `fastStart: false` (metadata at the end), so nothing grows in memory with
+video length. The worker hands back the OPFS `File`, which stays disk-backed. Without OPFS writes it
+falls back to an in-memory `BufferTarget` with fast start, and the UI says so. Cancelling terminates
+the worker. Fonts: the worker sees system fonts only; bundled Indic fonts (T-18) will need loading
+inside the worker with `FontFace`.
 
 ## Error contract
 

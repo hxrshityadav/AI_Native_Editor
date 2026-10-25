@@ -13,7 +13,7 @@ import {
 import { checkDevice, type DeviceReport } from "@/lib/media/capabilities";
 import { extractSpeechAudio } from "@/lib/media/extractAudio";
 import { probeFile } from "@/lib/media/probe";
-import { renderCaptionedMp4, type RenderHandle } from "@/lib/media/render";
+import { RenderCanceledError, renderInWorker, type RenderHandle, type RenderStorage } from "@/lib/media/renderInWorker";
 import type { Issue, ProbeResult } from "@/lib/media/types";
 import { issue, validateFileBasics, validateProbe } from "@/lib/media/validate";
 import { requestTranscription, TRANSCRIPTION_DISCLOSURE } from "@/lib/transcription/client";
@@ -49,7 +49,7 @@ type SaveState = "idle" | "saving" | "saved" | "error";
 type RenderState =
   | { status: "idle" }
   | { status: "running"; progress: number }
-  | { status: "done"; url: string; sizeBytes: number; ms: number }
+  | { status: "done"; url: string; sizeBytes: number; ms: number; storage: RenderStorage }
   | { status: "error"; problem: Problem };
 
 export function LabClient() {
@@ -132,7 +132,7 @@ export function LabClient() {
     setFingerprint(null);
     setSaveState("idle");
     setRestoredAt(null);
-    await renderHandle.current?.cancel();
+    renderHandle.current?.cancel();
     revokeAll();
     setFile(picked);
     setAudio({ status: "idle" });
@@ -231,15 +231,16 @@ export function LabClient() {
     if (!file) return;
     setRender({ status: "running", progress: 0 });
     const started = performance.now();
-    const handle = renderCaptionedMp4(file, lines, DEFAULT_CAPTION_STYLE, (p) =>
+    const handle = renderInWorker({ file, lines, style: DEFAULT_CAPTION_STYLE }, (p) =>
       setRender({ status: "running", progress: p }),
     );
     renderHandle.current = handle;
     try {
-      const blob = await handle.result;
-      setRender({ status: "done", url: makeUrl(blob), sizeBytes: blob.size, ms: performance.now() - started });
+      const { blob, storage } = await handle.result;
+      const ms = performance.now() - started;
+      setRender({ status: "done", url: makeUrl(blob), sizeBytes: blob.size, ms, storage });
     } catch (err) {
-      const canceled = err instanceof Error && /cancel/i.test(err.name + err.message);
+      const canceled = err instanceof RenderCanceledError;
       setRender(
         canceled
           ? { status: "idle" }
@@ -423,7 +424,7 @@ export function LabClient() {
             Render MP4
           </button>
           {render.status === "running" && (
-            <button onClick={() => void renderHandle.current?.cancel()} className={btnSecondary}>
+            <button onClick={() => renderHandle.current?.cancel()} className={btnSecondary}>
               Cancel
             </button>
           )}
@@ -439,6 +440,11 @@ export function LabClient() {
           <div data-testid="render-done" className="flex flex-col gap-2 text-sm">
             <p>
               {formatBytes(render.sizeBytes)} in {(render.ms / 1000).toFixed(1)} s. No watermark.
+            </p>
+            <p data-testid="render-storage" data-storage={render.storage} className="text-zinc-600 dark:text-zinc-400">
+              {render.storage === "disk"
+                ? "Saved to this browser's private storage on your device until your next render."
+                : "This browser can't write to device storage, so the video is held in memory. Long or 4K videos may fail here; try Chrome."}
             </p>
             <a data-testid="mp4-link" href={render.url} download={baseName(file) + "-captioned.mp4"} className={btnSecondary + " w-fit"}>
               Download MP4

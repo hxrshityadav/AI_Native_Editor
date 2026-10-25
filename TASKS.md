@@ -40,13 +40,15 @@ ffmpeg-generated fixtures. No task is verified on a real phone yet.
 | T-17b | Autosave transcript and edits to IndexedDB (debounced), restore on re-picking the same file, "Start over" deletes the draft | Tested (5 unit tests; E2E: reload → re-pick restores edits with no new upload, render uses restored edits, Start over deletes) |
 | T-18 | 4–6 caption styles with **bundled** Indic fonts (today: system fonts only) | Not started |
 | T-19 | One local brand kit (IndexedDB) | Not started |
-| T-20 | Render in a Web Worker; stream output instead of an in-memory buffer | Not started |
+| T-20 | Render in a Web Worker; stream the MP4 to OPFS (memory fallback when unavailable) | Tested (E2E: output written to disk; longest main-thread stall 21–29 ms vs 79 ms before, on a 4 s 720p clip, headless desktop; mid-render cancel is clean; Devanagari renders correctly in the worker, checked by eye) |
 | T-21 | Export presets | Not started |
 | T-22 | Data-flow disclosure on every step; all error states | Not started |
 
 ## Known limitations
 
-- Render runs on the main thread and buffers the whole MP4 in memory (risk on low-RAM phones with long or 4K clips).
+- Rendering is in a worker and streamed to disk, but peak memory on a real phone has not been measured (needs T-15).
+- Without OPFS writes (older browsers), rendering falls back to an in-memory buffer; the UI says so.
+- Each render deletes the previous render file, so two tabs rendering at once can break each other.
 - Caption fonts depend on what the system has installed; Devanagari may fall back on some devices.
 - The rate limiter is per server instance, and `X-Forwarded-For` is trusted (only safe behind Vercel's proxy).
 - The lab has no cancel for extraction, only for rendering.

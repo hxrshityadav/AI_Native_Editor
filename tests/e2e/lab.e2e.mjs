@@ -225,7 +225,19 @@ async function main() {
 
     // Render from the restored draft: proves restored edits drive the export.
     const t0 = Date.now();
+    // Measure the longest main-thread stall while rendering (a 16 ms timer that can't fire is a stall).
+    await page.evaluate(() => {
+      let last = performance.now();
+      window.__stall = { max: 0, id: setInterval(() => {
+        const now = performance.now();
+        window.__stall.max = Math.max(window.__stall.max, now - last);
+        last = now;
+      }, 16) };
+    });
     const outMp4 = await renderAndSave(page, f("out-vertical.mp4"));
+    const stallMs = await page.evaluate(() => (clearInterval(window.__stall.id), window.__stall.max));
+    console.log(`      longest main-thread stall during render: ${stallMs.toFixed(0)} ms`);
+    check("render: ran in a worker, streamed to device storage", (await page.getByTestId("render-storage").getAttribute("data-storage")) === "disk");
     const info = probe(outMp4);
     const v = streams(info, "video")[0];
     const a = streams(info, "audio")[0];
@@ -269,6 +281,19 @@ async function main() {
 
     // 3. VP9/Opus WebM → MP4 with Opus copied (Opus-in-MP4).
     await pick(page, f("vp9-opus.webm"));
+
+    // Cancel mid-render: back to a clean, re-renderable state with no error shown.
+    await page.getByTestId("render-button").click();
+    await page.getByTestId("render-progress").waitFor({ timeout: 30_000 });
+    await page.getByRole("button", { name: "Cancel" }).click();
+    await page.getByTestId("render-progress").waitFor({ state: "detached", timeout: 5_000 });
+    check(
+      "cancel: stops cleanly",
+      !(await page.getByTestId("render-error").isVisible()) &&
+        !(await page.getByTestId("render-done").isVisible()) &&
+        (await page.getByTestId("render-button").isEnabled()),
+    );
+
     const webm = probe(await renderAndSave(page, f("out-webm.mp4")));
     check("webm: H.264 + Opus-in-MP4", streams(webm, "video")[0]?.codec_name === "h264" && streams(webm, "audio")[0]?.codec_name === "opus");
 

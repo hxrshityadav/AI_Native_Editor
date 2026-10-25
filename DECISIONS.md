@@ -67,3 +67,12 @@ is SHA-256(size + first MiB + last MiB): it's stable across renames and re-downl
 file name, and it costs about 2 MB of reads. Only real transcripts are saved; placeholder words never
 are. Records are Zod-validated on read, so a bad or old record is ignored instead of breaking the
 editor. At most 20 drafts are kept, oldest pruned first. Writes are debounced by 400 ms.
+
+## D-015: Render in a worker and stream to OPFS; MP4 metadata at the end
+Rendering on the main thread stalled the UI (79 ms longest stall on a 4 s 720p clip; worker: 21–29 ms).
+An in-memory MP4 (`fastStart: 'in-memory'`) costs roughly the output size in RAM, and more while
+growing, which is risky on 3–4 GB Android phones with 3-minute 1080p clips. OPFS streaming with
+`fastStart: false` keeps memory flat. The trade-off is that the moov box sits at the end, which
+doesn't matter for local files or for uploads to Instagram, YouTube or WhatsApp (they re-encode;
+T-13 will confirm). One worker per render, and cancel is `terminate()`: simpler than cooperative
+cancel, and partial files are cleaned up at the next render.
