@@ -54,10 +54,15 @@ export function makeFixtures(dir) {
 }
 
 
-/** Starts `next start` on `port` without GROQ_API_KEY, so the real route reports NOT_CONFIGURED. */
-export async function startServer(port) {
+/**
+ * Starts `next start` on `port`. By default without a Groq key, so the real route reports
+ * NOT_CONFIGURED and tests never make billable calls. An empty value is used instead of deleting
+ * the variable: Next.js doesn't override variables that are already set, so a developer's
+ * .env.local key can't leak in. Pass `{ withKey: true }` to use the key from the env or .env.local.
+ */
+export async function startServer(port, { withKey = false } = {}) {
   const env = { ...process.env, PORT: String(port) };
-  delete env.GROQ_API_KEY; // the real route must report NOT_CONFIGURED
+  if (!withKey) env.GROQ_API_KEY = "";
   const server = spawn(join(ROOT, "node_modules/.bin/next"), ["start", "-p", String(port)], {
     cwd: ROOT,
     env,

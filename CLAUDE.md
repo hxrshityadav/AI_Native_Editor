@@ -47,6 +47,9 @@ and `/simplify` for reviews.
   memory. `PERF_SECONDS` and `PERF_SIZE` change the clip. It is not a real-device result.
 - `npm run compat-pack`: needs a fresh build. Builds the platform upload test pack (zip) for manual
   uploads; see `docs/research/platform-uploads.md`.
+- `npm run sync-check -- --self-test`: needs a fresh build. Validates the caption-sync measurement.
+  `npm run sync-check -- <clips>` measures real clips through `/api/transcribe` (needs `GROQ_API_KEY`
+  in `.env.local`; billable); see `docs/research/caption-sync.md`.
 
 ## Layout
 

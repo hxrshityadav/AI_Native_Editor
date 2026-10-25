@@ -48,3 +48,4 @@ next-env.d.ts
 /tests/perf/.out/
 /tests/e2e/.out-studio/
 /tests/compat/.out/
+/tests/sync/.out/

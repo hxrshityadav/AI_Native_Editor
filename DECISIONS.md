@@ -169,3 +169,14 @@ streamed render: it keeps memory flat and costs about 2 s per minute of 1080p, a
 moov-at-end file is kept. Mediabunny's own `fastStart: 'reserve'` needs per-track packet counts
 that its Conversion API doesn't expose. Real uploads are still unverified: the test pack and
 checklist in `docs/research/platform-uploads.md` are how we find out.
+
+## D-024: Caption sync is measured against the clip's own audio, at phrase starts (2026-10-25)
+Hand-labelling word times doesn't scale and is slow to do in Hinglish. Instead, an energy detector
+finds where speech resumes after each pause, and we compare that with the start of the
+phrase-initial caption word (`tests/sync/`). Only phrase-initial words are matched, so an early
+caption can't hide by pairing with the next word. Proposed pass bar: ≥ 90% within ±150 ms and
+|bias| ≤ 50 ms. Clips under 20 dB SNR are excluded, because onset detection is unreliable there.
+The detector can read soft consonant onsets slightly late, so a bias under ~30 ms is noise.
+Self-tests show our Opus extraction adds no measurable offset (≤ 10 ms). The real run needs clips
+and a key. Side fix: E2E servers set `GROQ_API_KEY=""` unless asked, since Next would otherwise load
+a developer's `.env.local` key and the tests could make billable calls.
