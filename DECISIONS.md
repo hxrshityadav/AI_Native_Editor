@@ -120,3 +120,12 @@ reading, pass criteria), and an emulated pass (`npm run perf`) clearly labelled 
 - Renders add ~650–800 MB of renderer memory on desktop, nearly independent of clip length and frame
   size. Mediabunny caps its own queues at ~4 frames, so this is codec and frame-pool overhead in
   Chromium. We'll measure on a phone before attempting anything (such as lower parallelism).
+
+## D-020: Every step states its data flow; local failures map to specific advice (2026-10-25)
+Each step opens with "Stays on this device" or, for Transcribe only, an amber "Leaves this device:"
+line. That makes the privacy promise checkable step by step, not just in a header. Browser and media
+errors (storage full, lost file access, encoder failure, unsupported) go through one mapping, used
+for extraction and for renders. The worker now sends the error `name`, which `postMessage` would
+otherwise drop. Long local work holds a screen wake lock (best effort) and warns before the page is
+left. Transcription can be cancelled, and a late reply after a cancel is ignored. The lab error
+boundary uses Next 16's `retry` prop, not `reset`, and logs only the error name.

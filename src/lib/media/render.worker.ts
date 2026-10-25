@@ -37,7 +37,8 @@ scope.onmessage = async ({ data: { file, lines, style } }) => {
       scope.postMessage({ type: "done", blob: new Blob([target.buffer], { type: "video/mp4" }), storage: "memory" });
     }
   } catch (err) {
-    scope.postMessage({ type: "error", message: err instanceof Error ? err.message : "Render failed." });
+    const e = err instanceof Error || err instanceof DOMException ? err : new Error(String(err));
+    scope.postMessage({ type: "error", name: e.name, message: e.message || "Render failed." });
   }
 };
 

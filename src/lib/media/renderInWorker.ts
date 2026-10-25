@@ -7,7 +7,8 @@ export type RenderStorage = "disk" | "memory";
 export type RenderMessage =
   | { type: "progress"; value: number }
   | { type: "done"; blob: Blob; storage: RenderStorage }
-  | { type: "error"; message: string };
+  /** `name` keeps the DOMException type (e.g. QuotaExceededError), which postMessage would otherwise drop. */
+  | { type: "error"; name: string; message: string };
 
 export class RenderCanceledError extends Error {
   name = "RenderCanceledError";
@@ -32,7 +33,7 @@ export function renderInWorker(request: RenderRequest, onProgress: (fraction: nu
       if (data.type === "progress") return onProgress(data.value);
       worker.terminate();
       if (data.type === "done") resolve({ blob: data.blob, storage: data.storage });
-      else reject(new RenderError(data.message));
+      else reject(Object.assign(new RenderError(data.message), { name: data.name }));
     };
     worker.onerror = (event) => {
       worker.terminate();

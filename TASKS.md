@@ -43,7 +43,7 @@ ffmpeg-generated fixtures. No task is verified on a real phone yet.
 | T-19 | One local brand kit: font (4 bundled), text and highlight colours, size, position, applied on top of any style; saved in IndexedDB (DB v2, Zod-validated); pill text stays readable on any highlight colour | Tested (6 unit tests; E2E: red Hind captions burned in at the kit position and nowhere else, kit kept after reload, collapsed summary shows on/off; checked by eye at 1280 and 390 px) |
 | T-20 | Render in a Web Worker; stream the MP4 to OPFS (memory fallback when unavailable) | Tested (E2E: output written to disk; longest main-thread stall 21–29 ms vs 79 ms before, on a 4 s 720p clip, headless desktop; mid-render cancel is clean; Devanagari renders correctly in the worker, checked by eye) |
 | T-21 | Export presets | Not started |
-| T-22 | Data-flow disclosure on every step; all error states | Not started |
+| T-22 | Data-flow line on every step (only Transcribe leaves the device); error states: device-check crash, preview playback failure, storage full / file lost / encoder failure / unsupported (also across the worker), transcribe cancel and offline, leave-page warning during work, screen wake lock, lab error boundary | Tested (9 unit tests for error mapping; E2E: data-flow lines, offline, transcribe cancel with a late reply ignored, leave warning; checked by eye at 390 px). Not E2E-tested: the error boundary (no crash hook), wake lock (no Android here), and the storage-full and file-lost paths (unit-tested mapping only) |
 
 ## Known limitations
 

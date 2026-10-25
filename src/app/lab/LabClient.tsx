@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import {
   CAPTION_STYLES,
   DEFAULT_CAPTION_STYLE,
@@ -17,6 +17,7 @@ import {
   type Word,
 } from "@/lib/captions";
 import { checkDevice, type DeviceReport } from "@/lib/media/capabilities";
+import { describeMediaError, type Problem } from "@/lib/media/errors";
 import { extractSpeechAudio } from "@/lib/media/extractAudio";
 import { probeFile } from "@/lib/media/probe";
 import { RenderCanceledError, renderInWorker, type RenderHandle, type RenderStorage } from "@/lib/media/renderInWorker";
@@ -31,7 +32,6 @@ import { BrandKitPanel } from "./BrandKitPanel";
 import { RunReportPanel } from "./RunReportPanel";
 import { TranscriptEditor } from "./TranscriptEditor";
 
-type Problem = { message: string; action: string };
 
 type CheckState =
   | { status: "idle" }
@@ -125,6 +125,13 @@ export function LabClient() {
   }, [style.font, fontRetry]);
   const videoRef = useRef<HTMLVideoElement>(null);
   const renderHandle = useRef<RenderHandle | null>(null);
+  const transcribeAbort = useRef<AbortController | null>(null);
+  const [previewFailed, setPreviewFailed] = useState(false);
+  const online = useOnline();
+  const busy = audio.status === "running" || transcript.status === "running" || render.status === "running";
+  useLeaveWarning(busy);
+  // Keep a phone's screen on during long local work; a sleeping screen can pause the tab.
+  useWakeLock(audio.status === "running" || render.status === "running");
   const urls = useRef(new Set<string>());
 
   const makeUrl = (blob: Blob) => {
@@ -197,6 +204,8 @@ export function LabClient() {
     setEdits(null);
     setRender({ status: "idle" });
     setVideoUrl(null);
+    setPreviewFailed(false);
+    transcribeAbort.current?.abort();
     setRun({ steps: {}, problems: [] });
     if (!picked) return setCheck({ status: "idle" });
     const checkStarted = performance.now();
@@ -223,7 +232,20 @@ export function LabClient() {
       return setCheck({ status: "rejected", problem: toProblem(result.error) });
     }
 
-    const device = await checkDevice({ width: probed.video!.width, height: probed.video!.height });
+    let device: DeviceReport;
+    try {
+      device = await checkDevice({ width: probed.video!.width, height: probed.video!.height });
+    } catch {
+      if (stale()) return;
+      recordProblem("DEVICE: check failed");
+      return setCheck({
+        status: "rejected",
+        problem: {
+          message: "We couldn't check what this device supports.",
+          action: "Reload the page and pick the video again. If it keeps happening, update Chrome.",
+        },
+      });
+    }
     if (stale()) return;
     if (device.blockers.length) {
       recordProblem(`DEVICE: ${device.blockers.join(" ")}`);
@@ -276,14 +298,8 @@ export function LabClient() {
       setAudio({ status: "done", blob, url: makeUrl(blob) });
       recordStep({ extractMs: performance.now() - started, audioKb: Math.round(blob.size / 1024) });
     } catch (err) {
-      recordProblem(`EXTRACT: ${err instanceof Error ? err.message : "unknown error"}`);
-      setAudio({
-        status: "error",
-        problem: {
-          message: `Couldn't extract the speech audio on this device (${err instanceof Error ? err.message : "unknown error"}).`,
-          action: "Try Chrome or Edge, or re-export the video with AAC audio.",
-        },
-      });
+      recordProblem(`EXTRACT: ${errorLabel(err)}`);
+      setAudio({ status: "error", problem: describeMediaError("extract", err) });
     }
   }
 
@@ -291,7 +307,10 @@ export function LabClient() {
     if (audio.status !== "done") return;
     setTranscript({ status: "running" });
     const started = performance.now();
-    const result = await requestTranscription(audio.blob, language);
+    const abort = new AbortController();
+    transcribeAbort.current = abort;
+    const result = await requestTranscription(audio.blob, language, abort.signal);
+    if (abort.signal.aborted) return setTranscript({ status: "idle" });
     if (result.ok) {
       recordStep({ transcribeMs: performance.now() - started });
       if (result.warning) recordProblem("TRANSCRIBE: Hinglish fell back to Hindi script");
@@ -318,18 +337,8 @@ export function LabClient() {
       recordStep({ renderMs: ms, renderStorage: storage, outputMb: Math.round((blob.size / 1024 / 1024) * 10) / 10 });
     } catch (err) {
       const canceled = err instanceof RenderCanceledError;
-      if (!canceled) recordProblem(`RENDER: ${err instanceof Error ? err.message : "Render failed."}`);
-      setRender(
-        canceled
-          ? { status: "idle" }
-          : {
-              status: "error",
-              problem: {
-                message: err instanceof Error ? err.message : "Render failed.",
-                action: "Close other tabs and apps and try again. If it fails again, try a 1080p version.",
-              },
-            },
-      );
+      if (!canceled) recordProblem(`RENDER: ${errorLabel(err)}`);
+      setRender(canceled ? { status: "idle" } : { status: "error", problem: describeMediaError("render", err) });
     } finally {
       renderHandle.current = null;
     }
@@ -346,7 +355,11 @@ export function LabClient() {
         </p>
       </header>
 
-      <Step n={1} title="Pick a video">
+      <Step
+        n={1}
+        title="Pick a video"
+        flow={<DataFlow testId="flow-1">The video is read in this browser to check its format. It is never uploaded.</DataFlow>}
+      >
         <input
           data-testid="file-input"
           type="file"
@@ -388,7 +401,15 @@ export function LabClient() {
         )}
       </Step>
 
-      <Step n={2} title="Extract speech audio (on this device)">
+      <Step
+        n={2}
+        title="Extract speech audio"
+        flow={
+          <DataFlow testId="flow-2">
+            The speech audio is made in this browser. Nothing is sent until you press Transcribe.
+          </DataFlow>
+        }
+      >
         <button data-testid="extract-button" disabled={!ready || audio.status === "running"} onClick={() => void onExtract()} className={btn}>
           Extract audio
         </button>
@@ -404,8 +425,11 @@ export function LabClient() {
         )}
       </Step>
 
-      <Step n={3} title="Transcribe">
-        <p data-testid="transcribe-disclosure" className="text-sm text-zinc-600 dark:text-zinc-400">
+      <Step
+        n={3}
+        title="Transcribe"
+        flow={
+          <DataFlow testId="transcribe-disclosure" leaves>
           Sends only the extracted speech audio
           {audio.status === "done" ? ` (${formatBytes(audio.blob.size)})` : ""}, never the video, to our server, which
           forwards it to {TRANSCRIPTION_DISCLOSURE.providerName} for transcription. For Hinglish, the transcribed words
@@ -415,7 +439,9 @@ export function LabClient() {
             {TRANSCRIPTION_DISCLOSURE.providerName}&apos;s privacy policy
           </a>{" "}
           applies to their processing.
-        </p>
+          </DataFlow>
+        }
+      >
         <div className="flex flex-wrap items-center gap-3">
           <label className="flex items-center gap-2 text-sm">
             Language
@@ -432,7 +458,7 @@ export function LabClient() {
           </label>
           <button
             data-testid="transcribe-button"
-            disabled={audio.status !== "done" || transcript.status === "running"}
+            disabled={audio.status !== "done" || transcript.status === "running" || !online}
             onClick={() => void onTranscribe()}
             className={btn}
           >
@@ -445,7 +471,19 @@ export function LabClient() {
             Transcribing again replaces your caption edits.
           </p>
         )}
-        {transcript.status === "running" && <Status testId="transcribe-status">Uploading audio and transcribing…</Status>}
+        {!online && (
+          <p data-testid="offline-note" role="status" className="text-sm text-amber-800 dark:text-amber-300">
+            You&apos;re offline. Transcribing needs a connection; every other step works offline.
+          </p>
+        )}
+        {transcript.status === "running" && (
+          <div className="flex items-center gap-3">
+            <Status testId="transcribe-status">Uploading audio and transcribing…</Status>
+            <button type="button" className={btnSecondary} onClick={() => transcribeAbort.current?.abort()}>
+              Cancel
+            </button>
+          </div>
+        )}
         {transcript.status === "error" && <ProblemBox testId="transcribe-error" problem={transcript.problem} />}
         {transcript.status === "done" && (
           <p data-testid="transcribe-done" className="text-sm">
@@ -462,7 +500,15 @@ export function LabClient() {
         )}
       </Step>
 
-      <Step n={4} title="Edit captions and preview">
+      <Step
+        n={4}
+        title="Edit captions and preview"
+        flow={
+          <DataFlow testId="flow-4">
+            Your transcript, edits, style and brand kit are saved in this browser only.
+          </DataFlow>
+        }
+      >
         <p data-testid="caption-source" className="text-sm">
           {realWords
             ? `Captions from the transcript${edits ? ", with your edits" : ""} (${lines.length} lines).`
@@ -531,7 +577,22 @@ export function LabClient() {
         </fieldset>
         {videoUrl && probe && (
           <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,auto)_minmax(0,1fr)]">
-            <Preview src={videoUrl} lines={lines} style={style} fontReady={fontReady} videoRef={videoRef} />
+            <div className="flex flex-col gap-2">
+              {previewFailed && (
+                <p data-testid="preview-error" role="status" className="rounded bg-amber-100 px-3 py-2 text-sm text-amber-900">
+                  This browser can&apos;t play the video in the preview. Editing still works, and the export doesn&apos;t
+                  use this player, so render and check the MP4.
+                </p>
+              )}
+              <Preview
+                src={videoUrl}
+                lines={lines}
+                style={style}
+                fontReady={fontReady}
+                videoRef={videoRef}
+                onError={() => setPreviewFailed(true)}
+              />
+            </div>
             <TranscriptEditor
               words={words}
               onChange={editWords}
@@ -544,7 +605,15 @@ export function LabClient() {
         )}
       </Step>
 
-      <Step n={5} title="Export">
+      <Step
+        n={5}
+        title="Export"
+        flow={
+          <DataFlow testId="flow-5">
+            The video is made in this browser and kept in its private storage until you download it. No watermark.
+          </DataFlow>
+        }
+      >
         <div className="flex flex-wrap gap-3">
           <button data-testid="render-button" disabled={!ready || !fontReady || render.status === "running"} onClick={() => void onRender()} className={btn}>
             Render MP4
@@ -560,7 +629,14 @@ export function LabClient() {
             </a>
           )}
         </div>
-        {render.status === "running" && <Progress testId="render-progress" label="Rendering" value={render.progress} />}
+        {render.status === "running" && (
+          <>
+            <Progress testId="render-progress" label="Rendering" value={render.progress} />
+            <p className="text-sm text-zinc-600 dark:text-zinc-400">
+              Keep this tab open until it finishes. On a phone, don&apos;t switch apps: Android may pause the export.
+            </p>
+          </>
+        )}
         {render.status === "error" && <ProblemBox testId="render-error" problem={render.problem} />}
         {render.status === "done" && (
           <div data-testid="render-done" className="flex flex-col gap-2 text-sm">
@@ -599,6 +675,7 @@ function Preview({
   style,
   fontReady,
   videoRef,
+  onError,
 }: {
   src: string;
   lines: ReturnType<typeof groupWords>;
@@ -606,6 +683,7 @@ function Preview({
   /** Until the bundled font loads, captions are not drawn rather than drawn in a misleading fallback font. */
   fontReady: boolean;
   videoRef: React.RefObject<HTMLVideoElement | null>;
+  onError: () => void;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -639,7 +717,7 @@ function Preview({
 
   return (
     <div className="relative mx-auto w-fit max-w-full">
-      <video ref={videoRef} src={src} controls playsInline className="block max-h-[70vh] max-w-full" />
+      <video ref={videoRef} src={src} controls playsInline onError={onError} className="block max-h-[70vh] max-w-full" />
       <canvas ref={canvasRef} className="pointer-events-none absolute inset-0 h-full w-full" />
     </div>
   );
@@ -649,12 +727,81 @@ const btn =
   "rounded-md bg-foreground px-4 py-2 text-sm text-background disabled:cursor-not-allowed disabled:opacity-40";
 const btnSecondary = "rounded-md border px-4 py-2 text-sm";
 
-function Step({ n, title, children }: { n: number; title: string; children: React.ReactNode }) {
+/** Where the step's data goes. Every step has one, so nothing leaves the device unannounced. */
+function DataFlow({ testId, leaves = false, children }: { testId: string; leaves?: boolean; children: React.ReactNode }) {
+  return (
+    <p data-testid={testId} data-leaves-device={leaves} className="text-sm text-zinc-600 dark:text-zinc-400">
+      <span className={leaves ? "font-medium text-amber-800 dark:text-amber-300" : "font-medium text-foreground"}>
+        {leaves ? "Leaves this device: " : "Stays on this device. "}
+      </span>
+      {children}
+    </p>
+  );
+}
+
+function useOnline(): boolean {
+  return useSyncExternalStore(
+    (onChange) => {
+      window.addEventListener("online", onChange);
+      window.addEventListener("offline", onChange);
+      return () => {
+        window.removeEventListener("online", onChange);
+        window.removeEventListener("offline", onChange);
+      };
+    },
+    () => navigator.onLine,
+    () => true,
+  );
+}
+
+/** Asks the browser to confirm before closing or reloading while local work would be lost. */
+function useLeaveWarning(active: boolean) {
+  useEffect(() => {
+    if (!active) return;
+    const onBeforeUnload = (e: BeforeUnloadEvent) => e.preventDefault();
+    window.addEventListener("beforeunload", onBeforeUnload);
+    return () => window.removeEventListener("beforeunload", onBeforeUnload);
+  }, [active]);
+}
+
+/** Holds a screen wake lock while `active`, where supported (Chrome on Android). Best effort. */
+function useWakeLock(active: boolean) {
+  useEffect(() => {
+    if (!active || !("wakeLock" in navigator)) return;
+    let lock: WakeLockSentinel | null = null;
+    let released = false;
+    navigator.wakeLock.request("screen").then(
+      (l) => (released ? void l.release() : (lock = l)),
+      () => {},
+    );
+    return () => {
+      released = true;
+      void lock?.release();
+    };
+  }, [active]);
+}
+
+function errorLabel(err: unknown): string {
+  return err instanceof Error || err instanceof DOMException ? `${err.name}: ${err.message}` : String(err);
+}
+
+function Step({
+  n,
+  title,
+  flow,
+  children,
+}: {
+  n: number;
+  title: string;
+  flow: React.ReactNode;
+  children: React.ReactNode;
+}) {
   return (
     <section className="flex flex-col gap-3 rounded-lg border p-4">
       <h2 className="font-medium">
         {n}. {title}
       </h2>
+      {flow}
       {children}
     </section>
   );

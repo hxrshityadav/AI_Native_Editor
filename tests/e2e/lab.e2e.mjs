@@ -181,6 +181,17 @@ async function main() {
     check("extract: small (< 40 KB for 4 s)", audioBytes.length < 40_000, `${audioBytes.length} B`);
 
     check("transcribe: disclosure names provider before upload", (await page.getByTestId("transcribe-disclosure").innerText()).includes("Groq"));
+    const flows = await Promise.all(
+      ["flow-1", "flow-2", "transcribe-disclosure", "flow-4", "flow-5"].map((id) => page.getByTestId(id).getAttribute("data-leaves-device")),
+    );
+    check("data flow: every step says where data goes; only Transcribe leaves the device", flows.join() === "false,false,true,false,false", flows.join());
+
+    await context.setOffline(true);
+    const offlineShown = await page.getByTestId("offline-note").isVisible();
+    const offlineDisabled = await page.getByTestId("transcribe-button").isDisabled();
+    await context.setOffline(false);
+    await page.getByTestId("offline-note").waitFor({ state: "detached", timeout: 5_000 });
+    check("offline: transcribe disabled with an explanation, restored when back online", offlineShown && offlineDisabled && (await page.getByTestId("transcribe-button").isEnabled()));
 
     // Real route, no key configured: must fail honestly with a recovery action.
     await page.getByTestId("transcribe-button").click();
@@ -200,10 +211,17 @@ async function main() {
     // Mocked provider response through the real client wiring.
     let uploaded = null;
     let romanizeFailsNext = false;
+    let holdNext = false;
     let uploads = 0;
     await page.route("**/api/transcribe", async (route) => {
       uploads++;
       uploaded = route.request().postDataBuffer();
+      if (holdNext) {
+        // A slow network: answer late, after the user may have cancelled.
+        holdNext = false;
+        await new Promise((r) => setTimeout(r, 2_000));
+        return route.fulfill({ json: { provider: { id: "groq", displayName: "Groq (mock)" }, words: MOCK_WORDS, warning: null } }).catch(() => {});
+      }
       if (romanizeFailsNext) {
         romanizeFailsNext = false;
         const hindi = [{ text: "नमस्ते", start: 0.5, end: 1.2 }];
@@ -215,6 +233,17 @@ async function main() {
     check("hinglish: is the default caption language", (await page.getByTestId("language-select").inputValue()) === "hinglish");
 
     // A failed romanization is shown honestly, with the Hindi-script words and a way forward.
+    holdNext = true;
+    await page.getByTestId("transcribe-button").click();
+    await page.getByTestId("transcribe-status").waitFor();
+    await page.getByRole("button", { name: "Cancel" }).click();
+    await page.getByTestId("transcribe-status").waitFor({ state: "detached", timeout: 5_000 });
+    await page.waitForTimeout(2_500); // the late answer must not land after cancelling
+    check(
+      "transcribe: cancel returns to idle; a late answer is ignored",
+      !(await page.getByTestId("transcribe-error").isVisible()) && !(await page.getByTestId("transcribe-done").isVisible()),
+    );
+
     romanizeFailsNext = true;
     await page.getByTestId("transcribe-button").click();
     await page.getByTestId("transcribe-warning").waitFor({ timeout: 15_000 });
@@ -365,8 +394,16 @@ async function main() {
     // Cancel mid-render: back to a clean, re-renderable state with no error shown.
     await page.getByTestId("render-button").click();
     await page.getByTestId("render-progress").waitFor({ timeout: 30_000 });
+    const leaveBlocked = () =>
+      page.evaluate(() => {
+        const e = new Event("beforeunload", { cancelable: true });
+        window.dispatchEvent(e);
+        return e.defaultPrevented;
+      });
+    const blockedWhileRendering = await leaveBlocked();
     await page.getByRole("button", { name: "Cancel" }).click();
     await page.getByTestId("render-progress").waitFor({ state: "detached", timeout: 5_000 });
+    check("leave warning: on while rendering, off afterwards", blockedWhileRendering && !(await leaveBlocked()));
     check(
       "cancel: stops cleanly",
       !(await page.getByTestId("render-error").isVisible()) &&
