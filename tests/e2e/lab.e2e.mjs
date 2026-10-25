@@ -42,6 +42,9 @@ function makeFixtures() {
   ff("-display_rotation", "90", "-i", f("landscape.mp4"), "-c", "copy", f("rotated.mp4"));
   ff("-f", "lavfi", "-i", "color=c=0x2a4d69:s=540x960:r=30:d=3", "-f", "lavfi", "-i", tone, "-c:v", "libvpx-vp9", "-b:v", "500k", "-c:a", "libopus", "-shortest", f("vp9-opus.webm"));
   ff("-f", "lavfi", "-i", bg, "-c:v", "libx264", "-pix_fmt", "yuv420p", f("no-audio.mp4"));
+  // HDR (PQ, BT.2020, 10-bit), as phones record by default, and HEVC, which many Android phones use.
+  ff("-f", "lavfi", "-i", "color=c=0x2a4d69:s=540x960:r=30:d=2", "-f", "lavfi", "-i", tone, "-c:v", "libvpx-vp9", "-profile:v", "2", "-pix_fmt", "yuv420p10le", "-color_primaries", "bt2020", "-color_trc", "smpte2084", "-colorspace", "bt2020nc", "-b:v", "500k", "-c:a", "libopus", "-shortest", f("hdr.webm"));
+  ff("-f", "lavfi", "-i", "color=c=0x2a4d69:s=540x960:r=30:d=2", "-f", "lavfi", "-i", tone, "-c:v", "libx265", "-tag:v", "hvc1", "-pix_fmt", "yuv420p", "-c:a", "aac", "-shortest", f("hevc.mp4"));
   ff("-f", "lavfi", "-i", tone, "-c:a", "aac", f("audio-only.m4a"));
   writeFileSync(f("garbage.mp4"), Buffer.from(Array.from({ length: 4096 }, (_, i) => (i * 7919) % 256)));
   return f;
@@ -278,6 +281,14 @@ async function main() {
     const outMp4 = await renderAndSave(page, f("out-vertical.mp4"));
     const stallMs = await page.evaluate(() => (clearInterval(window.__stall.id), window.__stall.max));
     console.log(`      longest main-thread stall during render: ${stallMs.toFixed(0)} ms`);
+    await page.getByTestId("run-report").locator("summary").click();
+    const reportText = await page.getByTestId("report-text").inputValue();
+    const reportJson = JSON.parse(reportText.slice(reportText.indexOf("{")));
+    check(
+      "device report: has step timings and clip details",
+      reportText.startsWith("| ") && reportJson.steps.renderMs > 0 && reportJson.steps.checkMs > 0 && reportJson.clip.resolution === "720×1280",
+    );
+    check("device report: no file name or transcript", !/vertical|Namaste|doston/i.test(reportText));
     check("render: ran in a worker, streamed to device storage", (await page.getByTestId("render-storage").getAttribute("data-storage")) === "disk");
     const info = probe(outMp4);
     const v = streams(info, "video")[0];
@@ -366,7 +377,17 @@ async function main() {
     const webm = probe(await renderAndSave(page, f("out-webm.mp4")));
     check("webm: H.264 + Opus-in-MP4", streams(webm, "video")[0]?.codec_name === "h264" && streams(webm, "audio")[0]?.codec_name === "opus");
 
-    // 4. Rejections carry a reason and an action.
+    // 4. Phone formats: HDR is accepted with a warning; HEVC depends on the browser's decoder.
+    await pick(page, f("hdr.webm"));
+    const hdrOk = await page.getByTestId("check-ok").isVisible();
+    const hdrText = hdrOk ? await page.getByTestId("check-ok").innerText() : await page.getByTestId("check-error").innerText();
+    check("hdr: accepted with a washed-out-colour warning", hdrOk && /HDR video/.test(hdrText), hdrText.replace(/\n/g, " / ").slice(0, 160));
+    await pick(page, f("hevc.mp4"));
+    const hevcOk = await page.getByTestId("check-ok").isVisible();
+    const hevcText = hevcOk ? "accepted" : await page.getByTestId("check-error").innerText();
+    check("hevc: accepted, or rejected with a recovery action", hevcOk || /High efficiency video/.test(hevcText), hevcText.replace(/\n/g, " / "));
+
+    // 5. Rejections carry a reason and an action.
     for (const [file, pattern] of [
       ["no-audio.mp4", /no sound/i],
       ["audio-only.m4a", /no video picture/i],

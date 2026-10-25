@@ -30,7 +30,7 @@ ffmpeg-generated fixtures. No task is verified on a real phone yet.
 | T-12 | Hinglish bake-off: Groq vs Sarvam vs Instagram Edits (includes Sarvam adapter) | Not started | |
 | T-13 | Upload checks (Instagram, YouTube, WhatsApp), incl. Opus-in-MP4 | Not started | Risk: some platforms may reject Opus in MP4; fallback is AAC transcode where encodable |
 | T-14 | Postgres rate limiter (Drizzle) + Cloudflare Turnstile | Not started | Required before any public URL. TODO in `rateLimit.ts` |
-| T-15 | First Android device runs, logged in `docs/DEVICE_LOG.md` | Not started | |
+| T-15 | First Android device runs, logged in `docs/DEVICE_LOG.md` | In progress: tooling and emulated pass done; **no real-device run yet** (needs the owner's phone) | Done so far: in-lab device report (privacy-safe, copies a DEVICE_LOG row); HDR warning and HEVC-specific advice; `npm run perf` emulated Pixel 7 + CPU ÷4 pass, which found and fixed a 47% idle main-thread load in the preview; step-by-step phone protocol in DEVICE_LOG. Open: ~700 MB fixed renderer memory during renders (desktop measurement) |
 
 ## Phase 3: MVP (not started)
 
@@ -47,7 +47,8 @@ ffmpeg-generated fixtures. No task is verified on a real phone yet.
 
 ## Known limitations
 
-- Rendering is in a worker and streamed to disk, but peak memory on a real phone has not been measured (needs T-15).
+- Rendering is in a worker and streamed to disk, but peak memory on a real phone has not been measured (needs T-15). On desktop headless Chromium, renders add a fixed ~650–800 MB to the renderer process regardless of clip length.
+- HEVC is only accepted where the browser can decode it; elsewhere the user is told how to record H.264.
 - Without OPFS writes (older browsers), rendering falls back to an in-memory buffer; the UI says so.
 - Each render deletes the previous render file, so two tabs rendering at once can break each other.
 - Only Devanagari and Latin are bundled. Other Indic scripts (Tamil, Bengali, …) fall back to system fonts.

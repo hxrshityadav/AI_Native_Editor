@@ -25,6 +25,7 @@ export async function probeFile(file: Blob): Promise<ProbeResult> {
             height: await videoTrack.getDisplayHeight(),
             rotation: await videoTrack.getRotation(),
             canDecode: await videoTrack.canDecode(),
+            hdr: await videoTrack.hasHighDynamicRange(),
           }
         : null,
       audio: audioTrack

@@ -26,7 +26,9 @@ import { requestTranscription, TRANSCRIPTION_DISCLOSURE } from "@/lib/transcript
 import type { CaptionLanguage, TranscribeResponse } from "@/lib/transcription/types";
 import { applyBrandKit, loadBrandKit, saveBrandKit, type BrandKit } from "@/lib/brandKit";
 import { deleteDraft, fingerprintFile, loadDraft, saveDraft } from "@/lib/drafts";
+import { buildRunReport, readDeviceInfo, type DeviceInfo, type RunSteps } from "@/lib/deviceReport";
 import { BrandKitPanel } from "./BrandKitPanel";
+import { RunReportPanel } from "./RunReportPanel";
 import { TranscriptEditor } from "./TranscriptEditor";
 
 type Problem = { message: string; action: string };
@@ -78,6 +80,14 @@ export function LabClient() {
   const [styleId, setStyleId] = useState(DEFAULT_CAPTION_STYLE.id);
   const baseStyle = getCaptionStyle(styleId);
   const [kit, setKit] = useState<BrandKit | null>(null);
+  // Step timings and problems for the device report; reset on every pick.
+  const [run, setRun] = useState<{ steps: RunSteps; problems: string[] }>({ steps: {}, problems: [] });
+  const [deviceInfo, setDeviceInfo] = useState<DeviceInfo | null>(null);
+  const recordStep = (patch: RunSteps) => setRun((r) => ({ ...r, steps: { ...r.steps, ...patch } }));
+  const recordProblem = (problem: string) => setRun((r) => ({ ...r, problems: [...r.problems, problem] }));
+  useEffect(() => {
+    readDeviceInfo().then(setDeviceInfo, () => {});
+  }, []);
   const [kitSaveFailed, setKitSaveFailed] = useState(false);
   // The style everything uses: the picked preset with the brand kit on top.
   const style = useMemo(() => (kit?.enabled ? applyBrandKit(baseStyle, kit) : baseStyle), [baseStyle, kit]);
@@ -187,10 +197,15 @@ export function LabClient() {
     setEdits(null);
     setRender({ status: "idle" });
     setVideoUrl(null);
+    setRun({ steps: {}, problems: [] });
     if (!picked) return setCheck({ status: "idle" });
+    const checkStarted = performance.now();
 
     const basics = validateFileBasics(picked);
-    if (!basics.ok) return setCheck({ status: "rejected", problem: toProblem(basics.error) });
+    if (!basics.ok) {
+      recordProblem(`CHECK: ${basics.error.code}`);
+      return setCheck({ status: "rejected", problem: toProblem(basics.error) });
+    }
 
     setCheck({ status: "checking" });
     let probed: ProbeResult;
@@ -198,15 +213,20 @@ export function LabClient() {
       probed = await probeFile(picked);
     } catch {
       if (stale()) return;
+      recordProblem("CHECK: UNSUPPORTED_FORMAT");
       return setCheck({ status: "rejected", problem: toProblem(issue("UNSUPPORTED_FORMAT")) });
     }
     if (stale()) return;
     const result = validateProbe(probed);
-    if (!result.ok) return setCheck({ status: "rejected", problem: toProblem(result.error) });
+    if (!result.ok) {
+      recordProblem(`CHECK: ${result.error.code}`);
+      return setCheck({ status: "rejected", problem: toProblem(result.error) });
+    }
 
     const device = await checkDevice({ width: probed.video!.width, height: probed.video!.height });
     if (stale()) return;
     if (device.blockers.length) {
+      recordProblem(`DEVICE: ${device.blockers.join(" ")}`);
       return setCheck({
         status: "rejected",
         problem: { message: "This device can't process the video locally.", action: device.blockers.join(" ") },
@@ -214,6 +234,7 @@ export function LabClient() {
     }
     setVideoUrl(makeUrl(picked));
     setCheck({ status: "ready", probe: probed, warnings: result.warnings, device });
+    recordStep({ checkMs: performance.now() - checkStarted });
 
     try {
       const fp = await fingerprintFile(picked);
@@ -249,10 +270,13 @@ export function LabClient() {
     if (!file) return;
     // Same file, same audio: keep the transcript and the user's edits.
     setAudio({ status: "running", progress: 0 });
+    const started = performance.now();
     try {
       const blob = await extractSpeechAudio(file, (p) => setAudio({ status: "running", progress: p }));
       setAudio({ status: "done", blob, url: makeUrl(blob) });
+      recordStep({ extractMs: performance.now() - started, audioKb: Math.round(blob.size / 1024) });
     } catch (err) {
+      recordProblem(`EXTRACT: ${err instanceof Error ? err.message : "unknown error"}`);
       setAudio({
         status: "error",
         problem: {
@@ -266,11 +290,15 @@ export function LabClient() {
   async function onTranscribe() {
     if (audio.status !== "done") return;
     setTranscript({ status: "running" });
+    const started = performance.now();
     const result = await requestTranscription(audio.blob, language);
     if (result.ok) {
+      recordStep({ transcribeMs: performance.now() - started });
+      if (result.warning) recordProblem("TRANSCRIBE: Hinglish fell back to Hindi script");
       setTranscript({ status: "done", words: result.words, providerName: result.providerName, warning: result.warning });
       setEdits(null);
     } else {
+      recordProblem(`TRANSCRIBE: ${result.code}`);
       setTranscript({ status: "error", problem: { message: result.message, action: result.action } });
     }
   }
@@ -287,8 +315,10 @@ export function LabClient() {
       const { blob, storage } = await handle.result;
       const ms = performance.now() - started;
       setRender({ status: "done", url: makeUrl(blob), sizeBytes: blob.size, ms, storage });
+      recordStep({ renderMs: ms, renderStorage: storage, outputMb: Math.round((blob.size / 1024 / 1024) * 10) / 10 });
     } catch (err) {
       const canceled = err instanceof RenderCanceledError;
+      if (!canceled) recordProblem(`RENDER: ${err instanceof Error ? err.message : "Render failed."}`);
       setRender(
         canceled
           ? { status: "idle" }
@@ -548,6 +578,17 @@ export function LabClient() {
           </div>
         )}
       </Step>
+      {deviceInfo && (
+        <RunReportPanel
+          report={buildRunReport({
+            device: deviceInfo,
+            capabilities: check.status === "ready" ? check.device : null,
+            probe,
+            steps: run.steps,
+            problems: run.problems,
+          })}
+        />
+      )}
     </main>
   );
 }
@@ -570,11 +611,17 @@ function Preview({
 
   useEffect(() => {
     let raf = 0;
+    // Redraw only when the frame time or size changes: a paused preview then costs nothing,
+    // instead of a full-frame clear and draw 60 times a second (measured 47% main-thread busy
+    // at idle with a 4× CPU throttle). Effect deps cover lines, style and font changes.
+    let drawn = "";
     const tick = () => {
       const video = videoRef.current;
       const canvas = canvasRef.current;
       const ctx = canvas?.getContext("2d");
-      if (video && canvas && ctx && video.videoWidth) {
+      const key = video ? `${video.currentTime}|${video.videoWidth}x${video.videoHeight}` : "";
+      if (video && canvas && ctx && video.videoWidth && key !== drawn) {
+        drawn = key;
         if (canvas.width !== video.videoWidth || canvas.height !== video.videoHeight) {
           canvas.width = video.videoWidth;
           canvas.height = video.videoHeight;

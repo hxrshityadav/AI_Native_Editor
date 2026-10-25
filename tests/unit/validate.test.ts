@@ -6,7 +6,7 @@ const good: ProbeResult = {
   fileSizeBytes: 5_000_000,
   mimeType: 'video/mp4; codecs="avc1.64001f, mp4a.40.2"',
   durationSec: 30,
-  video: { codec: "avc", width: 1080, height: 1920, rotation: 0, canDecode: true },
+  video: { codec: "avc", width: 1080, height: 1920, rotation: 0, canDecode: true, hdr: false },
   audio: { codec: "aac", channels: 2, sampleRate: 48000, canDecode: true },
 };
 
@@ -23,6 +23,7 @@ describe("validateProbe", () => {
   it.each([
     ["NO_VIDEO_TRACK", { video: null }],
     ["VIDEO_UNDECODABLE", { video: { ...good.video!, canDecode: false } }],
+    ["HEVC_UNDECODABLE", { video: { ...good.video!, codec: "hevc", canDecode: false } }],
     ["NO_AUDIO_TRACK", { audio: null }],
     ["AUDIO_UNDECODABLE", { audio: { ...good.audio!, canDecode: false } }],
     ["TOO_SHORT", { durationSec: 0.5 }],
@@ -40,6 +41,12 @@ describe("validateProbe", () => {
       expect(r.error.reason.length).toBeGreaterThan(10);
       expect(r.error.action.length).toBeGreaterThan(10);
     }
+  });
+
+  it("warns, but accepts, HDR video", () => {
+    const r = validateProbe({ ...good, video: { ...good.video!, hdr: true } });
+    expect(r.ok).toBe(true);
+    expect(r.warnings.map((w) => w.code)).toEqual(["HDR_VIDEO"]);
   });
 
   it("warns, but accepts, landscape video", () => {

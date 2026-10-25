@@ -10,6 +10,8 @@ export type ProbeResult = {
     height: number;
     rotation: number;
     canDecode: boolean;
+    /** HDR transfer (PQ/HLG). Converting to an SDR H.264 export can wash out colours. */
+    hdr: boolean;
   } | null;
   audio: {
     codec: string | null;
@@ -25,12 +27,14 @@ export type IssueCode =
   | "UNSUPPORTED_FORMAT"
   | "NO_VIDEO_TRACK"
   | "VIDEO_UNDECODABLE"
+  | "HEVC_UNDECODABLE"
   | "NO_AUDIO_TRACK"
   | "AUDIO_UNDECODABLE"
   | "TOO_SHORT"
   | "TOO_LONG"
   | "RESOLUTION_TOO_HIGH"
-  | "NOT_VERTICAL";
+  | "NOT_VERTICAL"
+  | "HDR_VIDEO";
 
 /** Every rejection carries a human reason and a concrete recovery action. */
 export type Issue = { code: IssueCode; reason: string; action: string };

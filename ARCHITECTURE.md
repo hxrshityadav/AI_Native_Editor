@@ -33,6 +33,7 @@ request memory. Logs carry error codes only.
 | `src/app/lab/TranscriptEditor.tsx` | browser | Word editor UI with keyboard shortcuts; the lab keeps the edits and undo history |
 | `src/lib/captions/fonts.ts` | both | Bundled caption fonts (`public/fonts`, OFL) and a loader for `document.fonts` or the worker's `self.fonts` |
 | `src/lib/captions/styles.ts` | both | The five caption presets; `getCaptionStyle` falls back to the default for unknown ids |
+| `src/lib/deviceReport.ts` | browser | Privacy-safe run report (device, clip properties, step timings) and its DEVICE_LOG row |
 | `src/lib/brandKit.ts` | browser | The brand kit: Zod schema, `applyBrandKit` (kit on top of a style), load/save |
 | `src/lib/localDb.ts` | browser | The single IndexedDB database (v2): `drafts` and `settings` stores |
 | `src/lib/drafts.ts` | browser | Caption drafts in IndexedDB (`idb`), keyed by a content hash, Zod-validated on read, pruned to 20 |

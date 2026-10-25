@@ -106,3 +106,17 @@ styles × 1 kit instead of a free-form editor. On pill styles, pill text switche
 and white by WCAG luminance, so a dark brand colour never hides the spoken word. The kit is one
 record in a new `settings` store (IndexedDB v2 upgrade, drafts kept) and is saved on every change,
 since it's a few bytes. It's per browser; syncing across devices needs accounts and isn't planned.
+
+## D-019: Prepare the real-device run instead of faking it; HDR warns, HEVC explains (2026-10-25)
+T-15 needs a physical phone, which the agent doesn't have. Instead we built what makes the owner's run
+fast and comparable: a privacy-safe device report in the lab, a written protocol (clips, adb memory
+reading, pass criteria), and an emulated pass (`npm run perf`) clearly labelled as such.
+- HDR (PQ/HLG) is accepted with a warning: the SDR H.264 export can look washed out, and phones record
+  HDR by default. Tone mapping is not attempted until real clips show how bad it is.
+- HEVC that the browser can't decode gets its own message pointing at the camera setting, because
+  "try another browser" is useless on an Android phone that already runs Chrome.
+- The emulated pass found the preview redrawing a 1080×1920 canvas every frame while paused; it now
+  redraws only when the frame time or inputs change (47% → 8.4% idle main-thread load at CPU ÷4).
+- Renders add ~650–800 MB of renderer memory on desktop, nearly independent of clip length and frame
+  size. Mediabunny caps its own queues at ~4 frames, so this is codec and frame-pool overhead in
+  Chromium. We'll measure on a phone before attempting anything (such as lower parallelism).

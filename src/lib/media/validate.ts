@@ -30,6 +30,11 @@ const MESSAGES: Record<IssueCode, Omit<Issue, "code">> = {
     reason: "This browser can't decode the video codec in this file.",
     action: "Try Chrome or Edge, or re-export the video as H.264 MP4.",
   },
+  HEVC_UNDECODABLE: {
+    reason: "This video is in HEVC (H.265), which this browser can't decode on this device.",
+    action:
+      "Record in H.264 instead: in your camera settings, turn off \"High efficiency video\" (Samsung) or set the video codec to H.264 (Pixel and others). Or re-export the clip as H.264 MP4.",
+  },
   NO_AUDIO_TRACK: {
     reason: "This video has no sound, so there is no speech to caption.",
     action: "Pick a version of the video with its original audio.",
@@ -49,6 +54,10 @@ const MESSAGES: Record<IssueCode, Omit<Issue, "code">> = {
   RESOLUTION_TOO_HIGH: {
     reason: "This video is larger than 4K, which most devices can't re-encode.",
     action: "Export it at 1080p or 4K and try again.",
+  },
+  HDR_VIDEO: {
+    reason: "This is an HDR video. The export is standard-range, so colours may look washed out or dull.",
+    action: "If the colours look wrong, record with HDR turned off in your camera settings, then try again.",
   },
   NOT_VERTICAL: {
     reason: "This video is not vertical. Reels and Shorts look best at 9:16.",
@@ -75,7 +84,7 @@ export function validateProbe(probe: ProbeResult): ValidationResult {
   const fail = (code: IssueCode): ValidationResult => ({ ok: false, error: issue(code), warnings });
 
   if (!probe.video) return fail("NO_VIDEO_TRACK");
-  if (!probe.video.canDecode) return fail("VIDEO_UNDECODABLE");
+  if (!probe.video.canDecode) return fail(probe.video.codec === "hevc" ? "HEVC_UNDECODABLE" : "VIDEO_UNDECODABLE");
   if (!probe.audio) return fail("NO_AUDIO_TRACK");
   if (!probe.audio.canDecode) return fail("AUDIO_UNDECODABLE");
   if (probe.durationSec < LIMITS.minDurationSec) return fail("TOO_SHORT");
@@ -83,5 +92,6 @@ export function validateProbe(probe: ProbeResult): ValidationResult {
   if (Math.max(probe.video.width, probe.video.height) > LIMITS.maxLongEdge) return fail("RESOLUTION_TOO_HIGH");
 
   if (probe.video.height <= probe.video.width) warnings.push(issue("NOT_VERTICAL"));
+  if (probe.video.hdr) warnings.push(issue("HDR_VIDEO"));
   return { ok: true, warnings };
 }

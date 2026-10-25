@@ -45,3 +45,4 @@ next-env.d.ts
 
 # env (keep the example)
 !.env.example
+/tests/perf/.out/
