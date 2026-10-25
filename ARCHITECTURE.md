@@ -31,6 +31,8 @@ request memory. Logs carry error codes only.
 | `src/lib/captions` | both | `Word`/`CaptionLine` types, grouping, `lineAt`, word wrap, canvas drawing, SRT |
 | `src/lib/captions/edit.ts` | both | Pure word edits: replace/split, remove, merge, clamped edge nudges, `wordIndexAt` |
 | `src/app/lab/TranscriptEditor.tsx` | browser | Word editor UI with keyboard shortcuts; the lab keeps the edits and undo history |
+| `src/lib/captions/fonts.ts` | both | Bundled caption fonts (`public/fonts`, OFL) and a loader for `document.fonts` or the worker's `self.fonts` |
+| `src/lib/captions/styles.ts` | both | The five caption presets; `getCaptionStyle` falls back to the default for unknown ids |
 | `src/lib/drafts.ts` | browser | Caption drafts in IndexedDB (`idb`), keyed by a content hash, Zod-validated on read, pruned to 20 |
 | `src/lib/media/probe.ts` | browser | Mediabunny metadata read → `ProbeResult` |
 | `src/lib/media/validate.ts` | both | Pure limits → `Issue {code, reason, action}` |
@@ -52,8 +54,9 @@ worker streams the MP4 into the origin private file system (OPFS) through a Medi
 `StreamTarget`, with `fastStart: false` (metadata at the end), so nothing grows in memory with
 video length. The worker hands back the OPFS `File`, which stays disk-backed. Without OPFS writes it
 falls back to an in-memory `BufferTarget` with fast start, and the UI says so. Cancelling terminates
-the worker. Fonts: the worker sees system fonts only; bundled Indic fonts (T-18) will need loading
-inside the worker with `FontFace`.
+the worker. The worker loads the style's bundled font into its own `self.fonts` before the first
+frame (workers can't see the page's fonts) and fails the render rather than fall back to a system
+font. The preview likewise draws no captions until the font has loaded.
 
 ## Error contract
 

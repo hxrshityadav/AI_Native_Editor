@@ -76,3 +76,11 @@ growing, which is risky on 3–4 GB Android phones with 3-minute 1080p clips. OP
 doesn't matter for local files or for uploads to Instagram, YouTube or WhatsApp (they re-encode;
 T-13 will confirm). One worker per render, and cancel is `terminate()`: simpler than cooperative
 cancel, and partial files are cleaned up at the next render.
+
+## D-016: Caption fonts are bundled, Devanagari plus Latin, loaded per style
+Poppins 700, Baloo 2 800, Mukta 700 and Hind 600 (all OFL-1.1, from Fontsource 5.3.0, licences in
+`public/fonts/*/OFL.txt`) cover Hindi and Roman-script Hinglish in one family each. That's 344 KB in
+total, and one style needs 47–127 KB, loaded only when picked. Families are prefixed "RF" so an
+installed system copy can't shadow ours. If a font fails to load, preview and export pause with a
+retry, rather than silently exporting in a different font from the one previewed. Pill highlights
+centre on the measured ink box, because Devanagari ink sits high in the em box.

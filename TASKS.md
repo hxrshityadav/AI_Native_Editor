@@ -38,7 +38,7 @@ ffmpeg-generated fixtures. No task is verified on a real phone yet.
 | T-16 | Studio UI: desktop three panes; mobile step flow; shadcn/ui | Not started |
 | T-17a | Word editor in `/lab`: fix text, split, merge, delete, ±50 ms timing nudges, keyboard shortcuts, undo; preview, SRT and render use the edits | Tested (12 unit tests; E2E checks edits reach the SRT and the burned-in pixels; screenshots at 1280 px and 390 px) |
 | T-17b | Autosave transcript and edits to IndexedDB (debounced), restore on re-picking the same file, "Start over" deletes the draft | Tested (5 unit tests; E2E: reload → re-pick restores edits with no new upload, render uses restored edits, Start over deletes) |
-| T-18 | 4–6 caption styles with **bundled** Indic fonts (today: system fonts only) | Not started |
+| T-18 | 5 caption styles (Clean, Pop, Boxed, Bold yellow, Subtitle) with bundled Devanagari+Latin fonts (Poppins, Baloo 2, Mukta, Hind; OFL); style saved in the draft; fonts loaded in the page and in the render worker | Tested (8 unit tests incl. draw calls per style and font files on disk; E2E: style restored with draft, Boxed fonts fetched and dark band burned in; every style checked by eye in rendered MP4 frames and in the live preview) |
 | T-19 | One local brand kit (IndexedDB) | Not started |
 | T-20 | Render in a Web Worker; stream the MP4 to OPFS (memory fallback when unavailable) | Tested (E2E: output written to disk; longest main-thread stall 21–29 ms vs 79 ms before, on a 4 s 720p clip, headless desktop; mid-render cancel is clean; Devanagari renders correctly in the worker, checked by eye) |
 | T-21 | Export presets | Not started |
@@ -49,7 +49,8 @@ ffmpeg-generated fixtures. No task is verified on a real phone yet.
 - Rendering is in a worker and streamed to disk, but peak memory on a real phone has not been measured (needs T-15).
 - Without OPFS writes (older browsers), rendering falls back to an in-memory buffer; the UI says so.
 - Each render deletes the previous render file, so two tabs rendering at once can break each other.
-- Caption fonts depend on what the system has installed; Devanagari may fall back on some devices.
+- Only Devanagari and Latin are bundled. Other Indic scripts (Tamil, Bengali, …) fall back to system fonts.
+- Styles are presets: no per-style colour or size controls yet (that comes with the brand kit, T-19).
 - The rate limiter is per server instance, and `X-Forwarded-For` is trusted (only safe behind Vercel's proxy).
 - The lab has no cancel for extraction, only for rendering.
 - Undo history is not saved; after a restore, undo starts empty.

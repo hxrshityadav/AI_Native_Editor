@@ -95,6 +95,12 @@ async function download(page, testId, dest) {
   return dest;
 }
 
+/** Picks a caption style the way a user does: by clicking its label. */
+async function chooseStyle(page, id) {
+  await page.locator("label", { has: page.getByTestId(`style-${id}`) }).click();
+  return page.getByTestId(`style-${id}`).isChecked();
+}
+
 async function renderAndSave(page, dest) {
   await page.getByTestId("render-button").click();
   await page.locator('[data-testid="render-done"], [data-testid="render-error"]').first().waitFor({ timeout: 120_000 });
@@ -132,6 +138,8 @@ async function main() {
   try {
     const context = await browser.newContext({ acceptDownloads: true });
     const page = await context.newPage();
+    const fontRequests = [];
+    context.on("request", (r) => r.url().includes("/fonts/") && fontRequests.push(new URL(r.url()).pathname));
     page.on("pageerror", (e) => console.log("pageerror:", e.message));
 
     // 1. Full happy path on a vertical H.264/AAC clip.
@@ -214,6 +222,9 @@ async function main() {
       JSON.stringify(srt.slice(0, 60)),
     );
 
+    // Pick a style before reloading: it is saved with the draft and used by the render below.
+    check("style: Pop selectable", await chooseStyle(page, "pop"));
+
     // Autosave: reload, re-pick the same file, edits come back without a new upload.
     await page.getByTestId("save-status").filter({ hasText: "Saved in this browser only" }).waitFor({ timeout: 5_000 });
     const uploadsBefore = uploads;
@@ -222,6 +233,7 @@ async function main() {
     await page.getByTestId("save-status").filter({ hasText: "Restored" }).waitFor({ timeout: 10_000 });
     check("autosave: edits restored after reload", (await wordTexts()).join(" ") === "Namaste दोस्तों");
     check("autosave: restore needs no new upload", uploads === uploadsBefore, `${uploads - uploadsBefore} uploads`);
+    check("style: restored with the draft", await page.getByRole("radio", { name: "Pop" }).isChecked());
 
     // Render from the restored draft: proves restored edits drive the export.
     const t0 = Date.now();
@@ -274,7 +286,12 @@ async function main() {
     await pick(page, f("rotated.mp4"));
     const rotatedText = await page.getByTestId("check-ok").innerText();
     check("rotated: probed as 720×1280 with rotation", rotatedText.includes("720×1280") && /rotated/.test(rotatedText));
-    const rot = probe(await renderAndSave(page, f("out-rotated.mp4")));
+    check("style: Boxed selectable", await chooseStyle(page, "boxed"));
+    const rotMp4 = await renderAndSave(page, f("out-rotated.mp4"));
+    const rot = probe(rotMp4);
+    check("style: Boxed font files fetched", fontRequests.some((u) => u.includes("/fonts/mukta/mukta-devanagari-700")), fontRequests.join(" "));
+    const boxBand = frameDiff(f("rotated.mp4"), rotMp4, 1.0, 720, 1280, 0.71, 0.77);
+    check("style: Boxed draws a dark band behind the text", boxBand > 15, `Δ${boxBand.toFixed(2)}`);
     const rv = streams(rot, "video")[0];
     const sideRot = (rv?.side_data_list ?? []).find((s) => "rotation" in s)?.rotation ?? 0;
     check("rotated: output upright 720×1280, no rotation metadata", rv?.width === 720 && rv?.height === 1280 && sideRot === 0, `${rv?.width}x${rv?.height} rot ${sideRot}`);

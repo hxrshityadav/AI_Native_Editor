@@ -17,6 +17,8 @@ export const draftSchema = z.object({
   transcript: z.array(wordSchema),
   /** Null when the user hasn't edited the transcript. */
   edited: z.array(wordSchema).nullable(),
+  /** Caption style id; absent in drafts saved before styles existed. */
+  styleId: z.string().optional(),
 });
 export type Draft = z.infer<typeof draftSchema>;
 

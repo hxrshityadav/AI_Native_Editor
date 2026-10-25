@@ -5,3 +5,5 @@ export * from "./layout";
 export * from "./draw";
 export * from "./testWords";
 export * from "./edit";
+export * from "./fonts";
+export * from "./styles";

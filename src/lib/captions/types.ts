@@ -1,3 +1,6 @@
+import type { CaptionFontId } from "./fonts";
+import type { GroupOptions } from "./group";
+
 /** A single spoken word with timings in seconds, relative to the start of the source video. */
 export type Word = {
   text: string;
@@ -14,31 +17,27 @@ export type CaptionLine = {
 };
 
 export type CaptionStyle = {
+  id: string;
+  name: string;
+  /** One line telling the user when to pick it. */
+  description: string;
+  font: CaptionFontId;
   /** Font size as a fraction of the output frame height. */
   fontSizeRatio: number;
-  fontFamily: string;
-  fontWeight: number;
   textColor: string;
-  /** Color for the word currently being spoken. */
-  highlightColor: string;
   strokeColor: string;
-  /** Stroke width as a fraction of the font size. */
+  /** Stroke width as a fraction of the font size; 0 for none. */
   strokeRatio: number;
+  /** Soft drop shadow behind the text. */
+  shadow: boolean;
+  /** How the word being spoken stands out. */
+  highlight: { kind: "color"; color: string } | { kind: "pill"; fill: string; textColor: string } | { kind: "none" };
+  /** Rounded background behind each row of text. */
+  box: { fill: string } | null;
   /** Vertical anchor of the caption block centre, as a fraction of frame height from the top. */
   verticalPosition: number;
   /** Maximum caption width as a fraction of frame width. */
   maxWidthRatio: number;
-};
-
-export const DEFAULT_CAPTION_STYLE: CaptionStyle = {
-  fontSizeRatio: 0.045,
-  fontFamily:
-    '"Noto Sans Devanagari", "Noto Sans", "Nirmala UI", "Mangal", system-ui, sans-serif',
-  fontWeight: 800,
-  textColor: "#ffffff",
-  highlightColor: "#ffd60a",
-  strokeColor: "#000000",
-  strokeRatio: 0.16,
-  verticalPosition: 0.72,
-  maxWidthRatio: 0.84,
+  /** How many words and characters fit on screen at once. */
+  group: Pick<GroupOptions, "maxWords" | "maxChars">;
 };

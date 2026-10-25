@@ -1,4 +1,5 @@
 import { BufferTarget, StreamTarget } from "mediabunny";
+import { loadCaptionFont } from "@/lib/captions/fonts";
 import { renderCaptionedMp4 } from "./render";
 import type { RenderMessage, RenderRequest } from "./renderInWorker";
 
@@ -6,6 +7,7 @@ import type { RenderMessage, RenderRequest } from "./renderInWorker";
 const scope = self as unknown as {
   onmessage: ((event: MessageEvent<RenderRequest>) => void) | null;
   postMessage: (message: RenderMessage) => void;
+  fonts: FontFaceSet;
 };
 
 scope.onmessage = async ({ data: { file, lines, style } }) => {
@@ -18,6 +20,10 @@ scope.onmessage = async ({ data: { file, lines, style } }) => {
   };
 
   try {
+    // Workers don't see the page's fonts; without this the captions would silently use a system font.
+    await loadCaptionFont(style.font, scope.fonts).catch(() => {
+      throw new Error("Couldn't load the caption font. Check your connection and try again.");
+    });
     const disk = await openDiskTarget();
     if (disk) {
       await renderCaptionedMp4(file, lines, style, disk.target, onProgress);

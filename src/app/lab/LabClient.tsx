@@ -2,9 +2,15 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
+  CAPTION_STYLES,
   DEFAULT_CAPTION_STYLE,
+  DEFAULT_GROUP_OPTIONS,
   drawCaption,
+  getCaptionStyle,
   groupWords,
+  loadCaptionFont,
+  type CaptionFontId,
+  type CaptionStyle,
   lineAt,
   makeTestWords,
   toSrt,
@@ -67,6 +73,24 @@ export function LabClient() {
   const [restoredAt, setRestoredAt] = useState<number | null>(null);
   /** Increments on every pick, so results from an older pick are ignored. */
   const pickId = useRef(0);
+  const [styleId, setStyleId] = useState(DEFAULT_CAPTION_STYLE.id);
+  const style = getCaptionStyle(styleId);
+  const [fontLoad, setFontLoad] = useState<{ font: CaptionFontId; ok: boolean } | null>(null);
+  const [fontRetry, setFontRetry] = useState(0);
+  const fontReady = fontLoad?.font === style.font && fontLoad.ok;
+  const fontFailed = fontLoad?.font === style.font && !fontLoad.ok;
+
+  // Load the selected style's bundled font for the preview (the render worker loads its own copy).
+  useEffect(() => {
+    let current = true;
+    loadCaptionFont(style.font, document.fonts).then(
+      () => current && setFontLoad({ font: style.font, ok: true }),
+      () => current && setFontLoad({ font: style.font, ok: false }),
+    );
+    return () => {
+      current = false;
+    };
+  }, [style.font, fontRetry]);
   const videoRef = useRef<HTMLVideoElement>(null);
   const renderHandle = useRef<RenderHandle | null>(null);
   const urls = useRef(new Set<string>());
@@ -98,7 +122,7 @@ export function LabClient() {
     const history = edits.history.slice(0, -1);
     setEdits({ words: edits.history[edits.history.length - 1], history });
   }
-  const lines = useMemo(() => groupWords(words), [words]);
+  const lines = useMemo(() => groupWords(words, { ...DEFAULT_GROUP_OPTIONS, ...style.group }), [words, style]);
 
   // Autosave the real transcript and edits, debounced so a burst of nudges is one write.
   const savedTranscript = transcript.status === "done" ? transcript : null;
@@ -113,13 +137,14 @@ export function LabClient() {
         providerName: savedTranscript.providerName,
         transcript: savedTranscript.words,
         edited: edits?.words ?? null,
+        styleId,
       }).then(
         () => setSaveState("saved"),
         () => setSaveState("error"),
       );
     }, 400);
     return () => clearTimeout(timer);
-  }, [fingerprint, savedTranscript, edits]);
+  }, [fingerprint, savedTranscript, edits, styleId]);
   const srtUrl = useMemo(
     () => (lines.length ? URL.createObjectURL(new Blob([toSrt(lines)], { type: "application/x-subrip" })) : null),
     [lines],
@@ -177,6 +202,7 @@ export function LabClient() {
         setTranscript({ status: "done", words: draft.transcript, providerName: draft.providerName });
         setEdits(draft.edited ? { words: draft.edited, history: [] } : null);
         setRestoredAt(draft.savedAt);
+        setStyleId(getCaptionStyle(draft.styleId).id);
         setSaveState("saved");
       }
     } catch {
@@ -231,7 +257,7 @@ export function LabClient() {
     if (!file) return;
     setRender({ status: "running", progress: 0 });
     const started = performance.now();
-    const handle = renderInWorker({ file, lines, style: DEFAULT_CAPTION_STYLE }, (p) =>
+    const handle = renderInWorker({ file, lines, style }, (p) =>
       setRender({ status: "running", progress: p }),
     );
     renderHandle.current = handle;
@@ -391,10 +417,12 @@ export function LabClient() {
                 reload or close this tab.
               </span>
             ) : (
-              <span className="text-zinc-600 dark:text-zinc-400">
-                {restoredAt ? `Restored your captions saved ${new Date(restoredAt).toLocaleString()}. ` : ""}
-                {saveState === "saving" ? "Saving…" : saveState === "saved" ? "Saved in this browser only." : ""}
-              </span>
+              (restoredAt || saveState !== "idle") && (
+                <span className="text-zinc-600 dark:text-zinc-400">
+                  {restoredAt ? `Restored your captions saved ${new Date(restoredAt).toLocaleString()}. ` : ""}
+                  {saveState === "saving" ? "Saving…" : saveState === "saved" ? "Saved in this browser only." : ""}
+                </span>
+              )
             )}
             {fingerprint && (
               <button type="button" data-testid="start-over" onClick={() => void onStartOver()} className="underline">
@@ -403,9 +431,44 @@ export function LabClient() {
             )}
           </div>
         )}
+        <fieldset className="flex flex-col gap-2">
+          <legend className="mb-2 text-sm font-medium">Caption style</legend>
+          <div className="flex flex-wrap gap-2">
+            {CAPTION_STYLES.map((s) => (
+              <label
+                key={s.id}
+                className="relative cursor-pointer rounded-md border px-3 py-1.5 text-sm has-checked:border-foreground has-checked:bg-foreground has-checked:text-background has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-blue-600"
+              >
+                <input
+                  type="radio"
+                  name="caption-style"
+                  value={s.id}
+                  data-testid={`style-${s.id}`}
+                  checked={s.id === style.id}
+                  onChange={() => setStyleId(s.id)}
+                  className="sr-only"
+                />
+                {s.name}
+              </label>
+            ))}
+          </div>
+          <p className="text-sm text-zinc-600 dark:text-zinc-400">{style.description}</p>
+          {fontFailed && (
+            <div data-testid="font-error" role="alert" className="rounded bg-red-100 px-3 py-2 text-sm text-red-900">
+              <p className="font-medium">Couldn&apos;t load the font for this style, so the preview and export are paused.</p>
+              <p>
+                Check your connection, then{" "}
+                <button type="button" className="underline" onClick={() => setFontRetry((n) => n + 1)}>
+                  try again
+                </button>
+                .
+              </p>
+            </div>
+          )}
+        </fieldset>
         {videoUrl && probe && (
           <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,auto)_minmax(0,1fr)]">
-            <Preview src={videoUrl} lines={lines} videoRef={videoRef} />
+            <Preview src={videoUrl} lines={lines} style={style} fontReady={fontReady} videoRef={videoRef} />
             <TranscriptEditor
               words={words}
               onChange={editWords}
@@ -420,7 +483,7 @@ export function LabClient() {
 
       <Step n={5} title="Export">
         <div className="flex flex-wrap gap-3">
-          <button data-testid="render-button" disabled={!ready || render.status === "running"} onClick={() => void onRender()} className={btn}>
+          <button data-testid="render-button" disabled={!ready || !fontReady || render.status === "running"} onClick={() => void onRender()} className={btn}>
             Render MP4
           </button>
           {render.status === "running" && (
@@ -459,10 +522,15 @@ export function LabClient() {
 function Preview({
   src,
   lines,
+  style,
+  fontReady,
   videoRef,
 }: {
   src: string;
   lines: ReturnType<typeof groupWords>;
+  style: CaptionStyle;
+  /** Until the bundled font loads, captions are not drawn rather than drawn in a misleading fallback font. */
+  fontReady: boolean;
   videoRef: React.RefObject<HTMLVideoElement | null>;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -481,13 +549,13 @@ function Preview({
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         const t = video.currentTime;
         const line = lineAt(lines, t);
-        if (line) drawCaption(ctx, line, t, DEFAULT_CAPTION_STYLE, canvas.width, canvas.height);
+        if (line && fontReady) drawCaption(ctx, line, t, style, canvas.width, canvas.height);
       }
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [lines, videoRef]);
+  }, [lines, style, fontReady, videoRef]);
 
   return (
     <div className="relative mx-auto w-fit max-w-full">
