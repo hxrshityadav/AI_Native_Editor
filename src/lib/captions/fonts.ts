@@ -11,10 +11,10 @@ const LATIN_RANGE =
 
 // Families are prefixed "RF" so a system-installed copy never shadows the bundled one.
 export const CAPTION_FONTS = {
-  poppins: { family: "RF Poppins", slug: "poppins", weight: 700 },
-  "baloo-2": { family: "RF Baloo 2", slug: "baloo-2", weight: 800 },
-  mukta: { family: "RF Mukta", slug: "mukta", weight: 700 },
-  hind: { family: "RF Hind", slug: "hind", weight: 600 },
+  poppins: { family: "RF Poppins", label: "Poppins", slug: "poppins", weight: 700 },
+  "baloo-2": { family: "RF Baloo 2", label: "Baloo 2", slug: "baloo-2", weight: 800 },
+  mukta: { family: "RF Mukta", label: "Mukta", slug: "mukta", weight: 700 },
+  hind: { family: "RF Hind", label: "Hind", slug: "hind", weight: 600 },
 } as const;
 export type CaptionFontId = keyof typeof CAPTION_FONTS;
 

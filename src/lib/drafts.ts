@@ -1,5 +1,5 @@
-import { openDB, type DBSchema } from "idb";
 import { z } from "zod";
+import { localDb as db } from "./localDb";
 
 /**
  * Caption drafts, saved in this browser only (IndexedDB) so a reload or crash
@@ -47,20 +47,6 @@ export async function fingerprintFile(file: Blob): Promise<string> {
 export function parseDraft(value: unknown): Draft | null {
   const parsed = draftSchema.safeParse(value);
   return parsed.success ? parsed.data : null;
-}
-
-interface DraftDB extends DBSchema {
-  drafts: { key: string; value: Draft; indexes: { savedAt: number } };
-}
-
-let dbPromise: ReturnType<typeof openDB<DraftDB>> | null = null;
-function db() {
-  dbPromise ??= openDB<DraftDB>("reel-finisher", 1, {
-    upgrade(database) {
-      database.createObjectStore("drafts", { keyPath: "fingerprint" }).createIndex("savedAt", "savedAt");
-    },
-  });
-  return dbPromise;
 }
 
 export async function loadDraft(fingerprint: string): Promise<Draft | null> {

@@ -98,3 +98,11 @@ Alternatives: a rule-based transliterator runs locally but spells English loanwo
 ("कैप्शन" → "kaipshan"), so users would fix every one. Sarvam's speech-to-text has transliteration
 modes worth comparing in the T-12 bake-off. If it returns Roman Hinglish with word timings in one
 call, it could replace this two-step flow.
+
+## D-018: The brand kit overrides a style; it doesn't replace styles
+The kit holds what creators brand by: font, text colour, highlight colour, size and vertical
+position. The style still decides shape (outline, box, pill, shadow, words per line). That keeps 5
+styles × 1 kit instead of a free-form editor. On pill styles, pill text switches between near-black
+and white by WCAG luminance, so a dark brand colour never hides the spoken word. The kit is one
+record in a new `settings` store (IndexedDB v2 upgrade, drafts kept) and is saved on every change,
+since it's a few bytes. It's per browser; syncing across devices needs accounts and isn't planned.

@@ -24,7 +24,9 @@ import type { Issue, ProbeResult } from "@/lib/media/types";
 import { issue, validateFileBasics, validateProbe } from "@/lib/media/validate";
 import { requestTranscription, TRANSCRIPTION_DISCLOSURE } from "@/lib/transcription/client";
 import type { CaptionLanguage, TranscribeResponse } from "@/lib/transcription/types";
+import { applyBrandKit, loadBrandKit, saveBrandKit, type BrandKit } from "@/lib/brandKit";
 import { deleteDraft, fingerprintFile, loadDraft, saveDraft } from "@/lib/drafts";
+import { BrandKitPanel } from "./BrandKitPanel";
 import { TranscriptEditor } from "./TranscriptEditor";
 
 type Problem = { message: string; action: string };
@@ -74,7 +76,27 @@ export function LabClient() {
   /** Increments on every pick, so results from an older pick are ignored. */
   const pickId = useRef(0);
   const [styleId, setStyleId] = useState(DEFAULT_CAPTION_STYLE.id);
-  const style = getCaptionStyle(styleId);
+  const baseStyle = getCaptionStyle(styleId);
+  const [kit, setKit] = useState<BrandKit | null>(null);
+  const [kitSaveFailed, setKitSaveFailed] = useState(false);
+  // The style everything uses: the picked preset with the brand kit on top.
+  const style = useMemo(() => (kit?.enabled ? applyBrandKit(baseStyle, kit) : baseStyle), [baseStyle, kit]);
+
+  useEffect(() => {
+    loadBrandKit().then(
+      (saved) => saved && setKit(saved),
+      () => setKitSaveFailed(true),
+    );
+  }, []);
+
+  function changeKit(next: BrandKit) {
+    setKit(next);
+    // Saved immediately: a kit is a few bytes, and losing a brand setup is worse than an extra write.
+    saveBrandKit(next).then(
+      () => setKitSaveFailed(false),
+      () => setKitSaveFailed(true),
+    );
+  }
   const [fontLoad, setFontLoad] = useState<{ font: CaptionFontId; ok: boolean } | null>(null);
   const [fontRetry, setFontRetry] = useState(0);
   const fontReady = fontLoad?.font === style.font && fontLoad.ok;
@@ -459,7 +481,11 @@ export function LabClient() {
               </label>
             ))}
           </div>
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">{style.description}</p>
+          <p className="text-sm text-zinc-600 dark:text-zinc-400">
+            {style.description}
+            {kit?.enabled ? " Your brand kit sets the font, colours, size and position." : ""}
+          </p>
+          <BrandKitPanel kit={kit} style={baseStyle} onChange={changeKit} saveFailed={kitSaveFailed} />
           {fontFailed && (
             <div data-testid="font-error" role="alert" className="rounded bg-red-100 px-3 py-2 text-sm text-red-900">
               <p className="font-medium">Couldn&apos;t load the font for this style, so the preview and export are paused.</p>

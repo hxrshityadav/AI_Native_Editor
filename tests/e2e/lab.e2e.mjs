@@ -113,7 +113,7 @@ async function renderAndSave(page, dest) {
 /** Mean absolute luma difference between two files' frames at time t, within a horizontal band. */
 function frameDiff(a, b, t, width, height, bandTop, bandBottom) {
   const gray = (file) =>
-    execFileSync("ffmpeg", ["-v", "error", "-ss", String(t), "-i", file, "-frames:v", "1", "-f", "rawvideo", "-pix_fmt", "gray", "-"]);
+    execFileSync("ffmpeg", ["-v", "error", "-ss", String(t), "-i", file, "-frames:v", "1", "-f", "rawvideo", "-pix_fmt", "gray", "-"], { maxBuffer: 64 << 20 });
   const ga = gray(a);
   const gb = gray(b);
   let sum = 0;
@@ -125,6 +125,19 @@ function frameDiff(a, b, t, width, height, bandTop, bandBottom) {
     }
   }
   return sum / n;
+}
+
+/** Counts pixels in a horizontal band of the frame at time t whose RGB matches `match`. */
+function countPixels(file, t, width, height, bandTop, bandBottom, match) {
+  const rgb = execFileSync("ffmpeg", ["-v", "error", "-ss", String(t), "-i", file, "-frames:v", "1", "-f", "rawvideo", "-pix_fmt", "rgb24", "-"], { maxBuffer: 64 << 20 });
+  let n = 0;
+  for (let y = Math.floor(height * bandTop); y < Math.floor(height * bandBottom); y++) {
+    for (let x = 0; x < width; x++) {
+      const i = (y * width + x) * 3;
+      if (match(rgb[i], rgb[i + 1], rgb[i + 2])) n++;
+    }
+  }
+  return n;
 }
 
 const streams = (info, type) => info.streams.filter((s) => s.codec_type === type);
@@ -308,6 +321,29 @@ async function main() {
     check("style: Boxed font files fetched", fontRequests.some((u) => u.includes("/fonts/mukta/mukta-devanagari-700")), fontRequests.join(" "));
     const boxBand = frameDiff(f("rotated.mp4"), rotMp4, 1.0, 720, 1280, 0.71, 0.77);
     check("style: Boxed draws a dark band behind the text", boxBand > 15, `Δ${boxBand.toFixed(2)}`);
+
+    // Brand kit: red text in Hind, moved up to 30% from the top, applied on top of Boxed.
+    await page.getByTestId("brand-kit").locator("summary").click();
+    await page.getByTestId("brand-kit-enabled").check();
+    await page.getByTestId("brand-font").selectOption("hind");
+    await page.getByTestId("brand-text-color").fill("#ff0000");
+    await page.getByTestId("brand-position").fill("0.3");
+    const kitMp4 = await renderAndSave(page, f("out-kit.mp4"));
+    const isRed = (r, g, b) => r > 200 && g < 60 && b < 60;
+    const redNear30 = countPixels(kitMp4, 1.0, 720, 1280, 0.25, 0.35, isRed);
+    const redNear74 = countPixels(kitMp4, 1.0, 720, 1280, 0.7, 0.8, isRed);
+    check("brand kit: red captions burned in at the kit position", redNear30 > 500 && redNear74 === 0, `red px @30%: ${redNear30}, @74%: ${redNear74}`);
+    check("brand kit: Hind font fetched for the render", fontRequests.some((u) => u.includes("/fonts/hind/hind-latin-600")));
+    await page.reload();
+    await pick(page, f("rotated.mp4"));
+    check("brand kit: summary says on while collapsed", (await page.getByTestId("brand-kit").locator("summary").innerText()).includes("(on)"));
+    await page.getByTestId("brand-kit").locator("summary").click();
+    check(
+      "brand kit: kept after reload",
+      (await page.getByTestId("brand-kit-enabled").isChecked()) &&
+        (await page.getByTestId("brand-font").inputValue()) === "hind" &&
+        (await page.getByTestId("brand-text-color").inputValue()) === "#ff0000",
+    );
     const rv = streams(rot, "video")[0];
     const sideRot = (rv?.side_data_list ?? []).find((s) => "rotation" in s)?.rotation ?? 0;
     check("rotated: output upright 720×1280, no rotation metadata", rv?.width === 720 && rv?.height === 1280 && sideRot === 0, `${rv?.width}x${rv?.height} rot ${sideRot}`);
