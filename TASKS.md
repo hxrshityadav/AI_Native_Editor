@@ -25,6 +25,7 @@ ffmpeg-generated fixtures. No task is verified on a real phone yet.
 | --- | --- | --- | --- |
 | T-09 | `/api/transcribe`: provider interface, Groq adapter, Zod validation, 4 MB cap, byte sniff, in-memory rate limit | Tested | 32 unit tests (handler, Groq adapter, sniffing, rate limit) with mocked provider/fetch. **Not yet run against the real Groq API**; needs `GROQ_API_KEY` |
 | T-10 | Lab: Transcribe button, provider disclosure, real captions replace test words | Tested | E2E with intercepted route; E2E also hits the real route unconfigured (503 path) |
+| T-23 | Hinglish captions in Roman script: default language; Whisper in Hindi, then each word romanized 1:1 by Groq `gpt-oss-120b` (strict JSON schema) so timings are kept; falls back to Hindi script with a warning | Tested (14 unit tests with mocked Groq; E2E: Hinglish is the default and is sent, fallback warning shown). **Romanization quality not yet checked on real speech**; part of T-12 |
 | T-11 | Caption sync within ±150 ms on 10 real clips | Not started | Needs real Hindi/Hinglish clips and a measurement method |
 | T-12 | Hinglish bake-off: Groq vs Sarvam vs Instagram Edits (includes Sarvam adapter) | Not started | |
 | T-13 | Upload checks (Instagram, YouTube, WhatsApp), incl. Opus-in-MP4 | Not started | Risk: some platforms may reject Opus in MP4; fallback is AAC transcode where encodable |

@@ -1,9 +1,13 @@
 import { z } from "zod";
 import { getClientIp, hashClientKey, type RateLimiter } from "./rateLimit";
+import { hasDevanagari } from "./groqRomanize";
 import { isAudioOnlyOggOpus } from "./sniff";
 import {
   ProviderError,
-  TRANSCRIPTION_LANGUAGES,
+  CAPTION_LANGUAGES,
+  type CaptionLanguage,
+  type Romanizer,
+  type SpeechLanguage,
   type TranscribeErrorResponse,
   type TranscribeResponse,
   type TranscriptionProvider,
@@ -18,7 +22,7 @@ const MULTIPART_OVERHEAD_BYTES = 64 * 1024;
 
 export const transcribeFormSchema = z.object({
   audio: z.instanceof(Blob, { message: "audio must be a file" }),
-  language: z.enum(TRANSCRIPTION_LANGUAGES).default("auto"),
+  language: z.enum(CAPTION_LANGUAGES).default("hinglish"),
 });
 
 type ErrorSpec = { status: number; message: string; action: string };
@@ -85,13 +89,23 @@ const ERRORS = {
 
 export type TranscribeErrorCode = keyof typeof ERRORS;
 
+/** Hinglish is transcribed as Hindi (Whisper's most accurate mode for this speech), then romanized. */
+const SPEECH_LANGUAGE: Record<CaptionLanguage, SpeechLanguage> = { hinglish: "hi", hi: "hi", en: "en" };
+
+const ROMANIZE_WARNING = {
+  message: "Couldn't convert the captions to Roman script, so they are in Hindi script.",
+  action: "Transcribe again to retry, or fix the words in the editor.",
+};
+
 export type TranscribeHandlerDeps = {
   getProvider: () => TranscriptionProvider | null;
+  /** Needed for Hinglish; without it Hinglish falls back to Hindi script with a warning. */
+  getRomanizer?: () => Romanizer | null;
   limiter: RateLimiter;
   salt: string;
   now?: () => Date;
   /** Receives error codes only. Never pass audio, transcripts or file names here. */
-  logError?: (code: TranscribeErrorCode) => void;
+  logError?: (code: TranscribeErrorCode | "ROMANIZE_FAILED") => void;
 };
 
 export function createTranscribeHandler(deps: TranscribeHandlerDeps) {
@@ -143,14 +157,31 @@ export function createTranscribeHandler(deps: TranscribeHandlerDeps) {
 
     try {
       // The audio exists only in memory for the duration of this request.
-      const words = await provider.transcribe({
+      let words = await provider.transcribe({
         audio: new Blob([bytes], { type: "audio/ogg" }),
-        language,
+        language: SPEECH_LANGUAGE[language],
         signal: request.signal,
       });
+      let warning: TranscribeResponse["warning"] = null;
+      if (language === "hinglish" && words.some((w) => hasDevanagari(w.text))) {
+        // Only the words go to the romanizer; timings stay as transcribed.
+        try {
+          const romanizer = deps.getRomanizer?.();
+          if (!romanizer) throw new Error("no romanizer configured");
+          const texts = await romanizer.romanize(
+            words.map((w) => w.text),
+            request.signal,
+          );
+          words = words.map((w, i) => ({ ...w, text: texts[i] }));
+        } catch {
+          logError("ROMANIZE_FAILED");
+          warning = ROMANIZE_WARNING;
+        }
+      }
       const body: TranscribeResponse = {
         provider: { id: provider.id, displayName: provider.displayName },
         words,
+        warning,
       };
       return Response.json(body, { headers: { "Cache-Control": "no-store" } });
     } catch (err) {

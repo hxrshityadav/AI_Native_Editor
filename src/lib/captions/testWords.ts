@@ -5,7 +5,7 @@ import type { Word } from "./types";
  * They are evenly spaced and do NOT match any real speech.
  */
 export function makeTestWords(durationSec: number): Word[] {
-  const phrase = "यह एक test caption है जो render pipeline check करता है".split(" ");
+  const phrase = "Yeh ek test caption hai jo render pipeline check karta hai".split(" ");
   const words: Word[] = [];
   const step = 0.4;
   for (let t = 0.2, i = 0; t + step <= durationSec; t += step, i++) {

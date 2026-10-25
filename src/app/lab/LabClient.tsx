@@ -23,7 +23,7 @@ import { RenderCanceledError, renderInWorker, type RenderHandle, type RenderStor
 import type { Issue, ProbeResult } from "@/lib/media/types";
 import { issue, validateFileBasics, validateProbe } from "@/lib/media/validate";
 import { requestTranscription, TRANSCRIPTION_DISCLOSURE } from "@/lib/transcription/client";
-import type { TranscriptionLanguage } from "@/lib/transcription/types";
+import type { CaptionLanguage, TranscribeResponse } from "@/lib/transcription/types";
 import { deleteDraft, fingerprintFile, loadDraft, saveDraft } from "@/lib/drafts";
 import { TranscriptEditor } from "./TranscriptEditor";
 
@@ -44,7 +44,7 @@ type AudioState =
 type TranscriptState =
   | { status: "idle" }
   | { status: "running" }
-  | { status: "done"; words: Word[]; providerName: string }
+  | { status: "done"; words: Word[]; providerName: string; warning?: TranscribeResponse["warning"] }
   | { status: "error"; problem: Problem };
 
 /** User edits on top of the transcript (or placeholder words), with undo history. */
@@ -63,7 +63,7 @@ export function LabClient() {
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
   const [check, setCheck] = useState<CheckState>({ status: "idle" });
   const [audio, setAudio] = useState<AudioState>({ status: "idle" });
-  const [language, setLanguage] = useState<TranscriptionLanguage>("auto");
+  const [language, setLanguage] = useState<CaptionLanguage>("hinglish");
   const [transcript, setTranscript] = useState<TranscriptState>({ status: "idle" });
   const [render, setRender] = useState<RenderState>({ status: "idle" });
   const [edits, setEdits] = useState<Edits | null>(null);
@@ -246,7 +246,7 @@ export function LabClient() {
     setTranscript({ status: "running" });
     const result = await requestTranscription(audio.blob, language);
     if (result.ok) {
-      setTranscript({ status: "done", words: result.words, providerName: result.providerName });
+      setTranscript({ status: "done", words: result.words, providerName: result.providerName, warning: result.warning });
       setEdits(null);
     } else {
       setTranscript({ status: "error", problem: { message: result.message, action: result.action } });
@@ -356,8 +356,9 @@ export function LabClient() {
         <p data-testid="transcribe-disclosure" className="text-sm text-zinc-600 dark:text-zinc-400">
           Sends only the extracted speech audio
           {audio.status === "done" ? ` (${formatBytes(audio.blob.size)})` : ""}, never the video, to our server, which
-          forwards it to {TRANSCRIPTION_DISCLOSURE.providerName} for transcription. Our servers don&apos;t store the
-          audio or the transcript.{" "}
+          forwards it to {TRANSCRIPTION_DISCLOSURE.providerName} for transcription. For Hinglish, the transcribed words
+          (text only) also go to {TRANSCRIPTION_DISCLOSURE.providerName} to be written in Roman script. Our servers
+          don&apos;t store the audio or the transcript.{" "}
           <a className="underline" href={TRANSCRIPTION_DISCLOSURE.privacyUrl} target="_blank" rel="noreferrer">
             {TRANSCRIPTION_DISCLOSURE.providerName}&apos;s privacy policy
           </a>{" "}
@@ -369,12 +370,12 @@ export function LabClient() {
             <select
               data-testid="language-select"
               value={language}
-              onChange={(e) => setLanguage(e.target.value as TranscriptionLanguage)}
+              onChange={(e) => setLanguage(e.target.value as CaptionLanguage)}
               className="rounded border px-2 py-1"
             >
-              <option value="auto">Auto-detect</option>
+              <option value="hinglish">Hinglish (Roman script)</option>
               <option value="hi">Hindi (Devanagari script)</option>
-              <option value="en">English (Latin script)</option>
+              <option value="en">English</option>
             </select>
           </label>
           <button
@@ -400,6 +401,12 @@ export function LabClient() {
               ? `${transcript.words.length} words from ${transcript.providerName}. Review them in step 4.`
               : `${transcript.providerName} found no speech. Check the clip has audible speech, or pick the language manually and try again.`}
           </p>
+        )}
+        {transcript.status === "done" && transcript.warning && (
+          <div data-testid="transcribe-warning" role="status" className="rounded bg-amber-100 px-3 py-2 text-sm text-amber-900">
+            <p className="font-medium">{transcript.warning.message}</p>
+            <p>{transcript.warning.action}</p>
+          </div>
         )}
       </Step>
 

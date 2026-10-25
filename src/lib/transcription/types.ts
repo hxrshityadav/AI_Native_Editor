@@ -1,12 +1,19 @@
 import type { Word } from "@/lib/captions/types";
 
-export const TRANSCRIPTION_LANGUAGES = ["auto", "hi", "en"] as const;
-export type TranscriptionLanguage = (typeof TRANSCRIPTION_LANGUAGES)[number];
+/**
+ * What the user picks: the language and script the captions come out in.
+ * "hinglish" is Hindi/English speech written in Roman script, as creators write it.
+ */
+export const CAPTION_LANGUAGES = ["hinglish", "hi", "en"] as const;
+export type CaptionLanguage = (typeof CAPTION_LANGUAGES)[number];
+
+/** What the speech model is asked for. */
+export type SpeechLanguage = "auto" | "hi" | "en";
 
 export type TranscribeInput = {
   /** Audio-only Ogg Opus, already validated by the route. */
   audio: Blob;
-  language: TranscriptionLanguage;
+  language: SpeechLanguage;
   signal?: AbortSignal;
 };
 
@@ -14,6 +21,11 @@ export interface TranscriptionProvider {
   readonly id: string;
   readonly displayName: string;
   transcribe(input: TranscribeInput): Promise<Word[]>;
+}
+
+/** Rewrites words into Roman script, one output per input, same order. */
+export interface Romanizer {
+  romanize(words: string[], signal?: AbortSignal): Promise<string[]>;
 }
 
 export type ProviderErrorCode =
@@ -38,6 +50,8 @@ export class ProviderError extends Error {
 export type TranscribeResponse = {
   provider: { id: string; displayName: string };
   words: Word[];
+  /** Set when the result is usable but not what was asked for (e.g. Hinglish fell back to Hindi script). */
+  warning: { message: string; action: string } | null;
 };
 
 /** The JSON body of a failed POST /api/transcribe. */

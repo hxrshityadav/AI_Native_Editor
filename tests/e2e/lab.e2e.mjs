@@ -78,8 +78,8 @@ function stopServer(server) {
 // ---------- helpers ----------
 
 const MOCK_WORDS = [
-  { text: "नमस्ते", start: 0.5, end: 1.2 },
-  { text: "दोस्तों", start: 1.2, end: 1.9 },
+  { text: "namaste", start: 0.5, end: 1.2 },
+  { text: "doston", start: 1.2, end: 1.9 },
   { text: "welcome", start: 2.0, end: 2.6 },
 ];
 
@@ -183,17 +183,33 @@ async function main() {
 
     // Mocked provider response through the real client wiring.
     let uploaded = null;
+    let romanizeFailsNext = false;
     let uploads = 0;
     await page.route("**/api/transcribe", async (route) => {
       uploads++;
       uploaded = route.request().postDataBuffer();
-      await route.fulfill({ json: { provider: { id: "groq", displayName: "Groq (mock)" }, words: MOCK_WORDS } });
+      if (romanizeFailsNext) {
+        romanizeFailsNext = false;
+        const hindi = [{ text: "नमस्ते", start: 0.5, end: 1.2 }];
+        const warning = { message: "Couldn't convert the captions to Roman script, so they are in Hindi script.", action: "Transcribe again to retry." };
+        return route.fulfill({ json: { provider: { id: "groq", displayName: "Groq (mock)" }, words: hindi, warning } });
+      }
+      await route.fulfill({ json: { provider: { id: "groq", displayName: "Groq (mock)" }, words: MOCK_WORDS, warning: null } });
     });
-    await page.getByTestId("language-select").selectOption("hi");
+    check("hinglish: is the default caption language", (await page.getByTestId("language-select").inputValue()) === "hinglish");
+
+    // A failed romanization is shown honestly, with the Hindi-script words and a way forward.
+    romanizeFailsNext = true;
+    await page.getByTestId("transcribe-button").click();
+    await page.getByTestId("transcribe-warning").waitFor({ timeout: 15_000 });
+    check("hinglish: fallback warning shown", (await page.getByTestId("transcribe-warning").innerText()).includes("Hindi script"));
+    check("hinglish: request asked for Hinglish", uploaded !== null && /name="language"\r\n\r\nhinglish/.test(uploaded.toString("latin1")));
+
     await page.getByTestId("transcribe-button").click();
     await page.getByTestId("transcribe-done").waitFor({ timeout: 15_000 });
     const wordTexts = () => page.getByTestId("word").allInnerTexts();
-    check("transcribe: words appear in the editor", (await wordTexts()).join(" ") === "नमस्ते दोस्तों welcome");
+    check("transcribe: Hinglish words appear in the editor", (await wordTexts()).join(" ") === "namaste doston welcome");
+    check("hinglish: no warning when romanized", !(await page.getByTestId("transcribe-warning").isVisible()));
     check("transcribe: upload is the extracted Ogg, not the video", uploaded !== null && uploaded.includes(Buffer.from("OpusHead")) && uploaded.length < 60_000, `${uploaded?.length} B`);
     check("preview: captions now come from transcript", (await page.getByTestId("caption-source").innerText()).includes("from the transcript"));
 
@@ -218,7 +234,7 @@ async function main() {
     const srt = readFileSync(await download(page, "srt-link", f("out.srt")), "utf8");
     check(
       "srt: reflects edits",
-      srt.startsWith("1\n00:00:00,500 --> 00:00:01,950\nNamaste दोस्तों\n") && !srt.includes("welcome"),
+      srt.startsWith("1\n00:00:00,500 --> 00:00:01,950\nNamaste doston\n") && !srt.includes("welcome"),
       JSON.stringify(srt.slice(0, 60)),
     );
 
@@ -231,7 +247,7 @@ async function main() {
     await page.reload();
     await pick(page, f("vertical.mp4"));
     await page.getByTestId("save-status").filter({ hasText: "Restored" }).waitFor({ timeout: 10_000 });
-    check("autosave: edits restored after reload", (await wordTexts()).join(" ") === "Namaste दोस्तों");
+    check("autosave: edits restored after reload", (await wordTexts()).join(" ") === "Namaste doston");
     check("autosave: restore needs no new upload", uploads === uploadsBefore, `${uploads - uploadsBefore} uploads`);
     check("style: restored with the draft", await page.getByRole("radio", { name: "Pop" }).isChecked());
 

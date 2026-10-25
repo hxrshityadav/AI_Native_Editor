@@ -1,5 +1,5 @@
 import type { Word } from "@/lib/captions/types";
-import type { TranscribeErrorResponse, TranscribeResponse, TranscriptionLanguage } from "./types";
+import type { CaptionLanguage, TranscribeErrorResponse, TranscribeResponse } from "./types";
 
 /** Shown before any upload. Must stay accurate if the provider changes. */
 export const TRANSCRIPTION_DISCLOSURE = {
@@ -8,12 +8,12 @@ export const TRANSCRIPTION_DISCLOSURE = {
 } as const;
 
 export type TranscribeResult =
-  | { ok: true; words: Word[]; providerName: string }
+  | { ok: true; words: Word[]; providerName: string; warning: TranscribeResponse["warning"] }
   | { ok: false; code: string; message: string; action: string };
 
 export async function requestTranscription(
   audio: Blob,
-  language: TranscriptionLanguage,
+  language: CaptionLanguage,
   signal?: AbortSignal,
 ): Promise<TranscribeResult> {
   const form = new FormData();
@@ -34,7 +34,7 @@ export async function requestTranscription(
 
   const json = (await res.json().catch(() => null)) as TranscribeResponse | TranscribeErrorResponse | null;
   if (res.ok && json && "words" in json) {
-    return { ok: true, words: json.words, providerName: json.provider.displayName };
+    return { ok: true, words: json.words, providerName: json.provider.displayName, warning: json.warning ?? null };
   }
   if (json && "error" in json) return { ok: false, ...json.error };
   return {

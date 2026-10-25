@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import type { Word } from "@/lib/captions/types";
 import { createTranscribeHandler, MAX_AUDIO_BYTES, type TranscribeErrorCode } from "@/lib/transcription/handler";
 import { createMemoryRateLimiter } from "@/lib/transcription/rateLimit";
-import { ProviderError, type TranscriptionProvider } from "@/lib/transcription/types";
+import { ProviderError, type Romanizer, type TranscriptionProvider } from "@/lib/transcription/types";
 import { oggOpusFile } from "./oggFixtures";
 
 const WORDS: Word[] = [{ text: "नमस्ते", start: 0, end: 0.4 }];
@@ -11,11 +11,12 @@ function mockProvider(impl?: TranscriptionProvider["transcribe"]): Transcription
   return { id: "mock", displayName: "Mock", transcribe: vi.fn(impl ?? (async () => WORDS)) };
 }
 
-function setup(opts: { provider?: TranscriptionProvider | null; limit?: number } = {}) {
+function setup(opts: { provider?: TranscriptionProvider | null; limit?: number; romanizer?: Romanizer | null } = {}) {
   const provider = opts.provider === undefined ? mockProvider() : opts.provider;
-  const logged: TranscribeErrorCode[] = [];
+  const logged: (TranscribeErrorCode | "ROMANIZE_FAILED")[] = [];
   const handler = createTranscribeHandler({
     getProvider: () => provider,
+    getRomanizer: () => opts.romanizer ?? null,
     limiter: createMemoryRateLimiter({ limit: opts.limit ?? 100, windowMs: 60_000 }),
     salt: "test-salt",
     logError: (code) => logged.push(code),
@@ -49,14 +50,84 @@ describe("POST /api/transcribe handler", () => {
     const res = await handler(upload(opus(), { language: "hi" }));
     expect(res.status).toBe(200);
     expect(res.headers.get("cache-control")).toBe("no-store");
-    expect(await res.json()).toEqual({ provider: { id: "mock", displayName: "Mock" }, words: WORDS });
+    expect(await res.json()).toEqual({ provider: { id: "mock", displayName: "Mock" }, words: WORDS, warning: null });
     expect(provider!.transcribe).toHaveBeenCalledWith(expect.objectContaining({ language: "hi" }));
   });
 
-  it("defaults language to auto", async () => {
-    const { handler, provider } = setup();
+  it("defaults to Hinglish, which asks the speech model for Hindi", async () => {
+    const romanize = vi.fn(async (texts: string[]) => texts.map(() => "namaste"));
+    const { handler, provider } = setup({ romanizer: { romanize } });
     await handler(upload(opus()));
-    expect(provider!.transcribe).toHaveBeenCalledWith(expect.objectContaining({ language: "auto" }));
+    expect(provider!.transcribe).toHaveBeenCalledWith(expect.objectContaining({ language: "hi" }));
+    expect(romanize).toHaveBeenCalledOnce();
+  });
+
+  it("passes English through to the speech model", async () => {
+    const { handler, provider } = setup();
+    await handler(upload(opus(), { language: "en" }));
+    expect(provider!.transcribe).toHaveBeenCalledWith(expect.objectContaining({ language: "en" }));
+  });
+
+  describe("Hinglish", () => {
+    const mixed: Word[] = [
+      { text: "नमस्ते", start: 0, end: 0.4 },
+      { text: "reels", start: 0.5, end: 0.9 },
+      { text: "कैप्शन", start: 1, end: 1.4 },
+    ];
+
+    it("romanizes the words and keeps every timing", async () => {
+      const romanize = vi.fn(async () => ["Namaste", "reels", "caption"]);
+      const { handler } = setup({ provider: mockProvider(async () => mixed), romanizer: { romanize } });
+      const body = await (await handler(upload(opus(), { language: "hinglish" }))).json();
+      expect(romanize).toHaveBeenCalledWith(["नमस्ते", "reels", "कैप्शन"], expect.anything());
+      expect(body.words).toEqual([
+        { text: "Namaste", start: 0, end: 0.4 },
+        { text: "reels", start: 0.5, end: 0.9 },
+        { text: "caption", start: 1, end: 1.4 },
+      ]);
+      expect(body.warning).toBeNull();
+    });
+
+    it("skips the romanizer when the transcript is already in Roman script", async () => {
+      const romanize = vi.fn(async (t: string[]) => t);
+      const roman: Word[] = [{ text: "hello", start: 0, end: 0.4 }];
+      const { handler } = setup({ provider: mockProvider(async () => roman), romanizer: { romanize } });
+      await handler(upload(opus(), { language: "hinglish" }));
+      expect(romanize).not.toHaveBeenCalled();
+    });
+
+    it("falls back to Hindi script with a warning when romanizing fails, logging only a code", async () => {
+      const { handler, logged } = setup({
+        provider: mockProvider(async () => mixed),
+        romanizer: {
+          romanize: async () => {
+            throw new ProviderError("PROVIDER_BAD_RESPONSE", "count mismatch");
+          },
+        },
+      });
+      const res = await handler(upload(opus(), { language: "hinglish" }));
+      expect(res.status).toBe(200);
+      const body = await res.json();
+      expect(body.words).toEqual(mixed);
+      expect(body.warning.message).toMatch(/Hindi script/);
+      expect(body.warning.action).toBeTruthy();
+      expect(logged).toEqual(["ROMANIZE_FAILED"]);
+    });
+
+    it("falls back with a warning when no romanizer is configured", async () => {
+      const { handler } = setup({ provider: mockProvider(async () => mixed), romanizer: null });
+      const body = await (await handler(upload(opus(), { language: "hinglish" }))).json();
+      expect(body.words).toEqual(mixed);
+      expect(body.warning).not.toBeNull();
+    });
+
+    it("keeps Hindi script when Hindi is chosen", async () => {
+      const romanize = vi.fn(async (t: string[]) => t);
+      const { handler } = setup({ provider: mockProvider(async () => mixed), romanizer: { romanize } });
+      const body = await (await handler(upload(opus(), { language: "hi" }))).json();
+      expect(romanize).not.toHaveBeenCalled();
+      expect(body.words).toEqual(mixed);
+    });
   });
 
   it("rejects non-multipart requests with 415", async () => {

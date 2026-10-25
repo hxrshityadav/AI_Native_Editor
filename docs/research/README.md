@@ -14,6 +14,20 @@ Facts we rely on, with source and date checked. Recheck before pricing or launch
 - Not yet verified: Groq's data retention for audio inputs. Read their privacy policy and terms
   before launch and update the disclosure if needed.
 
+## Groq chat for Hinglish romanization (checked 2026-10-25)
+
+- Structured Outputs (https://console.groq.com/docs/structured-outputs): `strict: true` (constrained
+  decoding, schema always matched) works on `openai/gpt-oss-20b`, `openai/gpt-oss-120b`,
+  `qwen/qwen3.8-27b` and `meta-models/muse-spark-open`. Strict mode needs every property `required`
+  and `additionalProperties: false`. Array length can't be pinned, so we check it ourselves.
+- Reasoning (https://console.groq.com/docs/reasoning): GPT-OSS takes `reasoning_effort` low, medium
+  or high; `include_reasoning: false` drops reasoning from the response.
+- `openai/gpt-oss-120b` price (https://console.groq.com/docs/model/openai/gpt-oss-120b): $0.15 per
+  1M input tokens, $0.60 per 1M output; 131k context. A 3-minute clip (~500 words) is roughly 2–4k
+  tokens, about $0.001–0.002.
+- Why not Whisper `language=en` for Hinglish: Whisper tends to translate non-English speech into
+  English rather than transliterate it. To be confirmed on real clips in T-12.
+
 ## Vercel (checked 2026-10-24, https://vercel.com/docs/functions/limitations)
 
 - Function request and response bodies are capped at 4.5 MB. This drives D-005.

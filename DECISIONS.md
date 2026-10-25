@@ -84,3 +84,17 @@ total, and one style needs 47–127 KB, loaded only when picked. Families are pr
 installed system copy can't shadow ours. If a font fails to load, preview and export pause with a
 retry, rather than silently exporting in a different font from the one previewed. Pill highlights
 centre on the measured ink box, because Devanagari ink sits high in the em box.
+
+## D-017: Hinglish = Whisper Hindi, then word-by-word romanization (2026-10-25)
+The user wants captions in Roman-script Hinglish, not Devanagari. We transcribe with
+`language=hi`, the accurate mode for Hindi speech, which keeps word timings, then send only the words
+(text, no audio) to Groq `gpt-oss-120b` with a strict JSON schema: one output word per input word, in
+order. We check the count and that no Devanagari is left; English words already in Roman script are
+never rewritten. Same provider, so the disclosure only adds "text only". Cost is about $0.001–0.002 per
+3-minute clip. If romanization fails, the user gets the Hindi-script transcript with a warning rather
+than an error, so a paid transcription isn't thrown away.
+
+Alternatives: a rule-based transliterator runs locally but spells English loanwords phonetically
+("कैप्शन" → "kaipshan"), so users would fix every one. Sarvam's speech-to-text has transliteration
+modes worth comparing in the T-12 bake-off. If it returns Roman Hinglish with word timings in one
+call, it could replace this two-step flow.
