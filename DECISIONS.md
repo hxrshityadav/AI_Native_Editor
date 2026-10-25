@@ -180,3 +180,25 @@ The detector can read soft consonant onsets slightly late, so a bias under ~30 m
 Self-tests show our Opus extraction adds no measurable offset (≤ 10 ms). The real run needs clips
 and a key. Side fix: E2E servers set `GROQ_API_KEY=""` unless asked, since Next would otherwise load
 a developer's `.env.local` key and the tests could make billable calls.
+
+## D-025: Abuse controls: shared Postgres limit, Turnstile, and fail closed (2026-10-25)
+Replaces D-008 for deployments.
+- **Limiter.** Postgres through `postgres` (postgres.js 3.4.9: no dependencies, no install scripts,
+  Unlicense) with raw SQL, not Drizzle. It is one table and one upsert, so an ORM adds nothing yet.
+  Revisit when paid licences (ROADMAP) bring more tables. `prepare: false`, so pooled URLs (Neon, Supabase)
+  work. The table is created on first use. Fixed hourly window, 20 per key, and the key is still the daily salted IP hash.
+  Provider-neutral: any `DATABASE_URL` works, and choosing a host is left to launch.
+- **Turnstile.** The token goes in a request header, so it is checked before the audio body is
+  read. Order: no token → 403 without counting. Then the rate limit, which keeps a flood from turning
+  into siteverify calls. Then siteverify, then the audio. The visitor's IP isn't sent to siteverify
+  (it's optional), and `action` isn't checked, because Cloudflare's test keys return a fixed action.
+- **Fail closed.** If the database or Cloudflare can't answer, the upload is refused with a 503 and a
+  retry message. Letting it through would mean unmetered, billable Groq calls.
+- **Configuration at request time.** `GET /api/transcribe` (dynamic via `connection()`) returns the
+  site key, so the widget and enforcement can't disagree, and the E2E can switch it per run.
+- **Off by default on Vercel.** Any Vercel deployment (preview URLs are public too) refuses
+  transcription until `DATABASE_URL` and both Turnstile keys are set.
+- **Privacy.** Cloudflare's script loads only where transcription happens, after the disclosure names
+  Cloudflare and what it sees (IP, browser details). The widget is `interaction-only`.
+- **Known gap.** `X-Forwarded-For` is trusted, which is right on Vercel and spoofable elsewhere. There
+  is no global daily budget cap yet. A distributed attack that passes Turnstile is limited only per IP.

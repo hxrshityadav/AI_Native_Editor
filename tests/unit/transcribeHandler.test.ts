@@ -1,7 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
 import type { Word } from "@/lib/captions/types";
 import { createTranscribeHandler, MAX_AUDIO_BYTES, type TranscribeErrorCode } from "@/lib/transcription/handler";
-import { createMemoryRateLimiter } from "@/lib/transcription/rateLimit";
+import type { HumanCheckResult, HumanVerifier } from "@/lib/transcription/humanCheck";
+import { createMemoryRateLimiter, type RateLimiter } from "@/lib/transcription/rateLimit";
 import { ProviderError, type Romanizer, type TranscriptionProvider } from "@/lib/transcription/types";
 import { oggOpusFile } from "./oggFixtures";
 
@@ -11,13 +12,24 @@ function mockProvider(impl?: TranscriptionProvider["transcribe"]): Transcription
   return { id: "mock", displayName: "Mock", transcribe: vi.fn(impl ?? (async () => WORDS)) };
 }
 
-function setup(opts: { provider?: TranscriptionProvider | null; limit?: number; romanizer?: Romanizer | null } = {}) {
+function setup(
+  opts: {
+    provider?: TranscriptionProvider | null;
+    limit?: number;
+    romanizer?: Romanizer | null;
+    limiter?: RateLimiter;
+    humanCheck?: HumanVerifier;
+    abuseControlsMissing?: boolean;
+  } = {},
+) {
   const provider = opts.provider === undefined ? mockProvider() : opts.provider;
   const logged: (TranscribeErrorCode | "ROMANIZE_FAILED")[] = [];
   const handler = createTranscribeHandler({
     getProvider: () => provider,
     getRomanizer: () => opts.romanizer ?? null,
-    limiter: createMemoryRateLimiter({ limit: opts.limit ?? 100, windowMs: 60_000 }),
+    limiter: opts.limiter ?? createMemoryRateLimiter({ limit: opts.limit ?? 100, windowMs: 60_000 }),
+    humanCheck: opts.humanCheck,
+    abuseControlsMissing: opts.abuseControlsMissing,
     salt: "test-salt",
     logError: (code) => logged.push(code),
   });
@@ -229,5 +241,73 @@ describe("POST /api/transcribe handler", () => {
       }),
     });
     expect((await handler(upload(opus()))).status).toBe(500);
+  });
+
+  describe("abuse controls", () => {
+    const verifier = (result: HumanCheckResult) => ({ verify: vi.fn(async () => result) });
+    const withToken = (token = "tok") => upload(opus(), {}, { "x-turnstile-token": token });
+
+    it("needs a Turnstile token when the check is on, without spending the rate limit", async () => {
+      const consume = vi.fn(async () => ({ allowed: true, retryAfterSec: 0 }));
+      const check = verifier("passed");
+      const { handler, provider } = setup({ humanCheck: check, limiter: { consume } });
+      const res = await handler(upload(opus()));
+      expect(res.status).toBe(403);
+      expect(await errorCode(res)).toBe("HUMAN_CHECK_REQUIRED");
+      expect(consume).not.toHaveBeenCalled();
+      expect(check.verify).not.toHaveBeenCalled();
+      expect(provider!.transcribe).not.toHaveBeenCalled();
+    });
+
+    it("transcribes once the token passes", async () => {
+      const check = verifier("passed");
+      const { handler } = setup({ humanCheck: check });
+      expect((await handler(withToken("abc"))).status).toBe(200);
+      expect(check.verify).toHaveBeenCalledWith("abc", expect.anything());
+    });
+
+    it("refuses a failed token with 403 and never calls the provider", async () => {
+      const { handler, provider } = setup({ humanCheck: verifier("failed") });
+      const res = await handler(withToken());
+      expect(res.status).toBe(403);
+      expect(await errorCode(res)).toBe("HUMAN_CHECK_FAILED");
+      expect(provider!.transcribe).not.toHaveBeenCalled();
+    });
+
+    it("refuses with 503 when Cloudflare can't verify, rather than letting the request through", async () => {
+      const { handler, provider, logged } = setup({ humanCheck: verifier("unavailable") });
+      const res = await handler(withToken());
+      expect(res.status).toBe(503);
+      expect(await errorCode(res)).toBe("HUMAN_CHECK_UNAVAILABLE");
+      expect(provider!.transcribe).not.toHaveBeenCalled();
+      expect(logged).toEqual(["HUMAN_CHECK_UNAVAILABLE"]);
+    });
+
+    it("checks the rate limit before calling Cloudflare", async () => {
+      const check = verifier("passed");
+      const { handler } = setup({ humanCheck: check, limit: 1 });
+      await handler(withToken());
+      expect((await handler(withToken())).status).toBe(429);
+      expect(check.verify).toHaveBeenCalledTimes(1);
+    });
+
+    it("refuses with 503 when the shared limiter is down", async () => {
+      const { handler, provider, logged } = setup({
+        limiter: { consume: async () => Promise.reject(new Error("connect ECONNREFUSED")) },
+      });
+      const res = await handler(upload(opus()));
+      expect(res.status).toBe(503);
+      expect(await errorCode(res)).toBe("RATE_LIMIT_UNAVAILABLE");
+      expect(provider!.transcribe).not.toHaveBeenCalled();
+      expect(logged).toEqual(["RATE_LIMIT_UNAVAILABLE"]);
+    });
+
+    it("stays off on a public deployment that lacks the controls", async () => {
+      const { handler, provider } = setup({ abuseControlsMissing: true });
+      const res = await handler(upload(opus()));
+      expect(res.status).toBe(503);
+      expect(await errorCode(res)).toBe("ABUSE_CONTROLS_MISSING");
+      expect(provider!.transcribe).not.toHaveBeenCalled();
+    });
   });
 });

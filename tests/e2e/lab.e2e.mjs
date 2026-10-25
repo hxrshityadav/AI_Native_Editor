@@ -123,6 +123,7 @@ async function main() {
     let holdNext = false;
     let uploads = 0;
     await page.route("**/api/transcribe", async (route) => {
+      if (route.request().method() !== "POST") return route.fallback(); // the config GET goes to the real server
       uploads++;
       uploaded = route.request().postDataBuffer();
       if (holdNext) {

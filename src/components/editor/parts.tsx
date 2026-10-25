@@ -195,7 +195,7 @@ export function DataFlow({ testId, leaves = false, children }: { testId: string;
 }
 
 /** The exact data that transcription sends, shown before the button that sends it. */
-export function TranscribeDisclosure({ audioSize }: { audioSize: number | null }) {
+export function TranscribeDisclosure({ audioSize, humanCheck }: { audioSize: number | null; humanCheck: boolean }) {
   const name = TRANSCRIPTION_DISCLOSURE.providerName;
   return (
     <DataFlow testId="transcribe-disclosure" leaves>
@@ -206,6 +206,17 @@ export function TranscribeDisclosure({ audioSize }: { audioSize: number | null }
         {name}&apos;s privacy policy
       </a>{" "}
       applies to their processing.
+      {humanCheck && (
+        <>
+          {" "}
+          To stop abuse, {TRANSCRIPTION_DISCLOSURE.humanCheckName} first checks this browser isn&apos;t a bot. Cloudflare
+          sees your IP address and browser details, not your video or audio (
+          <a className="underline" href={TRANSCRIPTION_DISCLOSURE.humanCheckPrivacyUrl} target="_blank" rel="noreferrer">
+            Turnstile privacy
+          </a>
+          ).
+        </>
+      )}
     </DataFlow>
   );
 }

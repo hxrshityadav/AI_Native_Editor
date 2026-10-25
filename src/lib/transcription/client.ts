@@ -1,11 +1,31 @@
 import type { Word } from "@/lib/captions/types";
-import type { CaptionLanguage, TranscribeErrorResponse, TranscribeResponse } from "./types";
+import {
+  HUMAN_CHECK_HEADER,
+  type CaptionLanguage,
+  type TranscribeConfigResponse,
+  type TranscribeErrorResponse,
+  type TranscribeResponse,
+} from "./types";
 
 /** Shown before any upload. Must stay accurate if the provider changes. */
 export const TRANSCRIPTION_DISCLOSURE = {
   providerName: "Groq",
   privacyUrl: "https://groq.com/privacy-policy/",
+  humanCheckName: "Cloudflare Turnstile",
+  humanCheckPrivacyUrl: "https://www.cloudflare.com/turnstile-privacy-policy/",
 } as const;
+
+/** What the server needs before a transcription; null when the server can't be reached. */
+export async function fetchTranscribeConfig(): Promise<TranscribeConfigResponse | null> {
+  try {
+    const res = await fetch("/api/transcribe", { cache: "no-store" });
+    if (!res.ok) return null;
+    const json = (await res.json()) as TranscribeConfigResponse;
+    return typeof json.humanCheckSiteKey === "string" || json.humanCheckSiteKey === null ? json : null;
+  } catch {
+    return null;
+  }
+}
 
 export type TranscribeResult =
   | { ok: true; words: Word[]; providerName: string; warning: TranscribeResponse["warning"] }
@@ -15,6 +35,7 @@ export async function requestTranscription(
   audio: Blob,
   language: CaptionLanguage,
   signal?: AbortSignal,
+  humanCheckToken?: string | null,
 ): Promise<TranscribeResult> {
   const form = new FormData();
   form.append("audio", audio, "speech.ogg");
@@ -22,7 +43,12 @@ export async function requestTranscription(
 
   let res: Response;
   try {
-    res = await fetch("/api/transcribe", { method: "POST", body: form, signal });
+    res = await fetch("/api/transcribe", {
+      method: "POST",
+      body: form,
+      signal,
+      headers: humanCheckToken ? { [HUMAN_CHECK_HEADER]: humanCheckToken } : undefined,
+    });
   } catch {
     return {
       ok: false,

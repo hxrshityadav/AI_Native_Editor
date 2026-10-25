@@ -58,3 +58,12 @@ export type TranscribeResponse = {
 export type TranscribeErrorResponse = {
   error: { code: string; message: string; action: string };
 };
+
+/** Request header carrying the Turnstile token, so it is checked before the audio body is read. */
+export const HUMAN_CHECK_HEADER = "x-turnstile-token";
+
+/** The JSON body of GET /api/transcribe: what the browser needs before it can transcribe. */
+export type TranscribeConfigResponse = {
+  /** Turnstile site key when the server checks for bots; null when it doesn't. */
+  humanCheckSiteKey: string | null;
+};

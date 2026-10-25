@@ -37,6 +37,23 @@ Facts we rely on, with source and date checked. Recheck before pricing or launch
 See `platform-uploads.md`: YouTube recommends MP4 with moov at the front, AAC or Opus. Meta's
 Instagram, Facebook and WhatsApp specs say AAC. WhatsApp's app defaults to 100 MB and 720p.
 
+## Cloudflare Turnstile (checked 2026-10-25)
+
+- Siteverify (https://developers.cloudflare.com/turnstile/get-started/server-side-validation/):
+  `POST https://challenges.cloudflare.com/turnstile/v0/siteverify`, JSON `{secret, response, remoteip?}`.
+  Tokens are at most 2048 characters, valid for 300 s and single use (`timeout-or-duplicate` on reuse).
+  The error codes `invalid-input-secret`, `missing-input-secret`, `bad-request` and `internal-error` are on our side.
+- Test keys (https://developers.cloudflare.com/turnstile/troubleshooting/testing/): site key
+  `1x00000000000000000000AA` (passes), secret `1x0000000000000000000000000000000AA` (passes),
+  `2x...AA` (fails), `3x...AA` (already spent). The dummy token is `XXXX.DUMMY.TOKEN.XXXX`. Automated browsers are
+  detected as bots by the real widget.
+- Widget (https://developers.cloudflare.com/turnstile/get-started/client-side-rendering/): explicit
+  rendering via `api.js?render=explicit`, `turnstile.render/reset/remove`. Defaults: `refresh-expired: auto`,
+  `retry: auto`, `appearance: always`. We use `interaction-only`.
+- Privacy (https://www.cloudflare.com/turnstile-privacy-policy/, updated 2025-06-18): collects client IP,
+  TLS fingerprint, User-Agent, and site key with its origin. Used for bot detection and improving it.
+- Pricing: free for managed widgets, but not rechecked here. Check the dashboard before launch.
+
 ## To do
 
 - Sarvam speech-to-text: API, word timestamps?, Hinglish/Roman output, price (T-12).

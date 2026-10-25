@@ -60,7 +60,11 @@ try {
   const page = await context.newPage();
   const cdp = await context.newCDPSession(page);
   await cdp.send("Emulation.setCPUThrottlingRate", { rate: THROTTLE });
-  await page.route("**/api/transcribe", (r) => r.fulfill({ json: { provider: { id: "groq", displayName: "Groq (mock)" }, words, warning: null } }));
+  await page.route("**/api/transcribe", (r) =>
+    r.request().method() === "POST"
+      ? r.fulfill({ json: { provider: { id: "groq", displayName: "Groq (mock)" }, words, warning: null } })
+      : r.fallback(),
+  );
 
   await page.goto(`http://localhost:${PORT}/lab`);
   await page.getByTestId("file-input").setInputFiles(clip);

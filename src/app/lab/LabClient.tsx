@@ -1,6 +1,7 @@
 "use client";
 
 import { BrandKitPanel } from "@/components/editor/BrandKitPanel";
+import { HumanCheck } from "@/components/editor/HumanCheck";
 import {
   btn,
   btnSecondary,
@@ -108,12 +109,12 @@ export function LabClient() {
         )}
       </Step>
 
-      <Step n={3} title="Transcribe" flow={<TranscribeDisclosure audioSize={audio.status === "done" ? audio.blob.size : null} />}>
+      <Step n={3} title="Transcribe" flow={<TranscribeDisclosure audioSize={audio.status === "done" ? audio.blob.size : null} humanCheck={s.humanCheck.status === "on"} />}>
         <div className="flex flex-wrap items-center gap-3">
           <LanguageSelect value={s.language} onChange={s.setLanguage} />
           <button
             data-testid="transcribe-button"
-            disabled={audio.status !== "done" || transcript.status === "running" || !s.online}
+            disabled={audio.status !== "done" || transcript.status === "running" || !s.online || !s.humanReady}
             onClick={() => void s.transcribe()}
             className={btn}
           >
@@ -121,6 +122,7 @@ export function LabClient() {
           </button>
         </div>
         {audio.status !== "done" && <p className="text-sm text-zinc-500">Extract the audio first.</p>}
+        <HumanCheck session={s} />
         {audio.status === "done" && s.edits && (
           <p data-testid="retranscribe-warning" className="text-sm text-amber-800 dark:text-amber-300">
             Transcribing again replaces your caption edits.

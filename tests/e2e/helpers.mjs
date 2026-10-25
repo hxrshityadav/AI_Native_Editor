@@ -60,9 +60,15 @@ export function makeFixtures(dir) {
  * the variable: Next.js doesn't override variables that are already set, so a developer's
  * .env.local key can't leak in. Pass `{ withKey: true }` to use the key from the env or .env.local.
  */
-export async function startServer(port, { withKey = false } = {}) {
+/**
+ * Starts `next start`. Keys and abuse-control settings are blanked so a developer's .env.local
+ * can't switch them on (or make billable calls); pass `withKey` or `env` to set them.
+ */
+export async function startServer(port, { withKey = false, env: extra = {} } = {}) {
   const env = { ...process.env, PORT: String(port) };
   if (!withKey) env.GROQ_API_KEY = "";
+  for (const k of ["DATABASE_URL", "TURNSTILE_SITE_KEY", "TURNSTILE_SECRET_KEY", "VERCEL"]) env[k] = "";
+  Object.assign(env, extra);
   const server = spawn(join(ROOT, "node_modules/.bin/next"), ["start", "-p", String(port)], {
     cwd: ROOT,
     env,

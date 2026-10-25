@@ -8,11 +8,8 @@ export interface RateLimiter {
 
 /**
  * Fixed-window limiter held in process memory. Good enough for local
- * development and a single instance; serverless instances do not share it.
- *
- * TODO(T-14): replace with a Postgres-backed limiter (Drizzle, one row per
- * key and window, atomic upsert-increment) keyed by the same daily IP hash
- * and, once licenses exist, the license key.
+ * development and a single instance; serverless instances do not share it,
+ * so deployments use the Postgres limiter (pgRateLimit.ts).
  */
 export function createMemoryRateLimiter(options: {
   limit: number;

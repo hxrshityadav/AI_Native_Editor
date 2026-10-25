@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { BrandKitPanel } from "@/components/editor/BrandKitPanel";
+import { HumanCheck } from "@/components/editor/HumanCheck";
 import {
   btnSecondary,
   DataFlow,
@@ -327,24 +328,25 @@ function CaptionsPanel({ session: s }: { session: ReelSession }) {
             what was sent to make these captions
           </summary>
           <div className="mt-2">
-            <TranscribeDisclosure audioSize={audio.status === "done" ? audio.blob.size : null} />
+            <TranscribeDisclosure audioSize={audio.status === "done" ? audio.blob.size : null} humanCheck={s.humanCheck.status === "on"} />
           </div>
         </details>
       ) : (
-        <TranscribeDisclosure audioSize={audio.status === "done" ? audio.blob.size : null} />
+        <TranscribeDisclosure audioSize={audio.status === "done" ? audio.blob.size : null} humanCheck={s.humanCheck.status === "on"} />
       )}
       <div className="flex flex-wrap items-center gap-3">
         <LanguageSelect value={s.language} onChange={s.setLanguage} />
         <button
           type="button"
           data-testid="make-captions"
-          disabled={working || !s.online}
+          disabled={working || !s.online || !s.humanReady}
           onClick={() => void s.makeCaptions()}
           className={s.realWords ? btnSecondary + " disabled:opacity-40" : primary}
         >
           {s.realWords ? "Make captions again" : "Make captions"}
         </button>
       </div>
+      <HumanCheck session={s} />
       {s.realWords && s.edits && !working && (
         <p className="text-sm text-amber-800 dark:text-amber-300">Making captions again replaces your edits.</p>
       )}

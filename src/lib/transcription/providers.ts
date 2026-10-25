@@ -1,5 +1,6 @@
 import { createGroqProvider } from "./groq";
 import { createGroqRomanizer } from "./groqRomanize";
+import { createTurnstileVerifier, type HumanVerifier } from "./humanCheck";
 import type { Romanizer, TranscriptionProvider } from "./types";
 
 /**
@@ -19,4 +20,12 @@ export function getConfiguredRomanizer(env: Record<string, string | undefined> =
     return createGroqRomanizer({ apiKey: env.GROQ_API_KEY, model: env.GROQ_ROMANIZE_MODEL || undefined });
   }
   return null;
+}
+
+/** Turnstile needs both keys; with only one set the check is off, so the widget never shows without enforcement. */
+export function getConfiguredHumanCheck(
+  env: Record<string, string | undefined> = process.env,
+): { siteKey: string; verifier: HumanVerifier } | null {
+  if (!env.TURNSTILE_SITE_KEY || !env.TURNSTILE_SECRET_KEY) return null;
+  return { siteKey: env.TURNSTILE_SITE_KEY, verifier: createTurnstileVerifier({ secret: env.TURNSTILE_SECRET_KEY }) };
 }

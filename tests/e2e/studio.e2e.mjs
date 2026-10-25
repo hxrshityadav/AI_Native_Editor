@@ -24,6 +24,7 @@ async function openStudio(browser, contextOptions) {
   page.on("pageerror", (e) => console.log("pageerror:", e.message));
   const uploads = [];
   await page.route("**/api/transcribe", async (route) => {
+    if (route.request().method() !== "POST") return route.fallback(); // the config GET goes to the real server
     uploads.push(route.request().postDataBuffer());
     await route.fulfill({ json: { provider: { id: "groq", displayName: "Groq (mock)" }, words: WORDS, warning: null } });
   });

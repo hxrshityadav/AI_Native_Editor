@@ -8,7 +8,9 @@
  File ─▶ probeFile ─▶ validateProbe ─▶ checkDevice
    │
    ├─▶ extractSpeechAudio ─▶ Ogg Opus mono 32 kbps ──upload──▶ POST /api/transcribe
-   │                         (only thing that leaves)            │ content-type, length, rate limit
+   │                         (only thing that leaves)            │ content-type, length,
+   │   + Turnstile token header (when on)                        │ Turnstile token present → rate limit
+   │                                                             │ (Postgres) → Turnstile siteverify
    │                                                             │ Zod form validation, 4 MB cap
    │                                                             │ byte sniff: audio-only Ogg Opus
    │                                                             ▼
@@ -23,6 +25,13 @@
 The video never leaves the device. Transcripts and edits are saved in the browser's IndexedDB,
 keyed by a SHA-256 of the file's size plus its first and last MiB, so no file names are stored. The server keeps no audio or transcript: they live only in
 request memory. Logs carry error codes only.
+
+Abuse controls (T-14): `GET /api/transcribe` tells the browser at request time whether a Turnstile
+check is on. When it is, the transcribe step loads Cloudflare's script, and each upload sends a
+single-use token in `x-turnstile-token`. The server refuses a missing token before it counts the request,
+then checks the shared rate limit, then verifies the token with Cloudflare, and only then reads the audio.
+Any check it can't complete (database or Cloudflare down) refuses the upload rather than allowing
+unmetered spend. On Vercel, transcription stays off unless `DATABASE_URL` and both Turnstile keys are set.
 
 ## Modules
 
@@ -49,7 +58,10 @@ request memory. Logs carry error codes only.
 | `src/lib/media/render.ts` | browser | Mediabunny `Conversion` with `video.process` drawing captions; audio copied |
 | `src/lib/transcription/handler.ts` | server | Validation, rate limit, sniff, provider call, error mapping |
 | `src/lib/transcription/groq.ts` | server | Groq Whisper adapter (`verbose_json`, word timestamps) |
-| `src/lib/transcription/rateLimit.ts` | server | In-memory limiter, salted daily IP hash |
+| `src/lib/transcription/rateLimit.ts` | server | In-memory limiter (development), salted daily IP hash |
+| `src/lib/transcription/pgRateLimit.ts` | server | Shared Postgres limiter (`DATABASE_URL`): atomic upsert per key and hour |
+| `src/lib/transcription/humanCheck.ts` | server | Turnstile siteverify → passed / failed / unavailable |
+| `src/components/editor/HumanCheck.tsx` | browser | Loads Cloudflare's script on the transcribe step only; token → session |
 | `src/lib/transcription/client.ts` | browser | `fetch` wrapper and disclosure text |
 
 ## Rendering

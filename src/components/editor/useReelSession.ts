@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import {
   DEFAULT_CAPTION_STYLE,
   DEFAULT_GROUP_OPTIONS,
@@ -23,7 +23,7 @@ import { probeFile } from "@/lib/media/probe";
 import { RenderCanceledError, renderInWorker, type RenderHandle, type RenderStorage } from "@/lib/media/renderInWorker";
 import type { Issue, ProbeResult } from "@/lib/media/types";
 import { issue, validateFileBasics, validateProbe } from "@/lib/media/validate";
-import { requestTranscription } from "@/lib/transcription/client";
+import { fetchTranscribeConfig, requestTranscription } from "@/lib/transcription/client";
 import type { CaptionLanguage, TranscribeResponse } from "@/lib/transcription/types";
 
 export type CheckState =
@@ -43,6 +43,13 @@ export type TranscriptState =
   | { status: "running" }
   | { status: "done"; words: Word[]; providerName: string; warning?: TranscribeResponse["warning"] }
   | { status: "error"; problem: Problem };
+
+/** The server's bot check (Turnstile). `round` changes after each upload, since a token is single use. */
+export type HumanCheckState =
+  | { status: "loading" }
+  | { status: "error" }
+  | { status: "off" }
+  | { status: "on"; siteKey: string; token: string | null; round: number };
 
 /** User edits on top of the transcript (or placeholder words), with undo history. */
 type Edits = { words: Word[]; history: Word[][] };
@@ -126,6 +133,17 @@ export function useReelSession({ placeholders }: { placeholders: boolean }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const renderHandle = useRef<RenderHandle | null>(null);
   const transcribeAbort = useRef<AbortController | null>(null);
+  const [humanCheck, setHumanCheck] = useState<HumanCheckState>({ status: "loading" });
+  // The latest token, read at upload time: extraction can take long enough for a token to be replaced.
+  const humanToken = useRef<string | null>(null);
+  const humanReady = humanCheck.status === "off" || (humanCheck.status === "on" && humanCheck.token !== null);
+  useEffect(() => {
+    void readHumanCheck().then(setHumanCheck);
+  }, []);
+  const setHumanCheckToken = useCallback((token: string | null) => {
+    humanToken.current = token;
+    setHumanCheck((h) => (h.status === "on" ? { ...h, token } : h));
+  }, []);
   const [previewFailed, setPreviewFailed] = useState(false);
   const online = useOnline();
   const busy = audio.status === "running" || transcript.status === "running" || render.status === "running";
@@ -319,7 +337,10 @@ export function useReelSession({ placeholders }: { placeholders: boolean }) {
     const started = performance.now();
     const abort = new AbortController();
     transcribeAbort.current = abort;
-    const result = await requestTranscription(blob, language, abort.signal);
+    const result = await requestTranscription(blob, language, abort.signal, humanToken.current);
+    // Tokens are single use: drop it and have the widget fetch a new one, whatever the outcome.
+    humanToken.current = null;
+    setHumanCheck((h) => (h.status === "on" ? { ...h, token: null, round: h.round + 1 } : h));
     if (abort.signal.aborted) return setTranscript({ status: "idle" });
     if (result.ok) {
       recordStep({ transcribeMs: performance.now() - started });
@@ -415,6 +436,13 @@ export function useReelSession({ placeholders }: { placeholders: boolean }) {
     pickFile,
     extract,
     transcribe,
+    humanCheck,
+    humanReady,
+    setHumanCheckToken,
+    retryHumanCheck: () => {
+      setHumanCheck({ status: "loading" });
+      void readHumanCheck().then(setHumanCheck);
+    },
     cancelTranscribe: () => transcribeAbort.current?.abort(),
     makeCaptions,
     startRender,
@@ -423,6 +451,13 @@ export function useReelSession({ placeholders }: { placeholders: boolean }) {
 }
 
 export type ReelSession = ReturnType<typeof useReelSession>;
+
+async function readHumanCheck(): Promise<HumanCheckState> {
+  const config = await fetchTranscribeConfig();
+  if (config === null) return { status: "error" };
+  if (config.humanCheckSiteKey) return { status: "on", siteKey: config.humanCheckSiteKey, token: null, round: 0 };
+  return { status: "off" };
+}
 
 function useOnline(): boolean {
   return useSyncExternalStore(

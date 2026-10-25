@@ -41,7 +41,9 @@ and `/simplify` for reviews.
 - `npm run build`: production build.
 - `npm run e2e`: needs a fresh `npm run build`, plus ffmpeg/ffprobe. Drives `/lab` and then
   `/studio` (desktop and Pixel 7) in Chromium against generated fixtures and verifies outputs with
-  ffprobe. Run it for every media or UI change.
+  ffprobe, then the abuse controls (Turnstile stand-in). Run it for every media or UI change.
+- Postgres tests: `TEST_DATABASE_URL=postgres://... npm test` runs the limiter against a real
+  database (skipped without it). `E2E_DATABASE_URL` does the same for the abuse E2E.
 - `npm run perf`: needs a fresh build. An emulated mid-range phone pass (Pixel 7 profile, CPU ÷4,
   60 s 1080p clip) that prints step timings, idle main-thread load, the longest stall and Chromium
   memory. `PERF_SECONDS` and `PERF_SIZE` change the clip. It is not a real-device result.

@@ -1,10 +1,12 @@
 import { z } from "zod";
 import { getClientIp, hashClientKey, type RateLimiter } from "./rateLimit";
 import { hasDevanagari } from "./groqRomanize";
+import type { HumanVerifier } from "./humanCheck";
 import { isAudioOnlyOggOpus } from "./sniff";
 import {
   ProviderError,
   CAPTION_LANGUAGES,
+  HUMAN_CHECK_HEADER,
   type CaptionLanguage,
   type Romanizer,
   type SpeechLanguage,
@@ -54,6 +56,31 @@ const ERRORS = {
     message: "Too many transcriptions from this network.",
     action: "Wait a few minutes and try again.",
   },
+  HUMAN_CHECK_REQUIRED: {
+    status: 403,
+    message: "The anti-bot check hasn't finished.",
+    action: "Wait for the check next to the button to finish, then try again.",
+  },
+  HUMAN_CHECK_FAILED: {
+    status: 403,
+    message: "The anti-bot check didn't pass or has expired.",
+    action: "Try again. The check reloads by itself.",
+  },
+  HUMAN_CHECK_UNAVAILABLE: {
+    status: 503,
+    message: "The anti-bot check couldn't be completed on our side.",
+    action: "Try again in a minute.",
+  },
+  RATE_LIMIT_UNAVAILABLE: {
+    status: 503,
+    message: "Usage limits couldn't be checked, so transcription is paused.",
+    action: "Try again in a minute.",
+  },
+  ABUSE_CONTROLS_MISSING: {
+    status: 503,
+    message: "Transcription is off on this deployment until abuse protection is set up.",
+    action: "Set DATABASE_URL, TURNSTILE_SITE_KEY and TURNSTILE_SECRET_KEY, then redeploy.",
+  },
   NOT_CONFIGURED: {
     status: 503,
     message: "Transcription is not configured on this server.",
@@ -102,6 +129,10 @@ export type TranscribeHandlerDeps = {
   /** Needed for Hinglish; without it Hinglish falls back to Hindi script with a warning. */
   getRomanizer?: () => Romanizer | null;
   limiter: RateLimiter;
+  /** Turnstile check; when set, every request needs a token in the HUMAN_CHECK_HEADER. */
+  humanCheck?: HumanVerifier | null;
+  /** True on a public deployment without a shared limiter and bot check: refuse instead of risking spend. */
+  abuseControlsMissing?: boolean;
   salt: string;
   now?: () => Date;
   /** Receives error codes only. Never pass audio, transcripts or file names here. */
@@ -130,10 +161,26 @@ export function createTranscribeHandler(deps: TranscribeHandlerDeps) {
 
     const provider = deps.getProvider();
     if (!provider) return fail("NOT_CONFIGURED");
+    if (deps.abuseControlsMissing) return fail("ABUSE_CONTROLS_MISSING");
+
+    // A missing token costs nothing; only requests that carry one count against the limit.
+    const token = request.headers.get(HUMAN_CHECK_HEADER);
+    if (deps.humanCheck && !token) return fail("HUMAN_CHECK_REQUIRED");
 
     const key = hashClientKey(getClientIp(request.headers), deps.salt, now());
-    const limit = await deps.limiter.consume(key);
+    let limit;
+    try {
+      limit = await deps.limiter.consume(key);
+    } catch {
+      return fail("RATE_LIMIT_UNAVAILABLE");
+    }
     if (!limit.allowed) return fail("RATE_LIMITED", { "Retry-After": String(limit.retryAfterSec) });
+
+    if (deps.humanCheck && token) {
+      const check = await deps.humanCheck.verify(token, request.signal);
+      if (check === "failed") return fail("HUMAN_CHECK_FAILED");
+      if (check === "unavailable") return fail("HUMAN_CHECK_UNAVAILABLE");
+    }
 
     let form: FormData;
     try {
