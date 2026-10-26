@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { StudioClient } from "./StudioClient";
+import { EditorHost } from "./EditorHost";
 
 export const metadata: Metadata = {
   title: "Studio · Reel Finisher",
@@ -7,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function StudioPage() {
-  return <StudioClient />;
+  return <EditorHost />;
 }

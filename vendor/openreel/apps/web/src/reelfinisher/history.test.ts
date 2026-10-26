@@ -1,0 +1,31 @@
+import "../test/install-local-storage-mock";
+import { it, expect } from "vitest";
+import { useProjectStore } from "../stores/project-store";
+import { createEmptyProject } from "../stores/project/project-helpers";
+import { captionTrack, makeCaption } from "./caption-project";
+import { estimatedWords } from "./caption-data";
+import { synchronizedRemoval, snapshotAction } from "./commit";
+it("commits synchronized cuts and captions to the same native history with atomic undo/redo", async () => {
+  const project = createEmptyProject("History");
+  const track = captionTrack();
+  const next = { ...project, timeline: { ...project.timeline, duration: 8, tracks: [track] }, textClips: [makeCaption(project, track.id, "one two three four", 0, 8, { version: 1, kind: "caption", styleId: "clean", appearance: {}, animation: { effect: "none", duration: 0.25, intensity: 0.5 }, words: estimatedWords("one two three four", 8), timing: "verified-words", referenceDuration: 8, referenceFontSize: 1 })] };
+  useProjectStore.getState().loadProject(next);
+  const original = JSON.stringify(useProjectStore.getState().getFullProject().textClips);
+  expect((await synchronizedRemoval(useProjectStore.getState(), 2, 4)).success).toBe(true);
+  expect(useProjectStore.getState().project.timeline.duration).toBe(6);
+  expect((await useProjectStore.getState().undo()).success).toBe(true);
+  expect(JSON.stringify(useProjectStore.getState().getFullProject().textClips)).toBe(original);
+  expect(useProjectStore.getState().project.timeline.duration).toBe(8);
+  expect((await useProjectStore.getState().redo()).success).toBe(true);
+  const current = useProjectStore.getState().getFullProject();
+  expect(current.textClips?.map((clip) => clip.text).join(" ")).toBe("one three four");
+  expect((await useProjectStore.getState().executeAction(snapshotAction({ ...current, textClips: [] }))).success).toBe(true);
+  await useProjectStore.getState().undo(); expect(useProjectStore.getState().getAllTextClips()).toHaveLength(2);
+});
+it("native caption split slices verified words and undoes atomically", () => {
+  const state = useProjectStore.getState(), project = createEmptyProject("Split"); const track = captionTrack();
+  const clip = makeCaption(project, track.id, "one two three four", 0, 8, { version: 1, kind: "caption", styleId: "clean", appearance: {}, animation: { effect: "none", duration: 0.25, intensity: 0.5 }, words: estimatedWords("one two three four", 8), timing: "verified-words", referenceDuration: 8, referenceFontSize: 1 });
+  state.loadProject({ ...project, timeline: { ...project.timeline, tracks: [track], duration: 8 }, textClips: [clip] });
+  const split = useProjectStore.getState().splitOverlayClip(clip.id, 4);
+  expect(split?.left).toMatchObject({ text: "one two", duration: 4 }); expect(split?.right).toMatchObject({ text: "three four", startTime: 4, duration: 4 });
+});

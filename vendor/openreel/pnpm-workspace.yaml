@@ -1,0 +1,20 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+onlyBuiltDependencies:
+  - electron
+ignoredBuiltDependencies:
+  - core-js
+  - esbuild
+  - onnxruntime-node
+  - protobufjs
+  - sharp
+  - workerd
+allowBuilds:
+  core-js: false
+  electron: true
+  esbuild: false
+  onnxruntime-node: false
+  protobufjs: false
+  sharp: false
+  workerd: false
