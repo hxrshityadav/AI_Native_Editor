@@ -66,7 +66,7 @@ export function makeFixtures(dir) {
  * can't switch them on (or make billable calls); pass `withKey` or `env` to set them.
  */
 export async function startServer(port, { withKey = false, env: extra = {} } = {}) {
-  const env = { ...process.env, PORT: String(port) };
+  const env = { ...process.env, PORT: String(port), REEL_ENABLE_CLOUD: "1" };
   if (!withKey) for (const k of ["GROQ_API_KEY", "SARVAM_API_KEY", "TRANSCRIBE_PROVIDER"]) env[k] = "";
   for (const k of ["DATABASE_URL", "TURNSTILE_SITE_KEY", "TURNSTILE_SECRET_KEY", "VERCEL"]) env[k] = "";
   Object.assign(env, extra);

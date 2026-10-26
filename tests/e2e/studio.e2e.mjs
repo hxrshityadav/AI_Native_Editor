@@ -8,7 +8,7 @@ import { countPixels, createChecks, decodeErrors, download, ff, frameDiff, makeF
 
 const OUT = join(ROOT, "tests/e2e/.out-studio");
 const PORT = 3115;
-const URL_ = `http://localhost:${PORT}/studio`;
+const URL_ = `http://localhost:${PORT}/studio-legacy`;
 const { check, finish } = createChecks();
 
 const WORDS = [

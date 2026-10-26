@@ -6,6 +6,16 @@ Statuses: **Not started** · **In progress** · **Implemented** (code exists, no
 "Tested" for media tasks means headless Chromium 153 on Linux (Playwright 1.63) against
 ffmpeg-generated fixtures. No task is verified on a real phone yet.
 
+## OpenReel local browser integration (2026-10-26)
+
+- **Tested:** pinned source fork, root npm/pnpm build orchestration, isolated /studio iframe, /editor assets, COOP/COEP/CORP, editor CSP and scoped offline caches.
+- **Tested:** native multi-file timeline/export, manual Hindi captions, local fonts, caption extensions and shared history, SRT, source fingerprint migration and project-wide gap removal.
+- **Tested:** fast Whisper model download/cancellation and real speech recognition, including cached recognition after an offline reload. Media and transcript remain in the browser.
+- **In progress:** final combined acceptance rerun and documentation closeout.
+- **Not started:** real phone/hardware verification, accurate 760 MB model verification and Safari/Firefox compatibility. Advanced synchronized removals listed in docs/openreel-integration.md are rejected, rather than partially applied. Automatic Roman Hinglish and general AI chat remain deferred as requested.
+
+Current automated integration results are from Windows Playwright Chromium with generated fixtures and a locally synthesized speech clip, not a real-device certification. See docs/openreel-integration.md and vendor/openreel/REEL_FINISHER_PATCHES.md.
+
 ## Manual studio upgrade (2026-10-25)
 
 Manual captions, selectable preview positioning, contextual properties, clip/caption/text timeline edits, shared history, audio gain/mute and validated AI-plan review are implemented. `npm run check` passes 274 tests; `npm run build` passes with webpack; the new manual browser suite passes 42/42. All six browser/media suites pass 218/218 checks. See `docs/MANUAL_STUDIO.md`. These are Windows Chromium/Pixel emulation results; real-device verification remains open.

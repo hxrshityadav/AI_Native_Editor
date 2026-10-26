@@ -18,7 +18,7 @@ async function open(browser, options = {}) {
   await page.route("**/api/transcribe", (route) => route.fulfill({ json: route.request().method() === "GET"
     ? { humanCheckSiteKey: null, provider: { name: "Groq", privacyUrl: "https://groq.com/privacy-policy/" }, romanizerName: "Groq" }
     : { provider: { id: "groq", displayName: "Groq (mock)" }, words, warning: null } }));
-  await page.goto(`http://localhost:${PORT}/studio`);
+  await page.goto(`http://localhost:${PORT}/studio-legacy`);
   return { context, page };
 }
 async function render(page, name) {

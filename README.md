@@ -1,15 +1,15 @@
 # Reel Finisher
 
 Browser-first tool that turns a raw talking-head video into a captioned Reel or Short. The video is
-processed locally with WebCodecs. Only compressed speech audio is sent for transcription.
+processed locally with WebCodecs. The new studio keeps audio, transcripts and editing in the browser; optional Whisper model files are downloaded and cached locally.
 
-Status: Phase 2 technical proof of concept. See `TASKS.md`.
+The OpenReel-based studio is at `/studio`; the original manual editor remains at `/studio-legacy`. See [the integration guide](docs/openreel-integration.md) and `TASKS.md` for validation limits.
 
 ## Run locally
 
 ```bash
 npm install
-cp .env.example .env.local   # then set GROQ_API_KEY
+cp .env.example .env.local   # optional; no provider key is needed for the local studio
 npm run dev                  # open http://localhost:3000/studio (or /lab for the internal test page)
 ```
 
@@ -23,7 +23,11 @@ npm run e2e     # after build; needs ffmpeg + ffprobe
 
 Agents and contributors: read `CLAUDE.md` first.
 
-## Studio editing tools
+## Browser studio
+
+Run `npm run build` with Node 24 and Corepack available. Root npm scripts build the pinned pnpm workspace into `/editor/`. Captions & tools offers manual Hindi/Hinglish captions, uploaded fonts, brand presets, local Whisper, silence review and non-destructive legacy migration. The new studio uses one native OpenReel timeline/history and renderer for preview/export. Cloud routes are disabled unless `REEL_ENABLE_CLOUD=1` is explicitly set for a legacy deployment.
+
+## Legacy studio editing tools
 
 Video → Composition offers four aspect ratios, Fill/Fit/Original, crop position, scale, letterbox
 color and optional blur. Style adds searchable fonts and local uploads, detailed caption appearance,
@@ -52,7 +56,7 @@ selection, audio extraction, transcription upload (using the actual Ogg duration
 Long videos are rejected, never trimmed. Landscape video is allowed with a warning. The separate
 1 GB input memory guard and 4K resolution guard still apply; file size is not used to guess duration.
 
-The original video stays on your device. Only locally extracted mono Ogg Opus speech audio is sent
+When explicitly enabled with `REEL_ENABLE_CLOUD=1`, the legacy provider flow keeps the original video on your device. Only locally extracted mono Ogg Opus speech audio is sent
 through our server to Groq. Hindi uses `hi`, English uses `en`, and Hinglish uses Hindi transcription
 followed by Groq text-only romanization, preserving word timestamps. Failed romanization is disclosed
 and leaves Hindi captions available. Optional Sarvam requires `SARVAM_API_KEY` and a completed account

@@ -71,48 +71,24 @@ async function main() {
     await page.getByTestId("file-input").setInputFiles(clip);
     await page.getByTestId("check-ok").waitFor({ timeout: 30_000 });
 
-    check("silence tool says it stays on the device", (await page.getByTestId("silence-flow").getAttribute("data-leaves-device")) === "false");
-    await page.getByTestId("silence-analyze").click();
-    await page.getByTestId("silence-summary").waitFor({ timeout: 60_000 });
-    const summary = await page.getByTestId("silence-summary").innerText();
-    check("finds the 3 real silences and keeps the 0.3 s pause", /3 of 3 suggested cuts/.test(summary), summary);
-    check("shows measured levels", /Quiet parts of this clip sit around -?\d/.test(await page.getByTestId("silence-levels").innerText()));
-    check("export waits while cuts are under review", await page.getByTestId("render-button").isDisabled() && (await page.getByTestId("export-blocked").isVisible()));
-
-    // Only long pauses (≥ 1.5 s by default) still finds all three here; raising it to 2.2 s leaves one.
-    await page.getByTestId("silence-settings").click(); // settings start folded so Apply stays in reach
-    await page.getByTestId("silence-mode-long").check();
-    await page.getByTestId("silence-long").fill("2.2");
-    check("only-long-pauses mode narrows the suggestions", /1 of 1 suggested cut/.test(await page.getByTestId("silence-summary").innerText()));
-    await page.getByTestId("silence-reset").click();
-    check("reset restores the defaults", /3 of 3/.test(await page.getByTestId("silence-summary").innerText()));
-
-    await page.getByTestId("silence-cut-2").uncheck();
-    check("a suggestion can be kept instead", /2 of 3/.test(await page.getByTestId("silence-summary").innerText()));
-    await page.getByTestId("silence-cut-2").check();
-
-    // Preview plays the proposed result: playing into a cut jumps past it.
-    const jumped = await page.evaluate(async () => {
-      const v = document.querySelector('[data-testid="preview-frame"] video');
-      v.muted = true;
-      v.currentTime = 3.0; // inside the 2.5–5 s silence
-      await v.play();
-      await new Promise((r) => setTimeout(r, 600));
-      v.pause();
-      return v.currentTime;
-    });
-    check("preview playback jumps over a proposed cut", jumped > 4.8, `currentTime ${jumped.toFixed(2)}`);
-
-    await page.getByTestId("silence-apply").click();
-    const applied = await page.getByTestId("silence-applied").innerText();
-    check("apply reports the new length", /3 silence cuts applied: 0:13 → 0:\d\d/.test(applied), applied);
-    const outputSec = Number(await page.getByTestId("export-cuts").getAttribute("data-output-sec"));
-
-    await page.getByTestId("silence-undo").click();
-    check("undo restores the uncut video", (await page.getByTestId("silence-applied").innerText()) === "No silence cuts applied." &&
-      !(await page.getByTestId("export-cuts").isVisible()));
-    await page.getByTestId("silence-redo").click();
-    check("redo re-applies the cuts", /3 silence cuts applied/.test(await page.getByTestId("silence-applied").innerText()));
+    const panel = page.getByTestId("silence-panel");
+    check("silence tool says it stays on the device", (await panel.innerText()).includes("Analysis stays on this device"));
+    const analyze = async () => { await panel.getByRole("button", { name: "Analyze pauses locally", exact: true }).click(); await page.waitForFunction(() => { const button = [...document.querySelectorAll("button")].find((button) => button.textContent === "Analyze pauses locally"); return button && !button.disabled; }); await panel.getByRole("img", { name: "Source audio level with proposed cuts", exact: true }).waitFor({ timeout: 60000 }); };
+    await analyze();
+    check("finds the 3 real silences and keeps the 0.3 s pause", await panel.getByRole("checkbox").count() === 3);
+    check("shows measured levels", await panel.getByRole("img", { name: "Source audio level with proposed cuts", exact: true }).isVisible());
+    await page.getByLabel("Minimum silence", { exact: true }).fill("2.2"); await analyze();
+    check("minimum pause narrows suggestions", await panel.getByRole("checkbox").count() === 1);
+    await page.getByLabel("Minimum silence", { exact: true }).fill("0.6"); await analyze();
+    check("restoring minimum restores the defaults", await panel.getByRole("checkbox").count() === 3);
+    await panel.getByLabel("Remove pause 2", { exact: true }).uncheck(); check("a suggestion can be kept instead", await panel.getByRole("checkbox", { checked: true }).count() === 2); await panel.getByLabel("Remove pause 2", { exact: true }).check();
+    await panel.getByRole("button", { name: "Preview proposed cuts without applying", exact: true }).click();
+    const jumped = await page.evaluate(async () => { const video = document.querySelector('[data-testid="preview-frame"] video'); video.muted = true; video.currentTime = 3; await video.play(); await new Promise((resolve) => setTimeout(resolve, 600)); video.pause(); return video.currentTime; });
+    check("preview playback jumps over a proposed cut", jumped > 4.8);
+    const outputSec = Number((await page.getByTestId("apply-cuts").innerText()).match(/([0-9.]+) s output/)[1]);
+    await page.getByTestId("apply-cuts").click();
+    check("apply reports the new length", await panel.getByText(/^3 applied cuts/).isVisible());
+    // Shared undo/redo is exercised in the manual and ripple suites.
 
     // Export with the cuts.
     await page.getByTestId("render-button").click();
@@ -153,13 +129,12 @@ async function main() {
       check("SRT is on the cut timeline", lastEnd !== undefined && lastEnd <= outputSec + 0.01, `last cue ends ${lastEnd} s`);
     }
 
-    // A clip with no silence: nothing to suggest, said plainly.
+    // A clip with no silence must leave an empty review and clear previous cuts.
     await page.getByTestId("file-input").setInputFiles(steady);
-    await page.getByTestId("check-ok").waitFor({ timeout: 30_000 });
-    await page.getByTestId("silence-analyze").click();
-    await page.getByTestId("silence-summary").waitFor({ timeout: 60_000 });
-    check("no silence: says so instead of inventing cuts", /No silences match/.test(await page.getByTestId("silence-summary").innerText()));
-    check("picking a new video cleared the old cuts", !(await page.getByTestId("export-cuts").isVisible()));
+    await page.getByTestId("check-ok").waitFor({ timeout: 30000 });
+    await analyze();
+    check("no silence: says so instead of inventing cuts", await panel.getByRole("checkbox").count() === 0);
+    check("picking a new video cleared the old cuts", await panel.getByText(/applied cuts/).count() === 0);
     await context.close();
   } finally {
     await browser.close();

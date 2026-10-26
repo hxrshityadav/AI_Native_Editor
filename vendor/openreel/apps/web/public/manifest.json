@@ -1,0 +1,36 @@
+{
+  "name": "Reel Finisher Studio",
+  "short_name": "Reel Finisher",
+  "description": "Professional browser-based video, audio, and photo editing application",
+  "start_url": "/studio",
+  "display": "standalone",
+  "background_color": "#1C1C1E",
+  "theme_color": "#ffd60a",
+  "orientation": "landscape",
+  "icons": [
+    {
+      "src": "/editor/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/editor/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/editor/icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "categories": [
+    "productivity",
+    "utilities"
+  ],
+  "prefer_related_applications": false,
+  "scope": "/editor/"
+}
