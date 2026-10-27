@@ -1,5 +1,5 @@
 // Shared helpers for the E2E suites: ffmpeg fixtures, a production Next server, ffprobe, checks.
-import { execFileSync, spawn } from "node:child_process";
+import { execFileSync, spawn, spawnSync } from "node:child_process";
 import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -150,10 +150,7 @@ export function topLevelBoxes(file) {
 
 /** Decodes every frame and sample; returns ffmpeg's error output (empty when the file is clean). */
 export function decodeErrors(file) {
-  try {
-    execFileSync("ffmpeg", ["-v", "error", "-i", file, "-f", "null", "-"], { stdio: ["ignore", "ignore", "pipe"] });
-    return "";
-  } catch (err) {
-    return String(err.stderr || err.message);
-  }
+  // Keep sub-frame cut timestamps: the null muxer's default 1/fps clock merges distinct frames.
+  const result = spawnSync("ffmpeg", ["-v", "error", "-i", file, "-enc_time_base:v", "1:1000000", "-f", "null", "-"], { stdio: ["ignore", "ignore", "pipe"] });
+  return result.stderr?.toString() || result.error?.message || (result.status !== 0 ? `Decoder exited ${result.status}` : "");
 }

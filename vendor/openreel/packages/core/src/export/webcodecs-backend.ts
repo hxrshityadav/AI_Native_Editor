@@ -4,6 +4,7 @@ import type { EncoderBackend } from "./encoder-backend";
 import { getAacEncoderPriming } from "./audio-priming";
 import { applyMp4AudioTiming } from "./mp4-audio-timing";
 import { trackHasAudioItems } from "../timeline/timeline-items";
+import { normalizeAvcConfig } from "./avc-config";
 
 type MediaBunnyModule = typeof import("mediabunny");
 type AudioBufferSourceInstance = InstanceType<MediaBunnyModule["AudioBufferSource"]>;
@@ -43,6 +44,7 @@ export class WebCodecsBackend implements EncoderBackend {
   private movieMetadata: { bytes: Uint8Array; position: number } | null = null;
   private submittedVideoFrames = 0;
   private encodedVideoFrames = 0;
+  private encoderConfigError: Error | null = null;
   private readonly pendingFrameReleases = new Set<() => void>();
 
   constructor(mediabunny: MediaBunnyModule, options?: WebCodecsBackendOptions) {
@@ -95,6 +97,7 @@ export class WebCodecsBackend implements EncoderBackend {
     this.movieMetadata = null;
     this.submittedVideoFrames = 0;
     this.encodedVideoFrames = 0;
+    this.encoderConfigError = null;
     const captureMovie = (bytes: Uint8Array, position: number) => { this.movieMetadata = { bytes, position }; };
     let outputFormat;
     switch (settings.format) {
@@ -187,7 +190,12 @@ export class WebCodecsBackend implements EncoderBackend {
       hardwareAcceleration: selectedHardwareAcceleration,
       bitrateMode: settings.bitrateMode === "cbr" ? "constant" : "variable",
       latencyMode: isWebKit ? "realtime" : "quality",
-      onEncodedPacket: () => { this.encodedVideoFrames++; },
+      onEncodedPacket: (_packet, metadata) => {
+        try {
+          if (videoCodec === "avc" && metadata?.decoderConfig?.description) metadata.decoderConfig.description = normalizeAvcConfig(metadata.decoderConfig.description);
+        } catch (error) { this.encoderConfigError = error instanceof Error ? error : new Error("Invalid video encoder configuration. Try WebM or another browser."); }
+        this.encodedVideoFrames++;
+      },
     });
     const audioSource = audioCodecResult ? new AudioBufferSource({
       codec: audioCodecResult.codec as "aac" | "opus" | "mp3",
@@ -241,6 +249,7 @@ export class WebCodecsBackend implements EncoderBackend {
 
     try {
       await this.videoSource.add(videoSample);
+      if (this.encoderConfigError) throw this.encoderConfigError;
       this.submittedVideoFrames++;
     } finally {
       release();
@@ -248,6 +257,7 @@ export class WebCodecsBackend implements EncoderBackend {
   }
 
   async finalize(): Promise<void> {
+    if (this.encoderConfigError) throw this.encoderConfigError;
     this.videoSource?.close();
     await this.output?.finalize();
     if (this.encodedVideoFrames !== this.submittedVideoFrames) {

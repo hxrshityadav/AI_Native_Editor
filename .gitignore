@@ -60,5 +60,7 @@ next-env.d.ts
 /tests/bakeoff/.out/
 
 /output/playwright/
+/output/launch-*
+/output/firefox*
 /vendor/openreel/apps/web/public/whisper-runtime/
 /vendor/openreel/apps/web/public/runtime/

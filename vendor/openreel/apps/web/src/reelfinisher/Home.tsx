@@ -11,6 +11,6 @@ export function WelcomeScreen({ initialTab: _initialTab }: { initialTab?: string
     {tab === "new" && <div className="rf-formats">{([ ["Reel / Short", 1080, 1920, "9:16"], ["Landscape", 1920, 1080, "16:9"], ["Square", 1080, 1080, "1:1"] ] as const).map(([name, width, height, ratio]) => <button key={name} onClick={() => { useProjectStore.getState().createNewProject(name, { width, height, frameRate: 30 }); navigate("editor"); }}><span className="rf-format-icon" style={{ aspectRatio: `${width}/${height}` }} /><strong>{name}</strong><span>{ratio} · {width} × {height}</span></button>)}</div>}
     {tab === "recent" && <RecentProjects onProjectSelected={() => navigate("editor")} />}
     {tab === "legacy" && <MigrationPanel onComplete={() => navigate("editor")} />}
-    <footer>Powered by the <a href="/editor/OPENREEL-LICENSE.txt" target="_blank" rel="noreferrer">MIT-licensed OpenReel editor</a>. <a href="/studio-legacy" target="_top">Legacy editor</a></footer>
+    <footer>Powered by the <a href="/editor/OPENREEL-LICENSE.txt" target="_blank" rel="noreferrer">MIT-licensed OpenReel editor</a>. <a href="/editor/licenses/bundled.json" target="_blank" rel="noreferrer">Third-party notices</a>. <a href="/studio-legacy" target="_top">Legacy editor</a></footer>
   </div></main>;
 }

@@ -3,6 +3,7 @@ import react from "@vitejs/plugin-react";
 import path from "path";
 import { stripFfmpegPlugin } from "./vite-plugins/strip-ffmpeg";
 import { pruneFontsPlugin } from "./vite-plugins/prune-fonts";
+import { thirdPartyNotices } from "./vite-plugins/third-party-notices";
 
 const isDesktop = process.env.OPENREEL_DESKTOP === "1";
 
@@ -31,7 +32,7 @@ function desktopHtmlPlugin() {
 export default defineConfig({
   esbuild: { drop: ["console", "debugger"] },
   base: isDesktop ? "./" : "/editor/",
-  plugins: [react(), desktopHtmlPlugin(), stripFfmpegPlugin(isDesktop), pruneFontsPlugin(isDesktop)],
+  plugins: [react(), desktopHtmlPlugin(), stripFfmpegPlugin(isDesktop), pruneFontsPlugin(isDesktop), thirdPartyNotices()],
   assetsInclude: ["**/*.wasm"],
   resolve: {
     dedupe: ["react", "react-dom"],

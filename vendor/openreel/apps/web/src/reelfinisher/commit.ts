@@ -9,6 +9,19 @@ export const snapshotAction = (project: Project) => ({ type: "project/applyEditS
 export async function synchronizedRemoval(state: ProjectState, start: number, end: number): Promise<ActionResult> {
   return synchronizedRemovalRanges(state, [{ start, end }]);
 }
+/** In/Out marks take precedence over clip selection for ripple deletion. */
+export async function rippleDeleteSelection(state: ProjectState, clipIds: string[]): Promise<ActionResult> {
+  const timeline = useTimelineStore.getState();
+  const marked = timeline.loopEnd > timeline.loopStart;
+  const ranges = marked ? [{ start: timeline.loopStart, end: timeline.loopEnd }]
+    : state.project.timeline.tracks.flatMap((track) => track.clips)
+      .filter((clip) => clipIds.includes(clip.id))
+      .map((clip) => ({ start: clip.startTime, end: clip.startTime + clip.duration }));
+  timeline.pause();
+  const result = await synchronizedRemovalRanges(state, ranges);
+  if (result.success && marked) useTimelineStore.getState().clearLoopRange();
+  return result;
+}
 export async function synchronizedRemovalRanges(state: ProjectState, ranges: { start: number; end: number }[]): Promise<ActionResult> {
   try {
     let next = state.getFullProject();

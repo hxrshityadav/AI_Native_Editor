@@ -34,4 +34,9 @@ async function renderApplication(): Promise<void> {
   );
 }
 
-void renderApplication().then(() => { parent.postMessage({ type: "reelfinisher:ready" }, location.origin); });
+let applicationReady = false;
+const notifyHost = () => parent.postMessage({ type: "reelfinisher:ready" }, location.origin);
+window.addEventListener("message", (event: MessageEvent) => {
+  if (applicationReady && event.origin === location.origin && event.source === parent && event.data?.type === "reelfinisher:probe") notifyHost();
+});
+void renderApplication().then(() => { applicationReady = true; notifyHost(); });

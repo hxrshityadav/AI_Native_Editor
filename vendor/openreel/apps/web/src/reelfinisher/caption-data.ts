@@ -13,6 +13,7 @@ export const captionExtension = z.object({
   words: z.array(wordSchema),
   referenceDuration: z.number().positive(),
   referenceFontSize: z.number().positive(),
+  nativeReference: z.record(z.string(), z.unknown()).optional(),
   timing: z.enum(["verified-words", "estimated", "segment"]),
   kind: z.enum(["caption", "overlay"]).default("caption"),
 }).refine((data) => data.words.every((word, index) => word.end > word.start && word.end <= data.referenceDuration + 0.001 && (!index || word.start >= data.words[index - 1].start)), "Caption words require ordered positive intervals within their reference duration");

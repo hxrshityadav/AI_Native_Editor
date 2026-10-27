@@ -11,6 +11,8 @@ const nextConfig: NextConfig = {
       { key: "Cross-Origin-Resource-Policy", value: "same-origin" },
     ];
     return [
+      { source: "/editor/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }] },
+      { source: "/editor-models/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }] },
       { source: "/studio", headers: isolation },
       { source: "/studio-sw.js", headers: isolation },
       { source: "/editor/:path*", headers: [...isolation, { key: "Content-Security-Policy", value: "default-src 'self'; script-src 'self' 'wasm-unsafe-eval' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data:; media-src 'self' blob: data:; font-src 'self' blob: data:; connect-src 'self' data: blob:; worker-src 'self' blob:; frame-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'self'" }] },
