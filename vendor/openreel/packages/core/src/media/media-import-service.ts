@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
+import { assertVideoDuration } from "../../../../../../src/lib/media/duration";
 import type { MediaItem, MediaMetadata } from "../types/project";
 import type {
   ProcessedMedia,
@@ -129,6 +130,7 @@ export class MediaImportService {
 
     try {
       const metadata = await this.mediaEngine.extractMetadata(file);
+      if (metadata.hasVideo) assertVideoDuration(metadata.duration);
       const mediaType = inferMediaType(file.type);
 
       if (!mediaType) {
@@ -136,6 +138,10 @@ export class MediaImportService {
           success: false,
           error: "Could not determine media type",
         };
+      }
+
+      if ((metadata.hasVideo && metadata.canDecodeVideo === false) || (!metadata.canDecode && (metadata.hasVideo || metadata.hasAudio))) {
+        return { success: false, error: "This browser cannot decode this file's codec. Convert it locally to H.264/AAC MP4 or VP9/Opus WebM, or try a current supported browser." };
       }
 
       if (

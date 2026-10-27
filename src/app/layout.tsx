@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { siteOrigin } from "@/lib/site";
 
 export const metadata: Metadata = {
+  ...(siteOrigin() ? { metadataBase: new URL(siteOrigin()!) } : {}),
   title: "Reel Finisher",
   description: "Caption talking-head videos in your browser. Your video stays on your device.",
 };

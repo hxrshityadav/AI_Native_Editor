@@ -3,16 +3,29 @@
 Statuses: **Not started** · **In progress** · **Implemented** (code exists, not tested) ·
 **Tested** (automated tests pass) · **Verified on a real device**.
 
-"Tested" for media tasks means headless Chromium 153 on Linux (Playwright 1.63) against
-ffmpeg-generated fixtures. No task is verified on a real phone yet.
+Automated media checks use generated fixtures on Windows, including installed Chrome/Edge, Firefox and Pixel 7 viewport emulation. Earlier milestones retain their original platform notes. No task is verified on a real phone yet.
+
+## Sprint 1 photo utilities (2026-10-27)
+
+- **Tested:** shared local worker/canvas processing, compressor with measured size targets, resizer with ratio/presets, converter with alpha/background handling; four crawlable tools routes and production-origin metadata/sitemap integration. No dependencies added.
+- **Tested:** 560 unit tests pass (ten existing skips); lint/typechecks and clean production build pass. Generated-file photo suite passes 44/44 in Chrome and 44/44 in Firefox, including pixels/alpha/orientation, cancellation, fallback, URL cleanup and mobile viewport checks.
+- **Tested:** final full editor/photo regression passes 341/341 checks, preserving `/studio`, `/studio-legacy` and `/lab` workflows. See `docs/photo-utilities.md` for changed files, limits, evidence and remaining manual checks.
+- **Not started:** real mobile/Safari/Edge image-tool verification and deployed canonical/CDN checks.
+
+## Free-launch integration audit (2026-10-27)
+
+- **Tested:** marked-range ripple deletion, separate audio, captions, native history, offline reload and independent MP4 playback in installed Chrome/Edge and Firefox. Full E2E 297/297; separate Edge 34/34, Firefox 34/34 and launch audit 21/21. See `docs/launch-audit.md` for findings and exact remaining gates.
+- **Tested:** lint/typecheck and unit checks: 300 root, 188 fork web, 64 core tests; six database and four pre-existing upstream tests skipped. Production build passes.
+- **Tested:** native 600-second guards (unit boundary checks and actual 601-second import rejection), unsupported-video codec recovery, Firefox AVC descriptor repair, browser-native recorded-audio extraction, SEO crawl controls, privacy/format pages and delivery of bundled dependency notices. License completeness and public canonicals are separate gates below.
+- **Not started:** public-domain/CDN validation (requires actual `SITE_URL`), real mobile hardware and Safari validation, long-session/storage-eviction tests, and final transitive/binary license-notice review. No MediaPipe, billing or new AI features were added.
 
 ## OpenReel local browser integration (2026-10-26)
 
 - **Tested:** pinned source fork, root npm/pnpm build orchestration, isolated /studio iframe, /editor assets, COOP/COEP/CORP, editor CSP and scoped offline caches.
 - **Tested:** native multi-file timeline/export, manual Hindi captions, local fonts, caption extensions and shared history, SRT, source fingerprint migration and project-wide gap removal.
 - **Tested:** fast Whisper model download/cancellation and real speech recognition, including cached recognition after an offline reload. Media and transcript remain in the browser.
-- **In progress:** final combined acceptance rerun and documentation closeout.
-- **Not started:** real phone/hardware verification, accurate 760 MB model verification and Safari/Firefox compatibility. Advanced synchronized removals listed in docs/openreel-integration.md are rejected, rather than partially applied. Automatic Roman Hinglish and general AI chat remain deferred as requested.
+- **Tested (2026-10-27 closeout):** production build; root checks (294 tests, six database tests skipped); focused fork checks (168 tests, four upstream tests skipped); 69 additional core timeline/transition tests. The complete legacy/browser suite passed, and the final editor rerun passed 22/22 plus migration/gap tests 9/9, including real local speech recognition and offline export. Cached-load readiness now uses a verified same-origin handshake.
+- **Not started:** real phone/hardware verification, accurate 760 MB model verification and Safari compatibility. Advanced synchronized removals listed in docs/openreel-integration.md are rejected, rather than partially applied. Automatic Roman Hinglish and general AI chat remain deferred as requested.
 
 Current automated integration results are from Windows Playwright Chromium with generated fixtures and a locally synthesized speech clip, not a real-device certification. See docs/openreel-integration.md and vendor/openreel/REEL_FINISHER_PATCHES.md.
 

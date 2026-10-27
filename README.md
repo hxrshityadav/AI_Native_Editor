@@ -5,6 +5,8 @@ processed locally with WebCodecs. The new studio keeps audio, transcripts and ed
 
 The OpenReel-based studio is at `/studio`; the original manual editor remains at `/studio-legacy`. See [the integration guide](docs/openreel-integration.md) and `TASKS.md` for validation limits.
 
+Free local photo tools are at `/tools`: Image Compressor (`/tools/image-compressor`), Image Resizer (`/tools/image-resizer`) and Image Format Converter (`/tools/image-converter`). They support still JPEG/PNG/WebP within documented memory limits and do not upload images. See [photo utilities](docs/photo-utilities.md) for architecture, tests and limitations.
+
 ## Run locally
 
 ```bash

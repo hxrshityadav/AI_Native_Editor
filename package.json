@@ -10,14 +10,15 @@
     "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest run",
     "check": "npm run typecheck && npm run lint && npm run test && npm run editor:check",
-    "e2e": "node tests/e2e/lab.e2e.mjs && node tests/e2e/studio.e2e.mjs && node tests/e2e/server.e2e.mjs && node tests/e2e/phone.e2e.mjs && node tests/e2e/silence.e2e.mjs && node tests/e2e/advanced.e2e.mjs && node tests/e2e/manual.e2e.mjs && node tests/e2e/ripple.e2e.mjs && npm run e2e:editor",
+    "e2e": "node tests/e2e/lab.e2e.mjs && node tests/e2e/studio.e2e.mjs && node tests/e2e/server.e2e.mjs && node tests/e2e/phone.e2e.mjs && node tests/e2e/silence.e2e.mjs && node tests/e2e/advanced.e2e.mjs && node tests/e2e/manual.e2e.mjs && node tests/e2e/ripple.e2e.mjs && npm run e2e:editor && npm run e2e:photos",
     "perf": "node tests/perf/phone-sim.mjs",
     "compat-pack": "node tests/compat/make-pack.mjs",
     "sync-check": "node tests/sync/sync-check.mjs",
     "bakeoff": "node tests/bakeoff/bakeoff.mjs",
     "editor:build": "node scripts/build-editor.mjs",
     "editor:check": "node scripts/check-editor.mjs",
-    "e2e:editor": "node tests/e2e/openreel.e2e.mjs && node tests/e2e/openreel-migration.e2e.mjs"
+    "e2e:editor": "node tests/e2e/openreel.e2e.mjs && node tests/e2e/openreel-migration.e2e.mjs",
+    "e2e:photos": "node tests/e2e/photos.e2e.mjs"
   },
   "dependencies": {
     "idb": "^8.0.4",

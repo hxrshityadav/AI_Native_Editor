@@ -5,6 +5,8 @@ import { formatFrameTimecode } from "../../../utils/frame-timecode";
 import { editingFrameStepSeconds } from "../editing-frame-rate";
 import { resolvePlaybackLoop } from "../../../utils/playback-loop";
 import { X } from "@/icons/lucide-compat";
+import { useProjectStore } from "../../../stores/project-store";
+import { rippleDeleteSelection } from "../../../reelfinisher/commit";
 
 export function TimelineRangeActions({ duration, frameRate }: { duration: number; frameRate: number }) {
   const locked = useTimelineStore((state) => Boolean(state.playbackLockedReason));
@@ -33,6 +35,9 @@ export function TimelineRangeActions({ duration, frameRate }: { duration: number
       className="h-11 min-w-0 flex-1 px-1 text-[10px] font-medium text-fg-2 hover:bg-bg-2 focus-visible:outline-accent disabled:opacity-40">Out <kbd className="font-mono text-fg-muted">O</kbd></button>
     <button type="button" disabled={!marked || locked || exporting} aria-label="Clear preview range" title="Clear In and Out points" onClick={() => useTimelineStore.getState().clearLoopRange()}
       className="grid h-11 w-7 place-items-center text-fg-3 hover:bg-bg-2 focus-visible:outline-accent disabled:opacity-40"><X size={12} aria-hidden /></button>
+    <button type="button" disabled={disabled || !marked} aria-label="Ripple delete marked range" title="Remove In–Out time across all tracks (Shift+Delete)"
+      onClick={() => void rippleDeleteSelection(useProjectStore.getState(), [])}
+      className="h-11 px-1 text-[10px] text-fg-2 hover:bg-bg-2 disabled:opacity-40">Remove range</button>
   </div>;
 }
 

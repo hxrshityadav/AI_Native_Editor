@@ -75,7 +75,13 @@ export function removeOutputRange(input: Project, start: number, end: number): P
     }).filter((part) => part.text.length > 0);
   });
   return { ...next, textClips, shapeClips: next.shapeClips?.flatMap(splitOverlay), svgClips: next.svgClips?.flatMap(splitOverlay), stickerClips: next.stickerClips?.flatMap(splitOverlay),
-    timeline: { ...next.timeline, duration: map(next.timeline.duration), tracks: next.timeline.tracks.map((track) => ({ ...track, clips: track.clips.flatMap(splitMedia) })),
+    timeline: { ...next.timeline, duration: map(next.timeline.duration), tracks: next.timeline.tracks.map((track) => {
+      const pieces = new Map(track.clips.map((clip) => [clip.id, splitMedia(clip)]));
+      return { ...track, clips: [...pieces.values()].flat(), transitions: track.transitions.map((transition) => ({ ...transition,
+        clipAId: (transition.edge === "in" ? pieces.get(transition.clipAId)?.[0] : pieces.get(transition.clipAId)?.at(-1))?.id ?? transition.clipAId,
+        clipBId: transition.clipBId ? pieces.get(transition.clipBId)?.[0]?.id ?? transition.clipBId : undefined,
+      })) };
+    }),
       markers: next.timeline.markers.filter((marker) => marker.time < start || marker.time >= end).map((marker) => ({ ...marker, time: map(marker.time) })),
       beatMarkers: next.timeline.beatMarkers?.filter((marker) => marker.time < start || marker.time >= end).map((marker) => ({ ...marker, time: map(marker.time) })),
       beatAnalysis: undefined,

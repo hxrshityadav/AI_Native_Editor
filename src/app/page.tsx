@@ -1,4 +1,8 @@
 import Link from "next/link";
+import type { Metadata } from "next";
+import { siteOrigin } from "@/lib/site";
+
+export const metadata: Metadata = { ...(siteOrigin() ? { alternates: { canonical: "/" } } : {}) };
 
 export default function Home() {
   return (
@@ -11,9 +15,11 @@ export default function Home() {
       <Link href="/studio" className="w-fit rounded-md bg-accent px-4 py-2.5 font-semibold text-accent-ink">
         Open the studio
       </Link>
-      <Link href="/lab" className="w-fit text-sm text-zinc-500 underline">
-        Render lab (internal test page)
-      </Link>
+      <nav aria-label="Information" className="flex flex-wrap gap-4 text-sm underline">
+        <Link href="/tools">Free photo tools</Link>
+        <Link href="/privacy">Privacy</Link>
+        <Link href="/supported-formats">Supported formats</Link>
+      </nav>
     </main>
   );
 }

@@ -5,6 +5,7 @@ import { getCaptionStyle } from "../../../../../../src/lib/captions/styles";
 import { applyAppearance } from "../../../../../../src/lib/captions/appearance";
 import { FONT_CATALOG, listLocalFonts, loadLibraryFont, type FontRecord } from "../../../../../../src/lib/editor/fontLibrary";
 import { readCaption, currentWords } from "./caption-data";
+import { nativeCaptionStyle } from "./native-caption-style";
 
 let fonts: FontRecord[] = [...FONT_CATALOG];
 let pending: Promise<void> | undefined;
@@ -21,6 +22,7 @@ titleEngine.registerCaptionRenderer((clip, width, height, time) => {
   const ctx = canvas.getContext("2d")!;
   const state = textAnimationEngine.getAnimatedState(clip, time);
   let style = applyAppearance(getCaptionStyle(data.styleId), { ...data.baseAppearance, ...data.appearance }, data.animation, fonts);
+  style = nativeCaptionStyle(style, state.style, data, fonts);
   // Native position, size, opacity and color controls remain authoritative.
   style = { ...style, additionalFonts: fonts,
     fontSizeRatio: style.fontSizeRatio * state.style.fontSize / data.referenceFontSize,

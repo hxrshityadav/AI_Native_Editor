@@ -1,4 +1,4 @@
-import { synchronizedRemovalRanges } from "../../reelfinisher/commit";
+import { rippleDeleteSelection } from "../../reelfinisher/commit";
 import React, {
   useRef,
   useCallback,
@@ -286,9 +286,10 @@ export const Timeline: React.FC = () => {
       ),
     [selectedClipIds, tracks],
   );
-  const canRippleDelete =
+  const markedRange = useTimelineStore((state) => state.loopEnd > state.loopStart);
+  const canRippleDelete = markedRange || (
     selectedMediaClipIds.length > 0 &&
-    selectedMediaClipIds.length === selectedClipIds.length;
+    selectedMediaClipIds.length === selectedClipIds.length);
 
   const { getTitleEngine, getGraphicsEngine } = useEngineStore();
   const titleEngine = getTitleEngine();
@@ -609,8 +610,7 @@ export const Timeline: React.FC = () => {
   const handleRippleDelete = useCallback(async () => {
     if (!canRippleDelete) return;
     const state = useProjectStore.getState();
-    const ranges = state.project.timeline.tracks.flatMap((track) => track.clips).filter((clip) => selectedMediaClipIds.includes(clip.id)).map((clip) => ({ start: clip.startTime, end: clip.startTime + clip.duration }));
-    if ((await synchronizedRemovalRanges(state, ranges)).success) clearSelection();
+    if ((await rippleDeleteSelection(state, selectedMediaClipIds)).success) clearSelection();
   }, [canRippleDelete, clearSelection, selectedMediaClipIds]);
 
   const handleTrimToPlayhead = useCallback(

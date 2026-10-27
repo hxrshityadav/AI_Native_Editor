@@ -1,4 +1,4 @@
-import { synchronizedRemovalRanges } from "../reelfinisher/commit";
+import { rippleDeleteSelection } from "../reelfinisher/commit";
 import { useEffect, useState } from "react";
 import {
   keyboardShortcuts,
@@ -200,11 +200,11 @@ export function useKeyboardShortcuts() {
           .filter((item) => selected.has(item.id) && getTimelineItemKind(store, item.id) === "media")
           .sort((a, b) => b.startTime - a.startTime)
           .map((item) => item.id);
-        if (!ids.length) return;
+        const timeline = useTimelineStore.getState();
+        if (!ids.length && !(timeline.loopEnd > timeline.loopStart)) return;
         void runEdit("Ripple delete clips", async () => {
           const current = useProjectStore.getState();
-          const ranges = current.project.timeline.tracks.flatMap((track) => track.clips).filter((clip) => ids.includes(clip.id)).map((clip) => ({ start: clip.startTime, end: clip.startTime + clip.duration }));
-          const result = await synchronizedRemovalRanges(current, ranges);
+          const result = await rippleDeleteSelection(current, ids);
           const removed = new Set(result.success ? ids : []);
           const ui = useUIStore.getState();
           ui.selectMultiple(ui.selectedItems.filter((item) => !removed.has(item.id)));

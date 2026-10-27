@@ -26,7 +26,16 @@ The upstream MIT license is retained in `LICENSE`. This is a source workspace, n
 - Manual captions, per-caption appearance, animations, local fonts, brand presets and SRT remain available. Segment/manual timings are marked estimated; karaoke requires verified word timings matching the current text.
 - Legacy migration reads the existing database, validates its media fingerprint and creates a separate UUID and media copy in OpenReel storage. Missing fonts and unsupported trailing gaps are reported before commit.
 - Gap closing, ripple deletion and silence review remove output ranges across media, captions, overlays, markers and keyframes. Locked affected tracks reject the whole operation. Multiple selected ranges commit once. Ordinary media deletion and text deletion remain independent.
-- Native caption splitting/trimming slices word timings rather than stretching them.
+- Native caption splitting/trimming slices word timings rather than stretching them. Title overlays retain their full wording across cuts and are excluded from SRT cues. Native font, outline, spacing and shadow edits override extension defaults through the shared adapter.
+- The host probes a validated same-origin readiness handshake after hydration and iframe loading, so cached editor loads cannot leave a stale loading overlay.
+
+## Launch stabilization (2026-10-27)
+
+- In/Out marked-range removal is wired to one synchronized project snapshot from the range controls, toolbar and keyboard. Later transitions keep their retained end-clip reference after an earlier split.
+- Native import reuses RF's 600-second validator before expensive processing; native video export also enforces the project limit. Video decoding support is checked independently of audio support.
+- Browser recorded-stream extraction now converts the selected audio stream to PCM WAV with MediaBunny, replacing an unreachable disabled-FFmpeg path. Other recorded streams and video are excluded from that extraction.
+- A narrowly matched Firefox AVC decoder descriptor with duplicated SPS/PPS headers is repaired before muxing; encoded video packets are unchanged. Strict decoded-output tests cover this case.
+- Generated application chunks now have an installed-package license inventory and copies of available license/notice files. Missing package notices and binary/model obligations remain a release review gate.
 
 ## Explicit limits
 

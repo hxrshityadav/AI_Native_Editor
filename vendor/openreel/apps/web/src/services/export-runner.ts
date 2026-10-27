@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ensureProjectFonts } from "./project-fonts";
+import { assertVideoDuration } from "../../../../../../src/lib/media/duration";
 import {
   getExportEngine,
   type VideoExportSettings,
@@ -525,6 +526,7 @@ export function useExportRunner(options: ExportRunnerOptions): UseExportRunner {
       const engine = getExportEngine();
       let generator: ReturnType<typeof engine.exportVideo> | undefined;
       try {
+        assertVideoDuration(project.timeline.duration);
         await engine.initialize();
         checkCurrent();
         await ensureProjectFonts(project);

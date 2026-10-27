@@ -144,6 +144,14 @@ describe("useExportRunner", () => {
     mockEngine.initialize.mockResolvedValue(undefined);
   });
 
+  it("rejects a project over ten minutes before starting video processing", async () => {
+    const project = fakeProject();
+    const { result } = renderHook(() => useExportRunner({ project: { ...project, timeline: { ...project.timeline, duration: 601 } } }));
+    await act(async () => { await expect(result.current.runExport({}, "mp4", fakeStream())).rejects.toThrow(/10 minutes/); });
+    expect(mockEngine.initialize).not.toHaveBeenCalled();
+    expect(mockEngine.exportVideo).not.toHaveBeenCalled();
+  });
+
   it("advances progress and completes on success", async () => {
     mockEngine.exportVideo.mockImplementation(() => successGenerator());
     const onExported = vi.fn();

@@ -13,7 +13,9 @@ const mocks = vi.hoisted(() => ({
   success: vi.fn(),
   error: vi.fn(),
   insertOverlay: vi.fn(),
+  ripple: vi.fn(async () => ({ success: true })),
 }));
+vi.mock("../reelfinisher/commit", () => ({ rippleDeleteSelection: mocks.ripple }));
 vi.mock("../stores/project-store", () => ({
   useProjectStore: Object.assign(vi.fn(), { getState: mocks.projectState }),
 }));
@@ -141,12 +143,21 @@ describe("keyboard editing commands", () => {
     view.unmount();
   });
 
-  it("ripple deletes rightmost clips first and preserves locked selections", async () => {
+  it("sends clip selection to the atomic ripple operation and preserves locked selections", async () => {
     const view = renderHook(useKeyboardShortcuts);
     press("Delete", { shiftKey: true });
     await waitFor(() => expect(store.endHistoryGroup).toHaveBeenCalledOnce());
-    expect(vi.mocked(store.rippleDeleteClip).mock.calls.map(([id]) => id)).toEqual(["b", "a"]);
+    expect(mocks.ripple).toHaveBeenCalledWith(store, ["b", "a"]);
     expect(ui.selectedItems.map((item) => item.id)).toEqual(["locked-caption"]);
+    view.unmount();
+  });
+
+  it("sends a marked range to ripple deletion even without selected clips", async () => {
+    ui.selectedItems = [];
+    useTimelineStore.getState().setLoopRange(1, 2);
+    const view = renderHook(useKeyboardShortcuts);
+    press("Delete", { shiftKey: true });
+    await waitFor(() => expect(mocks.ripple).toHaveBeenCalledWith(store, []));
     view.unmount();
   });
 

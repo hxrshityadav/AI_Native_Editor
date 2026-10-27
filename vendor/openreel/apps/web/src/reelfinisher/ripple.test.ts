@@ -13,6 +13,13 @@ function fixture(): Project {
   return { ...project, textClips: [makeCaption(project, text.id, "one two three four", 0, 8, { version: 1, kind: "caption", styleId: "clean", appearance: { boxOpacity: 0.8 }, animation: { effect: "fade", duration: 0.25, intensity: 0.5 }, words: estimatedWords("one two three four", 8), timing: "verified-words", referenceDuration: 8, referenceFontSize: 1 })] };
 }
 describe("synchronized output removal", () => {
+  it("keeps a later transition attached to the retained end after an earlier split", () => {
+    const p = fixture();
+    p.timeline.tracks[0].transitions.push({ id: "later", clipAId: "video0", type: "crossfade", edge: "out", duration: 0.5, params: {} });
+    const next = removeOutputRange(p, 2, 4), track = next.timeline.tracks[0];
+    expect(track.transitions[0].clipAId).toBe(track.clips[1].id);
+    expect(track.transitions[0].duration).toBe(0.5);
+  });
   it("splits source bounds identically on video/audio and remaps words and markers without mutating input", () => {
     const project = fixture(), before = JSON.stringify(project); const next = removeOutputRange(project, 2, 4);
     expect(JSON.stringify(project)).toBe(before);
