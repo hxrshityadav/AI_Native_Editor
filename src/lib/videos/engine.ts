@@ -30,9 +30,10 @@ export async function inspectVideo(file: File | Blob, declaredType = file.type, 
     if (!video) throw new Error("No readable video track. Choose another file.");
     if (videos.length !== 1 || audios.length > 1) throw new Error("Use a file with one video and at most one audio track. Mix multiple recorded streams in the studio first.");
     const stats = await video.computePacketStats(100);
-    info.frameRate = Number.isFinite(stats.averageFrameRate) && stats.averageFrameRate > 0 ? stats.averageFrameRate : 30;
+    info.frameRate = Number.isFinite(stats.averagePacketRate) && stats.averagePacketRate > 0 ? stats.averagePacketRate : 30;
     const sink = new VideoSampleSink(video);
-    for (const time of [0, Math.max(0, info.duration - 0.1)]) {
+    const firstTime = await video.getFirstTimestamp();
+    for (const time of [firstTime, Math.max(firstTime, info.duration - 0.1)]) {
       const sample = await sink.getSample(time);
       if (!sample) throw new Error("The video picture could not be decoded. Re-export the file or try another browser.");
       sample.close();
@@ -84,7 +85,7 @@ export async function compressVideo(file: File, settings: VideoSettings, progres
     const blob = bytes.blob(mime[settings.container]);
     if (!blob.size) throw new Error("The encoder produced no data. Try a smaller resolution or another format.");
     const encoded = await inspectVideo(blob, mime[settings.container], false);
-    if (encoded.videoCodec !== codecs[settings.container].video || encoded.audioCodec !== (plan.audioBitrate ? codecs[settings.container].audio : null) || encoded.width !== plan.width || encoded.height !== plan.height || Math.abs(encoded.duration - info.duration) > 0.15) throw new Error("The output failed codec, dimensions or timing validation. No download was created. Try another output format or browser.");
+    if (encoded.format !== mime[settings.container] || encoded.videoCodec !== codecs[settings.container].video || encoded.audioCodec !== (plan.audioBitrate ? codecs[settings.container].audio : null) || encoded.width !== plan.width || encoded.height !== plan.height || Math.abs(encoded.duration - info.duration) > 0.15) throw new Error("The output failed codec, dimensions or timing validation. No download was created. Try another output format or browser.");
     return { blob, info: encoded, container: settings.container, targetMet: !settings.targetBytes || blob.size <= settings.targetBytes, videoBitrate: plan.videoBitrate };
   } finally { signal?.removeEventListener("abort", cancel); await output.cancel().catch(() => {}); input.dispose(); bytes.clear(); }
 }

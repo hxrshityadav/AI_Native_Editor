@@ -19,9 +19,9 @@ await context.addInitScript(() => {
 });
 const page = await context.newPage();
 const upload = (file) => page.getByLabel("Choose image", { exact: true }).setInputFiles(file);
-const complete = async (action) => { await page.getByRole("button", { name: action, exact: true }).click(); await page.getByRole("link", { name: "Download result", exact: true }).waitFor(); };
+const complete = async (action) => { await page.getByRole("button", { name: action, exact: true }).click(); await page.getByRole("link", { name: "Download image", exact: true }).waitFor(); };
 async function download(name) {
-  const event = page.waitForEvent("download"); await page.getByRole("link", { name: "Download result", exact: true }).click();
+  const event = page.waitForEvent("download"); await page.getByRole("link", { name: "Download image", exact: true }).click();
   const file = await event, path = join(OUT, name); await file.saveAs(path); return { path, suggested: file.suggestedFilename() };
 }
 const pixels = path => execFileSync("ffmpeg", ["-v", "error", "-i", path, "-frames:v", "1", "-f", "rawvideo", "-pix_fmt", "rgba", "-"], { maxBuffer: 4 * 1024 * 1024 });
@@ -56,7 +56,7 @@ try {
   check("compressor: target report agrees with downloaded bytes", readFileSync(compressed.path).length <= 80000 && measuredBytes(await page.getByLabel("Output details").innerText()) === readFileSync(compressed.path).length && await page.getByText("The measured output meets your target size.", { exact: true }).isVisible());
   check("download: uses a new matching filename", compressed.suggested === "noise-compressor.webp");
   await page.getByLabel("Target size (KB, optional)").fill("0.001");
-  check("settings: changing an option invalidates the old download", await page.getByRole("link", { name: "Download result" }).count() === 0);
+  check("settings: changing an option invalidates the old download", await page.getByRole("link", { name: "Download image" }).count() === 0);
   await complete("Compress image"); await page.getByText(/The target size was not met/).waitFor();
   const tooSmall = await download("target-not-met.webp"); check("compressor: infeasible target is explicit and still measured", readFileSync(tooSmall.path).length > 1);
   await page.getByLabel("Output format").selectOption("image/png"); check("compressor: PNG explains its lossless quality setting", await page.getByLabel("Quality ceiling", { exact: true }).isDisabled());
@@ -71,7 +71,7 @@ try {
   const webpPixels = pixels(webp.path); check("converter: WebP preserves transparent, partial and opaque alpha", webpPixels[3] === 0 && webpPixels[semi+3] === 128 && webpPixels[(95*4)+3] === 255);
   await page.getByLabel("Output format").selectOption("image/png"); await complete("Convert image"); const png = await download("alpha.png");
   check("converter: PNG preserves alpha and real dimensions", pixels(png.path)[3] === 0 && pixels(png.path)[semi+3] === 128 && JSON.stringify(dimensions(png.path)) === "[96,64]");
-  await upload(transparent); await page.getByLabel("Original details").waitFor(); check("picker: selecting the same file again clears the previous result", await page.getByRole("link", { name: "Download result" }).count() === 0);
+  await upload(transparent); await page.getByLabel("Original details").waitFor(); check("picker: selecting the same file again clears the previous result", await page.getByRole("link", { name: "Download image" }).count() === 0);
   await upload(oriented); await page.getByLabel("Original details").getByText("4 × 6 px", { exact: true }).waitFor(); await page.getByLabel("Output format").selectOption("image/png"); await complete("Convert image");
   const upright = await download("upright.png"); check("orientation: EXIF is baked into actual output pixels", JSON.stringify(dimensions(upright.path)) === "[4,6]" && pixels(upright.path)[0] > 180 && pixels(upright.path)[(4*5*4)+2] > 180);
   await page.goto(BASE + "/tools/image-resizer"); await upload(noise); await page.getByRole("button", { name: "Resize image", exact: true }).waitFor({ state: "visible" }); await page.getByLabel("Original details").waitFor();
@@ -81,7 +81,7 @@ try {
   await page.getByRole("button", { name: "Aspect ratio locked", exact: true }).click(); await page.getByLabel("Height (px)").fill("100"); check("resizer: unlocked dimensions are independent", await page.getByLabel("Width (px)").inputValue() === "300");
   await complete("Resize image"); const stretched = await download("stretched.png"); check("resizer: unlocked dimensions are encoded", JSON.stringify(dimensions(stretched.path)) === "[300,100]" && pixels(stretched.path).length === 300*100*4);
   await page.getByLabel("Fit preset").selectOption("400"); check("resizer: preset fits whole image without cropping", await page.getByLabel("Width (px)").inputValue() === "400" && await page.getByLabel("Height (px)").inputValue() === "267");
-  await page.getByLabel("Width (px)").fill("0"); await page.getByRole("button", { name: "Resize image", exact: true }).click(); await page.getByRole("alert").filter({ hasText: /positive whole-number/ }).waitFor(); check("resizer: invalid dimensions give recovery without download", await page.getByRole("link", { name: "Download result" }).count() === 0);
+  await page.getByLabel("Width (px)").fill("0"); await page.getByRole("button", { name: "Resize image", exact: true }).click(); await page.getByRole("alert").filter({ hasText: /positive whole-number/ }).waitFor(); check("resizer: invalid dimensions give recovery without download", await page.getByRole("link", { name: "Download image" }).count() === 0);
   await upload({ name: "unknown.bin", mimeType: "", buffer: readFileSync(transparent) }); await page.getByLabel("Original details").waitFor(); check("validation: missing MIME still requires a real decodable image", (await page.getByLabel("Original details").innerText()).includes("PNG"));
   const damaged = Buffer.from(readFileSync(transparent)), compressedStart = damaged.indexOf("IDAT") + 4; damaged[compressedStart] = 0; damaged[compressedStart + 1] = 0;
   const huge = Buffer.from(readFileSync(transparent)); huge.writeUInt32BE(100000,16);
@@ -94,7 +94,7 @@ try {
     ["broken.png", "image/png", readFileSync(transparent).subarray(0,33), /metadata limit|cannot be decoded/],
     ["damaged.png", "image/png", damaged, /cannot be decoded/],
   ];
-  for (const [name, mimeType, buffer, message] of invalids) { await upload({ name, mimeType, buffer }); await page.getByRole("alert").filter({ hasText: message }).waitFor(); check(`validation: ${name} rejected`, await page.getByRole("link", { name: "Download result" }).count() === 0); }
+  for (const [name, mimeType, buffer, message] of invalids) { await upload({ name, mimeType, buffer }); await page.getByRole("alert").filter({ hasText: message }).waitFor(); check(`validation: ${name} rejected`, await page.getByRole("link", { name: "Download image" }).count() === 0); }
   await page.waitForFunction(() => window.photoUrls.size === 0); check("resources: replacement/error releases preview and download URLs", true);
   await page.goto(BASE + "/tools/image-compressor"); let workerUrl; page.on("worker", worker => { workerUrl = worker.url(); }); await upload(noise); await page.getByLabel("Original details").waitFor();
   let release, entered; const gate = new Promise(resolve => { release=resolve; }), started = new Promise(resolve => { entered=resolve; });
@@ -102,11 +102,11 @@ try {
   await page.getByRole("button", { name: "Compress image", exact: true }).click();
   let routeTimer; try { await Promise.race([started, new Promise((_,reject) => { routeTimer = setTimeout(() => reject(new Error("Image-worker cancellation fixture did not start")), 15000); })]); } finally { clearTimeout(routeTimer); }
   await page.getByRole("button", { name: "Cancel operation", exact: true }).click(); release(); await page.unroute(workerUrl);
-  await page.getByText(/Operation cancelled/).waitFor(); check("cancellation: no stale result or download is published", await page.getByRole("link", { name: "Download result" }).count() === 0); await complete("Compress image"); check("cancellation: retry processes successfully", true);
-  await page.getByRole("link", { name: "Photo tools", exact: true }).click(); await page.getByRole("heading", { name: "Photo tools", exact: true }).waitFor(); await page.waitForFunction(() => window.photoUrls.size === 0); check("resources: route exit revokes all object URLs", true);
-  const fallback = await context.newPage(); await fallback.addInitScript(() => { window.Worker = undefined; window.createImageBitmap = undefined; }); await fallback.goto(BASE + "/tools/image-converter"); await fallback.getByLabel("Choose image", { exact: true }).setInputFiles(transparent); await fallback.getByLabel("Original details").waitFor(); await fallback.getByRole("button", { name: "Convert image", exact: true }).click(); await fallback.getByRole("link", { name: "Download result", exact: true }).waitFor(); check("fallback: HTML image/canvas path produces a local result", true);
+  await page.getByText(/Operation cancelled/).waitFor(); check("cancellation: no stale result or download is published", await page.getByRole("link", { name: "Download image" }).count() === 0); await complete("Compress image"); check("cancellation: retry processes successfully", true);
+  await page.getByRole("link", { name: "Photo tools", exact: true }).click(); await page.getByRole("heading", { name: "Photo and video tools", exact: true }).waitFor(); await page.waitForFunction(() => window.photoUrls.size === 0); check("resources: route exit revokes all object URLs", true);
+  const fallback = await context.newPage(); await fallback.addInitScript(() => { window.Worker = undefined; window.createImageBitmap = undefined; }); await fallback.goto(BASE + "/tools/image-converter"); await fallback.getByLabel("Choose image", { exact: true }).setInputFiles(transparent); await fallback.getByLabel("Original details").waitFor(); await fallback.getByRole("button", { name: "Convert image", exact: true }).click(); await fallback.getByRole("link", { name: "Download image", exact: true }).waitFor(); check("fallback: HTML image/canvas path produces a local result", true);
   await fallback.evaluate(() => { const encode = HTMLCanvasElement.prototype.toBlob; HTMLCanvasElement.prototype.toBlob = function(callback, type, quality) { return encode.call(this, callback, type === "image/webp" ? "image/png" : type, quality); }; });
-  await fallback.getByLabel("Output format").selectOption("image/webp"); await fallback.getByRole("button", { name: "Convert image", exact: true }).click(); await fallback.getByRole("alert").filter({ hasText: /cannot encode the selected format/ }).waitFor(); check("fallback: unsupported encoder cannot produce a mislabeled download", await fallback.getByRole("link", { name: "Download result" }).count() === 0); await fallback.close();
+  await fallback.getByLabel("Output format").selectOption("image/webp"); await fallback.getByRole("button", { name: "Convert image", exact: true }).click(); await fallback.getByRole("alert").filter({ hasText: /cannot encode the selected format/ }).waitFor(); check("fallback: unsupported encoder cannot produce a mislabeled download", await fallback.getByRole("link", { name: "Download image" }).count() === 0); await fallback.close();
   const phoneOptions = { ...devices["Pixel 7"] }; if (process.env.PHOTO_BROWSER === "firefox") delete phoneOptions.isMobile;
   const phone = await browser.newPage(phoneOptions);
   for (const slug of ["image-compressor", "image-resizer", "image-converter"]) {

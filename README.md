@@ -7,6 +7,8 @@ The OpenReel-based studio is at `/studio`; the original manual editor remains at
 
 Free local photo tools are at `/tools`: Image Compressor (`/tools/image-compressor`), Image Resizer (`/tools/image-resizer`) and Image Format Converter (`/tools/image-converter`). They support still JPEG/PNG/WebP within documented memory limits and do not upload images. See [photo utilities](docs/photo-utilities.md) for architecture, tests and limitations.
 
+The standalone [Video Compressor](docs/video-compressor.md) is at `/tools/video-compressor`: local worker encoding, MP4/WebM, resolution/bitrate controls, optional size targets and measured downloads. Its separate limits are 512 MiB input, 10 minutes, 4K and 128 MiB encoded output. No account or upload is required.
+
 ## Run locally
 
 ```bash

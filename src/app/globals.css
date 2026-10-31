@@ -43,3 +43,145 @@ body {
   color: var(--foreground);
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", "Noto Sans Devanagari", sans-serif;
 }
+
+/*
+ * Site design system. New names only: /studio-legacy and /lab keep the tokens above.
+ * Neutrals and the emerald brand match the OpenReel editor so /studio reads as the same product.
+ * The caption yellow (--accent) stays reserved for the caption motif.
+ */
+:root {
+  --canvas: #f6f6f7;
+  --raised: #ffffff;
+  --sunken: #eeeef0;
+  --ink: #18181b;
+  --ink-2: #3f3f46;
+  --subtle: #5b5b63;
+  --edge: #e2e2e6;
+  --edge-strong: #c9c9cf;
+  --brand: #047857;
+  --brand-soft: #e3f6ee;
+  --danger: #b42318;
+  --danger-soft: #fdecea;
+  --success: #067647;
+  --success-soft: #e5f5ec;
+  --warning: #93370d;
+  --warning-soft: #fdf2e3;
+  --ring: #047857;
+  --on-ink: #ffffff;
+  --shadow-1: 0 1px 2px rgb(24 24 27 / 0.06);
+  --shadow-2: 0 1px 2px rgb(24 24 27 / 0.05), 0 8px 24px -12px rgb(24 24 27 / 0.18);
+  --checker: #dcdce0;
+  --field: #ffffff;
+  --hover: #f0f0f2;
+  --media-stage: #ececef;
+  --faint: #71717a;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --canvas: #0b0c0e;
+    --raised: #151619;
+    --sunken: #101114;
+    --ink: #f4f4f5;
+    --ink-2: #d4d4d8;
+    --subtle: #a1a1aa;
+    --edge: #26272c;
+    --edge-strong: #393a41;
+    --brand: #34d399;
+    --brand-soft: #0f2d23;
+    --danger: #ff8a80;
+    --danger-soft: #3a1513;
+    --success: #4ade80;
+    --success-soft: #0f2a1a;
+    --warning: #fbbf77;
+    --warning-soft: #33220f;
+    --ring: #34d399;
+    --on-ink: #0e0f11;
+    --shadow-1: 0 1px 0 rgb(0 0 0 / 0.4);
+    --shadow-2: 0 1px 0 rgb(0 0 0 / 0.5), 0 12px 32px -16px rgb(0 0 0 / 0.7);
+    --checker: #26272c;
+    --field: #1c1d21;
+    --hover: #202125;
+    --media-stage: #08090a;
+    --faint: #8b8b94;
+  }
+}
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-raised: var(--raised);
+  --color-sunken: var(--sunken);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-subtle: var(--subtle);
+  --color-edge: var(--edge);
+  --color-edge-strong: var(--edge-strong);
+  --color-brand: var(--brand);
+  --color-brand-soft: var(--brand-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-on-ink: var(--on-ink);
+  --color-field: var(--field);
+  --color-hover: var(--hover);
+  --color-media-stage: var(--media-stage);
+  --color-faint: var(--faint);
+  --radius-control: 8px;
+  --radius-panel: 14px;
+  --shadow-panel: var(--shadow-2);
+  --text-display: 2.5rem;
+  --text-display--line-height: 1.08;
+  --text-title: 1.75rem;
+  --text-title--line-height: 1.15;
+}
+
+/*
+ * Public pages opt in with .site so legacy routes keep their own background and focus styles.
+ * The site is a focused dark interface whatever the system theme; the editor host bar still follows the system.
+ */
+.site {
+  color-scheme: dark;
+  --canvas: #0b0c0e;
+  --raised: #141518;
+  --sunken: #0f1012;
+  --ink: #f4f4f5;
+  --ink-2: #d4d4d8;
+  --subtle: #a1a1aa;
+  --edge: #24252a;
+  --edge-strong: #37383f;
+  --brand: #34d399;
+  --brand-soft: #0f2a21;
+  --danger: #ff8a80;
+  --danger-soft: #34110f;
+  --success: #4ade80;
+  --success-soft: #0e2717;
+  --warning: #fbbf77;
+  --warning-soft: #31200d;
+  --ring: #34d399;
+  --on-ink: #0b0c0e;
+  --shadow-1: 0 1px 0 rgb(0 0 0 / 0.4);
+  --shadow-2: 0 1px 0 rgb(0 0 0 / 0.5), 0 16px 40px -20px rgb(0 0 0 / 0.8);
+  --checker: #24252a;
+  --field: #1b1c20;
+  --hover: #1e1f23;
+  --media-stage: #070708;
+  --faint: #8b8b94;
+  background: var(--canvas);
+  color: var(--ink);
+  font-feature-settings: "cv11", "ss01";
+}
+.site :focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+.site h1, .site h2, .site h3 { letter-spacing: -0.02em; text-wrap: balance; }
+.site p { text-wrap: pretty; }
+.tabular { font-variant-numeric: tabular-nums; }
+
+@media (prefers-reduced-motion: reduce) {
+  .site *, .site *::before, .site *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}

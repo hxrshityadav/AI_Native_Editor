@@ -54,6 +54,7 @@ next-env.d.ts
 /tests/e2e/.out-manual/
 /tests/e2e/.out-ripple/
 /public/editor/
+/public/media-notices/
 /tests/e2e/.out-openreel/
 /tests/compat/.out/
 /tests/sync/.out/

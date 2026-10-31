@@ -5,6 +5,20 @@ Statuses: **Not started** · **In progress** · **Implemented** (code exists, no
 
 Automated media checks use generated fixtures on Windows, including installed Chrome/Edge, Firefox and Pixel 7 viewport emulation. Earlier milestones retain their original platform notes. No task is verified on a real phone yet.
 
+## Site and tool workspace redesign (2026-11-01)
+
+- **Tested:** dark site design tokens (legacy `/studio-legacy` and `/lab` tokens unchanged); persistent tool sidebar with a `<dialog>` drawer below `lg`; home, `/tools` (search and category filter), privacy and formats pages; shared upload → configure → process → result workspace for the three photo tools and the Video Compressor. Image Compressor: format with "Same as original", quality presets plus exact slider, KB/MB target with quick picks, resize-while-compressing, before/after slider and comparison. Added `lucide-react` only (see DECISIONS.md).
+- **Tested:** `/studio` host bar and loading state restyled. OpenReel token-only contrast pass and focus ring (editor E2E 34/34 and 9/9).
+- **Tested:** `npm run check` (317 passed, 6 skipped); clean production build; full `npm run e2e` with 497/497 checks across 13 suites, including the new `tests/e2e/site.e2e.mjs` (119: 320–1920 px overflow, touch targets, keyboard, skip link, drawer focus return, search, no console errors, same-origin requests only, noindex kept). Photo and video suites verify real decoded outputs. Desktop and phone screenshots reviewed.
+- **Not started:** real-device phone/tablet checks, Safari, screen-reader passes with NVDA/VoiceOver, and a deeper restyle inside OpenReel panels.
+
+## Sprint 2 standalone video compressor (2026-10-28)
+
+- **Tested:** `/tools/video-compressor`, local worker/native encoding, runtime codecs, resolution/bitrate presets, decimal size targets, measured before/after previews/downloads, explicit audio/mute, cancellation/retry/replacement and bounded output memory. Reuses the root media dependency and photo UI conventions; no dependency added.
+- **Tested:** lint/typecheck; 567 unit tests pass with ten existing skips; clean production build; complete editor/photo/video regression 378/378 (one separate server DB scenario skipped without its database URL).
+- **Tested:** Chrome 37/37 and Edge 37/37 real-output video checks. Firefox 16/16 compatibility checks: retained Opus audio in WebM, explicit-mute H.264 MP4, AAC-unavailable recovery, rotation, VFR duration and independent playback. Desktop/phone viewport screenshots reviewed. See `docs/video-compressor.md` for exact limits, source notices and remaining gates.
+- **Not started:** physical mobile/Safari, sustained long-duration/low-memory throughput and deployed-domain/CDN validation. Codec parity across browsers is not claimed.
+
 ## Sprint 1 photo utilities (2026-10-27)
 
 - **Tested:** shared local worker/canvas processing, compressor with measured size targets, resizer with ratio/presets, converter with alpha/background handling; four crawlable tools routes and production-origin metadata/sitemap integration. No dependencies added.

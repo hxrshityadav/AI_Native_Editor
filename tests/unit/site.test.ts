@@ -8,7 +8,7 @@ afterEach(() => vi.unstubAllEnvs());
 it("publishes only real information pages under the configured production origin", () => {
   vi.stubEnv("SITE_URL", "https://reel.example/");
   expect(siteOrigin()).toBe("https://reel.example");
-  expect(sitemap().map(entry => entry.url)).toEqual(["https://reel.example/", "https://reel.example/privacy", "https://reel.example/supported-formats", "https://reel.example/tools", "https://reel.example/tools/image-compressor", "https://reel.example/tools/image-resizer", "https://reel.example/tools/image-converter"]);
+  expect(sitemap().map(entry => entry.url)).toEqual(["https://reel.example/", "https://reel.example/privacy", "https://reel.example/supported-formats", "https://reel.example/tools", "https://reel.example/tools/image-compressor", "https://reel.example/tools/image-resizer", "https://reel.example/tools/image-converter", "https://reel.example/tools/video-compressor"]);
   expect(robots().sitemap).toBe("https://reel.example/sitemap.xml");
 });
 

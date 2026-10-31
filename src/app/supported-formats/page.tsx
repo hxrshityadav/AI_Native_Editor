@@ -1,6 +1,8 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { siteOrigin } from "@/lib/site";
+import { SiteShell } from "@/components/site/SiteShell";
+import { PageHeader } from "@/components/site/ui";
 
 export const metadata: Metadata = {
   title: "Supported formats · Reel Finisher",
@@ -9,15 +11,15 @@ export const metadata: Metadata = {
 };
 
 export default function FormatsPage() {
-  return <main className="mx-auto flex max-w-2xl flex-col gap-6 px-6 py-16">
-    <Link href="/" className="underline">Reel Finisher</Link>
-    <h1 className="text-3xl font-semibold">Supported formats</h1>
+  return <SiteShell><main className="mx-auto w-full max-w-5xl px-4 py-8 sm:px-8 sm:py-12">
+    <PageHeader title="Supported formats" />
+    <div className="mt-8 max-w-2xl space-y-5 leading-relaxed text-ink-2">
     <p>Videos must have a readable duration of 10 minutes or less. Video exports are also limited to a 10-minute project. Available memory and browser storage can impose lower practical limits, especially on phones.</p>
     <p>Start with H.264 video and AAC audio in an MP4 file on desktop Chrome or Edge. WebM with VP9 and Opus is another browser-dependent option. A file extension alone does not establish codec support. HEVC, HDR, ProRes and unusual MOV codecs are not guaranteed; convert an unsupported file locally before importing.</p>
     <p>Video export uses WebCodecs and the browser’s installed encoders. Hardware and operating-system codec support vary. If an encoder is unavailable, choose a supported format or another browser. No server conversion or FFmpeg fallback is provided.</p>
     <p>Use HTTPS or localhost. Local speech recognition uses WebAssembly and optional downloaded models. The studio uses cross-origin isolation for shared memory. GPU acceleration is optional where a browser fallback exists; advanced GPU effects may require compatible hardware. Audio playback requires a user gesture.</p>
     <p>Desktop Chrome and Edge are the primary test targets. Other browsers and mobile devices may support only part of the workflow. Keep original media when moving between browsers.</p>
     <p>Ripple removal of an In/Out range closes that time across video, audio, captions and overlays. Affected locked tracks and unsupported advanced compositions are rejected before changes. Ordinary Delete leaves empty time; deleting caption text is a separate operation.</p>
-    <nav aria-label="Next steps" className="flex gap-4 underline"><Link href="/studio">Open the studio</Link><Link href="/privacy">Privacy</Link></nav>
-  </main>;
+    <nav aria-label="Next steps" className="flex flex-wrap gap-x-5 [&_a]:inline-flex [&_a]:min-h-11 [&_a]:items-center font-medium text-brand underline underline-offset-4"><Link href="/studio">Open the studio</Link><Link href="/privacy">Privacy</Link></nav>
+  </div></main></SiteShell>;
 }

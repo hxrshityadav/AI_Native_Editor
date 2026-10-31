@@ -14,6 +14,7 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     "vendor/**",
     "public/editor/**",
+    "public/media-notices/**",
   ]),
 ]);
 

@@ -1,0 +1,11 @@
+import { cpSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { dirname, join, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const dependency = join(root, "node_modules/mediabunny");
+const output = join(root, "public/media-notices");
+const pkg = JSON.parse(readFileSync(join(dependency, "package.json"), "utf8"));
+mkdirSync(output, { recursive: true });
+cpSync(join(dependency, "LICENSE"), join(output, "MEDIABUNNY-LICENSE.txt"));
+cpSync(join(dependency, "src"), join(output, "mediabunny-source"), { recursive: true });
+writeFileSync(join(output, "SOURCES.txt"), `This application uses unmodified Mediabunny ${pkg.version}, licensed under MPL-2.0.\nLicense: /media-notices/MEDIABUNNY-LICENSE.txt\nSource files: /media-notices/mediabunny-source/index.ts and accompanying files.\nUpstream: https://github.com/Vanilagy/mediabunny\nThese local source files match the installed runtime used by the standalone browser tools.\n`);
