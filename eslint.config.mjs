@@ -15,6 +15,8 @@ const eslintConfig = defineConfig([
     "vendor/**",
     "public/editor/**",
     "public/media-notices/**",
+    // Third-party agent skills (see .claude/skills/SOURCES.md) are not project code.
+    ".claude/skills/**",
   ]),
 ]);
 

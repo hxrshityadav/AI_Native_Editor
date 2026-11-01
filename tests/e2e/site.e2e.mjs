@@ -44,6 +44,11 @@ try {
   const side = page.getByRole("navigation", { name: "Main" });
   check("sidebar: lists every working tool and marks the current page", await side.getByRole("link").count() === 3 + 4 && await side.getByRole("link", { name: "All tools" }).getAttribute("aria-current") === "page");
   check("sidebar: no placeholder or future tools are listed", (await side.getByRole("link").allInnerTexts()).every(name => ["Home", "All tools", "Studio", "Image Compressor", "Image Resizer", "Image Format Converter", "Video Compressor"].includes(name.trim())));
+  await side.getByLabel("Find a tool").fill("webp");
+  check("sidebar: quick filter narrows the tool list", await side.getByRole("link").count() === 3 + 3);
+  await side.getByLabel("Find a tool").press("Escape");
+  check("sidebar: Escape clears the filter", await side.getByRole("link").count() === 3 + 4);
+  check("dark surfaces: html is dark and theme-color matches", await page.evaluate(() => getComputedStyle(document.documentElement).colorScheme === "dark" && document.querySelector("meta[name=theme-color]")?.getAttribute("content") === "#0b0c0e"));
   const outline = await page.getByRole("link", { name: "Video", exact: false }).first().evaluate(el => { el.focus(); return getComputedStyle(el).outlineStyle; });
   check("focus: keyboard focus has a visible outline", outline !== "none");
   await page.getByRole("group", { name: "Filter by category" }).getByRole("button", { name: /Audio/ }).click();
@@ -54,6 +59,10 @@ try {
   check("search: matches formats across tools", found.length === 3 && found.every(title => title.startsWith("Image")), found.join(", "));
   await page.getByLabel("Search tools").fill("zzz");
   check("search: no match shows a recovery action", await page.getByText(/No tools match/).isVisible());
+  check("search: the query is kept in the URL", new URL(page.url()).searchParams.get("q") === "zzz");
+  await page.goto(BASE + "/tools?q=webp"); await page.getByLabel("Search tools").waitFor();
+  check("search: a shared URL restores the filtered view", await page.getByLabel("Search tools").inputValue() === "webp" && await page.locator("main ul a").count() === 3);
+  await page.getByLabel("Search tools").fill("zzz");
   await page.getByRole("button", { name: "Clear search" }).click();
   check("search: clearing restores every tool", await page.locator("main ul a").count() === 5);
   for (const href of await page.locator("main a[href^='/'], footer a[href^='/']").evaluateAll(links => [...new Set(links.map(link => link.getAttribute("href").split("#")[0]))])) {
@@ -70,33 +79,40 @@ try {
   await phone.close();
 
   await page.goto(BASE + "/tools/image-compressor");
-  check("workspace: settings stay hidden until a file is chosen", await page.getByRole("complementary", { name: "Settings" }).count() === 0);
+  check("tool page: related tools link to other working tools", await page.getByRole("region", { name: "Related tools" }).getByRole("link").count() === 4 && await page.getByText("Runs locally in your browser").isVisible());
+  check("workspace: settings stay hidden until a file is chosen", await page.getByRole("button", { name: "Compress image" }).count() === 0 && await page.getByText("Drop your image here").isVisible());
   const png = Buffer.from((await page.evaluate(() => { const c = document.createElement("canvas"); c.width = 120; c.height = 80; const x = c.getContext("2d"); x.fillStyle = "#e63"; x.fillRect(0, 0, 120, 80); x.fillStyle = "#36e"; x.fillRect(30, 20, 60, 40); return c.toDataURL("image/png"); })).split(",")[1], "base64");
   await page.getByLabel("Choose image", { exact: true }).setInputFiles({ name: "card.png", mimeType: "image/png", buffer: png });
-  await page.getByRole("complementary", { name: "Settings" }).waitFor();
-  check("workspace: a chosen file opens preview, settings and a before summary", await page.getByAltText("Original image preview").isVisible() && await page.getByLabel("Original details").isVisible());
+  await page.getByRole("button", { name: "Compress image", exact: true }).waitFor();
+  check("workspace: a chosen file shows a thumbnail, details, preview and controls", await page.getByAltText("Original image preview").isVisible() && (await page.getByLabel("Original details").innerText()).includes("120 × 80 px") && await page.locator("img[alt=\"\"]").first().isVisible());
+  await page.getByRole("radio", { name: "JPEG", exact: true }).check();
+  check("format: the segmented choice is a real radio group", await page.getByRole("radio", { name: "JPEG", exact: true }).isChecked() && await page.getByRole("radio", { name: "Original", exact: true }).count() === 1);
+  await page.getByLabel("Quality percentage").fill("60"); await page.getByLabel("Quality percentage").blur();
+  check("quality: the exact percentage drives the slider", await page.getByLabel("Quality ceiling", { exact: true }).inputValue() === "0.6");
   await page.getByRole("group", { name: "Common target sizes" }).getByRole("button", { name: "1 MB" }).click();
   check("target size: quick picks set the amount and unit", await page.getByLabel("Target size (MB, optional)").inputValue() === "1" && await page.getByLabel("Target size unit").inputValue() === "MB");
   check("target size: a target above the original size is explained before processing", await page.getByText(/larger than the original/).isVisible());
-  await page.getByRole("group", { name: "Quality preset" }).getByRole("button", { name: "Smaller file" }).click();
-  check("quality: presets drive the exact slider", await page.getByLabel("Quality ceiling", { exact: true }).inputValue() === "0.6");
-  await page.getByRole("button", { name: "Compress image", exact: true }).click(); await page.getByRole("link", { name: "Download image" }).waitFor();
-  check("result: comparison reports saving and the requested target", /Saved|larger/.test(await page.getByRole("region", { name: "Result" }).innerText()) && (await page.getByLabel("Output details").innerText()).includes("1 MB requested"));
+  await page.getByRole("button", { name: "Compress image", exact: true }).click(); await page.getByRole("link", { name: "Download compressed image" }).waitFor();
+  check("result: saving, comparison table and requested target are reported", await page.getByText(/^(Saved [0-9.]+%|[0-9.]+% larger)$/).first().isVisible() && (await page.getByLabel("Output details").innerText()).includes("1 MB requested") && (await page.getByLabel("Original file").innerText()).includes("120 × 80 px"));
+  check("result: focus moves to the result for screen readers", await page.evaluate(() => document.activeElement?.textContent === "Compression result"));
   const slider = page.getByLabel(/Comparison position/);
   await slider.focus(); await page.keyboard.press("ArrowLeft");
   check("result: before/after slider works from the keyboard", await slider.inputValue() === "49");
   await page.getByRole("button", { name: "Adjust settings" }).click();
-  check("result: Adjust settings moves focus into the settings panel", await page.evaluate(() => !!document.activeElement?.closest("aside")));
-  await page.getByRole("button", { name: "Compress another image" }).click();
-  check("result: Compress another image returns to the upload stage", await page.getByText("Drop an image here").isVisible() && await page.getByRole("complementary", { name: "Settings" }).count() === 0);
+  check("result: Adjust settings returns to the controls with focus", await page.evaluate(() => document.activeElement?.getAttribute("name") === "output-format") && await page.getByRole("button", { name: "Back to result" }).isVisible());
+  await page.getByRole("button", { name: "Back to result" }).click();
+  check("result: Back to result keeps the measured output", await page.getByRole("link", { name: "Download compressed image" }).isVisible());
+  await page.getByRole("button", { name: "Start over" }).click();
+  check("result: Start over returns to the upload stage", await page.getByText("Drop your image here").isVisible() && await page.getByRole("button", { name: "Compress image" }).count() === 0);
 
   await page.goto(BASE + "/"); await page.getByRole("link", { name: "Browse tools" }).click(); await page.getByRole("heading", { name: "Photo and video tools", exact: true }).waitFor();
   check("home: primary action opens the tool directory", true);
   const studio = await (await fetch(BASE + "/studio")).text(), legacy = await (await fetch(BASE + "/studio-legacy")).text(), lab = await (await fetch(BASE + "/lab")).text();
   check("SEO: editor, legacy and lab keep noindex", [studio, legacy, lab].every(html => /name="robots" content="noindex/.test(html)));
   check("isolation: editor, legacy and lab render without the public site shell", [studio, legacy, lab].every(html => !html.includes("Skip to content")));
-  const reduced = await browser.newPage({ reducedMotion: "reduce" }); await reduced.goto(BASE + "/tools");
-  check("motion: reduced motion shortens transitions", await reduced.locator("main ul a").first().evaluate(el => parseFloat(getComputedStyle(el).transitionDuration) < 0.01)); await reduced.close();
+  const reduced = await browser.newPage({ reducedMotion: "reduce" }); await reduced.goto(BASE + "/tools", { waitUntil: "networkidle" }); await reduced.getByLabel("Search tools").waitFor();
+  const motion = await reduced.locator("main ul a").first().evaluate(el => getComputedStyle(el).transitionDuration);
+  check("motion: reduced motion shortens transitions", motion.split(",").every(value => parseFloat(value) < 0.01), motion); await reduced.close();
   await page.close();
 } finally { await browser.close(); await stopServer(server); }
 finish();

@@ -8,3 +8,6 @@ export function siteOrigin(): string | undefined {
   }
   return url.origin;
 }
+
+/** Browser chrome colour for the dark public site (matches --canvas under .site). */
+export const siteViewport = { themeColor: "#0b0c0e" };

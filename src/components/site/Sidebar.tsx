@@ -2,11 +2,11 @@
 import { useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Clapperboard, FileImage, Film, House, LayoutGrid, Menu, Minimize2, Scaling, X, type LucideIcon } from "lucide-react";
+import { Clapperboard, FileImage, Film, House, LayoutGrid, Menu, Minimize2, Scaling, Search, X, type LucideIcon } from "lucide-react";
 import { CATEGORIES, toolsIn, type ToolIcon } from "@/lib/tools/catalog";
 import { cx } from "./ui";
 
-const TOOL_ICONS: Record<ToolIcon, LucideIcon> = { "compress-image": Minimize2, "resize-image": Scaling, "convert-image": FileImage, "compress-video": Film, editor: Clapperboard };
+export const TOOL_ICONS: Record<ToolIcon, LucideIcon> = { "compress-image": Minimize2, "resize-image": Scaling, "convert-image": FileImage, "compress-video": Film, editor: Clapperboard };
 const MAIN = [{ href: "/", label: "Home", icon: House }, { href: "/tools", label: "All tools", icon: LayoutGrid }, { href: "/studio", label: "Studio", icon: Clapperboard }];
 
 function Item({ href, label, icon: Icon, current, onNavigate }: { href: string; label: string; icon: LucideIcon; current: boolean; onNavigate?: () => void }) {
@@ -17,15 +17,27 @@ function Item({ href, label, icon: Icon, current, onNavigate }: { href: string; 
   </Link></li>;
 }
 
-/** Main links plus every working tool, grouped by category. Categories without tools are left out rather than padded with placeholders. */
-export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
+/**
+ * Main links, a quick filter, and every working tool grouped by category (video, audio, photo).
+ * Categories without tools are left out rather than padded with placeholders.
+ */
+export function AppSidebarNav({ onNavigate }: { onNavigate?: () => void }) {
   const path = usePathname();
+  const [query, setQuery] = useState("");
+  const words = query.toLowerCase().split(/\s+/).filter(Boolean);
+  const groups = CATEGORIES.map(category => ({ category, tools: toolsIn(category.id).filter(tool => tool.href !== "/studio" && words.every(word => `${tool.title} ${category.title} ${tool.formats.join(" ")}`.toLowerCase().includes(word))) })).filter(group => group.tools.length);
   return <div className="flex flex-col gap-6">
     <ul className="space-y-0.5">{MAIN.map(item => <Item key={item.href} {...item} current={path === item.href} onNavigate={onNavigate} />)}</ul>
-    {CATEGORIES.filter(category => toolsIn(category.id).length).map(category => <div key={category.id}>
+    <div className="relative">
+      <Search aria-hidden className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-faint" />
+      <input type="search" value={query} onChange={event => setQuery(event.target.value)} onKeyDown={event => { if (event.key === "Escape") setQuery(""); }} aria-label="Find a tool" placeholder="Find a tool…" autoComplete="off" spellCheck={false}
+        className="min-h-10 w-full rounded-[var(--radius-control)] border border-edge bg-field pl-9 pr-3 text-sm text-ink placeholder:text-faint hover:border-edge-strong" />
+    </div>
+    {groups.map(({ category, tools }) => <div key={category.id}>
       <p id={`side-${category.id}`} className="px-3 pb-1.5 text-xs font-semibold text-faint">{category.title} tools</p>
-      <ul aria-labelledby={`side-${category.id}`} className="space-y-0.5">{toolsIn(category.id).filter(tool => tool.href !== "/studio").map(tool => <Item key={tool.href} href={tool.href} label={tool.title} icon={TOOL_ICONS[tool.icon]} current={path === tool.href} onNavigate={onNavigate} />)}</ul>
+      <ul aria-labelledby={`side-${category.id}`} className="space-y-0.5">{tools.map(tool => <Item key={tool.href} href={tool.href} label={tool.title} icon={TOOL_ICONS[tool.icon]} current={path === tool.href} onNavigate={onNavigate} />)}</ul>
     </div>)}
+    {words.length > 0 && groups.length === 0 && <p role="status" className="px-3 text-sm text-subtle">No tool matches “{query}”. <Link href="/tools" onClick={onNavigate} className="text-brand underline">Browse all tools</Link></p>}
   </div>;
 }
 
@@ -39,13 +51,13 @@ export function MobileNav() {
       <Menu aria-hidden className="size-4" />Menu
     </button>
     <dialog ref={dialog} aria-label="Site navigation" onClose={() => setOpen(false)} onClick={event => { if (event.target === dialog.current) close(); }}
-      className="m-0 h-dvh max-h-none w-[min(20rem,88vw)] max-w-none border-r border-edge bg-raised p-0 text-ink backdrop:bg-black/60">
+      className="m-0 h-dvh max-h-none w-[min(20rem,88vw)] max-w-none overscroll-contain border-r border-edge bg-raised p-0 text-ink backdrop:bg-black/60">
       <div className="flex h-full flex-col">
         <div className="flex h-16 shrink-0 items-center justify-between border-b border-edge px-4">
           <span className="text-sm font-semibold">Menu</span>
           <button type="button" onClick={close} className="grid size-11 place-items-center rounded-[var(--radius-control)] hover:bg-hover" aria-label="Close menu"><X aria-hidden className="size-5" /></button>
         </div>
-        <nav aria-label="Main" className="flex-1 overflow-y-auto px-4 py-5"><SidebarNav onNavigate={close} /></nav>
+        <nav aria-label="Main" className="flex-1 overflow-y-auto overscroll-contain px-4 py-5">{open && <AppSidebarNav onNavigate={close} />}</nav>
       </div>
     </dialog>
   </>;

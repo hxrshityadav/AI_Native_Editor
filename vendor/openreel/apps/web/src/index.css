@@ -60,12 +60,12 @@
     --stage-bg: #ffffff;
     --screen-bg: #ffffff;
 
-    /* accent (Reel Finisher: emerald darkened from #10b981 so white labels on it reach 5.5:1; matches the site brand) */
-    --accent: #047857;
-    --accent-strong: #065f46;
+    /* accent (brand emerald #10b981 — matches the OpenReel logo) */
+    --accent: #10b981;
+    --accent-strong: #059669;
     --accent-soft: #e6f9f1;
     --accent-fg: #ffffff;
-    --accent-glow: rgba(4, 120, 87, 0.3);
+    --accent-glow: rgba(16, 185, 129, 0.35);
 
     /* clip palette */
     --c-video: #6a9bd8;
@@ -104,8 +104,7 @@
     --accent: oklch(0.7 0.15 162);
     --accent-strong: oklch(0.63 0.16 162);
     --accent-soft: oklch(0.7 0.15 162 / 0.2);
-    /* Reel Finisher: dark ink on the bright emerald; white on it was below 3:1 */
-    --accent-fg: oklch(0.2 0.035 162);
+    --accent-fg: oklch(0.99 0 0);
     --accent-glow: oklch(0.7 0.15 162 / 0.45);
   }
 
@@ -129,7 +128,7 @@
     --card-foreground: 240 10% 4%;
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 4%;
-    --primary: 163 94% 24%;
+    --primary: 160 84% 39%;
     --primary-foreground: 0 0% 100%;
     --secondary: 240 5% 96%;
     --secondary-foreground: 240 6% 10%;
@@ -140,7 +139,7 @@
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
     --input: 240 6% 90%;
-    --ring: 163 94% 24%;
+    --ring: 160 84% 39%;
     --radius: 0.625rem;
   }
 
@@ -153,7 +152,7 @@
     --popover: 220 10% 13%;
     --popover-foreground: 0 0% 95%;
     --primary: 158 64% 52%;
-    --primary-foreground: 160 60% 10%;
+    --primary-foreground: 0 0% 100%;
     --secondary: 220 8% 18%;
     --secondary-foreground: 0 0% 95%;
     --muted: 220 8% 18%;
@@ -185,13 +184,6 @@
   }
 
   button { cursor: pointer; }
-
-  /* Reel Finisher: a visible keyboard focus ring for controls that do not style their own.
-     :where() keeps specificity at zero, so any component focus or outline utility still wins. */
-  :where(button, a, input, select, textarea, [role="button"], [role="tab"], [role="slider"], [tabindex]):focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 1px;
-  }
 }
 
 /* ---------- helper utility classes (small, layout-only) ---------- */

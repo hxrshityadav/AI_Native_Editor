@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { siteOrigin } from "@/lib/site";
+import { siteOrigin, siteViewport } from "@/lib/site";
+export const viewport = siteViewport;
 import { SiteShell } from "@/components/site/SiteShell";
 import { PageHeader } from "@/components/site/ui";
 

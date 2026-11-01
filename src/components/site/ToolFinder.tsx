@@ -1,13 +1,29 @@
 "use client";
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { Search, X } from "lucide-react";
 import { CATEGORIES, TOOLS, type ToolCategory } from "@/lib/tools/catalog";
 import { ToolCard } from "./ToolDirectory";
-import { cx } from "./ui";
+import { EmptyState, cx } from "./ui";
 
-/** /tools: search and category filter over the real tool list. Renders every tool on the server; filtering is client-side. */
-export function ToolFinder() {
-  const [query, setQuery] = useState(""), [category, setCategory] = useState<ToolCategory | "all">("all");
+type Filter = ToolCategory | "all";
+const isFilter = (value: string | null): value is Filter => value === "all" || CATEGORIES.some(item => item.id === value);
+
+/** Reads ?q= and ?category= so a filtered view can be shared or reloaded. Must sit inside <Suspense> on this static page. */
+export function ToolFinderFromUrl() {
+  const params = useSearchParams(), category = params.get("category");
+  return <ToolFinder initialQuery={params.get("q") ?? ""} initialCategory={isFilter(category) ? category : "all"} />;
+}
+
+/** /tools: search and category filter over the real tool list. The prerendered fallback shows every tool. */
+export function ToolFinder({ initialQuery = "", initialCategory = "all" }: { initialQuery?: string; initialCategory?: Filter }) {
+  const [query, setQueryState] = useState(initialQuery), [category, setCategoryState] = useState<Filter>(initialCategory);
+  const sync = (q: string, c: Filter) => {
+    const params = new URLSearchParams(); if (q) params.set("q", q); if (c !== "all") params.set("category", c);
+    window.history.replaceState(null, "", params.size ? `/tools?${params}` : "/tools");
+  };
+  const setQuery = (value: string) => { setQueryState(value); sync(value, category); };
+  const setCategory = (value: Filter) => { setCategoryState(value); sync(query, value); };
   const words = query.toLowerCase().split(/\s+/).filter(Boolean);
   const matches = TOOLS.filter(tool => (category === "all" || tool.category === category)
     && words.every(word => [tool.title, tool.summary, tool.category, ...tool.formats].join(" ").toLowerCase().includes(word)));
@@ -16,7 +32,7 @@ export function ToolFinder() {
     <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
       <div className="relative w-full md:max-w-sm">
         <Search aria-hidden className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-subtle" />
-        <input type="search" value={query} onChange={event => setQuery(event.target.value)} aria-label="Search tools" placeholder="Search tools, for example “webp” or “resize”"
+        <input type="search" value={query} onChange={event => setQuery(event.target.value)} aria-label="Search tools" placeholder="Search tools, for example “webp” or “resize”…" autoComplete="off" spellCheck={false}
           className="min-h-12 w-full rounded-[var(--radius-control)] border border-edge-strong bg-field pl-10 pr-4 text-base text-ink placeholder:text-faint hover:border-faint focus-visible:border-[var(--ring)]" />
       </div>
       <div role="group" aria-label="Filter by category" className="flex flex-wrap gap-2">
@@ -31,11 +47,7 @@ export function ToolFinder() {
     </div>
     <p role="status" className="sr-only">{words.length ? `${matches.length} ${matches.length === 1 ? "tool matches" : "tools match"} your search.` : ""}</p>
     {words.length > 0 && matches.length === 0
-      ? <div className="mt-10 rounded-[var(--radius-panel)] border border-dashed border-edge-strong px-6 py-12 text-center">
-        <p className="font-semibold">No tools match “{query}”.</p>
-        <p className="mt-1 text-sm text-subtle">Try a format such as JPEG or MP4, or an action such as compress or convert.</p>
-        <button type="button" onClick={() => { setQuery(""); setCategory("all"); }} className="mt-5 inline-flex min-h-11 items-center gap-2 rounded-[var(--radius-control)] border border-edge-strong bg-raised px-4 text-sm font-semibold hover:bg-hover"><X aria-hidden className="size-4" />Clear search</button>
-      </div>
+      ? <div className="mt-10"><EmptyState title={`No tools match “${query}”.`} action={<button type="button" onClick={() => { setQueryState(""); setCategoryState("all"); sync("", "all"); }} className="inline-flex min-h-11 items-center gap-2 rounded-[var(--radius-control)] border border-edge-strong bg-raised px-4 text-sm font-semibold text-ink hover:bg-hover"><X aria-hidden className="size-4" />Clear search</button>}>Try a format such as JPEG or MP4, or an action such as compress or convert.</EmptyState></div>
       : <div className="mt-10 space-y-12">{shown.map(item => {
         const tools = matches.filter(tool => tool.category === item.id);
         if (!tools.length && words.length) return null;
@@ -46,7 +58,7 @@ export function ToolFinder() {
           </div>
           {tools.length
             ? <ul className="mt-5 grid gap-3 md:grid-cols-2 lg:grid-cols-3">{tools.map(tool => <li key={tool.href}><ToolCard tool={tool} /></li>)}</ul>
-            : <p className="mt-5 rounded-[var(--radius-panel)] border border-dashed border-edge-strong px-5 py-6 text-sm leading-relaxed text-subtle">{item.empty}</p>}
+            : <div className="mt-5"><EmptyState>{item.empty}</EmptyState></div>}
         </section>;
       })}</div>}
   </div>;

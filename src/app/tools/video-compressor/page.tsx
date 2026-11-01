@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { siteOrigin } from "@/lib/site";
-import { ToolFrame } from "@/components/images/ToolPage";
+import { siteOrigin, siteViewport } from "@/lib/site";
+export const viewport = siteViewport;
+import { ToolPageLayout } from "@/components/tools/ToolPageLayout";
 import { VideoCompressor } from "@/components/videos/VideoCompressor";
 export const metadata: Metadata = { title: "Video Compressor · Reel Finisher", description: "Compress video locally in your browser. Choose resolution, quality and an optional file-size target, preserve audio or mute, then preview and download a measured result.", ...(siteOrigin() ? { alternates: { canonical: "/tools/video-compressor" } } : {}) };
 const STEPS = ["Choose or drop one MP4, MOV or WebM. Check its picture, sound, orientation and original size.", "Choose a resolution and quality. Presets never upscale. Optionally enter a target in decimal KB or MB; the estimate is not a measured result.", "Compress locally, compare both previews, check the measured size and sound, then download a new file. Cancel or choose another file at any time."];
@@ -17,7 +18,7 @@ const INFO = { title: "Choosing resolution and quality", paragraphs: [
   "Quality presets set the bitrate for the chosen resolution. A target size lowers the bitrate further, but the encoder decides the final size, so the result is measured and reported rather than promised.",
 ] };
 export default function Page() {
-  return <ToolFrame category="video" title="Video Compressor" lead="Make a smaller video on your own device. Compare the original and measured result before downloading, with no account or upload." stepsTitle="How to compress a video" steps={STEPS} info={INFO} faqs={FAQS}>
+  return <ToolPageLayout href="/tools/video-compressor" category="video" title="Video Compressor" lead="Make a smaller video on your own device. Compare the original and measured result before downloading, with no account or upload." stepsTitle="How to compress a video" steps={STEPS} info={INFO} faqs={FAQS}>
     <VideoCompressor />
-  </ToolFrame>;
+  </ToolPageLayout>;
 }

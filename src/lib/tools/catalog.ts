@@ -14,9 +14,9 @@ export const TOOLS: ToolEntry[] = [
 ];
 
 export const CATEGORIES: { id: ToolCategory; title: string; blurb: string; empty?: string }[] = [
-  { id: "photo", title: "Photo", blurb: "Still images, encoded with your browser's own image codecs." },
   { id: "video", title: "Video", blurb: "Encoded on your device with WebCodecs. Nothing is sent to a server." },
   { id: "audio", title: "Audio", blurb: "Standalone audio tools.", empty: "No standalone audio tools yet. For now, the Reel Studio trims clips and removes silences in your edit." },
+  { id: "photo", title: "Photo", blurb: "Still images, encoded with your browser's own image codecs." },
 ];
 
 export const toolsIn = (category: ToolCategory) => TOOLS.filter(tool => tool.category === category);

@@ -47,7 +47,3 @@ The upstream MIT license is retained in `LICENSE`. This is a source workspace, n
 ## Updating upstream
 
 Keep `UPSTREAM.json` pinned. Compare a new upstream revision in a separate checkout, port changes deliberately, retain this patch inventory and license, then run root checks, build, editor E2E, legacy E2E and real-device gates before replacing the pin.
-
-## Visual consistency with the Reel Finisher site (2026-11-01)
-
-- `apps/web/src/index.css` tokens only: the light accent is darkened to `#047857` (white labels on it reach 5.5:1; `#10b981` was about 2.5:1) and matches the site brand. Dark-theme `--accent-fg` and `--primary-foreground` become dark ink on the bright emerald. A zero-specificity `:focus-visible` outline covers controls that don't style their own focus. No component, layout, timeline, shortcut or export code changed.

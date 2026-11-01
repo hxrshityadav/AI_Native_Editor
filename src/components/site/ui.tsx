@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { AlertCircle, CheckCircle2, Clapperboard, FileImage, Film, Info, Minimize2, Scaling, TriangleAlert, type LucideIcon } from "lucide-react";
+import { AlertCircle, CheckCircle2, Clapperboard, FileImage, Film, Info, Minimize2, Scaling, ShieldCheck, TriangleAlert, type LucideIcon } from "lucide-react";
 import type { ToolIcon } from "@/lib/tools/catalog";
 
 /* Shared primitives for public pages and tool workspaces, adapted from shadcn/ui patterns (MIT) without Radix. */
@@ -54,25 +54,20 @@ export function PageHeader({ title, lead, children }: { title: string; lead?: Re
   </header>;
 }
 
-/** A real ordered process, so the numbering carries meaning. */
-export function Steps({ title, steps }: { title: string; steps: string[] }) {
-  return <section className="max-w-3xl">
-    <h2 className="text-xl font-semibold">{title}</h2>
-    <ol className="mt-5 space-y-4">{steps.map((step, index) => <li key={step} className="flex gap-4 leading-relaxed">
-      <span aria-hidden className="tabular grid size-7 shrink-0 place-items-center rounded-full border border-edge-strong text-sm font-semibold">{index + 1}</span>
-      <span className="pt-0.5">{step}</span>
-    </li>)}</ol>
-  </section>;
+/** Honest empty state: says what is missing and offers the next step. */
+export function EmptyState({ title, children, action }: { title?: string; children: ReactNode; action?: ReactNode }) {
+  return <div className="rounded-[var(--radius-panel)] border border-dashed border-edge-strong px-5 py-6 text-sm leading-relaxed text-subtle">
+    {title && <p className="font-semibold text-ink">{title}</p>}
+    <div className={title ? "mt-1" : undefined}>{children}</div>
+    {action && <div className="mt-4">{action}</div>}
+  </div>;
 }
 
-export function Faq({ items }: { items: { question: string; answer: string }[] }) {
-  return <section className="max-w-3xl">
-    <h2 className="text-xl font-semibold">Frequently asked questions</h2>
-    <div className="mt-4 divide-y divide-edge border-y border-edge">{items.map(item => <details key={item.question} className="group py-1">
-      <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-4 py-2 font-medium [&::-webkit-details-marker]:hidden">
-        {item.question}<span aria-hidden className="text-xl leading-none text-subtle transition-transform duration-150 group-open:rotate-45">+</span>
-      </summary>
-      <p className="pb-4 leading-relaxed text-subtle">{item.answer}</p>
-    </details>)}</div>
-  </section>;
+/** Compact local-processing promise for tool headers. */
+export function PrivacyBadge() {
+  return <p className="inline-flex flex-wrap items-center gap-x-2 gap-y-0.5 rounded-[var(--radius-control)] border border-edge bg-raised px-3 py-1.5 text-[0.8rem]">
+    <ShieldCheck aria-hidden className="size-4 text-brand" />
+    <span className="font-semibold text-ink">Runs locally in your browser</span>
+    <span className="text-subtle">Your files are not uploaded to our servers.</span>
+  </p>;
 }

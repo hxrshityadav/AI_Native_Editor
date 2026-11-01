@@ -1,12 +1,16 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { CheckCircle2, Download, Film, RotateCcw, SlidersHorizontal, TriangleAlert } from "lucide-react";
+import { Film } from "lucide-react";
 import { useBlobUrl } from "../tools/useBlobUrl";
 import { runVideoTask } from "@/lib/videos/client";
 import { videoPlan, videoOutputName, type VideoContainer, type VideoQuality, type VideoResolution, type VideoSettings } from "@/lib/videos/policy";
 import type { VideoInfo, VideoResult, VideoSupport } from "@/lib/videos/engine";
-import { AdvancedDetails, Busy, Comparison, DropZone, ErrorMessage, Panel, PrimaryAction, Section, Tip, styles } from "../tools/Workspace";
+import { AdvancedSettings, ControlGroup, DetailsTable, FileDetails, FileDropzone, FilePicker, InlineMessage, PrimaryButton, ProcessingPanel, ResultPanel, Stage, TargetSizeInput, ToolControls, ToolSurface, styles, useResultView } from "../tools/surface/ToolSurface";
 
+/* Video Compressor: upload -> configure -> compress (with real encoding progress) -> compare -> download. */
+
+const ACCEPT = "video/mp4,video/quicktime,video/webm";
+const RESOLUTIONS = [["original", "Original dimensions"], ["1080", "1080p"], ["720", "720p"], ["480", "480p"], ["360", "360p"]] as const;
 const bytesLabel = (value: number) => `${(value / 1000000).toFixed(2)} MB (${value.toLocaleString()} bytes)`;
 export function VideoCompressor() {
   const [file, setFile] = useState<File>(), [info, setInfo] = useState<VideoInfo>(), [result, setResult] = useState<VideoResult>();
@@ -61,71 +65,76 @@ export function VideoCompressor() {
     } catch (error) { if (!controller.signal.aborted) setError(error instanceof Error ? error.message : "Compression failed. Try lower resolution or another format."); }
     finally { if (active.current === controller) { active.current = null; setBusy(""); setElapsed((performance.now() - started.current) / 1000); } }
   }
-  const loaded = !!(info && file);
-  const panel = useRef<HTMLElement>(null);
-  const adjust = () => { const first = panel.current?.querySelector<HTMLElement>("input, select, button"); first?.focus(); first?.scrollIntoView({ block: "center", behavior: "smooth" }); };
-  const saved = result && file ? 1 - result.blob.size / file.size : 0;
-  return <section aria-label="Video Compressor workspace" className={styles.workspace}>
-    <DropZone icon={Film} loaded={loaded} pickLabel="Choose video" accept="video/mp4,video/quicktime,video/webm" title="Drop a video here"
-      formats={["MP4", "MOV", "WebM"]} limits="One video up to 512 MiB, 10 minutes and 4K."
-      fileName={file?.name} fileMeta={info && file ? [`${info.width} × ${info.height} px`, `${info.duration.toFixed(1)} s`, `${(file.size / 1000000).toFixed(1)} MB`] : []}
-      onFiles={files => void load(files)} clear={<button type="button" className={styles.secondary} onClick={clear}><RotateCcw aria-hidden size={16} />Process another file</button>} />
-    <div className={styles.feedback}>
-      {busy && <Busy label={busy} detail={`${elapsed.toFixed(1)} s elapsed`} progress={progress} onCancel={cancel} />}
-      {!busy && result && <p className={`${styles.message} ${styles.success}`}><CheckCircle2 aria-hidden />Completed in {elapsed.toFixed(1)} seconds. Final size below is measured.</p>}
-      {notice && <p role="status" className={styles.message}>{notice}</p>}
-      {error && <ErrorMessage>{error}</ErrorMessage>}
-      {info?.notes.map(note => <p key={note} className={`${styles.message} ${styles.warn}`}><TriangleAlert aria-hidden />{note}</p>)}
-    </div>
-    {info && file && <div className={styles.editor}>
-      <div className={styles.previewArea}>
-        <h2 className="sr-only">Preview</h2>
-        <div className={styles.stage} data-busy={busy || undefined}>
-          <div className={result && outputUrl ? styles.pair : "contents"}>
-            <figure className={result && outputUrl ? undefined : "contents"}>{originalUrl && <video key={originalUrl} aria-label="Original video preview" src={originalUrl} controls preload="metadata" onError={event => { if (event.currentTarget.isConnected) setError("The original preview could not play here. Try another browser or re-export as H.264 MP4."); }} />}</figure>
-            {result && outputUrl && <figure><video key={outputUrl} aria-label="Compressed video preview" src={outputUrl} controls preload="metadata" onError={event => { if (event.currentTarget.isConnected) setError("The compressed preview could not play in this browser. Try another output format/browser and check the downloaded file independently."); }} /></figure>}
-          </div>
+  const view = useResultView(!!(result && outputUrl));
+  const run = () => { view.showLatest(); void compress(); };
+  const edit = <T,>(set: (value: T) => void) => (value: T) => { set(value); invalidate(); };
+
+  if (!info || !file) return <section aria-label="Video Compressor workspace" className={styles.root}>
+    <FileDropzone icon={Film} title="Drop your video here" pickLabel="Choose video" accept={ACCEPT} busy={busy} onCancel={cancel} onFiles={files => void load(files)}
+      facts={<><span><b>MP4</b>, <b>MOV</b> or <b>WebM</b></span><span>Up to 512 MiB</span><span>Up to 10 minutes and 4K</span></>} />
+    {notice && <InlineMessage role="status">{notice}</InlineMessage>}
+    {error && <InlineMessage role="alert" tone="error">{error}</InlineMessage>}
+  </section>;
+
+  const saved = result ? 1 - result.blob.size / file.size : 0;
+  const codecs = (video: VideoInfo) => `${video.videoCodec.toUpperCase()}${video.audioCodec ? ` / ${video.audioCodec.toUpperCase()}` : " / no audio"}`;
+  return <section aria-label="Video Compressor workspace" className={styles.root}>
+    <ToolSurface onFiles={files => void load(files)}
+      file={<FileDetails name={file.name} factsLabel="Original video details" onStartOver={clear}
+        thumb={originalUrl ? <video className={`${styles.thumb} ${styles.thumbVideo}`} src={originalUrl} muted playsInline preload="metadata" aria-hidden tabIndex={-1} /> : <span className={styles.thumb} />}
+        picker={<FilePicker label="Replace video" inputLabel="Choose video" accept={ACCEPT} onFiles={files => void load(files)} />}
+        facts={<><span>{(file.size / 1000000).toFixed(1)} MB<span className="sr-only"> ({file.size.toLocaleString()} bytes)</span></span><span>{info.width} × {info.height} px</span><span>{info.duration.toFixed(3)} seconds</span><span>{info.format}</span><span>{codecs(info)}</span></>} />}
+      stage={<Stage plain busy={!!busy} processing={<ProcessingPanel title="Compressing" status={busy} detail={`${elapsed.toFixed(1)} s elapsed`} progress={progress} onCancel={cancel} />}>
+        <div className={result && outputUrl ? styles.pair : "contents"}>
+          <figure className={result && outputUrl ? undefined : "contents"}>{result && outputUrl && <span className={styles.tag} style={{ left: ".5rem" }} aria-hidden>Original</span>}{originalUrl && <video key={originalUrl} aria-label="Original video preview" src={originalUrl} controls playsInline preload="metadata" onError={event => { if (event.currentTarget.isConnected) setError("The original preview could not play here. Try another browser or re-export as H.264 MP4."); }} />}</figure>
+          {result && outputUrl && <figure><span className={styles.tag} style={{ left: ".5rem" }} aria-hidden>Compressed</span><video key={outputUrl} aria-label="Compressed video preview" src={outputUrl} controls playsInline preload="metadata" onError={event => { if (event.currentTarget.isConnected) setError("The compressed preview could not play in this browser. Try another output format/browser and check the downloaded file independently."); }} /></figure>}
         </div>
-      </div>
-      <Panel title="Settings" panelRef={panel} action={<>
-        {planning.plan && <p aria-label="Estimated output size" className={styles.help}>Estimated output: {bytesLabel(planning.plan.estimatedBytes)} at {planning.plan.width} × {planning.plan.height}, {planning.plan.frameRate.toFixed(2)} fps. Actual output may differ.</p>}
-        {planning.plan && !support && <p role="status" className={styles.help}>Checking available output encoders…</p>}
-        {capabilityError && <ErrorMessage>{capabilityError}</ErrorMessage>}
-        {planning.error && <ErrorMessage>{planning.error}</ErrorMessage>}
-        <PrimaryAction label="Compress video" busyLabel="Compressing…" busy={!!busy} disabled={!planning.plan || !support || !!capabilityError} onClick={() => void compress()} />
-        {support && !capabilityError && <p className={styles.help}>Encoder: {container === "mp4" ? "MP4 with H.264" : "WebM with VP9"}{info.hasAudio && !mute ? container === "mp4" ? " and AAC audio" : " and Opus audio" : ", no audio"}.</p>}
-      </>}>
-        <Section title="Video" tip={<Tip label="About video presets" align="end">Presets fit within the selected size without upscaling. Output is constant frame rate, up to 30 fps, with rotation baked in.</Tip>}>
-          <label>Output resolution<select aria-label="Output resolution" disabled={!!busy} value={resolution} onChange={event => { setResolution(event.target.value as VideoResolution); invalidate(); }}>{[ ["original", "Original dimensions"], ["1080", "1080p"], ["720", "720p"], ["480", "480p"], ["360", "360p"] ].map(([value,label]) => <option key={value} value={value}>{label}</option>)}</select></label>
-          <label>Quality preset<select aria-label="Quality preset" disabled={!!busy} value={quality} onChange={event => { setQuality(event.target.value as VideoQuality); setBitrate(""); invalidate(); }}><option value="high">Higher quality</option><option value="balanced">Balanced</option><option value="small">Smaller file</option></select></label>
-          <label>Output format<select aria-label="Video output format" disabled={!!busy} value={format} onChange={event => { setFormat(event.target.value as typeof format); invalidate(); }}><option value="auto">Automatic (verified support)</option><option value="mp4">MP4 — H.264 / AAC</option><option value="webm">WebM — VP9 / Opus</option></select></label>
-        </Section>
-        <Section title="Audio">
-          <label className={styles.check}><input type="checkbox" checked={mute} disabled={!!busy || !info.hasAudio} onChange={event => { setMute(event.target.checked); invalidate(); }} />Mute audio</label>
-          {!info.hasAudio && <p className={styles.help}>This source has no audio.</p>}
-        </Section>
-        <Section title="File size" tip={<Tip label="About target size" align="end">Decimal units: 1 MB = 1,000,000 bytes. A target lowers the requested bitrate; it is not an exact size promise.</Tip>}>
-          <div className={styles.row}><label>Target (optional)<input aria-label="Target size" type="number" inputMode="decimal" min="0.001" step="any" disabled={!!busy} value={target} onChange={event => { setTarget(event.target.value); invalidate(); }} /></label><label>Units<select aria-label="Target size units" disabled={!!busy} value={unit} onChange={event => { setUnit(event.target.value); invalidate(); }}><option>MB</option><option>KB</option></select></label></div>
-          {planning.plan && !planning.plan.targetWithinBudget && <p role="note" className={`${styles.message} ${styles.warn}`}><TriangleAlert aria-hidden />The target is below the estimated minimum bitrate/audio budget at these settings. It may not be met; choose lower resolution or mute if appropriate.</p>}
-        </Section>
-        <AdvancedDetails>
-          <label>Video bitrate (kbps)<input aria-label="Video bitrate (kbps)" type="number" inputMode="numeric" min="100" max="50000" disabled={!!busy} value={bitrate} placeholder="Use quality preset" onChange={event => { setBitrate(event.target.value); invalidate(); }} /></label>
-          <p className={styles.help}>Requested average video bitrate. Browser encoders may deviate; this is not a guaranteed size or visual-quality percentage.</p>
-        </AdvancedDetails>
-      </Panel>
-      <div className={styles.results}>
-        <Comparison title={result ? "Result" : "File details"} originalLabel="Original video details"
-          original={[["Size", `${(file.size / 1000000).toFixed(1)} MB`, bytesLabel(file.size)], ["Container", info.format], ["Dimensions", `${info.width} × ${info.height} px`], ["Duration", `${info.duration.toFixed(3)} seconds`], ["Codecs", `${info.videoCodec.toUpperCase()}${info.audioCodec ? ` / ${info.audioCodec.toUpperCase()}` : " / no audio"}`]]}
-          resultTitle="Compressed" resultLabel="Measured video output"
-          result={result && [["Size", `${(result.blob.size / 1000000).toFixed(1)} MB`, bytesLabel(result.blob.size)], ["Container", result.blob.type], ["Dimensions", `${result.info.width} × ${result.info.height} px`], ["Duration", `${result.info.duration.toFixed(3)} seconds`], ["Codecs", `${result.info.videoCodec.toUpperCase()}${result.info.audioCodec ? ` / ${result.info.audioCodec.toUpperCase()}` : " / no audio"}`], ["Change", `${(Math.abs(saved)*100).toFixed(1)}% ${result.blob.size <= file.size ? "smaller" : "larger"}`]]}
-          change={result ? saved : undefined} />
-        {result && settings.targetBytes && <p role="status" className={`${styles.message} ${result.targetMet ? styles.success : styles.warn}`}>{result.targetMet ? <CheckCircle2 aria-hidden /> : <TriangleAlert aria-hidden />}{result.targetMet ? "The measured result meets the target." : "The requested target was not achieved. The measured file is available; try lower resolution or bitrate, or mute audio if appropriate."}</p>}
-        {result && outputUrl && <div className={styles.resultBar}>
-          <a className={styles.download} href={outputUrl} download={videoOutputName(file.name, result.container)}><Download aria-hidden size={18} />Download compressed video</a>
-          <button type="button" className={styles.secondary} onClick={adjust}><SlidersHorizontal aria-hidden size={16} />Adjust settings</button>
-          <p className={styles.note}>Downloads a new file. Metadata, subtitles and extra tracks are not preserved.</p>
-        </div>}
-      </div>
-    </div>}
+      </Stage>}
+      side={result && outputUrl && view.showResult
+        ? <ResultPanel headingRef={view.heading} heading="Compression result" change={saved} onAdjust={view.adjust} note="Downloads a new file. Metadata, subtitles and extra tracks are not preserved."
+          summary={<>{(file.size / 1000000).toFixed(1)} MB → {(result.blob.size / 1000000).toFixed(1)} MB. Completed in {elapsed.toFixed(1)} seconds; the final size is measured.</>}
+          download={{ href: outputUrl, filename: videoOutputName(file.name, result.container), label: "Download compressed video" }}>
+          {settings.targetBytes && <InlineMessage role="status" tone={result.targetMet ? "ok" : "warn"}>{result.targetMet ? "The measured result meets the target." : "The requested target was not achieved. The measured file is available; try lower resolution or bitrate, or mute audio if appropriate."}</InlineMessage>}
+          {info.notes.map(note => <InlineMessage key={note} tone="warn">{note}</InlineMessage>)}
+          <DetailsTable
+            original={{ title: "Original", label: "Original video file", rows: [["Size", `${(file.size / 1000000).toFixed(1)} MB`, bytesLabel(file.size)], ["Dimensions", `${info.width} × ${info.height} px`], ["Duration", `${info.duration.toFixed(3)} seconds`], ["Codecs", codecs(info)]] }}
+            result={{ title: "Compressed", label: "Measured video output", rows: [["Size", `${(result.blob.size / 1000000).toFixed(1)} MB`, bytesLabel(result.blob.size)], ["Container", result.blob.type], ["Dimensions", `${result.info.width} × ${result.info.height} px`], ["Duration", `${result.info.duration.toFixed(3)} seconds`], ["Codecs", codecs(result.info)], ["Change", `${(Math.abs(saved) * 100).toFixed(1)}% ${result.blob.size <= file.size ? "smaller" : "larger"}`]] }} />
+        </ResultPanel>
+        : <ToolControls title="Compression settings" controlsRef={view.controls} action={<>
+          {planning.plan && <p aria-label="Estimated output size" className={styles.help}>Estimated output: {bytesLabel(planning.plan.estimatedBytes)} at {planning.plan.width} × {planning.plan.height}, {planning.plan.frameRate.toFixed(2)} fps. Actual output may differ.</p>}
+          {planning.plan && !support && <p role="status" className={styles.help}>Checking available output encoders…</p>}
+          {notice && <InlineMessage role="status">{notice}</InlineMessage>}
+          {error && <InlineMessage role="alert" tone="error">{error}</InlineMessage>}
+          {capabilityError && <InlineMessage role="alert" tone="error">{capabilityError}</InlineMessage>}
+          {planning.error && <InlineMessage role="alert" tone="error">{planning.error}</InlineMessage>}
+          <PrimaryButton label="Compress video" busyLabel="Compressing…" busy={!!busy} disabled={!planning.plan || !support || !!capabilityError} onClick={run} />
+          {support && !capabilityError && <p className={styles.help}>Encoder: {container === "mp4" ? "MP4 with H.264" : "WebM with VP9"}{info.hasAudio && !mute ? container === "mp4" ? " and AAC audio" : " and Opus audio" : ", no audio"}.</p>}
+          {view.adjusting && <button type="button" className={`${styles.secondary} ${styles.ghost}`} onClick={view.showLatest}>Back to result</button>}
+        </>}>
+          {info.notes.map(note => <InlineMessage key={note} tone="warn">{note}</InlineMessage>)}
+          <ControlGroup label="Resolution">
+            <select className={styles.field} aria-label="Output resolution" disabled={!!busy} value={resolution} onChange={event => edit(setResolution)(event.target.value as VideoResolution)}>{RESOLUTIONS.map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select>
+            <p className={styles.help}>Fits within the chosen size and never upscales. 720p suits phones and messaging apps.</p>
+          </ControlGroup>
+          <ControlGroup label="Quality">
+            <select className={styles.field} aria-label="Quality preset" disabled={!!busy} value={quality} onChange={event => { setQuality(event.target.value as VideoQuality); setBitrate(""); invalidate(); }}><option value="high">Higher quality</option><option value="balanced">Balanced</option><option value="small">Smaller file</option></select>
+          </ControlGroup>
+          <ControlGroup label="Format">
+            <select className={styles.field} aria-label="Video output format" disabled={!!busy} value={format} onChange={event => edit(setFormat)(event.target.value as typeof format)}><option value="auto">Automatic (verified support)</option><option value="mp4">MP4 — H.264 / AAC</option><option value="webm">WebM — VP9 / Opus</option></select>
+          </ControlGroup>
+          <ControlGroup label="Audio">
+            <label className={styles.check}><input type="checkbox" checked={mute} disabled={!!busy || !info.hasAudio} onChange={event => edit(setMute)(event.target.checked)} />Mute audio</label>
+            {!info.hasAudio && <p className={styles.help}>This source has no audio.</p>}
+          </ControlGroup>
+          <ControlGroup label="Target size" aside={<span className={styles.help}>Optional</span>}>
+            <TargetSizeInput inputLabel="Target size" unitLabel="Target size units" value={target} unit={unit} units={["MB", "KB"]} disabled={!!busy} onValue={edit(setTarget)} onUnit={edit(setUnit)} />
+            <p className={styles.help}>Decimal units: 1 MB = 1,000,000 bytes. A target lowers the requested bitrate; the final size is measured, not promised.</p>
+            {planning.plan && !planning.plan.targetWithinBudget && <InlineMessage role="note" tone="warn">The target is below the estimated minimum bitrate/audio budget at these settings. It may not be met; choose lower resolution or mute if appropriate.</InlineMessage>}
+          </ControlGroup>
+          <AdvancedSettings>
+            <label className={styles.group}><span className={styles.label}>Video bitrate (kbps)</span><input className={styles.field} aria-label="Video bitrate (kbps)" type="number" inputMode="numeric" min="100" max="50000" disabled={!!busy} value={bitrate} placeholder="Use quality preset…" onChange={event => edit(setBitrate)(event.target.value)} /></label>
+            <p className={styles.help}>Requested average video bitrate. Browser encoders may deviate; this is not a guaranteed size or visual-quality percentage. Output is constant frame rate, up to 30 fps, with rotation baked in.</p>
+          </AdvancedSettings>
+        </ToolControls>} />
   </section>;
 }

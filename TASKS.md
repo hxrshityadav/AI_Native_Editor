@@ -5,10 +5,16 @@ Statuses: **Not started** · **In progress** · **Implemented** (code exists, no
 
 Automated media checks use generated fixtures on Windows, including installed Chrome/Edge, Firefox and Pixel 7 viewport emulation. Earlier milestones retain their original platform notes. No task is verified on a real phone yet.
 
+## Tool pages rebuilt on a shared tool surface (2026-11-01)
+
+- **Tested:** Image Compressor rebuilt from scratch as the reference. Shared pieces in `src/components/tools/surface/` and `src/components/tools/ToolPageLayout.tsx`; photo job state in `src/components/images/useImageJob.ts` (same worker calls, moved verbatim). Image Resizer (live shape preview, link toggle, scale and fit presets), Image Format Converter (format radios with traits, JPEG background) and Video Compressor (real encoding progress, measured result) rebuilt on them. The old shared `ImageTool` and `Workspace` components are removed.
+- **Tested:** `npm run check` (317 passed, 6 skipped); clean build; all 13 E2E suites 506/506, including real decoded photo and video outputs and both Studio editor suites. Studio files diff-clean against the pre-redesign baseline. Desktop and phone screenshots reviewed.
+- **Not started:** real-device phone/tablet, Safari, NVDA/VoiceOver passes.
+
 ## Site and tool workspace redesign (2026-11-01)
 
 - **Tested:** dark site design tokens (legacy `/studio-legacy` and `/lab` tokens unchanged); persistent tool sidebar with a `<dialog>` drawer below `lg`; home, `/tools` (search and category filter), privacy and formats pages; shared upload → configure → process → result workspace for the three photo tools and the Video Compressor. Image Compressor: format with "Same as original", quality presets plus exact slider, KB/MB target with quick picks, resize-while-compressing, before/after slider and comparison. Added `lucide-react` only (see DECISIONS.md).
-- **Tested:** `/studio` host bar and loading state restyled. OpenReel token-only contrast pass and focus ring (editor E2E 34/34 and 9/9).
+- **Reverted:** the `/studio` host-bar restyle and OpenReel token pass. The Studio is out of scope and matches its pre-redesign state.
 - **Tested:** `npm run check` (317 passed, 6 skipped); clean production build; full `npm run e2e` with 497/497 checks across 13 suites, including the new `tests/e2e/site.e2e.mjs` (119: 320–1920 px overflow, touch targets, keyboard, skip link, drawer focus return, search, no console errors, same-origin requests only, noindex kept). Photo and video suites verify real decoded outputs. Desktop and phone screenshots reviewed.
 - **Not started:** real-device phone/tablet checks, Safari, screen-reader passes with NVDA/VoiceOver, and a deeper restyle inside OpenReel panels.
 
