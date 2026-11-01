@@ -32,10 +32,12 @@ const nextConfig: NextConfig = {
   },
   turbopack: {
     rules: {
-      "*.css": {
-        loaders: ["@tailwindcss/turbopack"],
-        as: "*.css",
-      },
+      // CSS modules must keep their module type; renaming them to *.css makes Turbopack emit unscoped global
+      // classes and an empty class map, which left every *.module.css component unstyled under `next dev`.
+      "*.css": [
+        { condition: { not: { path: /\.module\.css$/ } }, loaders: ["@tailwindcss/turbopack"], as: "*.css" },
+        { condition: { path: /\.module\.css$/ }, loaders: ["@tailwindcss/turbopack"], as: "*.module.css" },
+      ],
     },
   },
 };
