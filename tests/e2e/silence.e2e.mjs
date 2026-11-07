@@ -83,7 +83,7 @@ async function main() {
     check("restoring minimum restores the defaults", await panel.getByRole("checkbox").count() === 3);
     await panel.getByLabel("Remove pause 2", { exact: true }).uncheck(); check("a suggestion can be kept instead", await panel.getByRole("checkbox", { checked: true }).count() === 2); await panel.getByLabel("Remove pause 2", { exact: true }).check();
     await panel.getByRole("button", { name: "Preview proposed cuts without applying", exact: true }).click();
-    const jumped = await page.evaluate(async () => { const video = document.querySelector('[data-testid="preview-frame"] video'); video.muted = true; video.currentTime = 3; await video.play(); await new Promise((resolve) => setTimeout(resolve, 600)); video.pause(); return video.currentTime; });
+    const jumped = await page.evaluate(async () => { const video = document.querySelector('[data-testid="preview-frame"] video'); video.muted = true; video.currentTime = 3; let timer; try { await Promise.race([video.play(),new Promise((_,reject)=>{timer=setTimeout(()=>reject(new Error(`Preview playback did not start: readyState=${video.readyState}, networkState=${video.networkState}, paused=${video.paused}, error=${video.error?.code??0}`)),10000);})]); } finally { clearTimeout(timer); } await new Promise((resolve) => setTimeout(resolve, 600)); video.pause(); return video.currentTime; });
     check("preview playback jumps over a proposed cut", jumped > 4.8);
     const outputSec = Number((await page.getByTestId("apply-cuts").innerText()).match(/([0-9.]+) s output/)[1]);
     await page.getByTestId("apply-cuts").click();

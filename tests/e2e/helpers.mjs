@@ -65,12 +65,12 @@ export function makeFixtures(dir) {
  * Starts `next start`. Keys and abuse-control settings are blanked so a developer's .env.local
  * can't switch them on (or make billable calls); pass `withKey` or `env` to set them.
  */
-export async function startServer(port, { withKey = false, env: extra = {} } = {}) {
+export async function startServer(port, { withKey = false, env: extra = {}, dev = false } = {}) {
   const env = { ...process.env, PORT: String(port), REEL_ENABLE_CLOUD: "1" };
   if (!withKey) for (const k of ["GROQ_API_KEY", "SARVAM_API_KEY", "TRANSCRIBE_PROVIDER"]) env[k] = "";
   for (const k of ["DATABASE_URL", "TURNSTILE_SITE_KEY", "TURNSTILE_SECRET_KEY", "VERCEL"]) env[k] = "";
   Object.assign(env, extra);
-  const server = spawn(process.execPath, [join(ROOT, "node_modules/next/dist/bin/next"), "start", "-p", String(port)], {
+  const server = spawn(process.execPath, [join(ROOT, "node_modules/next/dist/bin/next"), ...(dev ? ["dev", "--webpack"] : ["start"]), "-p", String(port)], {
     cwd: ROOT,
     env,
     stdio: "pipe",

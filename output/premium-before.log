@@ -1,0 +1,9 @@
+file:///C:/Users/yadav/.codex/skills/taste-skill/scripts/lib/cdp.mjs:196
+    if (nav.errorText && !/ERR_ABORTED/.test(nav.errorText)) { off(); throw new Error('navigate: ' + nav.errorText); }
+                                                                            ^
+
+Error: navigate: CDP timeout: Page.navigate
+    at Page.goto (file:///C:/Users/yadav/.codex/skills/taste-skill/scripts/lib/cdp.mjs:196:77)
+    at async file:///C:/Users/yadav/.codex/skills/taste-skill/scripts/inspect.mjs:124:17
+
+Node.js v24.14.0

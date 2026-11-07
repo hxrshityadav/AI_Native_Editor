@@ -1,0 +1,174 @@
+
+> reel-finisher@0.1.0 check
+> npm run typecheck && npm run lint && npm run test && npm run editor:check
+
+
+> reel-finisher@0.1.0 typecheck
+> next typegen && tsc --noEmit
+
+Generating route types...
+✓ Types generated successfully
+
+> reel-finisher@0.1.0 lint
+> eslint
+
+
+> reel-finisher@0.1.0 test
+> vitest run
+
+
+ RUN  v5.0.5 C:/Developer/AI Native Editor
+
+
+ Test Files  37 passed | 1 skipped (38)
+      Tests  321 passed | 6 skipped (327)
+   Start at  17:57:22
+   Duration  1.58s (import 62%, tests 22%, transform 12%, worker 4%)
+
+    Isolate  38 workers spawned · ~288ms startup each (spawn + environment, per file)
+             at least ~442ms faster with isolate: false — reuses workers across files instead of one per file
+
+
+> reel-finisher@0.1.0 editor:check
+> node scripts/check-editor.mjs
+
+$ tsc --noEmit
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+
+[7m[1m[36m RUN [39m[22m[27m [36mv1.6.1[39m [90mC:/Developer/AI Native Editor/vendor/openreel/apps/web[39m
+
+ [32m✓[39m src/reelfinisher/avc-config.test.ts [2m ([22m[2m1 test[22m[2m)[22m[90m 10[2mms[22m[39m
+ [32m✓[39m src/reelfinisher/import-policy.test.ts [2m ([22m[2m4 tests[22m[2m)[22m[90m 22[2mms[22m[39m
+ [32m✓[39m src/reelfinisher/ripple.test.ts [2m ([22m[2m9 tests[22m[2m)[22m[90m 47[2mms[22m[39m
+ [32m✓[39m src/reelfinisher/legacy-convert.test.ts [2m ([22m[2m4 tests[22m[2m)[22m[90m 41[2mms[22m[39m
+ [32m✓[39m src/hooks/useKeyboardShortcuts.test.tsx [2m ([22m[2m12 tests[22m[2m)[22m[33m 485[2mms[22m[39m
+[90mstderr[2m | src/services/export-runner.test.ts[2m > [22m[2museExportRunner showSavePicker fallback[2m > [22m[2mfalls back to an in-memory download when OPFS is unavailable and the picker is blocked[22m[39m
+[export-runner] showSaveFilePicker unavailable; streaming to a downloaded file instead DOMException {}
+
+[90mstderr[2m | src/services/export-runner.test.ts[2m > [22m[2museExportRunner showSavePicker fallback[2m > [22m[2mstreams to an OPFS temp file (not memory) when the picker is blocked[22m[39m
+[export-runner] showSaveFilePicker unavailable; streaming to a downloaded file instead DOMException {}
+
+ [32m✓[39m src/services/export-runner.test.ts [2m ([22m[2m35 tests[22m[2m)[22m[90m 203[2mms[22m[39m
+ [32m✓[39m src/stores/project/clone-project-for-edit.test.ts [2m ([22m[2m1 test[22m[2m)[22m[90m 17[2mms[22m[39m
+ [32m✓[39m src/services/project-fonts.test.ts [2m ([22m[2m4 tests[22m[2m)[22m[90m 39[2mms[22m[39m
+ [32m✓[39m src/reelfinisher/caption-data.test.ts [2m ([22m[2m6 tests[22m[2m)[22m[90m 47[2mms[22m[39m
+ [32m✓[39m src/stores/project/media-slice.test.ts [2m ([22m[2m7 tests[22m[2m)[22m[90m 31[2mms[22m[39m
+ [32m✓[39m src/services/auto-save.test.ts [2m ([22m[2m11 tests[22m[2m)[22m[90m 180[2mms[22m[39m
+ [32m✓[39m src/stores/project-store.autosave.test.ts [2m ([22m[2m1 test[22m[2m)[22m[90m 24[2mms[22m[39m
+ [32m✓[39m src/stores/project/subtitle-placement.test.ts [2m ([22m[2m2 tests[22m[2m)[22m[90m 53[2mms[22m[39m
+[90mstderr[2m | src/stores/project/subtitle-placement.test.ts[2m > [22m[2mgenerated caption placement[2m > [22m[2mcreates captions in front of existing video so export paints them last[22m[39m
+[EffectsBridge] Background initialization failed: Error: EffectsBridge initialization failed: WebGL2 not supported
+    at EffectsBridge.initializeEngines [90m(C:\Developer\AI Native Editor\vendor\openreel\apps\web\[39msrc\bridges\effects-bridge.ts:206:13[90m)[39m
+[EffectsBridge] Background initialization failed: Error: EffectsBridge initialization failed: WebGL2 not supported
+    at EffectsBridge.initializeEngines [90m(C:\Developer\AI Native Editor\vendor\openreel\apps\web\[39msrc\bridges\effects-bridge.ts:206:13[90m)[39m
+
+[90mstderr[2m | src/stores/project/subtitle-placement.test.ts[2m > [22m[2mgenerated caption placement[2m > [22m[2mhonors top and center subtitle placement and does not edit locked caption tracks[22m[39m
+[EffectsBridge] Background initialization failed: Error: EffectsBridge initialization failed: WebGL2 not supported
+    at EffectsBridge.initializeEngines [90m(C:\Developer\AI Native Editor\vendor\openreel\apps\web\[39msrc\bridges\effects-bridge.ts:206:13[90m)[39m
+[EffectsBridge] Background initialization failed: Error: EffectsBridge initialization failed: WebGL2 not supported
+    at EffectsBridge.initializeEngines [90m(C:\Developer\AI Native Editor\vendor\openreel\apps\web\[39msrc\bridges\effects-bridge.ts:206:13[90m)[39m
+
+ [32m✓[39m src/reelfinisher/history.test.ts [2m ([22m[2m3 tests[22m[2m)[22m[90m 72[2mms[22m[39m
+[90mstderr[2m | src/reelfinisher/history.test.ts[2m > [22m[2mmarked-range deletion takes precedence over clips, synchronizes tracks and restores one history entry[22m[39m
+[EffectsBridge] Background initialization failed: Error: EffectsBridge initialization failed: WebGL2 not supported
+    at EffectsBridge.initializeEngines [90m(C:\Developer\AI Native Editor\vendor\openreel\apps\web\[39msrc\bridges\effects-bridge.ts:206:13[90m)[39m
+[EffectsBridge] Background initialization failed: Error: EffectsBridge initialization failed: WebGL2 not supported
+    at EffectsBridge.initializeEngines [90m(C:\Developer\AI Native Editor\vendor\openreel\apps\web\[39msrc\bridges\effects-bridge.ts:206:13[90m)[39m
+[EffectsBridge] Background initialization failed: Error: EffectsBridge initialization failed: WebGL2 not supported
+    at EffectsBridge.initializeEngines [90m(C:\Developer\AI Native Editor\vendor\openreel\apps\web\[39msrc\bridges\effects-bridge.ts:206:13[90m)[39m
+[EffectsBridge] Background initialization failed: Error: EffectsBridge initialization failed: WebGL2 not supported
+    at EffectsBridge.initializeEngines [90m(C:\Developer\AI Native Editor\vendor\openreel\apps\web\[39msrc\bridges\effects-bridge.ts:206:13[90m)[39m
+
+[90mstderr[2m | src/reelfinisher/history.test.ts[2m > [22m[2mcommits synchronized cuts and captions to the same native history with atomic undo/redo[22m[39m
+[EffectsBridge] Background initialization failed: Error: EffectsBridge initialization failed: WebGL2 not supported
+    at EffectsBridge.initializeEngines [90m(C:\Developer\AI Native Editor\vendor\openreel\apps\web\[39msrc\bridges\effects-bridge.ts:206:13[90m)[39m
+[EffectsBridge] Background initialization failed: Error: EffectsBridge initialization failed: WebGL2 not supported
+    at EffectsBridge.initializeEngines [90m(C:\Developer\AI Native Editor\vendor\openreel\apps\web\[39msrc\bridges\effects-bridge.ts:206:13[90m)[39m
+[EffectsBridge] Background initialization failed: Error: EffectsBridge initialization failed: WebGL2 not supported
+    at EffectsBridge.initializeEngines [90m(C:\Developer\AI Native Editor\vendor\openreel\apps\web\[39msrc\bridges\effects-bridge.ts:206:13[90m)[39m
+[EffectsBridge] Background initialization failed: Error: EffectsBridge initialization failed: WebGL2 not supported
+    at EffectsBridge.initializeEngines [90m(C:\Developer\AI Native Editor\vendor\openreel\apps\web\[39msrc\bridges\effects-bridge.ts:206:13[90m)[39m
+[EffectsBridge] Background initialization failed: Error: EffectsBridge initialization failed: WebGL2 not supported
+    at EffectsBridge.initializeEngines [90m(C:\Developer\AI Native Editor\vendor\openreel\apps\web\[39msrc\bridges\effects-bridge.ts:206:13[90m)[39m
+[EffectsBridge] Background initialization failed: Error: EffectsBridge initialization failed: WebGL2 not supported
+    at EffectsBridge.initializeEngines [90m(C:\Developer\AI Native Editor\vendor\openreel\apps\web\[39msrc\bridges\effects-bridge.ts:206:13[90m)[39m
+
+[90mstderr[2m | src/reelfinisher/history.test.ts[2m > [22m[2mnative caption split slices verified words and undoes atomically[22m[39m
+[EffectsBridge] Background initialization failed: Error: EffectsBridge initialization failed: WebGL2 not supported
+    at EffectsBridge.initializeEngines [90m(C:\Developer\AI Native Editor\vendor\openreel\apps\web\[39msrc\bridges\effects-bridge.ts:206:13[90m)[39m
+
+ [32m✓[39m src/stores/project-store.test.ts [2m ([22m[2m92 tests[22m [2m|[22m [33m4 skipped[39m[2m)[22m[90m 266[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m15 passed[39m[22m[90m (15)[39m
+[2m      Tests [22m [1m[32m188 passed[39m[22m[2m | [22m[33m4 skipped[39m[90m (192)[39m
+[2m   Start at [22m 17:58:10
+[2m   Duration [22m 16.25s[2m (transform 14.78s, setup 17.89s, collect 107.64s, tests 1.54s, environment 39.41s, prepare 5.16s)[22m
+
+
+[7m[1m[36m RUN [39m[22m[27m [36mv1.6.1[39m [90mC:/Developer/AI Native Editor/vendor/openreel/packages/core[39m
+
+ [32m✓[39m src/export/mp4-audio-timing.test.ts [2m ([22m[2m4 tests[22m[2m)[22m[90m 7[2mms[22m[39m
+ [32m✓[39m src/media/extract-audio.test.ts [2m ([22m[2m2 tests[22m[2m)[22m[90m 6[2mms[22m[39m
+ [32m✓[39m src/export/browser-capabilities.test.ts [2m ([22m[2m7 tests[22m[2m)[22m[90m 9[2mms[22m[39m
+[90mstdout[2m | src/export/export-engine.test.ts[2m > [22m[2mExportEngine[2m > [22m[2mvideo export[2m > [22m[2mshould render long export audio in chunks and clear cached audio[22m[39m
+[export] render=0.0ms/f frames=40
+
+[90mstdout[2m | src/export/export-engine.test.ts[2m > [22m[2mExportEngine[2m > [22m[2mvideo export[2m > [22m[2mrenders a selected range at original timeline times with output starting at zero[22m[39m
+[export] render=0.0ms/f frames=60
+
+[90mstdout[2m | src/export/export-engine.test.ts[2m > [22m[2mExportEngine[2m > [22m[2mvideo export[2m > [22m[2mchunks selected-range audio without including sound before In or after Out[22m[39m
+[export] render=0.0ms/f frames=32
+
+[90mstdout[2m | src/export/export-engine.test.ts[2m > [22m[2mExportEngine[2m > [22m[2mvideo export[2m > [22m[2maborts GPU initialization failures, restores preview mode, and allows retry[22m[39m
+[export] render=0.0ms/f frames=1
+
+[90mstdout[2m | src/export/export-engine.test.ts[2m > [22m[2mExportEngine[2m > [22m[2mvideo export[2m > [22m[2mreports output commit failure and permits another export[22m[39m
+[export] render=0.1ms/f frames=1
+[export] render=0.0ms/f frames=1
+
+[90mstdout[2m | src/export/export-engine.test.ts[2m > [22m[2mExportEngine[2m > [22m[2mvideo export[2m > [22m[2mchecks cancellation after the last frame before committing output[22m[39m
+[export] render=0.0ms/f frames=1
+
+[90mstdout[2m | src/export/export-engine.test.ts[2m > [22m[2mExportEngine[2m > [22m[2mvideo export[2m > [22m[2mcancels a stalled frame submission and releases the export for retry[22m[39m
+[export] render=0.1ms/f frames=1
+
+[90mstdout[2m | src/export/export-engine.test.ts[2m > [22m[2mExportEngine[2m > [22m[2mvideo export[2m > [22m[2mreports a stalled encoder and allows retry after its watchdog expires[22m[39m
+[export] render=0.2ms/f frames=1
+
+[90mstdout[2m | src/export/export-engine.test.ts[2m > [22m[2mExportEngine[2m > [22m[2mvideo export[2m > [22m[2muses realtime encoding in WebKit and requires every output frame[22m[39m
+[export] render=0.0ms/f frames=1
+[export] render=0.0ms/f frames=1
+
+[90mstdout[2m | src/export/export-engine.test.ts[2m > [22m[2mExportEngine[2m > [22m[2mvideo export[2m > [22m[2mdecodes the original video blob for export[22m[39m
+[export] render=0.0ms/f frames=1
+
+[90mstdout[2m | src/export/export-engine.test.ts[2m > [22m[2mExportEngine[2m > [22m[2mvideo export[2m > [22m[2mrenders export audio at the selected sample rate and channel count[22m[39m
+[export] render=0.0ms/f frames=1
+
+[90mstdout[2m | src/export/export-engine.test.ts[2m > [22m[2mExportEngine[2m > [22m[2mvideo export[2m > [22m[2mcleans up when a cancelled export generator is closed at a yield[22m[39m
+[export] render=0.0ms/f frames=1
+
+[90mstdout[2m | src/export/export-engine.test.ts[2m > [22m[2mExportEngine[2m > [22m[2mvideo export[2m > [22m[2mprefers hardware WebCodecs for the default browser backend[22m[39m
+[export] render=0.0ms/f frames=1
+
+[90mstdout[2m | src/export/export-engine.test.ts[2m > [22m[2mExportEngine[2m > [22m[2mvideo export[2m > [22m[2mkeeps decoder caches warm while throttling browser exports[22m[39m
+[export] render=0.0ms/f frames=5
+
+[90mstdout[2m | src/export/export-engine.test.ts[2m > [22m[2mExportEngine[2m > [22m[2mvideo export[2m > [22m[2mfalls back to no-preference when hardware WebCodecs is unavailable[22m[39m
+[export] render=0.0ms/f frames=1
+
+[90mstdout[2m | src/export/export-engine.test.ts[2m > [22m[2mExportEngine[2m > [22m[2mvideo export[2m > [22m[2mtries the requested codec before other container codecs[22m[39m
+[export] render=0.0ms/f frames=1
+
+[90mstdout[2m | src/export/export-engine.test.ts[2m > [22m[2mExportEngine[2m > [22m[2mvideo export[2m > [22m[2mvalidates the hardware hint and retries the same codec without it[22m[39m
+[export] render=0.0ms/f frames=1
+
+ [32m✓[39m src/export/export-engine.test.ts [2m ([22m[2m51 tests[22m[2m)[22m[33m 801[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m4 passed[39m[22m[90m (4)[39m
+[2m      Tests [22m [1m[32m64 passed[39m[22m[90m (64)[39m
+[2m   Start at [22m 17:58:29
+[2m   Duration [22m 1.45s[2m (transform 350ms, setup 1ms, collect 503ms, tests 823ms, environment 1ms, prepare 607ms)[22m
+
+(node:15072) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+(Use `node --trace-deprecation ...` to show where the warning was created)

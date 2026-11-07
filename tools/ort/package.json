@@ -1,0 +1,8 @@
+{
+  "name": "reel-finisher-site-ort",
+  "private": true,
+  "description": "ONNX Runtime Web for the public Background Remover, installed apart from the root node_modules so the vendored OpenReel editor keeps resolving only its own copy (see DECISIONS.md).",
+  "dependencies": {
+    "onnxruntime-web": "1.30.0"
+  }
+}

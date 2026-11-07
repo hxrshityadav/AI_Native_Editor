@@ -3,11 +3,12 @@ import { join } from "node:path";
 import { expect, it } from "vitest";
 import { CATEGORIES, TOOLS, toolsIn } from "../../src/lib/tools/catalog";
 
-it("lists only tools that have a real route", () => {
-  for (const tool of TOOLS) expect(existsSync(join("src/app", tool.href, "page.tsx")), tool.href).toBe(true);
-  expect(new Set(TOOLS.map(tool => tool.href)).size).toBe(TOOLS.length);
+it("gives every available tool a real route and every planned tool none", () => {
+  for (const tool of TOOLS.filter(entry => entry.status === "available")) expect(existsSync(join("src/app", tool.href!, "page.tsx")), tool.title).toBe(true);
+  for (const tool of TOOLS.filter(entry => entry.status === "planned")) expect(tool.href, tool.title).toBeUndefined();
+  expect(new Set(TOOLS.map(tool => tool.title)).size).toBe(TOOLS.length);
 });
 
-it("gives every empty category an honest message instead of placeholder tools", () => {
-  for (const category of CATEGORIES) expect(toolsIn(category.id).length > 0 || !!category.empty, category.id).toBe(true);
+it("lists every category with at least one entry", () => {
+  for (const category of CATEGORIES) expect(toolsIn(category.id).length, category.id).toBeGreaterThan(0);
 });

@@ -61,7 +61,26 @@ next-env.d.ts
 /tests/bakeoff/.out/
 
 /output/playwright/
+/output/cliputils-rea/
+/output/local-ai-*
 /output/launch-*
 /output/firefox*
 /vendor/openreel/apps/web/public/whisper-runtime/
 /vendor/openreel/apps/web/public/runtime/
+/public/ort/
+/public/local-ai/
+/output/missing-tools*
+/output/model-probe.log
+/output/probe-local-models.mjs
+/tools/ort/node_modules/
+/tools/neural-audio/node_modules/
+/tools/pdf/node_modules/
+/public/pdfjs/
+/output/release-certification/
+/output/redesign/
+/output/redesign*.log
+/output/stageshow*
+/output/impeccable-engine.exe
+/.taste-skill/before/
+/.taste-skill/after-home/
+/.impeccable/review/

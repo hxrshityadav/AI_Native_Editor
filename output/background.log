@@ -1,0 +1,15 @@
+PASS  lazy loading: model and runtime are not downloaded before removing
+PASS  model: runtime and weights load from this site only when removing
+PASS  output: real PNG at the original dimensions
+PASS  output: subject kept opaque with its colour, background transparent  (centre 192,24,24,255 corner 0,0,0,0)
+PASS  settings: a change invalidates the old download
+PASS  background colour: removed area becomes opaque white  (255,255,255,255)
+PASS  WebP: real WebP with transparency
+PASS  cancellation: nothing is published after cancelling
+PASS  retry: removal succeeds after cancelling
+PASS  validation: unsupported files are rejected with a reason
+PASS  mobile: workspace fits without horizontal overflow
+PASS  SEO: unique title, H1 and FAQ are server-rendered
+PASS  privacy: only same-origin GET/HEAD requests
+
+13/13 checks passed

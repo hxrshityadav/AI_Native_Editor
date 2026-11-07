@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Search, X } from "lucide-react";
 import { CATEGORIES, TOOLS, type ToolCategory } from "@/lib/tools/catalog";
-import { ToolCard } from "./ToolDirectory";
+import { CategorySection } from "./ToolDirectory";
 import { EmptyState, cx } from "./ui";
 
 type Filter = ToolCategory | "all";
@@ -26,7 +26,7 @@ export function ToolFinder({ initialQuery = "", initialCategory = "all" }: { ini
   const setCategory = (value: Filter) => { setCategoryState(value); sync(query, value); };
   const words = query.toLowerCase().split(/\s+/).filter(Boolean);
   const matches = TOOLS.filter(tool => (category === "all" || tool.category === category)
-    && words.every(word => [tool.title, tool.summary, tool.category, ...tool.formats].join(" ").toLowerCase().includes(word)));
+    && words.every(word => [tool.title, tool.navLabel, tool.summary, tool.category, ...tool.formats].join(" ").toLowerCase().includes(word)));
   const shown = CATEGORIES.filter(item => category === "all" || item.id === category);
   return <div>
     <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
@@ -37,9 +37,9 @@ export function ToolFinder({ initialQuery = "", initialCategory = "all" }: { ini
       </div>
       <div role="group" aria-label="Filter by category" className="flex flex-wrap gap-2">
         {[{ id: "all" as const, title: "All" }, ...CATEGORIES].map(item => {
-          const count = item.id === "all" ? TOOLS.length : TOOLS.filter(tool => tool.category === item.id).length;
+          const count = TOOLS.filter(tool => tool.status === "available" && (item.id === "all" || tool.category === item.id)).length;
           return <button key={item.id} type="button" aria-pressed={category === item.id} onClick={() => setCategory(item.id)}
-            className={cx("inline-flex min-h-11 items-center gap-2 rounded-full border px-4 text-sm font-medium transition-colors duration-150", category === item.id ? "border-ink bg-ink text-on-ink" : "border-edge-strong bg-raised hover:bg-hover")}>
+            className={cx("inline-flex min-h-11 items-center gap-2 rounded-full border px-4 text-sm font-medium transition-colors duration-150", category === item.id ? "border-brand bg-brand-soft text-ink" : "border-edge bg-raised text-ink-2 hover:bg-hover hover:text-ink")}>
             {item.title}<span className={cx("tabular", category === item.id ? "opacity-70" : "text-subtle")}>{count}</span>
           </button>;
         })}
@@ -50,16 +50,7 @@ export function ToolFinder({ initialQuery = "", initialCategory = "all" }: { ini
       ? <div className="mt-10"><EmptyState title={`No tools match “${query}”.`} action={<button type="button" onClick={() => { setQueryState(""); setCategoryState("all"); sync("", "all"); }} className="inline-flex min-h-11 items-center gap-2 rounded-[var(--radius-control)] border border-edge-strong bg-raised px-4 text-sm font-semibold text-ink hover:bg-hover"><X aria-hidden className="size-4" />Clear search</button>}>Try a format such as JPEG or MP4, or an action such as compress or convert.</EmptyState></div>
       : <div className="mt-10 space-y-12">{shown.map(item => {
         const tools = matches.filter(tool => tool.category === item.id);
-        if (!tools.length && words.length) return null;
-        return <section key={item.id} id={item.id} aria-labelledby={`${item.id}-tools`} className="scroll-mt-24">
-          <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-b border-edge pb-3">
-            <h2 id={`${item.id}-tools`} className="text-xl font-semibold">{item.title}</h2>
-            <p className="text-sm text-subtle">{item.blurb}</p>
-          </div>
-          {tools.length
-            ? <ul className="mt-5 grid gap-3 md:grid-cols-2 lg:grid-cols-3">{tools.map(tool => <li key={tool.href}><ToolCard tool={tool} /></li>)}</ul>
-            : <div className="mt-5"><EmptyState>{item.empty}</EmptyState></div>}
-        </section>;
+        return !tools.length && words.length ? null : <CategorySection key={item.id} id={item.id} tools={tools} />;
       })}</div>}
   </div>;
 }

@@ -57,10 +57,10 @@ export function ImageCompressor() {
           : inputUrl && <img src={inputUrl} alt="Original image preview" />}
       </Stage>}
       side={result && downloadUrl && view.showResult
-        ? <ResultPanel headingRef={view.heading} heading="Compression result" change={change} onAdjust={view.adjust} note="Downloads a new file. Your original is unchanged."
+        ? <ResultPanel headingRef={view.heading} heading="Compression result" change={change} onAdjust={view.adjust} again={{ label: "Compress another", onClick: job.reset }} note="Downloads a new file. Your original is unchanged."
           summary={<>{shortSize(file.size)} → {shortSize(result.blob.size)}{change > 0 ? `, ${shortSize(file.size - result.blob.size)} smaller` : ""}</>}
           download={{ href: downloadUrl, filename: outputName(file.name, "compressor", result.format), label: "Download compressed image" }}>
-          {targetBytes !== undefined && <InlineMessage role="status" tone={result.targetMet ? "ok" : "warn"}>{result.targetMet ? "The measured output meets your target size." : `The target size was not met. The smallest tested output is ${sizeLabel(result.blob.size)}. Try the Image Resizer or a different output format.`}</InlineMessage>}
+          {targetBytes !== undefined && <InlineMessage role="status" tone={result.targetMet ? "ok" : "warn"} title={result.targetMet ? "Target achieved" : "Closest possible result"}>{result.targetMet ? "The measured output meets your target size." : `The target size was not met. The smallest tested output is ${sizeLabel(result.blob.size)}. Try the Image Resizer or a different output format.`}</InlineMessage>}
           {change <= 0 && <InlineMessage tone="warn">This image was already well compressed. Try WebP, a lower quality or smaller dimensions.</InlineMessage>}
           <DetailsTable
             original={{ title: "Original", label: "Original file", rows: [["Size", shortSize(file.size), sizeLabel(file.size)], ["Dimensions", `${info.width} × ${info.height} px`], ["Format", IMAGE_FORMATS[info.format].label]] }}
@@ -78,7 +78,7 @@ export function ImageCompressor() {
           {view.adjusting && <button type="button" className={`${styles.secondary} ${styles.ghost}`} onClick={view.showLatest}>Back to result</button>}
         </>}>
           <SegmentedChoice legend="Output format" name="output-format" options={FORMATS} value={choice} disabled={!!busy} onChange={edit(setChoice)}
-            hint={choice === "original" ? `Keeps ${IMAGE_FORMATS[info.format].label}.` : format === "image/webp" ? "Usually the smallest for photos. Keeps transparency." : format === "image/jpeg" ? "Opens everywhere. No transparency." : "Lossless. Best for screenshots and graphics; rarely smaller."} />
+            hint={`${choice === "original" ? `Keeps ${IMAGE_FORMATS[info.format].label}. ` : ""}${format === "image/webp" ? "Usually the smallest for photos. Keeps transparency." : format === "image/jpeg" ? "Opens everywhere. Does not keep transparency." : "Lossless and keeps transparency. Best for screenshots and graphics; rarely smaller."}`} />
           <QualityControl value={quality} disabled={!!busy} lossless={format === "image/png"} onChange={edit(setQuality)} />
           {info.transparent && format === "image/jpeg" && <ControlGroup>
             <InlineMessage role="note" tone="warn">JPEG cannot preserve transparency. Transparent pixels will be blended onto the background colour below.</InlineMessage>

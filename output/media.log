@@ -1,0 +1,44 @@
+PASS  trim: file details include duration and dimensions
+PASS  trim fast: copied H.264/AAC MP4, cut snapped to the keyframe and reported  (2.533333 s)
+PASS  trim fast: keyframe shift is explained when it happens
+PASS  trim precise: exact 2.5 s clip that decodes cleanly  (2.533333 s)
+PASS  trim: download name describes the result  (source-trimmed.mp4)
+PASS  remove audio: no audio stream, same H.264 video, full duration
+PASS  remove audio: a silent video cannot be processed again
+PASS  convert: VP9/Opus WebM becomes a playable H.264/AAC MP4  (audio:aac,video:h264)
+PASS  convert: H.264 MKV is repackaged without re-encoding
+PASS  extract: M4A contains only AAC audio of the full length
+PASS  extract: WAV is uncompressed PCM
+PASS  extract: Ogg contains Opus audio
+PASS  audio converter: MP3 becomes a WAV of the same length  (5.041633 s)
+PASS  cutter: a real waveform is drawn from the decoded audio
+PASS  cutter: output is the selected 2 s range  (2 s)
+PASS  cutter: fade in is applied to the samples  (-21.2 vs -1.2)
+PASS  volume: normalize lifts the peak to about -1 dBFS  (-38.1 → -1 dB)
+PASS  volume: the applied gain is reported
+PASS  volume: a large boost is limited instead of hard clipping, and says so  (0 dB)
+PASS  gif: real animated GIF at the chosen width with the expected frames  (240px, 24 frames)
+PASS  compress to size: a target is required before compressing
+PASS  compress to size: the requested bitrate is calculated and shown
+PASS  compress to size: the reported outcome matches the measured file  (436225 bytes, achieved=false)
+PASS  audio to video: real H.264/AAC MP4 at the chosen shape and the audio's length  (1280x720, 4.010667 s)
+PASS  text to speech: listening-only limitation is stated and no download is offered
+PASS  text to speech: the character count follows the text
+PASS  validation: a non-media file is rejected with a reason  (This file could not be read as audio or video. It may be damaged or in an unsupported format.)
+PASS  cancellation: nothing is published and the tool can run again
+PASS  mobile: trim-video fits without horizontal overflow
+PASS  mobile: audio-cutter fits without horizontal overflow
+PASS  SEO: trim-video has a unique title, H1 and FAQ
+PASS  SEO: remove-audio has a unique title, H1 and FAQ
+PASS  SEO: convert-to-mp4 has a unique title, H1 and FAQ
+PASS  SEO: extract-audio has a unique title, H1 and FAQ
+PASS  SEO: audio-converter has a unique title, H1 and FAQ
+PASS  SEO: audio-cutter has a unique title, H1 and FAQ
+PASS  SEO: increase-volume has a unique title, H1 and FAQ
+PASS  SEO: video-to-gif has a unique title, H1 and FAQ
+PASS  SEO: compress-video-to-size has a unique title, H1 and FAQ
+PASS  SEO: audio-to-video has a unique title, H1 and FAQ
+PASS  SEO: text-to-speech has a unique title, H1 and FAQ
+PASS  privacy: only same-origin GET/HEAD requests
+
+42/42 checks passed

@@ -1,0 +1,149 @@
+PASS  light / @320: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light / @320: touch targets at least 32 px tall
+PASS  light / @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light / @390: touch targets at least 32 px tall
+PASS  light / @768: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light / @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light / @1920: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools @320: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools @320: touch targets at least 32 px tall
+PASS  light /tools @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools @390: touch targets at least 32 px tall
+PASS  light /tools @768: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools @1920: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/image-compressor @320: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/image-compressor @320: touch targets at least 32 px tall
+PASS  light /tools/image-compressor @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/image-compressor @390: touch targets at least 32 px tall
+PASS  light /tools/image-compressor @768: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/image-compressor @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/image-compressor @1920: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/image-resizer @320: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/image-resizer @320: touch targets at least 32 px tall
+PASS  light /tools/image-resizer @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/image-resizer @390: touch targets at least 32 px tall
+PASS  light /tools/image-resizer @768: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/image-resizer @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/image-resizer @1920: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/image-converter @320: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/image-converter @320: touch targets at least 32 px tall
+PASS  light /tools/image-converter @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/image-converter @390: touch targets at least 32 px tall
+PASS  light /tools/image-converter @768: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/image-converter @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/image-converter @1920: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/video-compressor @320: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/video-compressor @320: touch targets at least 32 px tall
+PASS  light /tools/video-compressor @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/video-compressor @390: touch targets at least 32 px tall
+PASS  light /tools/video-compressor @768: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/video-compressor @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/video-compressor @1920: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /privacy @320: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /privacy @320: touch targets at least 32 px tall
+PASS  light /privacy @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /privacy @390: touch targets at least 32 px tall
+PASS  light /privacy @768: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /privacy @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /privacy @1920: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /supported-formats @320: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /supported-formats @320: touch targets at least 32 px tall
+PASS  light /supported-formats @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /supported-formats @390: touch targets at least 32 px tall
+PASS  light /supported-formats @768: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /supported-formats @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /supported-formats @1920: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light: no console or hydration errors
+PASS  light: only same-origin requests
+PASS  light: public pages never load the editor runtime
+PASS  dark / @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark / @390: touch targets at least 32 px tall
+PASS  dark / @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark /tools @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark /tools @390: touch targets at least 32 px tall
+PASS  dark /tools @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark /tools/image-compressor @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark /tools/image-compressor @390: touch targets at least 32 px tall
+PASS  dark /tools/image-compressor @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark /tools/image-resizer @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark /tools/image-resizer @390: touch targets at least 32 px tall
+PASS  dark /tools/image-resizer @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark /tools/image-converter @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark /tools/image-converter @390: touch targets at least 32 px tall
+PASS  dark /tools/image-converter @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark /tools/video-compressor @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark /tools/video-compressor @390: touch targets at least 32 px tall
+PASS  dark /tools/video-compressor @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark /privacy @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark /privacy @390: touch targets at least 32 px tall
+PASS  dark /privacy @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark /supported-formats @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark /supported-formats @390: touch targets at least 32 px tall
+PASS  dark /supported-formats @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark: no console or hydration errors
+PASS  dark: only same-origin requests
+PASS  dark: public pages never load the editor runtime
+PASS  keyboard: first Tab reaches a visible skip link
+PASS  keyboard: skip link moves focus past the navigation
+PASS  sidebar: lists every working tool and marks the current page
+PASS  sidebar: only working tools are links
+PASS  sidebar: planned tools are listed but never links
+PASS  sidebar: quick filter narrows the tool list
+PASS  sidebar: Escape clears the filter
+PASS  sidebar: collapses to an icon rail with named links
+PASS  dark surfaces: html is dark and theme-color matches
+PASS  focus: keyboard focus has a visible outline
+PASS  directory: category filter shows only that category's tools
+PASS  directory: planned AI tools are labelled and not links
+PASS  search: matches formats across tools  (Image Compressor, Image Format Converter, Image Resizer, Background Remover
+AI, Passport Photo Maker)
+PASS  search: no match shows a recovery action
+PASS  search: the query is kept in the URL
+PASS  search: a shared URL restores the filtered view
+PASS  search: clearing restores every tool
+PASS  links: /studio resolves  (200)
+PASS  links: /tools/video-compressor resolves  (200)
+PASS  links: /tools/trim-video resolves  (200)
+PASS  links: /tools/video-to-gif resolves  (200)
+PASS  links: /tools/compress-video-to-size resolves  (200)
+PASS  links: /tools/convert-to-mp4 resolves  (200)
+PASS  links: /tools/remove-audio resolves  (200)
+PASS  links: /tools/audio-converter resolves  (200)
+PASS  links: /tools/extract-audio resolves  (200)
+PASS  links: /tools/audio-cutter resolves  (200)
+PASS  links: /tools/increase-volume resolves  (200)
+PASS  links: /tools/audio-to-video resolves  (200)
+PASS  links: /tools/text-to-speech resolves  (200)
+PASS  links: /tools/image-compressor resolves  (200)
+PASS  links: /tools/image-converter resolves  (200)
+PASS  links: /tools/image-resizer resolves  (200)
+PASS  links: /tools/heic-to-jpg resolves  (200)
+PASS  links: /tools/background-remover resolves  (200)
+PASS  links: /tools/passport-photo resolves  (200)
+PASS  links: /privacy resolves  (200)
+PASS  links: /supported-formats resolves  (200)
+PASS  links: /media-notices/SOURCES.txt resolves  (200)
+PASS  mobile nav: menu opens a drawer without overflow
+PASS  mobile nav: Escape closes the drawer and returns focus to Menu
+PASS  mobile nav: links navigate and close the drawer
+PASS  resizer: percentage mode scales both sides
+PASS  tool page: related tools link to other working tools
+PASS  workspace: settings stay hidden until a file is chosen
+PASS  workspace: a chosen file shows a thumbnail, details, preview and controls
+PASS  format: the segmented choice is a real radio group
+PASS  quality: the exact percentage drives the slider
+PASS  target size: quick picks set the amount and unit
+PASS  target size: a target above the original size is explained before processing
+PASS  result: saving, comparison table and requested target are reported
+PASS  result: focus moves to the result for screen readers
+PASS  result: before/after slider works from the keyboard
+PASS  result: Adjust settings returns to the controls with focus
+PASS  result: Back to result keeps the measured output
+PASS  result: Start over returns to the upload stage
+PASS  home: primary action opens the tool directory
+PASS  SEO: editor, legacy and lab keep noindex
+PASS  isolation: editor, legacy and lab render without the public site shell
+PASS  motion: reduced motion shortens transitions  (1e-05s)
+
+146/146 checks passed

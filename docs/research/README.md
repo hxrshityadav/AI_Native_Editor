@@ -129,3 +129,7 @@ Instagram, Facebook and WhatsApp specs say AAC. WhatsApp's app defaults to 100 M
 
 - Real upload results for the T-13 test pack (`platform-uploads.md`).
 - Vercel plan terms for commercial use before charging money.
+# Local creator model/runtime audit (2026-11-04)
+
+Current source/revision/size/license/integrity inventory and the actual speech-content comparison are in [local models](../local-models.md) and the [implementation ledger](../local-ai-implementation.md). Primary sources include Microsoft's SpeechT5 model/license, OpenAI Whisper, the original [CMU SLT COPYING](http://festvox.org/cmu_arctic/cmu_arctic/cmu_us_slt_arctic/COPYING), the [derived vector dataset](https://huggingface.co/datasets/Matthijs/cmu-arctic-xvectors), Jitsi/Xiph RNNoise and the exact PDF.js/ORT releases. The fixed voice vector was matched byte-for-byte to the documented SLT example; it was not replaced. UVR redistribution permission remains unresolved; no weights downloaded. Kokoro/local LLM metadata review is not an inference-quality or device benchmark.
+

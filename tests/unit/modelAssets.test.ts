@@ -1,8 +1,13 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { GET } from "../../src/app/editor-models/[...asset]/route";
+import { GET,HEAD } from "../../src/app/editor-models/[...asset]/route";
 const request = new Request("http://localhost/editor-models/test");
 afterEach(() => vi.unstubAllGlobals());
 describe("model asset delivery", () => {
+  it("uses a real upstream HEAD and preserves Studio's no-redirect policy",async()=>{
+    const fetch=vi.fn(async()=>new Response(null,{headers:{"Content-Length":"244486683"}}));vi.stubGlobal("fetch",fetch);
+    const response=await HEAD(new Request(request,{method:"HEAD"}),{params:Promise.resolve({asset:["onnx-community","whisper-tiny","resolve","main","config.json"]})});
+    expect(response.body).toBeNull();expect(fetch).toHaveBeenCalledWith(expect.any(String),expect.objectContaining({method:"HEAD",redirect:"error"}));
+  });
   it("streams only allowlisted public model files and preserves byte-length progress", async () => {
     const fetch = vi.fn(async (input: RequestInfo | URL) => { void input; return new Response("model", { headers: { "Content-Length": "5" } }); }); vi.stubGlobal("fetch", fetch);
     const response = await GET(request, { params: Promise.resolve({ asset: ["onnx-community", "whisper-tiny", "resolve", "main", "config.json"] }) });

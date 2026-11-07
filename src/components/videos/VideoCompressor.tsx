@@ -12,7 +12,9 @@ import { AdvancedSettings, ControlGroup, DetailsTable, FileDetails, FileDropzone
 const ACCEPT = "video/mp4,video/quicktime,video/webm";
 const RESOLUTIONS = [["original", "Original dimensions"], ["1080", "1080p"], ["720", "720p"], ["480", "480p"], ["360", "360p"]] as const;
 const bytesLabel = (value: number) => `${(value / 1000000).toFixed(2)} MB (${value.toLocaleString()} bytes)`;
-export function VideoCompressor() {
+/** `variant="size"` is Compress to Size: the target comes first, is required, and the requested bitrate is shown. */
+export function VideoCompressor({ variant = "standard" }: { variant?: "standard" | "size" }) {
+  const sizeFirst = variant === "size";
   const [file, setFile] = useState<File>(), [info, setInfo] = useState<VideoInfo>(), [result, setResult] = useState<VideoResult>();
   const [resolution, setResolution] = useState<VideoResolution>("720"), [quality, setQuality] = useState<VideoQuality>("balanced");
   const [bitrate, setBitrate] = useState(""), [target, setTarget] = useState(""), [unit, setUnit] = useState("MB"), [mute, setMute] = useState(false);
@@ -77,6 +79,12 @@ export function VideoCompressor() {
   </section>;
 
   const saved = result ? 1 - result.blob.size / file.size : 0;
+  const targetGroup = <ControlGroup label="Target size" aside={<span className={styles.help}>{sizeFirst ? "Required" : "Optional"}</span>}>
+    <TargetSizeInput inputLabel="Target size" unitLabel="Target size units" value={target} unit={unit} units={["MB", "KB"]} presets={sizeFirst ? [[8, "MB"], [10, "MB"], [25, "MB"], [50, "MB"]] : undefined} disabled={!!busy} onValue={edit(setTarget)} onUnit={edit(setUnit)} />
+    {sizeFirst && planning.plan && target !== "" && <p className={styles.value} aria-label="Requested bitrate">Requested bitrate: {Math.round(planning.plan.videoBitrate / 1000)} kbps video{planning.plan.audioBitrate ? ` + ${planning.plan.audioBitrate / 1000} kbps audio` : ""} over {info.duration.toFixed(1)} s.</p>}
+    <p className={styles.help}>Decimal units: 1 MB = 1,000,000 bytes. The bitrate is calculated from the target, the video&apos;s length and the audio bitrate. Encoders vary, so the final size is measured, not promised.</p>
+    {planning.plan && !planning.plan.targetWithinBudget && <InlineMessage role="note" tone="warn">The target is below the estimated minimum bitrate/audio budget at these settings. It may not be met; choose lower resolution or mute if appropriate.</InlineMessage>}
+  </ControlGroup>;
   const codecs = (video: VideoInfo) => `${video.videoCodec.toUpperCase()}${video.audioCodec ? ` / ${video.audioCodec.toUpperCase()}` : " / no audio"}`;
   return <section aria-label="Video Compressor workspace" className={styles.root}>
     <ToolSurface onFiles={files => void load(files)}
@@ -91,10 +99,10 @@ export function VideoCompressor() {
         </div>
       </Stage>}
       side={result && outputUrl && view.showResult
-        ? <ResultPanel headingRef={view.heading} heading="Compression result" change={saved} onAdjust={view.adjust} note="Downloads a new file. Metadata, subtitles and extra tracks are not preserved."
+        ? <ResultPanel headingRef={view.heading} heading="Compression result" change={saved} onAdjust={view.adjust} again={{ label: "Compress another", onClick: clear }} note="Downloads a new file. Metadata, subtitles and extra tracks are not preserved."
           summary={<>{(file.size / 1000000).toFixed(1)} MB → {(result.blob.size / 1000000).toFixed(1)} MB. Completed in {elapsed.toFixed(1)} seconds; the final size is measured.</>}
           download={{ href: outputUrl, filename: videoOutputName(file.name, result.container), label: "Download compressed video" }}>
-          {settings.targetBytes && <InlineMessage role="status" tone={result.targetMet ? "ok" : "warn"}>{result.targetMet ? "The measured result meets the target." : "The requested target was not achieved. The measured file is available; try lower resolution or bitrate, or mute audio if appropriate."}</InlineMessage>}
+          {settings.targetBytes && <InlineMessage role="status" tone={result.targetMet ? "ok" : "warn"} title={result.targetMet ? "Target achieved" : "Closest possible result"}>{result.targetMet ? "The measured result meets the target." : "The requested target was not achieved. The measured file is available; try lower resolution or bitrate, or mute audio if appropriate."}</InlineMessage>}
           {info.notes.map(note => <InlineMessage key={note} tone="warn">{note}</InlineMessage>)}
           <DetailsTable
             original={{ title: "Original", label: "Original video file", rows: [["Size", `${(file.size / 1000000).toFixed(1)} MB`, bytesLabel(file.size)], ["Dimensions", `${info.width} × ${info.height} px`], ["Duration", `${info.duration.toFixed(3)} seconds`], ["Codecs", codecs(info)]] }}
@@ -107,11 +115,13 @@ export function VideoCompressor() {
           {error && <InlineMessage role="alert" tone="error">{error}</InlineMessage>}
           {capabilityError && <InlineMessage role="alert" tone="error">{capabilityError}</InlineMessage>}
           {planning.error && <InlineMessage role="alert" tone="error">{planning.error}</InlineMessage>}
-          <PrimaryButton label="Compress video" busyLabel="Compressing…" busy={!!busy} disabled={!planning.plan || !support || !!capabilityError} onClick={run} />
+          <PrimaryButton label="Compress video" busyLabel="Compressing…" busy={!!busy} disabled={!planning.plan || !support || !!capabilityError || (sizeFirst && target === "")} onClick={run} />
+          {sizeFirst && target === "" && <p className={styles.help}>Enter a target size to continue.</p>}
           {support && !capabilityError && <p className={styles.help}>Encoder: {container === "mp4" ? "MP4 with H.264" : "WebM with VP9"}{info.hasAudio && !mute ? container === "mp4" ? " and AAC audio" : " and Opus audio" : ", no audio"}.</p>}
           {view.adjusting && <button type="button" className={`${styles.secondary} ${styles.ghost}`} onClick={view.showLatest}>Back to result</button>}
         </>}>
           {info.notes.map(note => <InlineMessage key={note} tone="warn">{note}</InlineMessage>)}
+          {sizeFirst && targetGroup}
           <ControlGroup label="Resolution">
             <select className={styles.field} aria-label="Output resolution" disabled={!!busy} value={resolution} onChange={event => edit(setResolution)(event.target.value as VideoResolution)}>{RESOLUTIONS.map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select>
             <p className={styles.help}>Fits within the chosen size and never upscales. 720p suits phones and messaging apps.</p>
@@ -126,11 +136,7 @@ export function VideoCompressor() {
             <label className={styles.check}><input type="checkbox" checked={mute} disabled={!!busy || !info.hasAudio} onChange={event => edit(setMute)(event.target.checked)} />Mute audio</label>
             {!info.hasAudio && <p className={styles.help}>This source has no audio.</p>}
           </ControlGroup>
-          <ControlGroup label="Target size" aside={<span className={styles.help}>Optional</span>}>
-            <TargetSizeInput inputLabel="Target size" unitLabel="Target size units" value={target} unit={unit} units={["MB", "KB"]} disabled={!!busy} onValue={edit(setTarget)} onUnit={edit(setUnit)} />
-            <p className={styles.help}>Decimal units: 1 MB = 1,000,000 bytes. A target lowers the requested bitrate; the final size is measured, not promised.</p>
-            {planning.plan && !planning.plan.targetWithinBudget && <InlineMessage role="note" tone="warn">The target is below the estimated minimum bitrate/audio budget at these settings. It may not be met; choose lower resolution or mute if appropriate.</InlineMessage>}
-          </ControlGroup>
+          {!sizeFirst && targetGroup}
           <AdvancedSettings>
             <label className={styles.group}><span className={styles.label}>Video bitrate (kbps)</span><input className={styles.field} aria-label="Video bitrate (kbps)" type="number" inputMode="numeric" min="100" max="50000" disabled={!!busy} value={bitrate} placeholder="Use quality preset…" onChange={event => edit(setBitrate)(event.target.value)} /></label>
             <p className={styles.help}>Requested average video bitrate. Browser encoders may deviate; this is not a guaranteed size or visual-quality percentage. Output is constant frame rate, up to 30 fps, with rotation baked in.</p>

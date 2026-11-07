@@ -8,7 +8,7 @@ interface RecoveryState {
   showDialog: boolean;
 }
 
-export function useProjectRecovery() {
+export function useProjectRecovery(prompt = true) {
   const [state, setState] = useState<RecoveryState>({
     isChecking: true,
     availableSaves: [],
@@ -27,7 +27,7 @@ export function useProjectRecovery() {
           setState({
             isChecking: false,
             availableSaves: saves,
-            showDialog: true,
+            showDialog: prompt,
           });
         } else {
           setState({
@@ -47,7 +47,7 @@ export function useProjectRecovery() {
     };
 
     checkForRecovery();
-  }, []);
+  }, [prompt]);
 
   const recover = useCallback(
     async (saveId: string) => {

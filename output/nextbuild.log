@@ -1,0 +1,45 @@
+▲ Next.js 16.4.3 (webpack)
+- Environments: .env.local
+✓ Running next.config.ts took 30ms
+- Cache Components enabled
+- Partial Prefetching enabled
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 23.2s
+  Running TypeScript ...
+  Finished TypeScript in 7.8s ...
+  Collecting page data using 15 workers ...
+  Generating static pages using 15 workers (0/21) ...
+  Generating static pages using 15 workers (5/21) 
+  Generating static pages using 15 workers (10/21) 
+  Generating static pages using 15 workers (15/21) 
+✓ Generating static pages using 15 workers (21/21) in 1892ms
+  Finalizing page optimization ...
+  Collecting build traces ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ƒ /api/edit-plan
+├ ƒ /api/transcribe
+├ ƒ /editor-models/[...asset]
+├ ○ /lab
+├ ○ /privacy
+├ ○ /robots.txt
+├ ○ /sitemap.xml
+├ ○ /studio
+├ ○ /studio-legacy
+├ ○ /supported-formats
+├ ○ /tools
+├ ○ /tools/background-remover
+├ ○ /tools/heic-to-jpg
+├ ○ /tools/image-compressor
+├ ○ /tools/image-converter
+├ ○ /tools/image-resizer
+├ ○ /tools/passport-photo
+└ ○ /tools/video-compressor
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

@@ -1,0 +1,55 @@
+import type { Metadata } from "next";
+import { Gauge, HardDrive, WifiOff, Zap } from "lucide-react";
+import { siteOrigin } from "@/lib/site";
+import type { ToolCategory } from "@/lib/tools/catalog";
+import { ToolPageLayout, type Faq, type Feature } from "@/components/tools/ToolPageLayout";
+import { MediaTool, type MediaToolId } from "./MediaTool";
+
+/* Content for the local audio/video utility pages. Every statement describes what the tool actually does. */
+
+type Page = { slug: string; category: ToolCategory; title: string; seoTitle: string; description: string; lead: string; stepsTitle: string; steps: string[]; info: { title: string; paragraphs: string[] }; faqs: Faq[]; features?: Feature[] };
+const LOCAL_FAQ: Faq = { question: "Is my file uploaded?", answer: "No. The file is read and processed by a worker in this browser tab using your browser's own decoders and encoders. Nothing is sent to a server; close or reload the tab to clear it." };
+const LIMITS_FAQ: Faq = { question: "What are the limits?", answer: "One file up to 512 MiB and 10 minutes. The result is kept in memory until you download it, so very large files may fail on phones with little memory." };
+const VIDEO_FEATURES: Feature[] = [
+  { icon: HardDrive, title: "Runs locally", text: "Processed by a worker in this browser tab." },
+  { icon: WifiOff, title: "No uploads", text: "No server ever receives your video." },
+  { icon: Zap, title: "No re-encode when possible", text: "Tracks are copied when the operation allows it." },
+  { icon: Gauge, title: "Checked output", text: "The result is re-read before you can download it." },
+];
+
+export const MEDIA_PAGES: Record<MediaToolId, Page> = {
+  trim: { slug: "trim-video", category: "video", title: "Trim Video", seoTitle: "Trim Video Online", description: "Cut the start and end of a video in your browser. Fast mode trims without re-encoding; Precise mode cuts at exact times. MP4, MOV, WebM and MKV, no upload.", lead: "Cut a video to the part you need, without re-encoding when possible.", stepsTitle: "How to trim a video", steps: ["Choose or drop an MP4, MOV, WebM or MKV video.", "Set the start and end with the sliders, the exact second fields, or the playhead buttons.", "Pick Fast (lossless, keyframe cuts) or Precise (exact cuts).", "Trim, check the result and download it."],
+    info: { title: "Fast versus precise cuts", paragraphs: ["Compressed video stores a full picture only at keyframes, often every one to five seconds. Fast mode copies the video data as it is, so it is quick and loses no quality, but a cut can only start at a keyframe: your clip may begin slightly before the time you chose.", "Precise mode re-encodes just enough frames around the cut points to start and end exactly where you asked. It takes longer and needs an encoder for the video's codec in your browser."] },
+    faqs: [LOCAL_FAQ, { question: "Why is my fast trim longer than I selected?", answer: "Fast mode starts at the nearest keyframe before your start time so it does not have to re-encode. The tool tells you when this happened; use Precise mode for an exact start." }, { question: "Does trimming reduce quality?", answer: "Fast mode does not: the video and audio data are copied unchanged. Precise mode re-encodes a few frames near the cuts." }, LIMITS_FAQ], features: VIDEO_FEATURES },
+  mute: { slug: "remove-audio", category: "video", title: "Remove Audio from Video", seoTitle: "Remove Audio from Video", description: "Mute a video by removing its audio track in your browser. The picture is copied without re-encoding, so quality is unchanged. No upload.", lead: "Remove the sound from a video without touching the picture.", stepsTitle: "How to remove audio from a video", steps: ["Choose or drop a video with sound.", "Select Remove audio.", "Download the silent video. The picture is copied as is."],
+    info: { title: "How it works", paragraphs: ["The audio track is dropped and the video track is copied into a new file without decoding or re-encoding it, so the picture is bit-for-bit identical and the process takes seconds, even for long videos."] },
+    faqs: [LOCAL_FAQ, { question: "Will the video quality change?", answer: "No. The video data is copied, not re-encoded. Only the container is rewritten without the audio track." }, LIMITS_FAQ], features: VIDEO_FEATURES },
+  mp4: { slug: "convert-to-mp4", category: "video", title: "Convert to MP4", seoTitle: "Convert Video to MP4", description: "Convert MOV, WebM or MKV video to MP4 in your browser. H.264 videos are repackaged without re-encoding; others are re-encoded to H.264 and AAC. No upload.", lead: "Turn MOV, WebM or MKV video into a widely playable MP4.", stepsTitle: "How to convert a video to MP4", steps: ["Choose or drop a MOV, WebM, MKV or MP4 video.", "Check whether it will be repackaged or re-encoded.", "Convert and download the MP4."],
+    info: { title: "Repackaging versus re-encoding", paragraphs: ["If the video is already H.264 with AAC audio (common for MOV files from phones and cameras), it is moved into an MP4 container without re-encoding: fast and lossless.", "WebM and MKV files usually contain VP8, VP9 or AV1 video and Opus audio. Those are re-encoded to H.264 and AAC so the MP4 plays on almost every device. This needs your browser's H.264 and AAC encoders, available in Chrome and Edge; Firefox lacks an AAC encoder."] },
+    faqs: [LOCAL_FAQ, { question: "Which input formats work?", answer: "MP4, MOV, WebM and MKV containers whose codecs your browser can decode, typically H.264, HEVC (on some systems), VP8, VP9 and AV1 video with AAC, Opus, Vorbis or MP3 audio. Unsupported codecs show an error instead of a broken file." }, LIMITS_FAQ], features: VIDEO_FEATURES },
+  extract: { slug: "extract-audio", category: "audio", title: "Extract Audio from Video", seoTitle: "Extract Audio from Video", description: "Save the soundtrack of an MP4, MOV, WebM or MKV video as M4A, WAV or Ogg in your browser. No upload.", lead: "Save a video's soundtrack as an audio file.", stepsTitle: "How to extract audio from a video", steps: ["Choose or drop a video.", "Pick M4A, WAV or Ogg.", "Extract and download the audio."],
+    info: { title: "Choosing a format", paragraphs: ["M4A (AAC) is small and plays almost everywhere, including iPhones. WAV is uncompressed: large, lossless and accepted by every editor. Ogg (Opus) is very efficient but not supported by some older Apple apps. MP3 is not offered because browsers have no MP3 encoder."] },
+    faqs: [LOCAL_FAQ, { question: "Can I get MP3?", answer: "Not yet. Browsers can play MP3 but cannot encode it, and this tool does not upload files to a server to do it. M4A plays on the same devices as MP3." }, LIMITS_FAQ] },
+  "audio-convert": { slug: "audio-converter", category: "audio", title: "Audio Converter", seoTitle: "Audio Converter", description: "Convert MP3, WAV, M4A, AAC, Ogg, Opus and FLAC files to M4A, WAV or Ogg in your browser. No upload.", lead: "Convert audio files between common formats in your browser.", stepsTitle: "How to convert audio", steps: ["Choose or drop an audio file.", "Pick the output format.", "Convert, listen to the result and download it."],
+    info: { title: "What can be converted", paragraphs: ["Any audio your browser can decode can be opened: MP3, WAV, M4A/AAC, Ogg Vorbis, Opus and FLAC in current Chrome and Edge. Output is M4A (AAC), WAV or Ogg (Opus), the formats a browser can genuinely encode. Converting a lossy file to WAV does not restore lost quality; it only makes it easier to edit."] },
+    faqs: [LOCAL_FAQ, { question: "Why is MP3 output missing?", answer: "Browsers include MP3 decoders but no MP3 encoder. Rather than upload your file, the tool offers M4A, which plays on the same devices." }, LIMITS_FAQ] },
+  cutter: { slug: "audio-cutter", category: "audio", title: "Audio Cutter", seoTitle: "Audio Cutter: Trim MP3, WAV and M4A", description: "Trim an audio file to the part you need, with fade in and fade out, using a real waveform. Runs in your browser; no upload.", lead: "Trim audio to the part you need, with optional fades.", stepsTitle: "How to cut audio", steps: ["Choose or drop an audio file. Its waveform is drawn from the decoded sound.", "Drag the start and end, or play and use the playhead buttons.", "Add a fade in or fade out if you like, pick a format, then cut and download."],
+    info: { title: "About the waveform and fades", paragraphs: ["The waveform shows the actual peak level of each slice of your audio, decoded in this tab. Fades are applied to the samples themselves, so they are part of the downloaded file, not just the preview."] },
+    faqs: [LOCAL_FAQ, { question: "Can I cut MP3 and keep it MP3?", answer: "The result is saved as M4A, WAV or Ogg, because browsers cannot encode MP3. M4A plays wherever MP3 does." }, LIMITS_FAQ] },
+  volume: { slug: "increase-volume", category: "audio", title: "Increase Volume", seoTitle: "Increase Audio Volume", description: "Make a quiet recording louder with a gain control or peak normalization, with a limiter that prevents clipping. Works on audio files and video soundtracks in your browser.", lead: "Make quiet audio louder without hard clipping.", stepsTitle: "How to increase volume", steps: ["Choose or drop an audio file, or a video to boost its soundtrack.", "Set a gain, or choose Normalize to raise the loudest peak to -1 dBFS.", "Process, compare the before and after, and download."],
+    info: { title: "Gain, normalization and clipping", paragraphs: ["Gain multiplies every sample. Boosting a recording whose peaks are already high would push them past the maximum level and cause harsh clipping, so a soft limiter rounds off those peaks instead and the tool tells you when that happened.", "Normalize measures the loudest peak first and applies exactly the gain that brings it to -1 dBFS. It is peak normalization, not loudness (LUFS) matching, so two normalized files can still sound different in loudness."] },
+    faqs: [LOCAL_FAQ, { question: "Does this change the file or just the player?", answer: "The file. The gain is applied to the decoded samples and a new audio file is encoded; the download is louder in any player." }, { question: "Why does a big boost sound noisy?", answer: "Gain raises everything, including background hiss and hum. A noise remover is a separate step and is not part of this tool." }, LIMITS_FAQ] },
+};
+
+export function mediaMetadata(tool: MediaToolId): Metadata {
+  const page = MEDIA_PAGES[tool];
+  return { title: `${page.seoTitle} · Reel Finisher`, description: page.description, ...(siteOrigin() ? { alternates: { canonical: `/tools/${page.slug}` } } : {}) };
+}
+
+export function MediaToolPage({ tool }: { tool: MediaToolId }) {
+  const page = MEDIA_PAGES[tool];
+  return <ToolPageLayout href={`/tools/${page.slug}`} category={page.category} title={page.title} lead={page.lead} stepsTitle={page.stepsTitle} steps={page.steps} info={page.info} faqs={page.faqs} features={page.features}>
+    <MediaTool tool={tool} />
+  </ToolPageLayout>;
+}
+

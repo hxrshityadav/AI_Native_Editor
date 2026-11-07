@@ -143,32 +143,8 @@ body {
  * The site is a focused dark interface whatever the system theme; the editor host bar still follows the system.
  */
 .site {
+  /* Tokens live in src/components/site/public-site.css (the single public token source). */
   color-scheme: dark;
-  --canvas: #0b0c0e;
-  --raised: #141518;
-  --sunken: #0f1012;
-  --ink: #f4f4f5;
-  --ink-2: #d4d4d8;
-  --subtle: #a1a1aa;
-  --edge: #24252a;
-  --edge-strong: #37383f;
-  --brand: #34d399;
-  --brand-soft: #0f2a21;
-  --danger: #ff8a80;
-  --danger-soft: #34110f;
-  --success: #4ade80;
-  --success-soft: #0e2717;
-  --warning: #fbbf77;
-  --warning-soft: #31200d;
-  --ring: #34d399;
-  --on-ink: #0b0c0e;
-  --shadow-1: 0 1px 0 rgb(0 0 0 / 0.4);
-  --shadow-2: 0 1px 0 rgb(0 0 0 / 0.5), 0 16px 40px -20px rgb(0 0 0 / 0.8);
-  --checker: #24252a;
-  --field: #1b1c20;
-  --hover: #1e1f23;
-  --media-stage: #070708;
-  --faint: #8b8b94;
   background: var(--canvas);
   color: var(--ink);
   font-feature-settings: "cv11", "ss01";
@@ -187,7 +163,7 @@ body {
 }
 
 /* Browser surfaces on the dark site: page canvas, scrollbars, selection, caret and links follow the palette. */
-html:has(.site) { color-scheme: dark; background: #0b0c0e; }
+html:has(.site) { color-scheme: dark; background: #08090b; }
 @media (pointer: fine) { html:has(.site) { overscroll-behavior: none; } }
 .site {
   scrollbar-color: var(--edge-strong) var(--canvas);

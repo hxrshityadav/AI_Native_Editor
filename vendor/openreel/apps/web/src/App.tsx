@@ -45,12 +45,14 @@ function App() {
   const openSearchModal = useUIStore((state) => state.openModal);
   const [hasOpenedScriptView, setHasOpenedScriptView] = useState(false);
   const [isRecovering, setIsRecovering] = useState(false);
+  // An explicit creator import must not be replaced by recovery of an older project; all saves remain in Saved projects.
+  const [creatorEntry] = useState(() => { try { return parent !== window && parent.location.origin === location.origin && /^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i.test(new URLSearchParams(parent.location.search).get("creator") ?? ""); } catch { return false; } });
   const createNewProject = useProjectStore((state) => state.createNewProject);
   const hasOpenProject = useProjectStore((state) => state.hasOpenProject);
-  const { isChecking, showDialog, availableSaves, recover, dismiss, clearAll } = useProjectRecovery();
+  const { isChecking, showDialog, availableSaves, recover, dismiss, clearAll } = useProjectRecovery(!creatorEntry);
 
   const { route, params, navigate, parsedDimensions, fps } = useRouter();
-  const hasHandledInitialRoute = useRef(false);
+  const hasHandledInitialRoute = useRef(creatorEntry);
 
   const showWelcome =
     ["welcome", "templates", "recent"].includes(route) && !skipWelcomeScreen;
@@ -124,9 +126,9 @@ function App() {
   useEffect(() => {
     // Recovery owns the choice until it settles. A bare editor URL still needs
     // a real project for autosave and preview-proxy lifecycle subscriptions.
-    if (showWelcome || isSharePage || route === "new" || isChecking || showDialog || isRecovering || hasOpenProject) return;
+    if (creatorEntry || showWelcome || isSharePage || route === "new" || isChecking || showDialog || isRecovering || hasOpenProject) return;
     createNewProject("New Project");
-  }, [showWelcome, isSharePage, route, isChecking, showDialog, isRecovering, hasOpenProject, createNewProject]);
+  }, [creatorEntry, showWelcome, isSharePage, route, isChecking, showDialog, isRecovering, hasOpenProject, createNewProject]);
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {

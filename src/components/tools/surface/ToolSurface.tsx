@@ -17,12 +17,16 @@ export { styles };
  */
 export function useResultView(ready: boolean) {
   const [adjusting, setAdjusting] = useState(false);
-  const heading = useRef<HTMLHeadingElement>(null), controls = useRef<HTMLDivElement>(null);
+  const heading = useRef<HTMLHeadingElement>(null), controls = useRef<HTMLDivElement>(null), focusControls = useRef(false);
   const showResult = ready && !adjusting;
-  useEffect(() => { if (showResult) heading.current?.focus(); }, [showResult]);
+  useEffect(() => {
+    if (showResult) heading.current?.focus();
+    // Focus after the controls have rendered, not on the next frame, which can run before React commits them.
+    else if (focusControls.current) { focusControls.current = false; controls.current?.querySelector<HTMLElement>("input:not([disabled]), select:not([disabled]), button:not([disabled])")?.focus(); }
+  }, [showResult]);
   return {
     showResult, heading, controls, adjusting: ready && adjusting,
-    adjust: () => { setAdjusting(true); requestAnimationFrame(() => controls.current?.querySelector<HTMLElement>("input:not([disabled]), select:not([disabled]), button:not([disabled])")?.focus()); },
+    adjust: () => { focusControls.current = true; setAdjusting(true); },
     showLatest: () => setAdjusting(false),
   };
 }
@@ -39,18 +43,19 @@ function useFileDrop(onFiles: (files: FileList) => void) {
 }
 
 /** A visible button-styled label around a hidden file input. The input's accessible name stays constant across states. */
-export function FilePicker({ label, inputLabel, accept, className, onFiles }: { label: string; inputLabel: string; accept: string; className?: string; onFiles: (files: FileList) => void }) {
-  return <label className={className ?? styles.secondary}>{label}<input aria-label={inputLabel} className="sr-only" type="file" accept={accept} onChange={event => { if (event.target.files?.length) onFiles(event.target.files); event.target.value = ""; }} /></label>;
+export function FilePicker({ label, inputLabel, accept, className, multiple, onFiles }: { label: string; inputLabel: string; accept: string; className?: string; multiple?: boolean; onFiles: (files: FileList) => void }) {
+  return <label className={className ?? styles.secondary}>{label}<input aria-label={inputLabel} className="sr-only" type="file" accept={accept} multiple={multiple} onChange={event => { if (event.target.files?.length) onFiles(event.target.files); event.target.value = ""; }} /></label>;
 }
 
-export function InlineMessage({ tone = "info", role, children }: { tone?: "info" | "error" | "warn" | "ok"; role?: "status" | "alert" | "note"; children: ReactNode }) {
+/** Message with an icon and, optionally, a short title, so state never depends on colour alone. */
+export function InlineMessage({ tone = "info", role, title, children }: { tone?: "info" | "error" | "warn" | "ok"; role?: "status" | "alert" | "note"; title?: string; children: ReactNode }) {
   const Icon = { info: null, error: AlertCircle, warn: TriangleAlert, ok: CheckCircle2 }[tone];
-  return <p role={role} className={`${styles.message} ${tone === "info" ? "" : styles[tone]}`}>{Icon && <Icon aria-hidden />}{children}</p>;
+  return <p role={role} className={`${styles.message} ${tone === "info" ? "" : styles[tone]}`}>{Icon && <Icon aria-hidden />}{title ? <span><strong className="block font-semibold">{title}</strong><span>{children}</span></span> : children}</p>;
 }
 
 /** Upload stage: the only thing on screen until a file is chosen. While a file is being read it shows that, with Cancel. */
-export function FileDropzone({ icon: Icon, title, pickLabel, accept, facts, busy, onCancel, onFiles }: {
-  icon: LucideIcon; title: string; pickLabel: string; accept: string; facts: ReactNode; busy?: string; onCancel: () => void; onFiles: (files: FileList) => void;
+export function FileDropzone({ icon: Icon, title, pickLabel, inputLabel, accept, facts, busy, multiple, onCancel, onFiles }: {
+  icon: LucideIcon; title: string; pickLabel: string; inputLabel?: string; accept: string; facts: ReactNode; busy?: string; multiple?: boolean; onCancel: () => void; onFiles: (files: FileList) => void;
 }) {
   const { dragging, handlers } = useFileDrop(onFiles);
   return <div className={styles.drop} data-dragging={dragging || undefined} {...handlers}>
@@ -59,7 +64,7 @@ export function FileDropzone({ icon: Icon, title, pickLabel, accept, facts, busy
       : <>
         <span className={styles.dropIcon} aria-hidden><Icon size={26} strokeWidth={1.75} /></span>
         <div><p className={styles.dropTitle}>{title}</p><p className={styles.dropHint}>or browse your device</p></div>
-        <FilePicker label={pickLabel} inputLabel={pickLabel} accept={accept} className={styles.browse} onFiles={onFiles} />
+        <FilePicker label={pickLabel} inputLabel={inputLabel ?? pickLabel} accept={accept} multiple={multiple} className={styles.browse} onFiles={onFiles} />
         <p className={styles.facts}>{facts}</p>
         <p className={styles.local}><ShieldCheck aria-hidden size={15} />Processed on your device. Never uploaded.</p>
       </>}
@@ -96,13 +101,13 @@ export function Stage({ busy, plain, children, processing }: { busy?: boolean; p
 }
 
 /** Processing overlay. Shows real progress only when the pipeline reports it; otherwise a spinner and the current step. */
-export function ProcessingPanel({ title, status, detail, progress, onCancel }: { title: string; status: string; detail?: string; progress?: number; onCancel: () => void }) {
+export function ProcessingPanel({ title, status, detail, progress, onCancel, progressLabel = "Encoding progress", progressUnit = "of conversion processed" }: { title: string; status: string; detail?: string; progress?: number; onCancel: () => void; progressLabel?: string; progressUnit?: string }) {
   return <div className={styles.working}><div className={styles.workingCard}>
     <span className={styles.spinner} aria-hidden />
     <p className={styles.workingTitle}>{title}</p>
     <p role="status" aria-live="polite" className={styles.workingText}>{status}</p>
     {detail && <p className={styles.value}>{detail}</p>}
-    {progress !== undefined && <div className={styles.progress}><progress aria-label="Encoding progress" value={progress} max={1} /><span className={styles.value}>{(progress * 100).toFixed(0)}% of conversion processed</span></div>}
+    {progress !== undefined && <div className={styles.progress}><progress aria-label={progressLabel} value={progress} max={1} /><span className={styles.value}>{(progress * 100).toFixed(0)}% {progressUnit}</span></div>}
     <button type="button" className={styles.secondary} onClick={onCancel}>Cancel operation</button>
   </div></div>;
 }
@@ -134,10 +139,11 @@ export function QualityControl({ value, disabled, lossless, onChange }: { value:
   return <ControlGroup label="Quality">
     <div className={styles.qualityRow}>
       <input className={styles.range} aria-label="Quality ceiling" type="range" min={0.1} max={1} step={0.01} value={value} disabled={disabled || lossless} onChange={event => { setText(undefined); onChange(Number(event.target.value)); }} />
-      <span className={styles.percent}><input className={styles.field} aria-label="Quality percentage" type="number" inputMode="numeric" min={10} max={100} step={1} value={text ?? Math.round(value * 100)} disabled={disabled || lossless}
-        onChange={event => { setText(event.target.value); const next = Number(event.target.value); if (event.target.value !== "" && next >= 10 && next <= 100) onChange(Math.round(next) / 100); }} onBlur={() => setText(undefined)} /><span aria-hidden>%</span></span>
+      <span className={styles.percent}><input className={styles.field} aria-label="Quality value" type="number" inputMode="numeric" min={10} max={100} step={1} value={text ?? Math.round(value * 100)} disabled={disabled || lossless}
+        onChange={event => { setText(event.target.value); const next = Number(event.target.value); if (event.target.value !== "" && next >= 10 && next <= 100) onChange(Math.round(next) / 100); }} onBlur={() => setText(undefined)} /><span aria-hidden>/100</span></span>
     </div>
-    <p className={styles.help}>{lossless ? "PNG is lossless. Quality settings do not reduce its size." : "Lower is smaller. Around 75–85% is hard to tell apart from the original."}</p>
+    {!lossless && <div aria-hidden className={styles.scale}><span>Smaller file</span><span>Balanced</span><span>Higher quality</span></div>}
+    <p className={styles.help}>{lossless ? "PNG is lossless. Quality settings do not reduce its size." : "The encoder's quality setting, not a measure of how the result looks. Lower values give smaller files with more visible compression."}</p>
   </ControlGroup>;
 }
 
@@ -166,8 +172,8 @@ export type Row = [term: string, value: ReactNode, note?: ReactNode];
 const Rows = ({ rows }: { rows: Row[] }) => <dl>{rows.map(([term, value, note]) => <div key={term}><dt>{term}</dt><dd>{value}{note && <small>{note}</small>}</dd></div>)}</dl>;
 
 /** Result column: headline, the one primary download, then details and secondary actions. Focus lands on the heading. */
-export function ResultPanel({ headingRef, heading, change, headline, summary, download, children, onAdjust, note }: {
-  headingRef: Ref<HTMLHeadingElement>; heading: string; change?: number; headline?: ReactNode; summary: ReactNode; download: { href: string; filename: string; label: string }; children: ReactNode; onAdjust: () => void; note: string;
+export function ResultPanel({ headingRef, heading, change, headline, summary, download, children, onAdjust, again, note }: {
+  headingRef: Ref<HTMLHeadingElement>; heading: string; change?: number; headline?: ReactNode; summary: ReactNode; download: { href: string; filename: string; label: string }; children: ReactNode; onAdjust: () => void; again?: { label: string; onClick: () => void }; note: string;
 }) {
   return <>
     <div className={styles.sideBody}>
@@ -181,7 +187,10 @@ export function ResultPanel({ headingRef, heading, change, headline, summary, do
       {children}
     </div>
     <div className={styles.sideFoot}>
-      <button type="button" className={styles.secondary} onClick={onAdjust}><SlidersHorizontal aria-hidden size={15} />Adjust settings</button>
+      <div className={again ? styles.resultActions : undefined}>
+        <button type="button" className={styles.secondary} onClick={onAdjust}><SlidersHorizontal aria-hidden size={15} />Adjust settings</button>
+        {again && <button type="button" className={styles.secondary} onClick={again.onClick}><RotateCcw aria-hidden size={15} />{again.label}</button>}
+      </div>
       <p className={styles.note}>{note}</p>
     </div>
   </>;

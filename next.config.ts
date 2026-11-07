@@ -1,4 +1,8 @@
+import { join } from "node:path";
 import type { NextConfig } from "next";
+
+// ONNX Runtime for the Background Remover lives in tools/ort (its own install), outside the vendored editor's module path.
+const SITE_ORT = join(process.cwd(), "tools/ort/node_modules/onnxruntime-web/dist/ort.wasm.bundle.min.mjs");
 
 const nextConfig: NextConfig = {
   /* config options here */
@@ -11,6 +15,8 @@ const nextConfig: NextConfig = {
       { key: "Cross-Origin-Resource-Policy", value: "same-origin" },
     ];
     return [
+      { source: "/pdfjs/6.5.438/:path*", headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }, { key: "X-Robots-Tag", value: "noindex, nofollow" }] },
+      ...["js", "wasm"].map(extension => ({ source: `/local-ai/rnnoise-0.2.1.${extension}`, headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }, { key: "X-Robots-Tag", value: "noindex, nofollow" }] })),
       { source: "/editor/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }] },
       { source: "/editor-models/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }] },
       { source: "/studio", headers: isolation },
@@ -20,6 +26,7 @@ const nextConfig: NextConfig = {
   },
   // Keep Tailwind available when using `next build --webpack` to diagnose a Turbopack failure.
   webpack(config) {
+    config.resolve.alias = { ...config.resolve.alias, "site-ort/wasm": SITE_ORT };
     // Extend Next's CSS chain so its extraction and minification stay intact.
     for (const group of config.module.rules) {
       for (const rule of group.oneOf ?? []) {
@@ -31,6 +38,7 @@ const nextConfig: NextConfig = {
     return config;
   },
   turbopack: {
+    resolveAlias: { "site-ort/wasm": "./tools/ort/node_modules/onnxruntime-web/dist/ort.wasm.bundle.min.mjs" },
     rules: {
       // CSS modules must keep their module type; renaming them to *.css makes Turbopack emit unscoped global
       // classes and an empty class map, which left every *.module.css component unstyled under `next dev`.

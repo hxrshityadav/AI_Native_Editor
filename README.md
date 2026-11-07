@@ -5,9 +5,13 @@ processed locally with WebCodecs. The new studio keeps audio, transcripts and ed
 
 The OpenReel-based studio is at `/studio`; the original manual editor remains at `/studio-legacy`. See [the integration guide](docs/openreel-integration.md) and `TASKS.md` for validation limits.
 
+Local creator tools now include downloadable English speech, RNNoise cleanup, Shorts Maker (`/tools/shorts-maker`), Lecture to Notes (`/tools/lecture-to-notes`) and PDF to Audio (`/tools/pdf-to-audio`). Shorts finish in the existing Studio; notes are extractive, and the PDF reader supports selectable text rather than OCR. Models download only after consent. SpeechT5 uses a q8 encoder and full-precision decoder after an actual spoken-content test found errors with the old q8 decoder; current speech weights are about 370 MiB. See the [implementation/validation ledger](docs/local-ai-implementation.md) and [model inventory](docs/local-models.md).
+
 Free local photo tools are at `/tools`: Image Compressor (`/tools/image-compressor`), Image Resizer (`/tools/image-resizer`) and Image Format Converter (`/tools/image-converter`). They support still JPEG/PNG/WebP within documented memory limits and do not upload images. See [photo utilities](docs/photo-utilities.md) for architecture, tests and limitations.
 
 The standalone [Video Compressor](docs/video-compressor.md) is at `/tools/video-compressor`: local worker encoding, MP4/WebM, resolution/bitrate controls, optional size targets and measured downloads. Its separate limits are 512 MiB input, 10 minutes, 4K and 128 MiB encoded output. No account or upload is required.
+
+The [additional local tools](docs/missing-local-tools.md) add transcription, subtitle translation, English dubbing, spectral noise reduction, stereo centre/side extraction, soundtrack replacement, script-card videos and photo animations. They reuse the existing media stack and speech runtime. They do not claim neural stems, multilingual voice cloning, lip sync or generative footage; model downloads require explicit consent.
 
 ## Run locally
 
@@ -45,9 +49,10 @@ videos. A settings change invalidates the previous export so it cannot be mistak
 No video or font upload is introduced. Subject masking is explicitly unavailable, pending a measured
 segmentation implementation. See [milestone reports and manual test instructions](docs/STUDIO_MILESTONES.md).
 
-## Transcription setup and video limits
+## Local transcription, optional legacy providers and video limits
 
-Set `GROQ_API_KEY` to a real key in `.env.local` **at the project root**, then restart the server.
+Free tools and the local Studio do not need a provider key or account. Cloud routes are disabled by default.
+Only for the deliberately enabled legacy provider flow (`REEL_ENABLE_CLOUD=1`), set `GROQ_API_KEY` to a real key in `.env.local` **at the project root**, then restart the server.
 The example placeholder is deliberately rejected. No provider credentials are included in this repository.
 `TRANSCRIBE_PROVIDER=groq` is the default; `GROQ_MODEL` defaults to `whisper-large-v3`.
 For production, set these in your host's server environment and redeploy. Never use a `NEXT_PUBLIC_`

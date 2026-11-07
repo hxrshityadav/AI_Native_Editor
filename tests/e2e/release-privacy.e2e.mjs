@@ -1,0 +1,36 @@
+import { chromium } from "playwright";
+import { mkdirSync } from "node:fs";
+import { join } from "node:path";
+import { ROOT,ff,probe,decodeErrors,startServer,stopServer,createChecks } from "./helpers.mjs";
+const OUT=join(ROOT,"output/release-certification");mkdirSync(OUT,{recursive:true});
+const video=join(OUT,"ten-minutes.mp4");
+ff("-f","lavfi","-i","color=c=navy:s=64x64:r=1:d=600","-stream_loop","-1","-i",join(OUT,"1272-128104-0000.flac"),"-t","600","-c:v","libx264","-preset","ultrafast","-pix_fmt","yuv420p","-c:a","aac","-b:a","32k",video);
+const {check,finish}=createChecks(),server=await startServer(3188,{env:{REEL_ENABLE_CLOUD:""}}),browser=await chromium.launch({channel:"chrome"});
+try{
+ const page=await browser.newPage(),models=[];page.on("request",r=>{if(r.url().includes("/local-models/"))models.push(r.url());});
+ await page.addInitScript(()=>{
+  const synthesis=new EventTarget(),local=name=>({name,localService:true,lang:"en-US",default:true});
+  window.__qaVoices=[local("Local A")];window.__qaSpoken=[];
+  synthesis.getVoices=()=>window.__qaVoices;synthesis.cancel=()=>{};synthesis.pause=()=>{};synthesis.resume=()=>{};
+  synthesis.speak=u=>window.__qaSpoken.push({name:u.voice?.name,local:u.voice?.localService===true});
+  window.__qaReplaceVoices=names=>{window.__qaVoices=names.map(local);synthesis.dispatchEvent(new Event("voiceschanged"));};
+  Object.defineProperty(window,"speechSynthesis",{value:synthesis,configurable:true});
+  Object.defineProperty(window,"SpeechSynthesisUtterance",{value:class{constructor(text){this.text=text;}},configurable:true});
+ });
+ await page.goto("http://localhost:3188/tools/text-to-speech");
+ await page.getByLabel("Text to read",{exact:true}).fill("नमस्ते दुनिया");await page.getByLabel("Allow speech model download",{exact:true}).check();await page.getByRole("button",{name:"Generate speech",exact:true}).click();
+ await page.getByRole("alert").filter({hasText:/English text only/}).waitFor();check("privacy: unsupported speech scripts fail before model downloads",models.length===0);
+ await page.getByLabel("Speech mode",{exact:true}).selectOption("listen");
+ await page.getByLabel("Text to read",{exact:true}).fill("Keep this passage local.");await page.getByRole("button",{name:"Speak",exact:true}).click();
+ check("privacy: device listening assigns a local voice explicitly",await page.evaluate(()=>window.__qaSpoken.at(-1)?.name==="Local A"&&window.__qaSpoken.at(-1).local));
+ await page.evaluate(()=>window.__qaReplaceVoices(["Local B"]));await page.waitForTimeout(100);await page.getByRole("button",{name:"Speak",exact:true}).click();
+ check("privacy: a retired selected voice cannot fall back to a remote system default",await page.evaluate(()=>window.__qaSpoken.at(-1)?.name==="Local B"&&window.__qaSpoken.at(-1).local));
+ await page.evaluate(()=>window.__qaReplaceVoices([]));await page.waitForTimeout(100);
+ check("privacy: no installed local voice disables device playback",await page.getByRole("button",{name:"Speak",exact:true}).isDisabled());
+ check("privacy: missing device voices offer a recovery action",await page.getByText(/No local voice is available yet/).isVisible());
+ await page.goto("http://localhost:3188/tools/trim-video");await page.getByLabel("Choose file",{exact:true}).setInputFiles(video);await page.getByRole("button",{name:"Trim video",exact:true}).waitFor();
+ check("long video: measured 600-second H.264/AAC input is accepted",Number(probe(video).format.duration)===600);
+ await page.getByLabel("Start seconds").fill("595");await page.getByLabel("End seconds").fill("600");await page.getByRole("radio",{name:"Precise",exact:true}).check();await page.getByRole("button",{name:"Trim video",exact:true}).click();
+ await page.getByRole("link",{name:"Download trimmed video",exact:true}).waitFor({timeout:120000});const event=page.waitForEvent("download");await page.getByRole("link",{name:"Download trimmed video",exact:true}).click();const output=join(OUT,"ten-minutes-tail.mp4");await(await event).saveAs(output);
+ check("long video: the final five seconds produce a valid downloaded export",Math.abs(Number(probe(output).format.duration)-5)<.12&&!decodeErrors(output));
+}finally{await browser.close();await stopServer(server);}finish();

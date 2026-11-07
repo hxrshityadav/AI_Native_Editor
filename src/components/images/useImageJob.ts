@@ -2,9 +2,9 @@
 import { useEffect, useRef, useState } from "react";
 import { runImageTask } from "@/lib/images/client";
 import { validateDimensions, type ImageFormat } from "@/lib/images/policy";
-import type { ImageInfo, ImageOutput } from "@/lib/images/engine";
+import type { CropRect, ImageInfo, ImageOutput } from "@/lib/images/engine";
 
-export type ImageRequest = { width: number; height: number; quality: number; format: ImageFormat; targetBytes?: number; background: string };
+export type ImageRequest = { width: number; height: number; quality: number; format: ImageFormat; targetBytes?: number; background: string; crop?: CropRect; fill?: string };
 
 /**
  * File, inspection and processing state shared by the photo tools. The worker calls, validation, cancellation and
@@ -36,7 +36,7 @@ export function useImageJob() {
     finally { if (active.current === controller) { active.current = null; setBusy(""); } }
   }
   /** `build` may throw a user-facing validation error before any work starts. */
-  async function run(build: (image: ImageInfo) => ImageRequest, status: string) {
+  async function run(build: (image: ImageInfo) => ImageRequest, status: string): Promise<ImageOutput | undefined> {
     if (!file || !info) return;
     invalidate(); const controller = new AbortController(); active.current?.abort(); active.current = controller;
     try {
@@ -44,7 +44,7 @@ export function useImageJob() {
       validateDimensions(request.width, request.height);
       setBusy(status);
       const output = await runImageTask({ kind: "process", file, ...request }, controller.signal) as ImageOutput;
-      if (!controller.signal.aborted) setResult(output);
+      if (!controller.signal.aborted) { setResult(output); return output; }
     } catch (error) { if (!controller.signal.aborted) setError(error instanceof Error ? error.message : "Could not process this image. Try smaller dimensions or another format."); }
     finally { if (active.current === controller) { active.current = null; setBusy(""); } }
   }

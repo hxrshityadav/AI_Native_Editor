@@ -35,8 +35,13 @@ async function renderApplication(): Promise<void> {
 }
 
 let applicationReady = false;
+let creatorImport: Promise<void> | null = null;
 const notifyHost = () => parent.postMessage({ type: "reelfinisher:ready" }, location.origin);
 window.addEventListener("message", (event: MessageEvent) => {
   if (applicationReady && event.origin === location.origin && event.source === parent && event.data?.type === "reelfinisher:probe") notifyHost();
+  if (applicationReady && event.origin === location.origin && event.source === parent && event.data?.type === "reelfinisher:open-creator" && typeof event.data.id === "string" && !creatorImport) {
+    creatorImport = import("./reelfinisher/creator-import").then(module => module.importCreatorProject(event.data.id));
+    void creatorImport.then(() => parent.postMessage({ type: "reelfinisher:creator-opened" }, location.origin), () => parent.postMessage({ type: "reelfinisher:creator-error", message: "Cannot open this Short. Return to Shorts Maker and retry with the original video. Existing projects are unchanged." }, location.origin));
+  }
 });
 void renderApplication().then(() => { applicationReady = true; notifyHost(); });

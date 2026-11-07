@@ -1,46 +1,47 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
-import { ShieldCheck } from "lucide-react";
-import { AppSidebarNav, MobileNav } from "./Sidebar";
+import { AppSidebar, MobileNav } from "./Sidebar";
+import { CommandPalette, CommandPaletteLauncher } from "@/components/command-center/CommandPalette";
+import { RouteActivity } from "@/components/command-center/RouteActivity";
+import "./public-site.css";
+
+/** Compact brand mark for the collapsed sidebar rail. */
+function Mark() {
+  return <Link prefetch={false} href="/" aria-label="Reel Finisher home" title="Reel Finisher" className="grid size-10 place-items-center rounded-[var(--radius-control)] hover:bg-hover">
+    <span aria-hidden className="rounded-[5px] bg-accent px-1.5 py-0.5 text-[0.8rem] font-bold leading-none text-accent-ink">RF</span>
+  </Link>;
+}
 
 export function Wordmark() {
-  return <Link href="/" className="inline-flex min-h-11 items-center gap-2 rounded-[var(--radius-control)] pr-2 font-semibold tracking-tight">
+  return <Link prefetch={false} href="/" className="inline-flex min-h-11 items-center gap-2 rounded-[var(--radius-control)] pr-2 font-semibold tracking-tight">
     {/* The caption highlight chip is the brand mark: it is how the studio styles the spoken word. */}
     <span aria-hidden className="rounded-[5px] bg-accent px-1.5 py-0.5 text-[0.8rem] font-bold leading-none text-accent-ink">RF</span>
     <span>Reel Finisher</span>
   </Link>;
 }
 
-/** Persistent tool sidebar for large screens. Below lg, MobileNav opens the same navigation in a drawer. */
-function AppSidebar() {
-  return <>
-    <div className="hidden border-r border-edge bg-sunken lg:block"><aside className="sticky top-0 flex h-dvh flex-col">
-      <div className="flex h-16 shrink-0 items-center px-5"><Wordmark /></div>
-      <nav aria-label="Main" className="flex-1 overflow-y-auto px-4 pb-6 pt-2"><AppSidebarNav /></nav>
-      <div className="border-t border-edge px-5 py-4">
-        <p className="flex gap-2 text-xs leading-relaxed text-subtle"><ShieldCheck aria-hidden className="mt-px size-4 shrink-0 text-brand" />Files are processed in your browser. Nothing is uploaded.</p>
-        <ul className="mt-2 flex flex-wrap gap-x-4">{FOOTER.map(([href, label]) => <li key={href}><Link href={href} className="inline-flex min-h-9 items-center text-xs text-subtle hover:text-ink">{label}</Link></li>)}</ul>
-      </div>
-    </aside></div>
-  </>;
-}
-
-const FOOTER = [["/privacy", "Privacy"], ["/supported-formats", "Supported formats"]];
+const FOOTER = [["/tools", "All tools"], ["/command-center", "Command Center"], ["/privacy", "Privacy"], ["/supported-formats", "Supported formats"]];
 
 /** App frame for public pages: persistent tool sidebar on large screens, a top bar with a drawer below that. */
 export function SiteShell({ children }: { children: ReactNode }) {
-  return <div className="site min-h-dvh lg:grid lg:grid-cols-[16rem_minmax(0,1fr)]">
+  return <div className="site min-h-dvh lg:grid lg:grid-cols-[auto_minmax(0,1fr)]">
+    <link rel="preload" href="/fonts/mukta/mukta-latin-700-normal.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
     <a href="#content" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-3 focus:z-50 focus:rounded-md focus:bg-ink focus:px-4 focus:py-2.5 focus:text-on-ink">Skip to content</a>
-    <AppSidebar />
+    <AppSidebar wordmark={<Wordmark />} mark={<Mark />} />
     <div className="flex min-h-dvh min-w-0 flex-col">
-      <header className="sticky top-0 z-40 flex h-16 items-center justify-between gap-3 border-b border-edge bg-canvas px-4 sm:px-6 lg:hidden"><Wordmark /><MobileNav /></header>
+      <header className="sticky top-0 z-40 flex h-16 items-center justify-between gap-3 bg-sunken px-4 sm:px-6 lg:hidden"><Wordmark /><div className="flex items-center gap-2"><CommandPaletteLauncher compact /><MobileNav /></div></header>
+      <RouteActivity /><CommandPalette />
       <div id="content" tabIndex={-1} className="flex flex-1 flex-col outline-none">{children}</div>
-      <footer className="border-t border-edge">
-        <div className="mx-auto flex w-full max-w-5xl flex-wrap items-center justify-between gap-x-6 gap-y-2 px-4 py-6 text-sm text-subtle sm:px-8">
-          <p>Free browser tools. No account, no upload, no watermark.</p>
-          <ul className="flex flex-wrap gap-x-5">{[...FOOTER, ["/media-notices/SOURCES.txt", "Open-source notices"]].map(([href, label]) => <li key={href}>{href.endsWith(".txt") ? <a href={href} className="inline-flex min-h-11 items-center hover:text-ink">{label}</a> : <Link href={href} className="inline-flex min-h-11 items-center hover:text-ink">{label}</Link>}</li>)}</ul>
+      <footer className="public-footer">
+        <div className="footer-inner">
+          <p className="footer-name" aria-hidden>Reel Finisher</p>
+          <div className="footer-row">
+            <p>Free media tools in your browser. No account, no watermark, and local tools never upload your files.</p>
+            <ul>{[...FOOTER, ["/media-notices/SOURCES.txt", "Open-source notices"]].map(([href, label]) => <li key={href}>{href.endsWith(".txt") ? <a href={href}>{label}</a> : <Link prefetch={false} href={href}>{label}</Link>}</li>)}</ul>
+          </div>
         </div>
       </footer>
     </div>
   </div>;
 }
+

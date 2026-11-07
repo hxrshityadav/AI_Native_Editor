@@ -1,0 +1,29 @@
+* { box-sizing: border-box; }
+body { margin: 0; background: #171717; }
+#root { width: min(520px, 100vw); }
+.rf-scene {
+  .ss-stage { background: #171717; color: #f5f3ed; overflow: hidden; }
+  .rf-window { position: absolute; left: 24px; top: 24px; width: 472px; height: 300px; border-radius: 12px; background: #242424; box-shadow: none; }
+  [data-layout="compact"] .rf-window { width: 326px; left: 16px; top: 16px; }
+  .ss-window__body { overflow: hidden; }
+  .rf-photo, .rf-video, .rf-captions { position: relative; padding: 16px; }
+  img { display: block; width: 100%; height: 210px; object-fit: cover; border-radius: 4px; }
+  .rf-crop { position: absolute; top: 28px; left: 112px; width: 190px; height: 190px; border: 1px solid #f5f3ed; outline: 50px solid #17171755; }
+  .rf-size { position: absolute; top: 145px; right: 28px; padding: 10px 14px; border-radius: 6px; background: #efb45b; color: #171717; font-size: 14px; font-weight: 600; }
+  .rf-video>img { height: 90px; object-position: center 40%; }
+  .rf-ruler { display: flex; justify-content: space-between; padding: 12px 0 8px; color: #c4c1b9; font-size: 11px; font-variant-numeric: tabular-nums; }
+  .rf-film { display: flex; overflow: hidden; height: 42px; border: 2px solid #efb45b; border-radius: 4px; }
+  .rf-film img { flex: 1; width: 0; min-width: 0; height: 38px; border-radius: 0; border-right: 2px solid #242424; }
+  .rf-playhead { position: absolute; left: 42%; top: 124px; height: 64px; width: 2px; background: #f5f3ed; }
+  .rf-audio { position: relative; padding: 24px 20px; }
+  .rf-audio-title { display: flex; flex-direction: column; gap: 2px; font-size: 14px; }
+  .rf-audio-title>:last-child { color: #b9b7b1; font-size: 12px; }
+  .rf-wave { display: flex; align-items: center; justify-content: space-between; gap: 3px; height: 116px; }
+  .rf-wave span { flex: 1; background: #efb45b; border-radius: 2px; }
+  .rf-selection { position: absolute; top: 76px; left: 68px; right: 52px; height: 100px; border-inline: 2px solid #f5f3ed; background: #efb45b0c; }
+  .rf-caption { position: absolute; inset: 94px 20px auto; text-align: center; color: #fff; font-size: 20px; font-weight: 700; text-shadow: 0 2px 6px #000; }
+  .rf-caption .rf-caption-highlight { padding: 2px 6px; background: #efb45b; color: #171717; border-radius: 4px; text-shadow: none; }
+  [data-layout="compact"] .rf-crop { left: 70px; width: 165px; height: 165px; }
+  [data-layout="compact"] .rf-size { right: 24px; top: 141px; }
+  [data-layout="compact"] .rf-caption { font-size: 17px; }
+}

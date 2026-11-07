@@ -1,0 +1,7 @@
+import type { LocalRequest, LocalResult } from "./local.worker";
+export function runLocal(request:LocalRequest,signal:AbortSignal,status:(message:string)=>void,progress:(fraction:number)=>void):Promise<LocalResult>{
+  if(signal.aborted)return Promise.reject(new DOMException("Cancelled","AbortError"));
+  return new Promise((resolve,reject)=>{let settled=false;let worker:Worker;try{worker=new Worker(request.kind==="noise"&&request.neural?"/local-ai/noise.worker.js":"/local-ai/media.worker.js",{type:"module"});}catch{reject(new Error("Browser workers are unavailable. Try a supported desktop browser."));return;}
+    let timer:ReturnType<typeof setTimeout>;const clean=()=>{settled=true;clearTimeout(timer);worker.terminate();signal.removeEventListener("abort",abort);},abort=()=>{clean();reject(new DOMException("Cancelled","AbortError"));},arm=()=>{clearTimeout(timer);timer=setTimeout(()=>{clean();reject(new Error("Processing stopped responding. Try a shorter file."));},120000);};signal.addEventListener("abort",abort,{once:true});arm();worker.onmessage=({data})=>{if(settled)return;arm();if(data.type==="phase")status(data.value);else if(data.type==="progress")progress(data.value);else{clean();if(data.type==="done")resolve(data.result);else reject(new Error(data.message));}};worker.onerror=event=>{event.preventDefault();if(!settled){clean();reject(new Error("The worker failed. Try another file or browser."));}};try{worker.postMessage(request);}catch{clean();reject(new Error("Could not read this local file. Reselect it."));}
+  });
+}

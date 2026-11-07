@@ -1,31 +1,43 @@
+/* eslint-disable @next/next/no-img-element -- Local pre-rendered category illustration, no image service. */
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
-import { CATEGORIES, toolsIn, type ToolEntry } from "@/lib/tools/catalog";
-import { Chip, EmptyState, ToolGlyph } from "./ui";
+import { ArrowRight, ChevronRight } from "lucide-react";
+import { CATEGORIES, toolsIn, type ToolCategory, type ToolEntry } from "@/lib/tools/catalog";
+import { TOOL_ICONS } from "./toolIcons";
+import { ToolGlyph, cx } from "./ui";
+
+export function ToolBadge({ badge }: { badge?: string }) {
+  return badge ? <span className="text-xs font-medium text-subtle">{badge}</span> : null;
+}
 
 export function ToolCard({ tool }: { tool: ToolEntry }) {
-  return <Link href={tool.href} className="group flex h-full gap-4 rounded-[var(--radius-panel)] border border-edge bg-raised p-4 transition-colors duration-150 hover:border-edge-strong hover:bg-hover sm:p-5">
+  return <Link prefetch={false} href={tool.href!} className="tool-card group">
     <ToolGlyph icon={tool.icon} />
-    <div className="min-w-0 flex-1">
-      <h3 className="flex items-center gap-1 font-semibold">{tool.title}<ChevronRight aria-hidden className="size-4 text-subtle transition-transform duration-150 group-hover:translate-x-0.5" /></h3>
-      <p className="mt-1 text-sm leading-relaxed text-subtle">{tool.summary}</p>
-      <p className="mt-3 flex flex-wrap gap-1.5"><span className="sr-only">Formats: </span>{tool.formats.map(format => <Chip key={format}>{format}</Chip>)}</p>
+    <div className="min-w-0 flex-1"><h3>{tool.title}<ToolBadge badge={tool.badge} /><ChevronRight aria-hidden className="ml-auto size-4 shrink-0 text-faint" /></h3>
+      <p>{tool.summary}</p>
+      {tool.transform && <p className="tool-transform"><span className="sr-only">Turns </span>{tool.transform[0]}<ArrowRight aria-hidden size={14} /><span className="sr-only"> into </span>{tool.transform[1]}</p>}
+      {tool.note && <p className="tool-note">{tool.note}</p>}
     </div>
   </Link>;
 }
 
-/** Every working tool, grouped by category. Categories without tools say so instead of showing placeholders. */
-export function ToolDirectory() {
-  return <div className="space-y-12">{CATEGORIES.map(category => {
-    const tools = toolsIn(category.id);
-    return <section key={category.id} id={category.id} aria-labelledby={`${category.id}-tools`} className="scroll-mt-24">
-      <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-b border-edge pb-3">
-        <h2 id={`${category.id}-tools`} className="text-xl font-semibold">{category.title}</h2>
-        <p className="text-sm text-subtle">{category.blurb}</p>
-      </div>
-      {tools.length
-        ? <ul className="mt-5 grid gap-3 md:grid-cols-2 lg:grid-cols-3">{tools.map(tool => <li key={tool.href}><ToolCard tool={tool} /></li>)}</ul>
-        : <div className="mt-5"><EmptyState>{category.empty}</EmptyState></div>}
-    </section>;
-  })}</div>;
+export function PlannedTools({ tools, label }: { tools: ToolEntry[]; label: string }) {
+  return <div className="mt-4"><p className="text-sm font-semibold text-faint">Planned, not available yet</p><ul aria-label={label} className="mt-2 grid gap-x-6 gap-y-1 sm:grid-cols-2">{tools.map(tool => {
+    const Icon = TOOL_ICONS[tool.icon];
+    return <li key={tool.title} className="flex min-h-11 items-center gap-2.5 text-sm text-subtle" title={tool.summary}><Icon aria-hidden className="size-4 shrink-0" /><span>{tool.title}</span></li>;
+  })}</ul></div>;
 }
+
+export function CategorySection({ id, tools }: { id: ToolCategory; tools: ToolEntry[] }) {
+  const category = CATEGORIES.find(item => item.id === id)!;
+  const ready = tools.filter(tool => tool.status === "available"), planned = tools.filter(tool => tool.status === "planned");
+  return <section id={id} aria-labelledby={`${id}-tools`} className="scroll-mt-24">
+    <div className="category-heading"><div><h2 id={`${id}-tools`}>{category.title}<span>{ready.length} available{planned.length ? `, ${planned.length} planned` : ""}</span></h2><p>{category.blurb}</p></div><img className="category-illustration" src={`/illustrations/${id}.webp`} width={1040} height={520} alt="" loading="lazy" decoding="async" /></div>
+    {ready.length > 0 && <ul className="category-tools">{ready.map(tool => <li key={`${tool.href}-${tool.title}`}><ToolCard tool={tool} /></li>)}</ul>}
+    {planned.length > 0 && <PlannedTools tools={planned} label={`${category.title}, planned tools`} />}
+  </section>;
+}
+
+export function ToolDirectory({ className }: { className?: string }) {
+  return <div className={cx("space-y-12", className)}>{CATEGORIES.map(category => <CategorySection key={category.id} id={category.id} tools={toolsIn(category.id)} />)}</div>;
+}
+

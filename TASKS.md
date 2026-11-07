@@ -5,6 +5,42 @@ Statuses: **Not started** · **In progress** · **Implemented** (code exists, no
 
 Automated media checks use generated fixtures on Windows, including installed Chrome/Edge, Firefox and Pixel 7 viewport emulation. Earlier milestones retain their original platform notes. No task is verified on a real phone yet.
 
+## Reel Finisher 2.0 redesign and Command Center (2026-11-08)
+
+- **Tested:** black / electric-blue / orange token system (single `.site` source), defined button system, role-corrected tool surface, rebuilt homepage (real bench hero, live catalog search fragment, local model table, GSAP on the homepage only), new footer.
+- **Tested:** `/command-center` section rail, first-run guide, quick actions, category views, global Ctrl/⌘ K palette (previously unmounted), route-only favorites and recent activity (recorder previously unmounted), blocked-storage recovery. New `command-center.e2e.mjs` 15/15; site 159/159; redesign sweep 91/91 (every public route at six widths).
+- **Not done:** physical-device checks; per-tool layout recomposition beyond shared tokens and surface; full `npm run e2e` chain rerun. Details: `docs/reel-finisher-premium-redesign.md`.
+
+## Local AI and creator increment (2026-11-04)
+
+- **Tested:** real downloadable SpeechT5 WAV; RNNoise beside Light DSP; Shorts Maker with native Studio projects/exports; Lecture to Notes with editable transcripts, extractive sections/key quotes, cloze prompts and TXT/Markdown; text-PDF page extraction and chunked English WAV.
+- **Tested:** the q8 speech decoder failed a real Whisper spoken-content comparison (31.5% unique content-word recall). The same engine with its fp32 decoder passed 100% on that controlled passage. Current speech weights are 370.33 MiB plus runtime/configs. No second TTS architecture was added.
+- **Tested:** Stage 7 serial production regression 704/704, 599 unit tests (10 existing skips), real-model local suite 52/52, real Firefox speech/noise 4/4, and PDF spoken-content/workflow 24/24. One parallel run stalled on an unbounded legacy playback promise; a bounded diagnostic was added and the serial rerun passed. See the ledger for exact logs and historical gates.
+- **Tested:** pinned model revisions, separate versioned public-model cache, voice integrity recovery, exact runtime/corpus notices and privacy/format/discovery updates. Final clean production build, 605 unit tests, clean lint and full production regression **704/704** passed. Real cache/hash/network suites passed **13/13 each in Chrome, Edge and Firefox**, with zero model redownload attempts after reload/blocking, and preserved cache/project sentinels. One transient Edge upstream-config gateway failure was recorded; the explicit retry passed. Deployment/device/perceptual gates remain in the delivery report.
+- **Not implemented:** neural arbitrary-mix vocal separation (unresolved weight permission/contract), optional local LLM ranking/generative notes, Kokoro, OCR and extra synthesized languages. Existing DSP remains usable. No payments or MediaPipe work is included.
+- Model inventory, exact limits and remaining tests: `docs/local-models.md` and `docs/local-ai-implementation.md`.
+
+## Missing screenshot tools, local-only increment (2026-11-01)
+
+- **Tested:** eight new routes for transcription, video subtitle translation, generic English AI dubbing, spectral noise reduction, stereo centre/side separation, centre-track video sound replacement, script cards and photo animations. Existing tools/editor are reused. No new npm dependency or paid API.
+- **Tested:** production model-inference suite 36/36: actual Whisper recognition, TXT/SRT/VTT, actual SpeechT5 dubbing and narrated caption-card MP4, plus decoded DSP/video outputs, consent, cleanup, mobile viewport and same-origin GET/HEAD checks. New speech workers use the editor's installed Transformers runtime without a root ONNX install.
+- **Implemented, not accuracy-verified:** non-English speech translation quality and additional browser-native translation language packs. Runtime support and explicit downloads are required; there is no cloud fallback.
+- **Not implemented:** neural arbitrary-mix stems, voice cloning, multilingual synthesized output, lip sync or generative scene/subject video. The stereo and card/photo tools state these limits and do not carry misleading AI badges.
+- **Tested:** final clean production build, lint/typecheck, 582 unit tests (ten existing skips), full regression 643/643, plus separate actual-model inference 36/36 and independent downloaded-video playback 2/2. Full regression intentionally skips large-model inference by default and one database scenario without its URL; the separate inference run covers real models.
+- Exact limits, changed files, results and manual gates: `docs/missing-local-tools.md`.
+
+## Real tools, phase 1 (2026-11-01)
+
+- **Tested:** Passport Photo Maker (`/tools/passport-photo`): six printed sizes at 300 DPI (size only, no compliance claims), drag/keyboard positioning, zoom, background fill for uncovered areas, JPEG photo plus 6 × 4 in print sheet. Real outputs verified by ffprobe/ffmpeg pixel checks (`tests/e2e/passport.e2e.mjs`, 13/13). Image engine gained an additive crop rectangle and fill; existing requests are unchanged.
+- **Tested:** Image Resizer optional target file size (JPEG/WebP) using the existing quality search at the chosen dimensions; percentage mode.
+- **Tested:** tool catalog with `available`/`planned` status; planned tools have no route and are shown as "Not available yet". Collapsible desktop sidebar.
+- **Tested:** HEIC to JPG (`/tools/heic-to-jpg`): libheif WASM in a worker, batch of up to 20, rotation applied, lazy decoder load, cancellation; real JPEG dimensions and pixel colours verified (`tests/e2e/heic.e2e.mjs`, 11/11).
+- **Tested:** Background Remover (`/tools/background-remover`): U²-Net-p on ONNX Runtime Web in a worker, transparent PNG/WebP or colour background, lazy model load from this site; output alpha and colour sampled with ffmpeg (`tests/e2e/background.e2e.mjs`, 13/13). Quality on real portraits (hair, fine edges) not yet evaluated.
+- **Tested:** Trim Video (fast/precise), Remove Audio, Convert to MP4, Video to GIF, Compress Video to Size, Extract Audio, Audio Converter, Audio Cutter, Increase Volume, Audio to Video: one media worker (`src/lib/mediatools`), real outputs inspected with ffprobe/ffmpeg (`tests/e2e/media.e2e.mjs`, 42/42).
+- **Implemented (UI-checked only):** Text to Speech with browser voices; playback cannot be captured, so there is no download. Real voice output depends on the device and was not automated.
+- **Linked, not new:** Auto Subtitles and Automatic Editing open the existing Reel Studio features.
+- **Not started (blocked, see docs/tools-matrix.md):** Transcribe to Text, Noise Remover, Vocal Remover, Remove Music, Video Translator, AI Dubbing, Text to Video, Image to Video. Release review of LGPL obligations for libheif.
+
 ## Tool pages rebuilt on a shared tool surface (2026-11-01)
 
 - **Tested:** Image Compressor rebuilt from scratch as the reference. Shared pieces in `src/components/tools/surface/` and `src/components/tools/ToolPageLayout.tsx`; photo job state in `src/components/images/useImageJob.ts` (same worker calls, moved verbatim). Image Resizer (live shape preview, link toggle, scale and fit presets), Image Format Converter (format radios with traits, JPEG background) and Video Compressor (real encoding progress, measured result) rebuilt on them. The old shared `ImageTool` and `Workspace` components are removed.
