@@ -20,6 +20,7 @@
     "e2e:local": "node tests/e2e/localtools.e2e.mjs && node tests/e2e/notes.e2e.mjs && node tests/e2e/pdf-audio.e2e.mjs"
   },
   "dependencies": {
+    "@vercel/speed-insights": "^2.1.0",
     "gifenc": "1.0.3",
     "libheif-js": "1.23.5",
     "lucide-react": "^0.555.0",
