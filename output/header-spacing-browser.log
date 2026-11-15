@@ -1,0 +1,491 @@
+PASS  1920 /: shared 20px gap without double padding
+PASS  1920 /: no horizontal clipping
+PASS  1920 /: header/content horizontal alignment
+PASS  1920 /: expansion preserves vertical positions and gap
+PASS  1920 /: real content width still resizes
+PASS  1920 /: collapse restores width
+PASS  1920 /: sticky header remains at viewport top
+PASS  1920 /tools: shared 20px gap without double padding
+PASS  1920 /tools: no horizontal clipping
+PASS  1920 /tools: header/content horizontal alignment
+PASS  1920 /tools: expansion preserves vertical positions and gap
+PASS  1920 /tools: real content width still resizes
+PASS  1920 /tools: collapse restores width
+PASS  1920 /tools: sticky header remains at viewport top
+PASS  1920 /tools?category=photo: shared 20px gap without double padding
+PASS  1920 /tools?category=photo: no horizontal clipping
+PASS  1920 /tools?category=photo: header/content horizontal alignment
+PASS  1920 /tools?category=photo: expansion preserves vertical positions and gap
+PASS  1920 /tools?category=photo: real content width still resizes
+PASS  1920 /tools?category=photo: collapse restores width
+PASS  1920 /tools?category=photo: sticky header remains at viewport top
+PASS  1920 /tools?category=video: shared 20px gap without double padding
+PASS  1920 /tools?category=video: no horizontal clipping
+PASS  1920 /tools?category=video: header/content horizontal alignment
+PASS  1920 /tools?category=video: expansion preserves vertical positions and gap
+PASS  1920 /tools?category=video: real content width still resizes
+PASS  1920 /tools?category=video: collapse restores width
+PASS  1920 /tools?category=video: sticky header remains at viewport top
+PASS  1920 /tools?category=audio: shared 20px gap without double padding
+PASS  1920 /tools?category=audio: no horizontal clipping
+PASS  1920 /tools?category=audio: header/content horizontal alignment
+PASS  1920 /tools?category=audio: expansion preserves vertical positions and gap
+PASS  1920 /tools?category=audio: real content width still resizes
+PASS  1920 /tools?category=audio: collapse restores width
+PASS  1920 /tools?category=audio: sticky header remains at viewport top
+PASS  1920 /tools?category=ai: shared 20px gap without double padding
+PASS  1920 /tools?category=ai: no horizontal clipping
+PASS  1920 /tools?category=ai: header/content horizontal alignment
+PASS  1920 /tools?category=ai: expansion preserves vertical positions and gap
+PASS  1920 /tools?category=ai: real content width still resizes
+PASS  1920 /tools?category=ai: collapse restores width
+PASS  1920 /tools?category=ai: sticky header remains at viewport top
+PASS  1920 /tools/image-compressor: shared 20px gap without double padding
+PASS  1920 /tools/image-compressor: no horizontal clipping
+PASS  1920 /tools/image-compressor: header/content horizontal alignment
+PASS  1920 /tools/image-compressor: expansion preserves vertical positions and gap
+PASS  1920 /tools/image-compressor: real content width still resizes
+PASS  1920 /tools/image-compressor: collapse restores width
+PASS  1920 /tools/image-compressor: sticky header remains at viewport top
+PASS  1920 /command-center: shared 20px gap without double padding
+PASS  1920 /command-center: no horizontal clipping
+PASS  1920 /command-center: header/content horizontal alignment
+PASS  1920 /command-center: expansion preserves vertical positions and gap
+PASS  1920 /command-center: real content width still resizes
+PASS  1920 /command-center: collapse restores width
+PASS  1920 /command-center: sticky header remains at viewport top
+PASS  1920 /supported-formats: shared 20px gap without double padding
+PASS  1920 /supported-formats: no horizontal clipping
+PASS  1920 /supported-formats: header/content horizontal alignment
+PASS  1920 /supported-formats: expansion preserves vertical positions and gap
+PASS  1920 /supported-formats: real content width still resizes
+PASS  1920 /supported-formats: collapse restores width
+PASS  1920 /supported-formats: sticky header remains at viewport top
+PASS  1920 /privacy: shared 20px gap without double padding
+PASS  1920 /privacy: no horizontal clipping
+PASS  1920 /privacy: header/content horizontal alignment
+PASS  1920 /privacy: expansion preserves vertical positions and gap
+PASS  1920 /privacy: real content width still resizes
+PASS  1920 /privacy: collapse restores width
+PASS  1920 /privacy: sticky header remains at viewport top
+PASS  1600 /: shared 20px gap without double padding
+PASS  1600 /: no horizontal clipping
+PASS  1600 /: header/content horizontal alignment
+PASS  1600 /: expansion preserves vertical positions and gap
+PASS  1600 /: real content width still resizes
+PASS  1600 /: collapse restores width
+PASS  1600 /: sticky header remains at viewport top
+PASS  1600 /tools: shared 20px gap without double padding
+PASS  1600 /tools: no horizontal clipping
+PASS  1600 /tools: header/content horizontal alignment
+PASS  1600 /tools: expansion preserves vertical positions and gap
+PASS  1600 /tools: real content width still resizes
+PASS  1600 /tools: collapse restores width
+PASS  1600 /tools: sticky header remains at viewport top
+PASS  1600 /tools?category=photo: shared 20px gap without double padding
+PASS  1600 /tools?category=photo: no horizontal clipping
+PASS  1600 /tools?category=photo: header/content horizontal alignment
+PASS  1600 /tools?category=photo: expansion preserves vertical positions and gap
+PASS  1600 /tools?category=photo: real content width still resizes
+PASS  1600 /tools?category=photo: collapse restores width
+PASS  1600 /tools?category=photo: sticky header remains at viewport top
+PASS  1600 /tools?category=video: shared 20px gap without double padding
+PASS  1600 /tools?category=video: no horizontal clipping
+PASS  1600 /tools?category=video: header/content horizontal alignment
+PASS  1600 /tools?category=video: expansion preserves vertical positions and gap
+PASS  1600 /tools?category=video: real content width still resizes
+PASS  1600 /tools?category=video: collapse restores width
+PASS  1600 /tools?category=video: sticky header remains at viewport top
+PASS  1600 /tools?category=audio: shared 20px gap without double padding
+PASS  1600 /tools?category=audio: no horizontal clipping
+PASS  1600 /tools?category=audio: header/content horizontal alignment
+PASS  1600 /tools?category=audio: expansion preserves vertical positions and gap
+PASS  1600 /tools?category=audio: real content width still resizes
+PASS  1600 /tools?category=audio: collapse restores width
+PASS  1600 /tools?category=audio: sticky header remains at viewport top
+PASS  1600 /tools?category=ai: shared 20px gap without double padding
+PASS  1600 /tools?category=ai: no horizontal clipping
+PASS  1600 /tools?category=ai: header/content horizontal alignment
+PASS  1600 /tools?category=ai: expansion preserves vertical positions and gap
+PASS  1600 /tools?category=ai: real content width still resizes
+PASS  1600 /tools?category=ai: collapse restores width
+PASS  1600 /tools?category=ai: sticky header remains at viewport top
+PASS  1600 /tools/image-compressor: shared 20px gap without double padding
+PASS  1600 /tools/image-compressor: no horizontal clipping
+PASS  1600 /tools/image-compressor: header/content horizontal alignment
+PASS  1600 /tools/image-compressor: expansion preserves vertical positions and gap
+PASS  1600 /tools/image-compressor: real content width still resizes
+PASS  1600 /tools/image-compressor: collapse restores width
+PASS  1600 /tools/image-compressor: sticky header remains at viewport top
+PASS  1600 /command-center: shared 20px gap without double padding
+PASS  1600 /command-center: no horizontal clipping
+PASS  1600 /command-center: header/content horizontal alignment
+PASS  1600 /command-center: expansion preserves vertical positions and gap
+PASS  1600 /command-center: real content width still resizes
+PASS  1600 /command-center: collapse restores width
+PASS  1600 /command-center: sticky header remains at viewport top
+PASS  1600 /supported-formats: shared 20px gap without double padding
+PASS  1600 /supported-formats: no horizontal clipping
+PASS  1600 /supported-formats: header/content horizontal alignment
+PASS  1600 /supported-formats: expansion preserves vertical positions and gap
+PASS  1600 /supported-formats: real content width still resizes
+PASS  1600 /supported-formats: collapse restores width
+PASS  1600 /supported-formats: sticky header remains at viewport top
+PASS  1600 /privacy: shared 20px gap without double padding
+PASS  1600 /privacy: no horizontal clipping
+PASS  1600 /privacy: header/content horizontal alignment
+PASS  1600 /privacy: expansion preserves vertical positions and gap
+PASS  1600 /privacy: real content width still resizes
+PASS  1600 /privacy: collapse restores width
+PASS  1600 /privacy: sticky header remains at viewport top
+PASS  1440 /: shared 20px gap without double padding
+PASS  1440 /: no horizontal clipping
+PASS  1440 /: header/content horizontal alignment
+PASS  1440 /: expansion preserves vertical positions and gap
+PASS  1440 /: real content width still resizes
+PASS  1440 /: collapse restores width
+PASS  1440 /: sticky header remains at viewport top
+PASS  1440 /tools: shared 20px gap without double padding
+PASS  1440 /tools: no horizontal clipping
+PASS  1440 /tools: header/content horizontal alignment
+PASS  1440 /tools: expansion preserves vertical positions and gap
+PASS  1440 /tools: real content width still resizes
+PASS  1440 /tools: collapse restores width
+PASS  1440 /tools: sticky header remains at viewport top
+PASS  1440 /tools?category=photo: shared 20px gap without double padding
+PASS  1440 /tools?category=photo: no horizontal clipping
+PASS  1440 /tools?category=photo: header/content horizontal alignment
+PASS  1440 /tools?category=photo: expansion preserves vertical positions and gap
+PASS  1440 /tools?category=photo: real content width still resizes
+PASS  1440 /tools?category=photo: collapse restores width
+PASS  1440 /tools?category=photo: sticky header remains at viewport top
+PASS  1440 /tools?category=video: shared 20px gap without double padding
+PASS  1440 /tools?category=video: no horizontal clipping
+PASS  1440 /tools?category=video: header/content horizontal alignment
+PASS  1440 /tools?category=video: expansion preserves vertical positions and gap
+PASS  1440 /tools?category=video: real content width still resizes
+PASS  1440 /tools?category=video: collapse restores width
+PASS  1440 /tools?category=video: sticky header remains at viewport top
+PASS  1440 /tools?category=audio: shared 20px gap without double padding
+PASS  1440 /tools?category=audio: no horizontal clipping
+PASS  1440 /tools?category=audio: header/content horizontal alignment
+PASS  1440 /tools?category=audio: expansion preserves vertical positions and gap
+PASS  1440 /tools?category=audio: real content width still resizes
+PASS  1440 /tools?category=audio: collapse restores width
+PASS  1440 /tools?category=audio: sticky header remains at viewport top
+PASS  1440 /tools?category=ai: shared 20px gap without double padding
+PASS  1440 /tools?category=ai: no horizontal clipping
+PASS  1440 /tools?category=ai: header/content horizontal alignment
+PASS  1440 /tools?category=ai: expansion preserves vertical positions and gap
+PASS  1440 /tools?category=ai: real content width still resizes
+PASS  1440 /tools?category=ai: collapse restores width
+PASS  1440 /tools?category=ai: sticky header remains at viewport top
+PASS  1440 /tools/image-compressor: shared 20px gap without double padding
+PASS  1440 /tools/image-compressor: no horizontal clipping
+PASS  1440 /tools/image-compressor: header/content horizontal alignment
+PASS  1440 /tools/image-compressor: expansion preserves vertical positions and gap
+PASS  1440 /tools/image-compressor: real content width still resizes
+PASS  1440 /tools/image-compressor: collapse restores width
+PASS  1440 /tools/image-compressor: sticky header remains at viewport top
+PASS  1440 /command-center: shared 20px gap without double padding
+PASS  1440 /command-center: no horizontal clipping
+PASS  1440 /command-center: header/content horizontal alignment
+PASS  1440 /command-center: expansion preserves vertical positions and gap
+PASS  1440 /command-center: real content width still resizes
+PASS  1440 /command-center: collapse restores width
+PASS  1440 /command-center: sticky header remains at viewport top
+PASS  1440 /supported-formats: shared 20px gap without double padding
+PASS  1440 /supported-formats: no horizontal clipping
+PASS  1440 /supported-formats: header/content horizontal alignment
+PASS  1440 /supported-formats: expansion preserves vertical positions and gap
+PASS  1440 /supported-formats: real content width still resizes
+PASS  1440 /supported-formats: collapse restores width
+PASS  1440 /supported-formats: sticky header remains at viewport top
+PASS  1440 /privacy: shared 20px gap without double padding
+PASS  1440 /privacy: no horizontal clipping
+PASS  1440 /privacy: header/content horizontal alignment
+PASS  1440 /privacy: expansion preserves vertical positions and gap
+PASS  1440 /privacy: real content width still resizes
+PASS  1440 /privacy: collapse restores width
+PASS  1440 /privacy: sticky header remains at viewport top
+PASS  1280 /: shared 20px gap without double padding
+PASS  1280 /: no horizontal clipping
+PASS  1280 /: header/content horizontal alignment
+PASS  1280 /: expansion preserves vertical positions and gap
+PASS  1280 /: real content width still resizes
+PASS  1280 /: collapse restores width
+PASS  1280 /: sticky header remains at viewport top
+PASS  1280 /tools: shared 20px gap without double padding
+PASS  1280 /tools: no horizontal clipping
+PASS  1280 /tools: header/content horizontal alignment
+PASS  1280 /tools: expansion preserves vertical positions and gap
+PASS  1280 /tools: real content width still resizes
+PASS  1280 /tools: collapse restores width
+PASS  1280 /tools: sticky header remains at viewport top
+PASS  1280 /tools?category=photo: shared 20px gap without double padding
+PASS  1280 /tools?category=photo: no horizontal clipping
+PASS  1280 /tools?category=photo: header/content horizontal alignment
+PASS  1280 /tools?category=photo: expansion preserves vertical positions and gap
+PASS  1280 /tools?category=photo: real content width still resizes
+PASS  1280 /tools?category=photo: collapse restores width
+PASS  1280 /tools?category=photo: sticky header remains at viewport top
+PASS  1280 /tools?category=video: shared 20px gap without double padding
+PASS  1280 /tools?category=video: no horizontal clipping
+PASS  1280 /tools?category=video: header/content horizontal alignment
+PASS  1280 /tools?category=video: expansion preserves vertical positions and gap
+PASS  1280 /tools?category=video: real content width still resizes
+PASS  1280 /tools?category=video: collapse restores width
+PASS  1280 /tools?category=video: sticky header remains at viewport top
+PASS  1280 /tools?category=audio: shared 20px gap without double padding
+PASS  1280 /tools?category=audio: no horizontal clipping
+PASS  1280 /tools?category=audio: header/content horizontal alignment
+PASS  1280 /tools?category=audio: expansion preserves vertical positions and gap
+PASS  1280 /tools?category=audio: real content width still resizes
+PASS  1280 /tools?category=audio: collapse restores width
+PASS  1280 /tools?category=audio: sticky header remains at viewport top
+PASS  1280 /tools?category=ai: shared 20px gap without double padding
+PASS  1280 /tools?category=ai: no horizontal clipping
+PASS  1280 /tools?category=ai: header/content horizontal alignment
+PASS  1280 /tools?category=ai: expansion preserves vertical positions and gap
+PASS  1280 /tools?category=ai: real content width still resizes
+PASS  1280 /tools?category=ai: collapse restores width
+PASS  1280 /tools?category=ai: sticky header remains at viewport top
+PASS  1280 /tools/image-compressor: shared 20px gap without double padding
+PASS  1280 /tools/image-compressor: no horizontal clipping
+PASS  1280 /tools/image-compressor: header/content horizontal alignment
+PASS  1280 /tools/image-compressor: expansion preserves vertical positions and gap
+PASS  1280 /tools/image-compressor: real content width still resizes
+PASS  1280 /tools/image-compressor: collapse restores width
+PASS  1280 /tools/image-compressor: sticky header remains at viewport top
+PASS  1280 /command-center: shared 20px gap without double padding
+PASS  1280 /command-center: no horizontal clipping
+PASS  1280 /command-center: header/content horizontal alignment
+PASS  1280 /command-center: expansion preserves vertical positions and gap
+PASS  1280 /command-center: real content width still resizes
+PASS  1280 /command-center: collapse restores width
+PASS  1280 /command-center: sticky header remains at viewport top
+PASS  1280 /supported-formats: shared 20px gap without double padding
+PASS  1280 /supported-formats: no horizontal clipping
+PASS  1280 /supported-formats: header/content horizontal alignment
+PASS  1280 /supported-formats: expansion preserves vertical positions and gap
+PASS  1280 /supported-formats: real content width still resizes
+PASS  1280 /supported-formats: collapse restores width
+PASS  1280 /supported-formats: sticky header remains at viewport top
+PASS  1280 /privacy: shared 20px gap without double padding
+PASS  1280 /privacy: no horizontal clipping
+PASS  1280 /privacy: header/content horizontal alignment
+PASS  1280 /privacy: expansion preserves vertical positions and gap
+PASS  1280 /privacy: real content width still resizes
+PASS  1280 /privacy: collapse restores width
+PASS  1280 /privacy: sticky header remains at viewport top
+PASS  1024 /: shared 20px gap without double padding
+PASS  1024 /: no horizontal clipping
+PASS  1024 /: header/content horizontal alignment
+FAIL  1024 /: expansion preserves vertical positions and gap
+PASS  1024 /: real content width still resizes
+PASS  1024 /: collapse restores width
+PASS  1024 /: sticky header remains at viewport top
+PASS  1024 /tools: shared 20px gap without double padding
+PASS  1024 /tools: no horizontal clipping
+PASS  1024 /tools: header/content horizontal alignment
+FAIL  1024 /tools: expansion preserves vertical positions and gap
+PASS  1024 /tools: real content width still resizes
+PASS  1024 /tools: collapse restores width
+PASS  1024 /tools: sticky header remains at viewport top
+PASS  1024 /tools?category=photo: shared 20px gap without double padding
+PASS  1024 /tools?category=photo: no horizontal clipping
+PASS  1024 /tools?category=photo: header/content horizontal alignment
+FAIL  1024 /tools?category=photo: expansion preserves vertical positions and gap
+PASS  1024 /tools?category=photo: real content width still resizes
+PASS  1024 /tools?category=photo: collapse restores width
+PASS  1024 /tools?category=photo: sticky header remains at viewport top
+PASS  1024 /tools?category=video: shared 20px gap without double padding
+PASS  1024 /tools?category=video: no horizontal clipping
+PASS  1024 /tools?category=video: header/content horizontal alignment
+FAIL  1024 /tools?category=video: expansion preserves vertical positions and gap
+PASS  1024 /tools?category=video: real content width still resizes
+PASS  1024 /tools?category=video: collapse restores width
+PASS  1024 /tools?category=video: sticky header remains at viewport top
+PASS  1024 /tools?category=audio: shared 20px gap without double padding
+PASS  1024 /tools?category=audio: no horizontal clipping
+PASS  1024 /tools?category=audio: header/content horizontal alignment
+FAIL  1024 /tools?category=audio: expansion preserves vertical positions and gap
+PASS  1024 /tools?category=audio: real content width still resizes
+PASS  1024 /tools?category=audio: collapse restores width
+PASS  1024 /tools?category=audio: sticky header remains at viewport top
+PASS  1024 /tools?category=ai: shared 20px gap without double padding
+PASS  1024 /tools?category=ai: no horizontal clipping
+PASS  1024 /tools?category=ai: header/content horizontal alignment
+FAIL  1024 /tools?category=ai: expansion preserves vertical positions and gap
+PASS  1024 /tools?category=ai: real content width still resizes
+PASS  1024 /tools?category=ai: collapse restores width
+PASS  1024 /tools?category=ai: sticky header remains at viewport top
+PASS  1024 /tools/image-compressor: shared 20px gap without double padding
+PASS  1024 /tools/image-compressor: no horizontal clipping
+PASS  1024 /tools/image-compressor: header/content horizontal alignment
+FAIL  1024 /tools/image-compressor: expansion preserves vertical positions and gap
+PASS  1024 /tools/image-compressor: real content width still resizes
+PASS  1024 /tools/image-compressor: collapse restores width
+PASS  1024 /tools/image-compressor: sticky header remains at viewport top
+PASS  1024 /command-center: shared 20px gap without double padding
+PASS  1024 /command-center: no horizontal clipping
+PASS  1024 /command-center: header/content horizontal alignment
+FAIL  1024 /command-center: expansion preserves vertical positions and gap
+PASS  1024 /command-center: real content width still resizes
+PASS  1024 /command-center: collapse restores width
+PASS  1024 /command-center: sticky header remains at viewport top
+PASS  1024 /supported-formats: shared 20px gap without double padding
+PASS  1024 /supported-formats: no horizontal clipping
+PASS  1024 /supported-formats: header/content horizontal alignment
+FAIL  1024 /supported-formats: expansion preserves vertical positions and gap
+PASS  1024 /supported-formats: real content width still resizes
+PASS  1024 /supported-formats: collapse restores width
+PASS  1024 /supported-formats: sticky header remains at viewport top
+PASS  1024 /privacy: shared 20px gap without double padding
+PASS  1024 /privacy: no horizontal clipping
+PASS  1024 /privacy: header/content horizontal alignment
+FAIL  1024 /privacy: expansion preserves vertical positions and gap
+PASS  1024 /privacy: real content width still resizes
+PASS  1024 /privacy: collapse restores width
+PASS  1024 /privacy: sticky header remains at viewport top
+PASS  768 /: shared 20px gap without double padding
+PASS  768 /: no horizontal clipping
+PASS  768 /: sticky header remains at viewport top
+PASS  768 /tools: shared 20px gap without double padding
+PASS  768 /tools: no horizontal clipping
+PASS  768 /tools: sticky header remains at viewport top
+PASS  768 /tools?category=photo: shared 20px gap without double padding
+PASS  768 /tools?category=photo: no horizontal clipping
+PASS  768 /tools?category=photo: sticky header remains at viewport top
+PASS  768 /tools?category=video: shared 20px gap without double padding
+PASS  768 /tools?category=video: no horizontal clipping
+PASS  768 /tools?category=video: sticky header remains at viewport top
+PASS  768 /tools?category=audio: shared 20px gap without double padding
+PASS  768 /tools?category=audio: no horizontal clipping
+PASS  768 /tools?category=audio: sticky header remains at viewport top
+PASS  768 /tools?category=ai: shared 20px gap without double padding
+PASS  768 /tools?category=ai: no horizontal clipping
+PASS  768 /tools?category=ai: sticky header remains at viewport top
+PASS  768 /tools/image-compressor: shared 20px gap without double padding
+PASS  768 /tools/image-compressor: no horizontal clipping
+PASS  768 /tools/image-compressor: sticky header remains at viewport top
+PASS  768 /command-center: shared 20px gap without double padding
+PASS  768 /command-center: no horizontal clipping
+PASS  768 /command-center: sticky header remains at viewport top
+PASS  768 /supported-formats: shared 20px gap without double padding
+PASS  768 /supported-formats: no horizontal clipping
+PASS  768 /supported-formats: sticky header remains at viewport top
+PASS  768 /privacy: shared 20px gap without double padding
+PASS  768 /privacy: no horizontal clipping
+PASS  768 /privacy: sticky header remains at viewport top
+PASS  430 /: shared 20px gap without double padding
+PASS  430 /: no horizontal clipping
+PASS  430 /: sticky header remains at viewport top
+PASS  430 /tools: shared 20px gap without double padding
+PASS  430 /tools: no horizontal clipping
+PASS  430 /tools: sticky header remains at viewport top
+PASS  430 /tools?category=photo: shared 20px gap without double padding
+PASS  430 /tools?category=photo: no horizontal clipping
+PASS  430 /tools?category=photo: sticky header remains at viewport top
+PASS  430 /tools?category=video: shared 20px gap without double padding
+PASS  430 /tools?category=video: no horizontal clipping
+PASS  430 /tools?category=video: sticky header remains at viewport top
+PASS  430 /tools?category=audio: shared 20px gap without double padding
+PASS  430 /tools?category=audio: no horizontal clipping
+PASS  430 /tools?category=audio: sticky header remains at viewport top
+PASS  430 /tools?category=ai: shared 20px gap without double padding
+PASS  430 /tools?category=ai: no horizontal clipping
+PASS  430 /tools?category=ai: sticky header remains at viewport top
+PASS  430 /tools/image-compressor: shared 20px gap without double padding
+PASS  430 /tools/image-compressor: no horizontal clipping
+PASS  430 /tools/image-compressor: sticky header remains at viewport top
+PASS  430 /command-center: shared 20px gap without double padding
+PASS  430 /command-center: no horizontal clipping
+PASS  430 /command-center: sticky header remains at viewport top
+PASS  430 /supported-formats: shared 20px gap without double padding
+PASS  430 /supported-formats: no horizontal clipping
+PASS  430 /supported-formats: sticky header remains at viewport top
+PASS  430 /privacy: shared 20px gap without double padding
+PASS  430 /privacy: no horizontal clipping
+PASS  430 /privacy: sticky header remains at viewport top
+PASS  390 /: shared 20px gap without double padding
+PASS  390 /: no horizontal clipping
+PASS  390 /: sticky header remains at viewport top
+PASS  mobile drawer opens above page
+PASS  mobile drawer restores focus
+PASS  390 /tools: shared 20px gap without double padding
+PASS  390 /tools: no horizontal clipping
+PASS  390 /tools: sticky header remains at viewport top
+PASS  390 /tools?category=photo: shared 20px gap without double padding
+PASS  390 /tools?category=photo: no horizontal clipping
+PASS  390 /tools?category=photo: sticky header remains at viewport top
+PASS  390 /tools?category=video: shared 20px gap without double padding
+PASS  390 /tools?category=video: no horizontal clipping
+PASS  390 /tools?category=video: sticky header remains at viewport top
+PASS  390 /tools?category=audio: shared 20px gap without double padding
+PASS  390 /tools?category=audio: no horizontal clipping
+PASS  390 /tools?category=audio: sticky header remains at viewport top
+PASS  390 /tools?category=ai: shared 20px gap without double padding
+PASS  390 /tools?category=ai: no horizontal clipping
+PASS  390 /tools?category=ai: sticky header remains at viewport top
+PASS  390 /tools/image-compressor: shared 20px gap without double padding
+PASS  390 /tools/image-compressor: no horizontal clipping
+PASS  390 /tools/image-compressor: sticky header remains at viewport top
+PASS  390 /command-center: shared 20px gap without double padding
+PASS  390 /command-center: no horizontal clipping
+PASS  390 /command-center: sticky header remains at viewport top
+PASS  390 /supported-formats: shared 20px gap without double padding
+PASS  390 /supported-formats: no horizontal clipping
+PASS  390 /supported-formats: sticky header remains at viewport top
+PASS  390 /privacy: shared 20px gap without double padding
+PASS  390 /privacy: no horizontal clipping
+PASS  390 /privacy: sticky header remains at viewport top
+PASS  360 /: shared 20px gap without double padding
+PASS  360 /: no horizontal clipping
+PASS  360 /: sticky header remains at viewport top
+PASS  360 /tools: shared 20px gap without double padding
+PASS  360 /tools: no horizontal clipping
+PASS  360 /tools: sticky header remains at viewport top
+PASS  360 /tools?category=photo: shared 20px gap without double padding
+PASS  360 /tools?category=photo: no horizontal clipping
+PASS  360 /tools?category=photo: sticky header remains at viewport top
+PASS  360 /tools?category=video: shared 20px gap without double padding
+PASS  360 /tools?category=video: no horizontal clipping
+PASS  360 /tools?category=video: sticky header remains at viewport top
+PASS  360 /tools?category=audio: shared 20px gap without double padding
+PASS  360 /tools?category=audio: no horizontal clipping
+PASS  360 /tools?category=audio: sticky header remains at viewport top
+PASS  360 /tools?category=ai: shared 20px gap without double padding
+PASS  360 /tools?category=ai: no horizontal clipping
+PASS  360 /tools?category=ai: sticky header remains at viewport top
+PASS  360 /tools/image-compressor: shared 20px gap without double padding
+PASS  360 /tools/image-compressor: no horizontal clipping
+PASS  360 /tools/image-compressor: sticky header remains at viewport top
+PASS  360 /command-center: shared 20px gap without double padding
+PASS  360 /command-center: no horizontal clipping
+PASS  360 /command-center: sticky header remains at viewport top
+PASS  360 /supported-formats: shared 20px gap without double padding
+PASS  360 /supported-formats: no horizontal clipping
+PASS  360 /supported-formats: sticky header remains at viewport top
+PASS  360 /privacy: shared 20px gap without double padding
+PASS  360 /privacy: no horizontal clipping
+PASS  360 /privacy: sticky header remains at viewport top
+PASS  /tools/pdf-to-audio: workspace inherits shared gap
+PASS  /tools/lecture-to-notes: workspace inherits shared gap
+PASS  /tools/video-compressor: workspace inherits shared gap
+PASS  /tools/trim-video: workspace inherits shared gap
+PASS  /tools/video-to-gif: workspace inherits shared gap
+PASS  /tools/compress-video-to-size: workspace inherits shared gap
+PASS  /tools/convert-to-mp4: workspace inherits shared gap
+PASS  /tools/remove-audio: workspace inherits shared gap
+PASS  /tools/audio-converter: workspace inherits shared gap
+PASS  /tools/extract-audio: workspace inherits shared gap
+PASS  /tools/audio-cutter: workspace inherits shared gap
+PASS  /tools/increase-volume: workspace inherits shared gap
+PASS  /tools/audio-to-video: workspace inherits shared gap
+PASS  /tools/text-to-speech: workspace inherits shared gap
+PASS  /tools/heic-to-jpg: workspace inherits shared gap
+PASS  /tools/background-remover: workspace inherits shared gap
+PASS  /tools/passport-photo: workspace inherits shared gap
+
+479/489 checks passed

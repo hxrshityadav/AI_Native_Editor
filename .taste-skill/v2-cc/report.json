@@ -1,0 +1,1688 @@
+{
+ "url": "http://localhost:3000/command-center",
+ "at": "2026-11-07T18:05:06.627Z",
+ "allow": [],
+ "viewports": [
+  {
+   "width": 1440,
+   "height": 900,
+   "load": "load",
+   "screens": 2,
+   "filled": [
+    0.89,
+    0.9
+   ],
+   "motion": {
+    "elements": 1,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 1,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "page": {
+     "height": 1601,
+     "screens": 1.8,
+     "words": 398,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 69,
+     "sections": 5,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Command Center",
+     "words": 2,
+     "chars": 14,
+     "lines": 1,
+     "size": 36,
+     "vw": 2.5,
+     "font": "RF Display",
+     "weight": 700,
+     "tracking": -0.02,
+     "leading": 1.1,
+     "top": 40,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "Command Center",
+     "words": 2,
+     "lines": 1,
+     "size": 36,
+     "font": "RF Display"
+    },
+    "headings": [
+     {
+      "text": "Command Center",
+      "words": 2,
+      "chars": 14,
+      "lines": 1,
+      "size": 36,
+      "vw": 2.5,
+      "font": "RF Display",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.37,
+      "top": 40,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Reel Finisher",
+      "words": 2,
+      "chars": 13,
+      "lines": 1,
+      "size": 151.2,
+      "vw": 10.5,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.045,
+      "leading": 0.9,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.78,
+      "top": 1340,
+      "tag": "p",
+      "kind": "statement"
+     }
+    ],
+    "headingSummary": {
+     "count": 2,
+     "maxLines": 1,
+     "over2Lines": 0,
+     "statements": 1,
+     "centered": 0,
+     "medianWords": 2,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "system-ui",
+       "share": 0.94,
+       "mono": false
+      },
+      {
+       "family": "RF Display",
+       "share": 0.06,
+       "mono": false
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      24,
+      36,
+      151
+     ],
+     "sizeCount": 9,
+     "notLoaded": [],
+     "body": {
+      "font": "system-ui",
+      "size": 14,
+      "leading": 1.55,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 8
+     },
+     "measureChars": 63,
+     "max": {
+      "size": 151.2,
+      "vw": 10.5,
+      "font": "RF Display",
+      "text": "Reel Finisher"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0.02,
+     "centerShare": 0,
+     "smallText": 0
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#0a0a0a",
+     "bodyBgHsl": {
+      "h": 0,
+      "s": 0,
+      "l": 0.04
+     },
+     "dark": true,
+     "sectionBgs": [
+      {
+       "color": "#08090b",
+       "top": 0,
+       "hsl": {
+        "h": 220,
+        "s": 0.16,
+        "l": 0.04
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#a0a9b7",
+       "share": 0.59
+      },
+      {
+       "color": "#f5f7fa",
+       "share": 0.15
+      },
+      {
+       "color": "#d3d9e2",
+       "share": 0.14
+      },
+      {
+       "color": "#8b95a6",
+       "share": 0.1
+      },
+      {
+       "color": "#4d88ff",
+       "share": 0.01
+      }
+     ],
+     "button": {
+      "bg": "#181f2b",
+      "hsl": {
+       "h": 218,
+       "s": 0.28,
+       "l": 0.13
+      },
+      "fg": "#f5f7fa"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 4,
+     "inHero": 4,
+     "radius": 8,
+     "height": 44,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Search tools K",
+      "Command Center",
+      "Search tools K",
+      "Overview"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 0,
+     "hairlineSamples": [],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 18,
+     "boxRadius": 8,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 1,
+     "fixed": true,
+     "height": 900,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "rf display",
+     "__nextjs-geist"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "pageH": 1601,
+    "margins": {
+     "left": 20,
+     "right": 43
+    },
+    "sections": [
+     {
+      "sel": "div#content.flex.flex-1",
+      "tag": "div",
+      "top": 0,
+      "height": 1236,
+      "words": 254,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Command Center",
+       "size": 36,
+       "tag": "h1"
+      },
+      "left": 267,
+      "right": 43,
+      "textLeft": 267,
+      "textRight": 43,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": true
+     },
+     {
+      "sel": "footer.public-footer",
+      "tag": "footer",
+      "top": 1284,
+      "height": 318,
+      "words": 29,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Reel Finisher",
+       "size": 151,
+       "tag": "p"
+      },
+      "left": 267,
+      "right": 413,
+      "textLeft": 267,
+      "textRight": 413,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Command Center",
+      "size": 36,
+      "top": 40,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 530,
+      "n": 3
+     },
+     {
+      "x": 267,
+      "n": 2
+     },
+     {
+      "x": 558,
+      "n": 1
+     },
+     {
+      "x": 588,
+      "n": 1
+     },
+     {
+      "x": 980,
+      "n": 1
+     },
+     {
+      "x": 1038,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 9,
+    "bodySize": 14,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0.04,
+    "voidBox": {
+     "x": 240,
+     "y": 660,
+     "w": 240,
+     "h": 240
+    }
+   },
+   "app": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "dark": true,
+    "ground": "#0a0a0a",
+    "sidebar": {
+     "w": 224,
+     "tag": "div",
+     "links": 40,
+     "share": 0.16
+    },
+    "topbar": null,
+    "canvas": {
+     "left": 43,
+     "right": 43
+    },
+    "hero": {
+     "text": "Command Center",
+     "words": 2,
+     "chars": 14,
+     "lines": 1,
+     "size": 36,
+     "vw": 2.5,
+     "font": "RF Display",
+     "weight": 700,
+     "tracking": -0.02,
+     "leading": 1.1,
+     "top": 40,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 20,
+     "firstScreen": 15,
+     "ragged": [
+      {
+       "diff": 301,
+       "top": 182
+      }
+     ],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 23,
+     "radii": [
+      [
+       8,
+       16
+      ],
+      [
+       0,
+       5
+      ],
+      [
+       14,
+       2
+      ]
+     ],
+     "heavyBorders": 0,
+     "borderSamples": [],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 3,
+     "tabularShare": 1,
+     "kpiMax": 13
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      13,
+      14,
+      15,
+      16,
+      17,
+      24,
+      36,
+      151
+     ]
+    },
+    "title": {
+     "text": "Command Center",
+     "size": 36,
+     "top": 40
+    },
+    "colourShare": 0.006
+   },
+   "consoleErrors": []
+  },
+  {
+   "width": 768,
+   "height": 1024,
+   "load": "load",
+   "screens": 3,
+   "filled": [
+    0.99,
+    0.82,
+    0.92
+   ],
+   "motion": {
+    "elements": 1,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 1,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "page": {
+     "height": 2230,
+     "screens": 2.2,
+     "words": 290,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 69,
+     "sections": 5,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 1,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Command Center",
+     "words": 2,
+     "chars": 14,
+     "lines": 1,
+     "size": 28,
+     "vw": 3.6,
+     "font": "RF Display",
+     "weight": 700,
+     "tracking": -0.02,
+     "leading": 1.1,
+     "top": 104,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "Command Center",
+     "words": 2,
+     "lines": 1,
+     "size": 28,
+     "font": "RF Display"
+    },
+    "headings": [
+     {
+      "text": "Command Center",
+      "words": 2,
+      "chars": 14,
+      "lines": 1,
+      "size": 28,
+      "vw": 3.6,
+      "font": "RF Display",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.69,
+      "top": 104,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Reel Finisher",
+      "words": 2,
+      "chars": 13,
+      "lines": 1,
+      "size": 80.6,
+      "vw": 10.5,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.045,
+      "leading": 0.9,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.94,
+      "top": 2032,
+      "tag": "p",
+      "kind": "statement"
+     }
+    ],
+    "headingSummary": {
+     "count": 2,
+     "maxLines": 1,
+     "over2Lines": 0,
+     "statements": 1,
+     "centered": 0,
+     "medianWords": 2,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "system-ui",
+       "share": 0.91,
+       "mono": false
+      },
+      {
+       "family": "RF Display",
+       "share": 0.09,
+       "mono": false
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      24,
+      28,
+      81
+     ],
+     "sizeCount": 9,
+     "notLoaded": [],
+     "body": {
+      "font": "system-ui",
+      "size": 14,
+      "leading": 1.55,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 8
+     },
+     "measureChars": 63,
+     "max": {
+      "size": 80.6,
+      "vw": 10.5,
+      "font": "RF Display",
+      "text": "Reel Finisher"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0.03,
+     "centerShare": 0,
+     "smallText": 0
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#0a0a0a",
+     "bodyBgHsl": {
+      "h": 0,
+      "s": 0,
+      "l": 0.04
+     },
+     "dark": true,
+     "sectionBgs": [
+      {
+       "color": "#08090b",
+       "top": 0,
+       "hsl": {
+        "h": 220,
+        "s": 0.16,
+        "l": 0.04
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#a0a9b7",
+       "share": 0.46
+      },
+      {
+       "color": "#f5f7fa",
+       "share": 0.21
+      },
+      {
+       "color": "#d3d9e2",
+       "share": 0.19
+      },
+      {
+       "color": "#8b95a6",
+       "share": 0.1
+      },
+      {
+       "color": "#4d88ff",
+       "share": 0.02
+      }
+     ],
+     "button": {
+      "bg": "#121720",
+      "hsl": {
+       "h": 219,
+       "s": 0.28,
+       "l": 0.1
+      },
+      "fg": "#f5f7fa"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 3,
+     "inHero": 3,
+     "radius": 8,
+     "height": 44,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Menu",
+      "Search tools K",
+      "Overview"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 0,
+     "hairlineSamples": [],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 17,
+     "boxRadius": 8,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 0,
+     "fixed": true,
+     "height": 0,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "rf display",
+     "__nextjs-geist"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "pageH": 2230,
+    "margins": {
+     "left": 23,
+     "right": 23
+    },
+    "sections": [
+     {
+      "sel": "div#content.flex.flex-1",
+      "tag": "div",
+      "top": 64,
+      "height": 1864,
+      "words": 248,
+      "media": 0,
+      "middle": 141,
+      "heading": {
+       "text": "Command Center",
+       "size": 28,
+       "tag": "h1"
+      },
+      "left": 23,
+      "right": 0,
+      "textLeft": 23,
+      "textRight": 23,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "footer.public-footer",
+      "tag": "footer",
+      "top": 1976,
+      "height": 254,
+      "words": 29,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Reel Finisher",
+       "size": 81,
+       "tag": "p"
+      },
+      "left": 23,
+      "right": 127,
+      "textLeft": 23,
+      "textRight": 127,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Command Center",
+      "size": 28,
+      "top": 104,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 23,
+      "n": 5
+     },
+     {
+      "x": 51,
+      "n": 1
+     },
+     {
+      "x": 81,
+      "n": 1
+     },
+     {
+      "x": 400,
+      "n": 1
+     },
+     {
+      "x": 458,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 9,
+    "bodySize": 14,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "dark": true,
+    "ground": "#0a0a0a",
+    "sidebar": null,
+    "topbar": {
+     "h": 64
+    },
+    "canvas": {
+     "left": 23,
+     "right": -170
+    },
+    "hero": {
+     "text": "Command Center",
+     "words": 2,
+     "chars": 14,
+     "lines": 1,
+     "size": 28,
+     "vw": 3.6,
+     "font": "RF Display",
+     "weight": 700,
+     "tracking": -0.02,
+     "leading": 1.1,
+     "top": 104,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 17,
+     "firstScreen": 10,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 17,
+     "radii": [
+      [
+       8,
+       16
+      ],
+      [
+       14,
+       1
+      ]
+     ],
+     "heavyBorders": 0,
+     "borderSamples": [],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 0,
+     "tabularShare": null,
+     "kpiMax": null
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      13,
+      14,
+      15,
+      16,
+      17,
+      24,
+      28,
+      81
+     ]
+    },
+    "title": {
+     "text": "Command Center",
+     "size": 28,
+     "top": 104
+    },
+    "colourShare": 0.01
+   },
+   "consoleErrors": []
+  },
+  {
+   "width": 390,
+   "height": 844,
+   "load": "load",
+   "screens": 4,
+   "filled": [
+    0.97,
+    0.9,
+    0.96,
+    0.98
+   ],
+   "motion": {
+    "elements": 1,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 1,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "page": {
+     "height": 2627,
+     "screens": 3.1,
+     "words": 289,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 69,
+     "sections": 5,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 1,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Command Center",
+     "words": 2,
+     "chars": 14,
+     "lines": 1,
+     "size": 28,
+     "vw": 7.2,
+     "font": "RF Display",
+     "weight": 700,
+     "tracking": -0.02,
+     "leading": 1.1,
+     "top": 92,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "Command Center",
+     "words": 2,
+     "lines": 1,
+     "size": 28,
+     "font": "RF Display"
+    },
+    "headings": [
+     {
+      "text": "Command Center",
+      "words": 2,
+      "chars": 14,
+      "lines": 1,
+      "size": 28,
+      "vw": 7.2,
+      "font": "RF Display",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.9,
+      "top": 92,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Start in three moves",
+      "words": 4,
+      "chars": 20,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.02,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.78,
+      "top": 426,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Quick actions",
+      "words": 2,
+      "chars": 13,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.02,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.35,
+      "top": 715,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Favorites",
+      "words": 1,
+      "chars": 9,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.02,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.24,
+      "top": 1411,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Recently opened",
+      "words": 2,
+      "chars": 15,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.02,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.43,
+      "top": 1606,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Browse by category",
+      "words": 3,
+      "chars": 18,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.02,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.51,
+      "top": 1805,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "AI Studio",
+      "words": 2,
+      "chars": 9,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "RF Display",
+      "weight": 700,
+      "tracking": 0,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.34,
+      "top": 1874,
+      "tag": "strong",
+      "kind": "statement"
+     },
+     {
+      "text": "Video",
+      "words": 1,
+      "chars": 5,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "RF Display",
+      "weight": 700,
+      "tracking": 0,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "right",
+      "widthRatio": 0.34,
+      "top": 1874,
+      "tag": "strong",
+      "kind": "statement"
+     },
+     {
+      "text": "Audio",
+      "words": 1,
+      "chars": 5,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "RF Display",
+      "weight": 700,
+      "tracking": 0,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.34,
+      "top": 2072,
+      "tag": "strong",
+      "kind": "statement"
+     },
+     {
+      "text": "Photos",
+      "words": 1,
+      "chars": 6,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "RF Display",
+      "weight": 700,
+      "tracking": 0,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "right",
+      "widthRatio": 0.34,
+      "top": 2072,
+      "tag": "strong",
+      "kind": "statement"
+     },
+     {
+      "text": "Reel Finisher",
+      "words": 2,
+      "chars": 13,
+      "lines": 1,
+      "size": 48,
+      "vw": 12.3,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.045,
+      "leading": 0.9,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.9,
+      "top": 2393,
+      "tag": "p",
+      "kind": "statement"
+     }
+    ],
+    "headingSummary": {
+     "count": 11,
+     "maxLines": 1,
+     "over2Lines": 0,
+     "statements": 5,
+     "centered": 0,
+     "medianWords": 2,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "system-ui",
+       "share": 0.91,
+       "mono": false
+      },
+      {
+       "family": "RF Display",
+       "share": 0.09,
+       "mono": false
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      13,
+      14,
+      15,
+      16,
+      17,
+      24,
+      28,
+      48
+     ],
+     "sizeCount": 8,
+     "notLoaded": [],
+     "body": {
+      "font": "system-ui",
+      "size": 14,
+      "leading": 1.55,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 8
+     },
+     "measureChars": 41,
+     "max": {
+      "size": 48,
+      "vw": 12.3,
+      "font": "RF Display",
+      "text": "Reel Finisher"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0.03,
+     "centerShare": 0,
+     "smallText": 0
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#0a0a0a",
+     "bodyBgHsl": {
+      "h": 0,
+      "s": 0,
+      "l": 0.04
+     },
+     "dark": true,
+     "sectionBgs": [
+      {
+       "color": "#08090b",
+       "top": 0,
+       "hsl": {
+        "h": 220,
+        "s": 0.16,
+        "l": 0.04
+       }
+      },
+      {
+       "color": "#0d1015",
+       "top": 2337,
+       "hsl": {
+        "h": 218,
+        "s": 0.24,
+        "l": 0.07
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#a0a9b7",
+       "share": 0.46
+      },
+      {
+       "color": "#f5f7fa",
+       "share": 0.21
+      },
+      {
+       "color": "#d3d9e2",
+       "share": 0.19
+      },
+      {
+       "color": "#8b95a6",
+       "share": 0.1
+      },
+      {
+       "color": "#4d88ff",
+       "share": 0.02
+      }
+     ],
+     "button": {
+      "bg": "#121720",
+      "hsl": {
+       "h": 219,
+       "s": 0.28,
+       "l": 0.1
+      },
+      "fg": "#f5f7fa"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 3,
+     "inHero": 3,
+     "radius": 8,
+     "height": 44,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Menu",
+      "Search tools",
+      "Overview"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 0,
+     "hairlineSamples": [],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 17,
+     "boxRadius": 8,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 0,
+     "fixed": true,
+     "height": 0,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "rf display",
+     "__nextjs-geist"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "pageH": 2627,
+    "margins": {
+     "left": 20,
+     "right": 20
+    },
+    "sections": [
+     {
+      "sel": "div#content.flex.flex-1",
+      "tag": "div",
+      "top": 64,
+      "height": 2225,
+      "words": 243,
+      "media": 0,
+      "middle": 516,
+      "heading": {
+       "text": "Command Center",
+       "size": 28,
+       "tag": "h1"
+      },
+      "left": 20,
+      "right": 0,
+      "textLeft": 20,
+      "textRight": 21,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "footer.public-footer",
+      "tag": "footer",
+      "top": 2337,
+      "height": 291,
+      "words": 29,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Reel Finisher",
+       "size": 48,
+       "tag": "p"
+      },
+      "left": 20,
+      "right": 60,
+      "textLeft": 20,
+      "textRight": 60,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Command Center",
+      "size": 28,
+      "top": 92,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 20,
+      "n": 6
+     },
+     {
+      "x": 78,
+      "n": 2
+     },
+     {
+      "x": 42,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 9,
+    "bodySize": 14,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "dark": true,
+    "ground": "#0a0a0a",
+    "sidebar": null,
+    "topbar": {
+     "h": 64
+    },
+    "canvas": {
+     "left": 20,
+     "right": -545
+    },
+    "hero": {
+     "text": "Command Center",
+     "words": 2,
+     "chars": 14,
+     "lines": 1,
+     "size": 28,
+     "vw": 7.2,
+     "font": "RF Display",
+     "weight": 700,
+     "tracking": -0.02,
+     "leading": 1.1,
+     "top": 92,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 17,
+     "firstScreen": 1,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 17,
+     "radii": [
+      [
+       8,
+       16
+      ],
+      [
+       14,
+       1
+      ]
+     ],
+     "heavyBorders": 0,
+     "borderSamples": [],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 0,
+     "tabularShare": null,
+     "kpiMax": null
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      13,
+      14,
+      15,
+      16,
+      17,
+      24,
+      28,
+      48
+     ]
+    },
+    "title": {
+     "text": "Command Center",
+     "size": 28,
+     "top": 92
+    },
+    "colourShare": 0.008
+   },
+   "consoleErrors": []
+  }
+ ],
+ "findings": [
+  {
+   "level": "WARN",
+   "id": "ragged-row",
+   "width": 1440,
+   "message": "1 pair(s) of cards in one row end at different heights (by 301px).",
+   "fix": "Cards that share a row share a bottom edge: balance them by their content (the same number of rows, a block of similar height beside it), or stack them. In testing, ragged rows were marked down every time."
+  },
+  {
+   "level": "WARN",
+   "id": "app-title-size",
+   "width": 1440,
+   "message": "The h1 is 36px (\"Command Center\").",
+   "fix": "An app screen is not a landing page: the title is 18-32px (20-24px on a phone)."
+  }
+ ],
+ "images": [
+  {
+   "viewport": "desktop",
+   "width": 1440,
+   "fold": "C:\\Developer\\AI Native Editor\\.taste-skill\\v2-cc\\desktop-fold.jpg",
+   "pages": [
+    "C:\\Developer\\AI Native Editor\\.taste-skill\\v2-cc\\desktop-page-01.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "tablet",
+   "width": 768,
+   "fold": "C:\\Developer\\AI Native Editor\\.taste-skill\\v2-cc\\tablet-fold.jpg",
+   "pages": [
+    "C:\\Developer\\AI Native Editor\\.taste-skill\\v2-cc\\tablet-page-01.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "mobile",
+   "width": 390,
+   "fold": "C:\\Developer\\AI Native Editor\\.taste-skill\\v2-cc\\mobile-fold.jpg",
+   "pages": [
+    "C:\\Developer\\AI Native Editor\\.taste-skill\\v2-cc\\mobile-page-01.jpg"
+   ],
+   "film": []
+  }
+ ]
+}

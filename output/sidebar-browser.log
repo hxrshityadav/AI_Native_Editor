@@ -1,0 +1,24 @@
+PASS 1600 / expanded: content and footer clear navigation
+PASS 1600 / collapsed: content and footer clear navigation
+PASS 1600 /tools/image-compressor expanded: content and footer clear navigation
+PASS 1600 /tools/image-compressor collapsed: content and footer clear navigation
+PASS 1600 /command-center expanded: content and footer clear navigation
+PASS 1600 /command-center collapsed: content and footer clear navigation
+PASS 1440 / expanded: content and footer clear navigation
+PASS 1440 / collapsed: content and footer clear navigation
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3000/tools/image-compressor
+Call log:
+  - navigating to "http://localhost:3000/tools/image-compressor", waiting until "networkidle"
+
+    at C:\Developer\AI Native Editor\tests\e2e\sidebar-layout.e2e.mjs:12:15 {
+  log: [
+    '  - navigating to "http://localhost:3000/tools/image-compressor", waiting until "networkidle"'
+  ],
+  name: 'Error'
+}
+
+Node.js v24.14.0

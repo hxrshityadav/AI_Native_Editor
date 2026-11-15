@@ -1,0 +1,1584 @@
+{
+ "url": "http://localhost:3000/tools/trim-video",
+ "at": "2026-11-07T18:08:52.102Z",
+ "allow": [],
+ "viewports": [
+  {
+   "width": 1440,
+   "height": 900,
+   "load": "load",
+   "screens": 3,
+   "filled": [
+    0.87,
+    0.74,
+    0.78
+   ],
+   "motion": {
+    "elements": 1,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 1,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "page": {
+     "height": 2420,
+     "screens": 2.7,
+     "words": 499,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 62,
+     "sections": 6,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Trim Video",
+     "words": 2,
+     "chars": 10,
+     "lines": 1,
+     "size": 42,
+     "vw": 2.9,
+     "font": "RF Display",
+     "weight": 700,
+     "tracking": -0.02,
+     "leading": 1.1,
+     "top": 84,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "Trim Video",
+     "words": 2,
+     "lines": 1,
+     "size": 41.6,
+     "font": "RF Display"
+    },
+    "headings": [
+     {
+      "text": "Trim Video",
+      "words": 2,
+      "chars": 10,
+      "lines": 1,
+      "size": 41.6,
+      "vw": 2.9,
+      "font": "RF Display",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.13,
+      "top": 84,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Reel Finisher",
+      "words": 2,
+      "chars": 13,
+      "lines": 1,
+      "size": 100.8,
+      "vw": 7,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.045,
+      "leading": 0.9,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.78,
+      "top": 2203,
+      "tag": "p",
+      "kind": "statement"
+     }
+    ],
+    "headingSummary": {
+     "count": 2,
+     "maxLines": 1,
+     "over2Lines": 0,
+     "statements": 1,
+     "centered": 0,
+     "medianWords": 2,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "system-ui",
+       "share": 0.97,
+       "mono": false
+      },
+      {
+       "family": "RF Display",
+       "share": 0.03,
+       "mono": false
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      20,
+      24,
+      42,
+      101
+     ],
+     "sizeCount": 10,
+     "notLoaded": [],
+     "body": {
+      "font": "system-ui",
+      "size": 16,
+      "leading": 1.63,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 14
+     },
+     "measureChars": 73,
+     "max": {
+      "size": 100.8,
+      "vw": 7,
+      "font": "RF Display",
+      "text": "Reel Finisher"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0,
+     "centerShare": 0.04,
+     "smallText": 0
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#0a0a0a",
+     "bodyBgHsl": {
+      "h": 0,
+      "s": 0,
+      "l": 0.04
+     },
+     "dark": true,
+     "sectionBgs": [
+      {
+       "color": "#08090b",
+       "top": 0,
+       "hsl": {
+        "h": 220,
+        "s": 0.16,
+        "l": 0.04
+       }
+      },
+      {
+       "color": "#0d1015",
+       "top": 0,
+       "hsl": {
+        "h": 218,
+        "s": 0.24,
+        "l": 0.07
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#a0a9b7",
+       "share": 0.73
+      },
+      {
+       "color": "#d3d9e2",
+       "share": 0.13
+      },
+      {
+       "color": "#f5f7fa",
+       "share": 0.12
+      },
+      {
+       "color": "#8b95a6",
+       "share": 0.01
+      },
+      {
+       "color": "#08090b",
+       "share": 0
+      }
+     ],
+     "button": {
+      "bg": "#181f2b",
+      "hsl": {
+       "h": 218,
+       "s": 0.28,
+       "l": 0.13
+      },
+      "fg": "#a0a9b7"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 2,
+     "inHero": 2,
+     "radius": 8,
+     "height": 44,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Search tools K",
+      "Trim Video"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 14,
+     "hairlineSamples": [
+      "nav.workspace-navigation 1130px",
+      "li 361px",
+      "li 361px",
+      "li 361px",
+      "li 361px"
+     ],
+     "outlinedBoxes": 1,
+     "dashed": 1,
+     "blurred": 0,
+     "roundedBoxes": 1,
+     "boxRadius": 14,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 1,
+     "fixed": true,
+     "height": 900,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "rf display",
+     "__nextjs-geist"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "pageH": 2420,
+    "margins": {
+     "left": 20,
+     "right": 88
+    },
+    "sections": [
+     {
+      "sel": "div#content.flex.flex-1",
+      "tag": "div",
+      "top": 0,
+      "height": 2099,
+      "words": 478,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Trim Video",
+       "size": 42,
+       "tag": "h1"
+      },
+      "left": 267,
+      "right": 75,
+      "textLeft": 267,
+      "textRight": 75,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "footer.public-footer",
+      "tag": "footer",
+      "top": 2147,
+      "height": 272,
+      "words": 29,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Reel Finisher",
+       "size": 101,
+       "tag": "p"
+      },
+      "left": 267,
+      "right": 555,
+      "textLeft": 267,
+      "textRight": 555,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Trim Video",
+      "size": 42,
+      "top": 84,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 267,
+      "n": 8
+     },
+     {
+      "x": 555,
+      "n": 4
+     }
+    ],
+    "leftBlocks": 12,
+    "bodySize": 16,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0.21,
+    "voidBox": {
+     "x": 1020,
+     "y": 120,
+     "w": 420,
+     "h": 660
+    }
+   },
+   "app": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "dark": true,
+    "ground": "#0a0a0a",
+    "sidebar": {
+     "w": 224,
+     "tag": "div",
+     "links": 40,
+     "share": 0.16
+    },
+    "topbar": null,
+    "canvas": {
+     "left": 43,
+     "right": 43
+    },
+    "hero": {
+     "text": "Trim Video",
+     "words": 2,
+     "chars": 10,
+     "lines": 1,
+     "size": 42,
+     "vw": 2.9,
+     "font": "RF Display",
+     "weight": 700,
+     "tracking": -0.02,
+     "leading": 1.1,
+     "top": 84,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 5,
+     "firstScreen": 2,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 6,
+     "radii": [
+      [
+       0,
+       5
+      ],
+      [
+       14,
+       1
+      ]
+     ],
+     "heavyBorders": 1,
+     "borderSamples": [
+      "#566176 on #0d1015 (3.06:1)"
+     ],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 0,
+     "tabularShare": null,
+     "kpiMax": null
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      13,
+      14,
+      15,
+      16,
+      17,
+      20,
+      24,
+      42,
+      101
+     ]
+    },
+    "title": {
+     "text": "Trim Video",
+     "size": 42,
+     "top": 84
+    },
+    "colourShare": 0.006
+   },
+   "consoleErrors": []
+  },
+  {
+   "width": 768,
+   "height": 1024,
+   "load": "load",
+   "screens": 3,
+   "filled": [
+    0.82,
+    0.6,
+    0.74
+   ],
+   "motion": {
+    "elements": 1,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 1,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "page": {
+     "height": 2679,
+     "screens": 2.6,
+     "words": 398,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 62,
+     "sections": 6,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Trim Video",
+     "words": 2,
+     "chars": 10,
+     "lines": 1,
+     "size": 30,
+     "vw": 4,
+     "font": "RF Display",
+     "weight": 700,
+     "tracking": -0.02,
+     "leading": 1.1,
+     "top": 148,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "Trim Video",
+     "words": 2,
+     "lines": 1,
+     "size": 30.4,
+     "font": "RF Display"
+    },
+    "headings": [
+     {
+      "text": "Trim Video",
+      "words": 2,
+      "chars": 10,
+      "lines": 1,
+      "size": 30.4,
+      "vw": 4,
+      "font": "RF Display",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.18,
+      "top": 148,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Reel Finisher",
+      "words": 2,
+      "chars": 13,
+      "lines": 1,
+      "size": 53.8,
+      "vw": 7,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.045,
+      "leading": 0.9,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.94,
+      "top": 2505,
+      "tag": "p",
+      "kind": "statement"
+     }
+    ],
+    "headingSummary": {
+     "count": 2,
+     "maxLines": 1,
+     "over2Lines": 0,
+     "statements": 1,
+     "centered": 0,
+     "medianWords": 2,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "system-ui",
+       "share": 0.96,
+       "mono": false
+      },
+      {
+       "family": "RF Display",
+       "share": 0.04,
+       "mono": false
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      13,
+      14,
+      15,
+      16,
+      17,
+      20,
+      24,
+      30,
+      54
+     ],
+     "sizeCount": 9,
+     "notLoaded": [],
+     "body": {
+      "font": "system-ui",
+      "size": 16,
+      "leading": 1.63,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 14
+     },
+     "measureChars": 73,
+     "max": {
+      "size": 53.8,
+      "vw": 7,
+      "font": "RF Display",
+      "text": "Reel Finisher"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0,
+     "centerShare": 0.05,
+     "smallText": 0
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#0a0a0a",
+     "bodyBgHsl": {
+      "h": 0,
+      "s": 0,
+      "l": 0.04
+     },
+     "dark": true,
+     "sectionBgs": [
+      {
+       "color": "#08090b",
+       "top": 0,
+       "hsl": {
+        "h": 220,
+        "s": 0.16,
+        "l": 0.04
+       }
+      },
+      {
+       "color": "#0d1015",
+       "top": 350,
+       "hsl": {
+        "h": 218,
+        "s": 0.24,
+        "l": 0.07
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#a0a9b7",
+       "share": 0.69
+      },
+      {
+       "color": "#d3d9e2",
+       "share": 0.16
+      },
+      {
+       "color": "#f5f7fa",
+       "share": 0.15
+      },
+      {
+       "color": "#08090b",
+       "share": 0
+      },
+      {
+       "color": "#566176",
+       "share": 0
+      }
+     ],
+     "button": {
+      "bg": "#121720",
+      "hsl": {
+       "h": 219,
+       "s": 0.28,
+       "l": 0.1
+      },
+      "fg": "#f5f7fa"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 1,
+     "inHero": 1,
+     "radius": 8,
+     "height": 44,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Menu"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 10,
+     "hairlineSamples": [
+      "nav.workspace-navigation 722px",
+      "ul.ToolSurface-module-css-module__NI1Uqa__featureBand 722px",
+      "div.divide-y.divide-edge 722px",
+      "details.group 722px",
+      "details.group 722px"
+     ],
+     "outlinedBoxes": 1,
+     "dashed": 1,
+     "blurred": 0,
+     "roundedBoxes": 1,
+     "boxRadius": 14,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 3,
+       "iconTopped": false,
+       "rounded": false,
+       "top": 829
+      }
+     ]
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 0,
+     "fixed": true,
+     "height": 0,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "rf display",
+     "__nextjs-geist"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "pageH": 2679,
+    "margins": {
+     "left": 23,
+     "right": 37
+    },
+    "sections": [
+     {
+      "sel": "div#content.flex.flex-1",
+      "tag": "div",
+      "top": 64,
+      "height": 2337,
+      "words": 478,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Trim Video",
+       "size": 30,
+       "tag": "h1"
+      },
+      "left": 23,
+      "right": 40,
+      "textLeft": 23,
+      "textRight": 40,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "footer.public-footer",
+      "tag": "footer",
+      "top": 2449,
+      "height": 230,
+      "words": 29,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Reel Finisher",
+       "size": 54,
+       "tag": "p"
+      },
+      "left": 23,
+      "right": 127,
+      "textLeft": 23,
+      "textRight": 127,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Trim Video",
+      "size": 30,
+      "top": 148,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 23,
+      "n": 12
+     }
+    ],
+    "leftBlocks": 12,
+    "bodySize": 16,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "dark": true,
+    "ground": "#0a0a0a",
+    "sidebar": null,
+    "topbar": {
+     "h": 64
+    },
+    "canvas": {
+     "left": 22,
+     "right": 23
+    },
+    "hero": {
+     "text": "Trim Video",
+     "words": 2,
+     "chars": 10,
+     "lines": 1,
+     "size": 30,
+     "vw": 4,
+     "font": "RF Display",
+     "weight": 700,
+     "tracking": -0.02,
+     "leading": 1.1,
+     "top": 148,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 6,
+     "firstScreen": 4,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 6,
+     "radii": [
+      [
+       0,
+       5
+      ],
+      [
+       14,
+       1
+      ]
+     ],
+     "heavyBorders": 1,
+     "borderSamples": [
+      "#566176 on #0d1015 (3.06:1)"
+     ],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 0,
+     "tabularShare": null,
+     "kpiMax": null
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      13,
+      14,
+      15,
+      16,
+      17,
+      20,
+      24,
+      30,
+      54
+     ]
+    },
+    "title": {
+     "text": "Trim Video",
+     "size": 30,
+     "top": 148
+    },
+    "colourShare": 0.01
+   },
+   "consoleErrors": []
+  },
+  {
+   "width": 390,
+   "height": 844,
+   "load": "load",
+   "screens": 4,
+   "filled": [
+    0.95,
+    0.67,
+    0.8,
+    0.78
+   ],
+   "motion": {
+    "elements": 1,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 1,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "page": {
+     "height": 3244,
+     "screens": 3.8,
+     "words": 398,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 62,
+     "sections": 6,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Trim Video",
+     "words": 2,
+     "chars": 10,
+     "lines": 1,
+     "size": 30,
+     "vw": 7.8,
+     "font": "RF Display",
+     "weight": 700,
+     "tracking": -0.02,
+     "leading": 1.1,
+     "top": 140,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "Trim Video",
+     "words": 2,
+     "lines": 1,
+     "size": 30.4,
+     "font": "RF Display"
+    },
+    "headings": [
+     {
+      "text": "Trim Video",
+      "words": 2,
+      "chars": 10,
+      "lines": 1,
+      "size": 30.4,
+      "vw": 7.8,
+      "font": "RF Display",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.35,
+      "top": 140,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "How to trim a video",
+      "words": 5,
+      "chars": 19,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "RF Display",
+      "weight": 600,
+      "tracking": -0.02,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.9,
+      "top": 814,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Fast versus precise cuts",
+      "words": 4,
+      "chars": 24,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "RF Display",
+      "weight": 600,
+      "tracking": -0.02,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.9,
+      "top": 1516,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Frequently asked questions",
+      "words": 3,
+      "chars": 26,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "RF Display",
+      "weight": 600,
+      "tracking": -0.02,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.9,
+      "top": 1901,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Related tools",
+      "words": 2,
+      "chars": 13,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "RF Display",
+      "weight": 600,
+      "tracking": -0.02,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.9,
+      "top": 2278,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Reel Finisher",
+      "words": 2,
+      "chars": 13,
+      "lines": 1,
+      "size": 40,
+      "vw": 10.3,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.045,
+      "leading": 0.9,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.9,
+      "top": 3017,
+      "tag": "p",
+      "kind": "statement"
+     }
+    ],
+    "headingSummary": {
+     "count": 6,
+     "maxLines": 1,
+     "over2Lines": 0,
+     "statements": 1,
+     "centered": 0,
+     "medianWords": 3,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "system-ui",
+       "share": 0.96,
+       "mono": false
+      },
+      {
+       "family": "RF Display",
+       "share": 0.04,
+       "mono": false
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      13,
+      14,
+      15,
+      16,
+      20,
+      24,
+      30,
+      40
+     ],
+     "sizeCount": 8,
+     "notLoaded": [],
+     "body": {
+      "font": "system-ui",
+      "size": 16,
+      "leading": 1.63,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 8.4
+     },
+     "measureChars": 44,
+     "max": {
+      "size": 40,
+      "vw": 10.3,
+      "font": "RF Display",
+      "text": "Reel Finisher"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0,
+     "centerShare": 0.05,
+     "smallText": 0
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#0a0a0a",
+     "bodyBgHsl": {
+      "h": 0,
+      "s": 0,
+      "l": 0.04
+     },
+     "dark": true,
+     "sectionBgs": [
+      {
+       "color": "#08090b",
+       "top": 0,
+       "hsl": {
+        "h": 220,
+        "s": 0.16,
+        "l": 0.04
+       }
+      },
+      {
+       "color": "#0d1015",
+       "top": 393,
+       "hsl": {
+        "h": 218,
+        "s": 0.24,
+        "l": 0.07
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#a0a9b7",
+       "share": 0.69
+      },
+      {
+       "color": "#d3d9e2",
+       "share": 0.16
+      },
+      {
+       "color": "#f5f7fa",
+       "share": 0.15
+      },
+      {
+       "color": "#08090b",
+       "share": 0
+      },
+      {
+       "color": "#566176",
+       "share": 0
+      }
+     ],
+     "button": {
+      "bg": "#121720",
+      "hsl": {
+       "h": 219,
+       "s": 0.28,
+       "l": 0.1
+      },
+      "fg": "#f5f7fa"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 1,
+     "inHero": 1,
+     "radius": 8,
+     "height": 44,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Menu"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 14,
+     "hairlineSamples": [
+      "nav.workspace-navigation 350px",
+      "li 350px",
+      "li 350px",
+      "li 350px",
+      "li 350px"
+     ],
+     "outlinedBoxes": 1,
+     "dashed": 1,
+     "blurred": 0,
+     "roundedBoxes": 1,
+     "boxRadius": 14,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 0,
+     "fixed": true,
+     "height": 0,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "rf display",
+     "__nextjs-geist"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "pageH": 3244,
+    "margins": {
+     "left": 20,
+     "right": 20
+    },
+    "sections": [
+     {
+      "sel": "div#content.flex.flex-1",
+      "tag": "div",
+      "top": 64,
+      "height": 2849,
+      "words": 478,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Trim Video",
+       "size": 30,
+       "tag": "h1"
+      },
+      "left": 20,
+      "right": 20,
+      "textLeft": 20,
+      "textRight": 20,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "footer.public-footer",
+      "tag": "footer",
+      "top": 2961,
+      "height": 283,
+      "words": 29,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Reel Finisher",
+       "size": 40,
+       "tag": "p"
+      },
+      "left": 20,
+      "right": 60,
+      "textLeft": 20,
+      "textRight": 60,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Trim Video",
+      "size": 30,
+      "top": 140,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 20,
+      "n": 12
+     }
+    ],
+    "leftBlocks": 12,
+    "bodySize": 16,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "dark": true,
+    "ground": "#0a0a0a",
+    "sidebar": null,
+    "topbar": {
+     "h": 64
+    },
+    "canvas": {
+     "left": 19,
+     "right": 20
+    },
+    "hero": {
+     "text": "Trim Video",
+     "words": 2,
+     "chars": 10,
+     "lines": 1,
+     "size": 30,
+     "vw": 7.8,
+     "font": "RF Display",
+     "weight": 700,
+     "tracking": -0.02,
+     "leading": 1.1,
+     "top": 140,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 3,
+     "firstScreen": 1,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 3,
+     "radii": [
+      [
+       0,
+       2
+      ],
+      [
+       14,
+       1
+      ]
+     ],
+     "heavyBorders": 1,
+     "borderSamples": [
+      "#566176 on #0d1015 (3.06:1)"
+     ],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 0,
+     "tabularShare": null,
+     "kpiMax": null
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      13,
+      14,
+      15,
+      16,
+      20,
+      24,
+      30,
+      40
+     ]
+    },
+    "title": {
+     "text": "Trim Video",
+     "size": 30,
+     "top": 140
+    },
+    "colourShare": 0.02
+   },
+   "consoleErrors": []
+  }
+ ],
+ "findings": [
+  {
+   "level": "WARN",
+   "id": "below-fold",
+   "width": 1440,
+   "message": "Only 2 of 5 blocks start on the first 1440px screen.",
+   "fix": "Every block the brief names shows its header and first rows on the first desktop screen: size the headline block to its question, cap long lists with \"View all\", and put time-sensitive blocks before long tables."
+  },
+  {
+   "level": "WARN",
+   "id": "app-title-size",
+   "width": 1440,
+   "message": "The h1 is 42px (\"Trim Video\").",
+   "fix": "An app screen is not a landing page: the title is 18-32px (20-24px on a phone).",
+   "alsoAt": [
+    390
+   ]
+  }
+ ],
+ "images": [
+  {
+   "viewport": "desktop",
+   "width": 1440,
+   "fold": "C:\\Developer\\AI Native Editor\\.taste-skill\\v2-tools-trim-video\\desktop-fold.jpg",
+   "pages": [
+    "C:\\Developer\\AI Native Editor\\.taste-skill\\v2-tools-trim-video\\desktop-page-01.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "tablet",
+   "width": 768,
+   "fold": "C:\\Developer\\AI Native Editor\\.taste-skill\\v2-tools-trim-video\\tablet-fold.jpg",
+   "pages": [
+    "C:\\Developer\\AI Native Editor\\.taste-skill\\v2-tools-trim-video\\tablet-page-01.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "mobile",
+   "width": 390,
+   "fold": "C:\\Developer\\AI Native Editor\\.taste-skill\\v2-tools-trim-video\\mobile-fold.jpg",
+   "pages": [
+    "C:\\Developer\\AI Native Editor\\.taste-skill\\v2-tools-trim-video\\mobile-page-01.jpg"
+   ],
+   "film": []
+  }
+ ]
+}

@@ -1,0 +1,9 @@
+{
+  "name": "reel-finisher-local-ai-build",
+  "private": true,
+  "description": "Isolated build inputs for the local speech tools (Transformers.js browser bundle, its pinned ONNX Runtime Web, and esbuild). Installed by the root postinstall.",
+  "dependencies": {
+    "@huggingface/transformers": "3.8.1",
+    "esbuild": "0.21.5"
+  }
+}

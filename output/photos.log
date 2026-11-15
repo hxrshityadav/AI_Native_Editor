@@ -1,0 +1,49 @@
+PASS  compressor: drop reads actual dimensions, format and measured bytes  (749.3 KB
+(749,271 bytes)
+600 × 400 px
+PNG)
+PASS  compressor: generated WebP decodes with unchanged dimensions
+PASS  compressor: target report agrees with downloaded bytes
+PASS  download: uses a new matching filename
+PASS  settings: changing an option invalidates the old download
+PASS  compressor: infeasible target is explicit and still measured
+PASS  compressor: PNG explains its lossless quality setting
+PASS  compressor: PNG preserves actual pixels and reports an unmet tiny target
+PASS  converter: warns before flattening alpha
+PASS  converter: actual JPEG has selected opaque background
+PASS  converter: JPEG blends partial alpha onto the background
+PASS  converter: WebP preserves transparent, partial and opaque alpha
+PASS  converter: PNG preserves alpha and real dimensions
+PASS  picker: selecting the same file again clears the previous result
+PASS  orientation: EXIF is baked into actual output pixels
+PASS  resizer: width updates locked height
+PASS  resizer: repeated edits do not drift the ratio
+PASS  resizer: actual file dimensions match the preview
+PASS  resizer: unlocked dimensions are independent
+PASS  resizer: unlocked dimensions are encoded
+PASS  resizer: preset fits whole image without cropping
+PASS  resizer: invalid dimensions give recovery without download
+PASS  validation: missing MIME still requires a real decodable image
+PASS  validation: unsupported.svg rejected
+PASS  validation: mismatch.jpg rejected
+PASS  validation: empty.png rejected
+PASS  validation: oversize.png rejected
+PASS  validation: huge.png rejected
+PASS  validation: broken.png rejected
+PASS  validation: damaged.png rejected
+PASS  resources: replacement/error releases preview and download URLs
+PASS  cancellation: no stale result or download is published
+PASS  cancellation: retry processes successfully
+PASS  resources: route exit revokes all object URLs
+PASS  fallback: HTML image/canvas path produces a local result
+PASS  fallback: unsupported encoder cannot produce a mislabeled download
+PASS  mobile: image-compressor controls fit without horizontal overflow
+PASS  SEO: image-compressor has crawlable unique content
+PASS  mobile: image-resizer controls fit without horizontal overflow
+PASS  SEO: image-resizer has crawlable unique content
+PASS  mobile: image-converter controls fit without horizontal overflow
+PASS  SEO: image-converter has crawlable unique content
+PASS  privacy: requests are local GET/HEAD only
+PASS  isolation: photo tools do not load editor or AI assets
+
+44/44 checks passed

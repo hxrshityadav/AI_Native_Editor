@@ -25,7 +25,8 @@ export function videoPlan(source: VideoSource, settings: VideoSettings): VideoPl
   validateVideoSource(source);
   if (!["original", "1080", "720", "480", "360"].includes(settings.resolution) || !["high", "balanced", "small"].includes(settings.quality) || !["mp4", "webm"].includes(settings.container)) throw new Error("Choose a supported resolution, quality and output format.");
   const edge = { original: Math.max(source.width, source.height), "1080": 1920, "720": 1280, "480": 854, "360": 640 }[settings.resolution];
-  const scale = Math.min(1, edge / Math.max(source.width, source.height));
+  const shortEdge = { original: Math.min(source.width, source.height), "1080": 1080, "720": 720, "480": 480, "360": 360 }[settings.resolution];
+  const scale = Math.min(1, edge / Math.max(source.width, source.height), shortEdge / Math.min(source.width, source.height));
   const width = Math.max(2, Math.floor(source.width * scale / 2) * 2), height = Math.max(2, Math.floor(source.height * scale / 2) * 2);
   const frameRate = Math.min(VIDEO_LIMITS.frameRate, Math.max(1, Number.isFinite(source.frameRate) ? source.frameRate : 30));
   const audioBitrate = source.hasAudio && !settings.mute ? 128000 : 0;

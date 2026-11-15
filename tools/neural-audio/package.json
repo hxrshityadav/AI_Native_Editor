@@ -1,0 +1,5 @@
+{
+  "name": "reel-finisher-neural-audio-runtime",
+  "private": true,
+  "dependencies": { "@jitsi/rnnoise-wasm": "0.2.1" }
+}

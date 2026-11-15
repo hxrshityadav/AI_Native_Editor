@@ -1,0 +1,50 @@
+/* Motion AI Kit guidance: brief state feedback; no page-wide entrance cascade. */
+.site {
+  --motion-press:100ms;
+  --motion-feedback:140ms;
+  --motion-label:140ms;
+  --motion-menu:160ms;
+  --motion-dialog:200ms;
+  --motion-drawer:240ms;
+  --motion-sidebar:220ms;
+  --motion-disclosure:260ms;
+  --ease-reversible:cubic-bezier(.4,0,.2,1);
+  --dur-fast:var(--motion-feedback);
+  --dur-base:var(--motion-dialog);
+  --dur-slow:var(--motion-drawer);
+}
+.site :is(button,a,input,select,textarea,summary) {
+  transition-duration:var(--motion-feedback);
+  transition-timing-function:var(--ease-out);
+}
+.site :is(button,a):active { transition-duration:var(--motion-press); }
+.site :is(.top-bar,.mobile-header,.public-footer,.app-frame) {
+  transition:background-color var(--motion-dialog) var(--ease-out),color var(--motion-feedback) var(--ease-out);
+}
+@media(min-width:1024px) {
+  .site .app-frame { transition:grid-template-columns var(--motion-sidebar) var(--ease-out),background-color var(--motion-dialog) var(--ease-out),color var(--motion-feedback) var(--ease-out); }
+}
+.site :is(.cc-pin,.cc-categories button,.directory-categories button,.tool-card,.bench-primary,.bench-download) {
+  transition:background-color var(--motion-feedback) var(--ease-out),color var(--motion-feedback) var(--ease-out),transform var(--motion-press) var(--ease-out);
+}
+.site .cc-pin[aria-pressed="true"] { color:var(--accent); }
+.site .cc-palette[open] { animation:public-panel-enter var(--motion-dialog) var(--ease-out); }
+.site #mobile-navigation { transition:transform var(--motion-drawer) var(--ease-out),opacity var(--motion-drawer); }
+.site #mobile-navigation::backdrop { transition:opacity var(--motion-drawer); }
+.site :is(.cc-empty,.cc-command-empty) { animation:public-feedback-enter var(--motion-menu) var(--ease-out); }
+.site .bench-measurements strong { transition:color var(--motion-feedback); }
+@supports (interpolate-size:allow-keywords) {
+  .site details::details-content { transition-duration:var(--motion-disclosure); transition-timing-function:var(--ease-reversible); }
+}
+@keyframes public-panel-enter {
+  from { opacity:.4; transform:translateY(-4px); }
+  to { opacity:1; transform:none; }
+}
+@keyframes public-feedback-enter { from { opacity:.5; } to { opacity:1; } }
+@media(prefers-reduced-motion:reduce) {
+  .site { --motion-press:0ms; --motion-feedback:0ms; --motion-label:0ms; --motion-menu:0ms; --motion-dialog:0ms; --motion-drawer:0ms; --motion-sidebar:0ms; --motion-disclosure:0ms; }
+  .site *,.site *::before,.site *::after,.site *::backdrop { animation:none!important; transition-duration:0ms!important; scroll-behavior:auto!important; }
+}
+.site .directory-feedback { animation:public-feedback-enter var(--motion-menu) var(--ease-out); }
+
+

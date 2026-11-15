@@ -1,0 +1,250 @@
+
+> reel-finisher@0.1.0 build
+> node scripts/prepare-media-notices.mjs && npm run editor:build && next build --webpack
+
+
+> reel-finisher@0.1.0 editor:build
+> node scripts/build-editor.mjs
+
+$ pnpm build:wasm && pnpm --filter @openreel/web build
+$ pnpm --filter @openreel/core build:wasm
+$ npm run build:wasm:fft && npm run build:wasm:wav && npm run build:wasm:beat
+
+> @openreel/core@0.1.0 build:wasm:fft
+> asc src/wasm/fft/assembly/index.ts -o src/wasm/fft/build/fft.wasm --optimize --runtime stub
+
+
+> @openreel/core@0.1.0 build:wasm:wav
+> asc src/wasm/wav/assembly/index.ts -o src/wasm/wav/build/wav.wasm --optimize --runtime stub
+
+
+> @openreel/core@0.1.0 build:wasm:beat
+> asc src/wasm/beat-detection/assembly/index.ts -o src/wasm/beat-detection/build/beat.wasm --optimize --runtime stub
+
+$ tsc --noEmit && vite build
+[36mvite v5.4.21 [32mbuilding for production...[36m[39m
+transforming...
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+Browserslist: browsers data (caniuse-lite) is 12 months old. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+
+/fonts/poppins/poppins-latin-700-normal.woff2 referenced in /fonts/poppins/poppins-latin-700-normal.woff2 didn't resolve at build time, it will remain unchanged to be resolved at runtime
+../../../../node_modules/zod/v4/core/util.js (400:0): A comment
+
+"// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on `Number`, so the bare object literal survived into every bundle."
+
+in "../../../../node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+../../../../node_modules/zod/v4/core/regexes.js (74:0): A comment
+
+"/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+ * esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+ * will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+
+in "../../../../node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+../../../../node_modules/zod/v4/core/util.js (400:0): A comment
+
+"// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on `Number`, so the bare object literal survived into every bundle."
+
+in "../../../../node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+../../../../node_modules/zod/v4/core/regexes.js (74:0): A comment
+
+"/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+ * esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+ * will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+
+in "../../../../node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+[32m✓[39m 6283 modules transformed.
+rendering chunks...
+[1m[33m[plugin:vite:reporter][39m[22m [33m[plugin vite:reporter] 
+(!) C:/Developer/AI Native Editor/vendor/openreel/packages/core/src/media/extract-audio.ts is dynamically imported by C:/Developer/AI Native Editor/vendor/openreel/packages/core/src/audio/audio-engine.ts but also statically imported by C:/Developer/AI Native Editor/vendor/openreel/packages/core/src/media/index.ts, dynamic import will not move module into another chunk.
+[39m
+computing gzip size...
+[2mdist/[22m[32mlicenses/idb-keyval-6.2.2/LICENCE                              [39m[1m[2m     0.56 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/tslib-2.8.1/LICENSE.txt                               [39m[1m[2m     0.66 kB[22m[1m[22m[2m │ gzip:   0.43 kB[22m
+[2mdist/[22m[32mlicenses/idb-8.0.4/LICENSE                                     [39m[1m[2m     0.78 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/@radix-ui_react-slot-1.2.3/LICENSE                    [39m[1m[2m     1.06 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/@radix-ui_primitive-1.1.3/LICENSE                     [39m[1m[2m     1.06 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/@radix-ui_react-use-effect-event-0.0.2/LICENSE        [39m[1m[2m     1.06 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/@radix-ui_react-use-controllable-state-1.2.2/LICENSE  [39m[1m[2m     1.06 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/@radix-ui_react-presence-1.1.5/LICENSE                [39m[1m[2m     1.06 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/@radix-ui_react-primitive-2.1.3/LICENSE               [39m[1m[2m     1.06 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/@radix-ui_react-checkbox-1.3.3/LICENSE                [39m[1m[2m     1.06 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/@radix-ui_react-dismissable-layer-1.1.11/LICENSE      [39m[1m[2m     1.06 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/@radix-ui_react-focus-guards-1.1.3/LICENSE            [39m[1m[2m     1.06 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/@radix-ui_react-focus-scope-1.1.7/LICENSE             [39m[1m[2m     1.06 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/@radix-ui_react-arrow-1.1.7/LICENSE                   [39m[1m[2m     1.06 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/@radix-ui_react-popper-1.2.8/LICENSE                  [39m[1m[2m     1.06 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/@radix-ui_react-portal-1.1.9/LICENSE                  [39m[1m[2m     1.06 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/@radix-ui_react-popover-1.1.15/LICENSE                [39m[1m[2m     1.06 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/@radix-ui_react-collection-1.1.7/LICENSE              [39m[1m[2m     1.06 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/@radix-ui_react-slider-1.3.6/LICENSE                  [39m[1m[2m     1.06 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/@radix-ui_react-collapsible-1.1.12/LICENSE            [39m[1m[2m     1.06 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/@radix-ui_react-roving-focus-1.1.11/LICENSE           [39m[1m[2m     1.06 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/@radix-ui_react-menu-2.1.16/LICENSE                   [39m[1m[2m     1.06 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/@radix-ui_react-context-menu-2.2.16/LICENSE           [39m[1m[2m     1.06 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/@radix-ui_react-dialog-1.1.15/LICENSE                 [39m[1m[2m     1.06 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/@radix-ui_react-dropdown-menu-2.1.16/LICENSE          [39m[1m[2m     1.06 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/@radix-ui_react-slot-1.2.4/LICENSE                    [39m[1m[2m     1.06 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/@radix-ui_react-primitive-2.1.4/LICENSE               [39m[1m[2m     1.06 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/@radix-ui_react-label-2.1.8/LICENSE                   [39m[1m[2m     1.06 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/@radix-ui_react-context-1.1.3/LICENSE                 [39m[1m[2m     1.06 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/@radix-ui_react-progress-1.1.8/LICENSE                [39m[1m[2m     1.06 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/@radix-ui_react-visually-hidden-1.2.3/LICENSE         [39m[1m[2m     1.06 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/@radix-ui_react-select-2.2.6/LICENSE                  [39m[1m[2m     1.06 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/@radix-ui_react-scroll-area-1.2.10/LICENSE            [39m[1m[2m     1.06 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/@radix-ui_react-switch-1.2.6/LICENSE                  [39m[1m[2m     1.06 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/@radix-ui_react-tooltip-1.2.8/LICENSE                 [39m[1m[2m     1.06 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/@radix-ui_react-tabs-1.1.13/LICENSE                   [39m[1m[2m     1.06 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/@radix-ui_react-toggle-1.1.10/LICENSE                 [39m[1m[2m     1.06 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/@radix-ui_react-toggle-group-1.1.11/LICENSE           [39m[1m[2m     1.06 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/detect-node-es-1.1.0/LICENSE                          [39m[1m[2m     1.07 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/zustand-4.5.7/LICENSE                                 [39m[1m[2m     1.07 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/tailwind-merge-3.4.0/LICENSE.md                       [39m[1m[2m     1.07 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/aria-hidden-1.2.6/LICENSE                             [39m[1m[2m     1.07 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/use-callback-ref-1.3.3/LICENSE                        [39m[1m[2m     1.07 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/use-sidecar-1.1.3/LICENSE                             [39m[1m[2m     1.07 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/react-remove-scroll-2.7.1/LICENSE                     [39m[1m[2m     1.07 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/get-nonce-1.0.1/LICENSE                               [39m[1m[2m     1.07 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/react-style-singleton-2.2.3/LICENSE                   [39m[1m[2m     1.07 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/react-syntax-highlighter-16.1.0/LICENSE               [39m[1m[2m     1.07 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/@astryxdesign_theme-neutral-0.1.1/LICENSE             [39m[1m[2m     1.08 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/framer-motion-12.23.24/LICENSE.md                     [39m[1m[2m     1.08 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/framer-motion-12.29.0/LICENSE.md                      [39m[1m[2m     1.08 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/three-0.182.0/LICENSE                                 [39m[1m[2m     1.08 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/react-19.2.7/LICENSE                                  [39m[1m[2m     1.09 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/scheduler-0.27.0/LICENSE                              [39m[1m[2m     1.09 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/react-dom-19.2.7/LICENSE                              [39m[1m[2m     1.09 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/use-sync-external-store-1.6.0/LICENSE                 [39m[1m[2m     1.09 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/@floating-ui_utils-0.2.10/LICENSE                     [39m[1m[2m     1.09 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/@floating-ui_core-1.7.3/LICENSE                       [39m[1m[2m     1.09 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/@floating-ui_dom-1.7.4/LICENSE                        [39m[1m[2m     1.09 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/@floating-ui_react-dom-2.1.6/LICENSE                  [39m[1m[2m     1.09 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/hastscript-9.0.1/license                              [39m[1m[2m     1.09 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/decode-named-character-reference-1.2.0/license        [39m[1m[2m     1.09 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/fault-1.0.4/license                                   [39m[1m[2m     1.10 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/lowlight-1.20.0/license                               [39m[1m[2m     1.10 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/comma-separated-tokens-2.0.3/license                  [39m[1m[2m     1.10 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/hast-util-parse-selector-4.0.0/license                [39m[1m[2m     1.10 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/space-separated-tokens-2.0.2/license                  [39m[1m[2m     1.10 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/character-entities-legacy-3.0.0/license               [39m[1m[2m     1.10 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/character-reference-invalid-2.0.1/license             [39m[1m[2m     1.10 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/is-decimal-2.0.1/license                              [39m[1m[2m     1.10 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/is-hexadecimal-2.0.1/license                          [39m[1m[2m     1.10 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/is-alphabetical-2.0.1/license                         [39m[1m[2m     1.10 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/is-alphanumerical-2.0.1/license                       [39m[1m[2m     1.10 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/motion-utils-12.23.6/LICENSE.md                       [39m[1m[2m     1.10 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/motion-dom-12.23.23/LICENSE.md                        [39m[1m[2m     1.10 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/motion-utils-12.27.2/LICENSE.md                       [39m[1m[2m     1.10 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/motion-dom-12.29.0/LICENSE.md                         [39m[1m[2m     1.10 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/property-information-7.1.0/license                    [39m[1m[2m     1.10 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/parse-entities-4.0.2/license                          [39m[1m[2m     1.10 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/clsx-2.1.1/license                                    [39m[1m[2m     1.10 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/@babel_runtime-7.28.4/LICENSE                         [39m[1m[2m     1.11 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/uuid-13.0.0/LICENSE.md                                [39m[1m[2m     1.11 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/refractor-5.0.0/license                               [39m[1m[2m     1.12 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/robust-predicates-3.0.3/LICENSE                       [39m[1m[2m     1.21 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/polygon-clipping-0.15.7/LICENSE.md                    [39m[1m[2m     1.33 kB[22m[1m[22m
+[2mdist/[22m[32mindex.html                                                     [39m[1m[2m     1.34 kB[22m[1m[22m[2m │ gzip:   0.55 kB[22m
+[2mdist/[22m[32mlicenses/highlight.js-10.7.3/LICENSE                           [39m[1m[2m     1.51 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/lucide-react-0.555.0/LICENSE                          [39m[1m[2m     2.00 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/lucide-react-1.21.0/LICENSE                           [39m[1m[2m     3.21 kB[22m[1m[22m
+[2mdist/[22m[32massets/person-segmentation-worker-D1jG2GZ2.js                  [39m[1m[2m     5.22 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/@paper-design_shaders-0.0.76/LICENSE                  [39m[1m[2m     5.74 kB[22m[1m[22m
+[2mdist/[22m[32massets/fft-_Y3kmDnt.wasm                                       [39m[1m[2m     8.36 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/class-variance-authority-0.7.1/LICENSE                [39m[1m[2m    10.75 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/mediabunny-1.25.3/LICENSE                             [39m[1m[2m    16.73 kB[22m[1m[22m
+[2mdist/[22m[32mlicenses/bundled.json                                          [39m[1m[2m    27.69 kB[22m[1m[22m[2m │ gzip:   2.80 kB[22m
+[2mdist/[22m[32massets/silence-worker-CQUmzVtb.js                              [39m[1m[2m    91.26 kB[22m[1m[22m
+[2mdist/[22m[32massets/ort.bundle.min-OfoG_cy9.mjs                             [39m[1m[2m   399.90 kB[22m[1m[22m
+[2mdist/[22m[32massets/index-C1RBvVNa.js                                       [39m[1m[2m   431.51 kB[22m[1m[22m
+[2mdist/[22m[32massets/multicam-analysis-worker-DondGzsX.js                    [39m[1m[2m   444.30 kB[22m[1m[22m
+[2mdist/[22m[32massets/whisper-worker-CEYbQRrH.js                              [39m[1m[2m   866.48 kB[22m[1m[22m
+[2mdist/[22m[32massets/ort-wasm-simd-threaded.jsep-B0T3yYHD.wasm               [39m[1m[2m21,596.02 kB[22m[1m[22m
+[2mdist/[22m[32massets/ort-wasm-simd-threaded.jsep-D5Jk56-t.wasm               [39m[1m[2m23,914.39 kB[22m[1m[22m
+[2mdist/[22m[35massets/EditorInterface-BfiesIAM.css                            [39m[1m[2m     3.75 kB[22m[1m[22m[2m │ gzip:   1.13 kB[22m
+[2mdist/[22m[35massets/index-CfeAc-QR.css                                      [39m[1m[2m   245.53 kB[22m[1m[22m[2m │ gzip:  44.32 kB[22m
+[2mdist/[22m[36massets/native-profile-6I1aAmJC.js                              [39m[1m[2m     1.37 kB[22m[1m[22m[2m │ gzip:   0.79 kB[22m
+[2mdist/[22m[36massets/upload-CG458hGc.js                                      [39m[1m[2m     1.99 kB[22m[1m[22m[2m │ gzip:   0.66 kB[22m
+[2mdist/[22m[36massets/index-3U7Vq_K0.js                                       [39m[1m[2m     2.13 kB[22m[1m[22m[2m │ gzip:   1.19 kB[22m
+[2mdist/[22m[36massets/canvas2d-fallback-renderer-CWNvWcVM.js                  [39m[1m[2m     3.23 kB[22m[1m[22m[2m │ gzip:   1.42 kB[22m
+[2mdist/[22m[36massets/toolcraft-kbd-B9j9ze0G.js                               [39m[1m[2m     5.27 kB[22m[1m[22m[2m │ gzip:   1.60 kB[22m
+[2mdist/[22m[36massets/ScriptViewDialog-DIEhI9NL.js                            [39m[1m[2m     6.68 kB[22m[1m[22m[2m │ gzip:   2.58 kB[22m
+[2mdist/[22m[36massets/zustand-C8SuARYg.js                                     [39m[1m[2m     6.92 kB[22m[1m[22m[2m │ gzip:   2.64 kB[22m
+[2mdist/[22m[36massets/ProjectPackageDialog-BI8FU8_l.js                        [39m[1m[2m    11.89 kB[22m[1m[22m[2m │ gzip:   4.67 kB[22m
+[2mdist/[22m[36massets/SearchModal-BlfoaK40.js                                 [39m[1m[2m    12.10 kB[22m[1m[22m[2m │ gzip:   4.16 kB[22m
+[2mdist/[22m[36massets/webgpu-renderer-impl-DdjBn0Hz.js                        [39m[1m[2m    36.60 kB[22m[1m[22m[2m │ gzip:   8.69 kB[22m
+[2mdist/[22m[36massets/MultiCameraPanel-CeksXZoZ.js                            [39m[1m[2m   105.41 kB[22m[1m[22m[2m │ gzip:  34.00 kB[22m
+[2mdist/[22m[36massets/vision_bundle-BVf-JyVB.js                               [39m[1m[2m   124.19 kB[22m[1m[22m[2m │ gzip:  37.78 kB[22m
+[2mdist/[22m[36massets/radix-Bnc5bJAd.js                                       [39m[1m[2m   137.32 kB[22m[1m[22m[2m │ gzip:  42.46 kB[22m
+[2mdist/[22m[36massets/react-DPlcwfBH.js                                       [39m[1m[2m   246.43 kB[22m[1m[22m[2m │ gzip:  78.23 kB[22m
+[2mdist/[22m[36massets/ort.bundle.min-CAa9DEkn.js                              [39m[1m[2m   396.85 kB[22m[1m[22m[2m │ gzip: 108.34 kB[22m
+[2mdist/[22m[36massets/index-Cg63dVj4.js                                       [39m[1m[2m   431.57 kB[22m[1m[22m[2m │ gzip: 104.94 kB[22m
+[2mdist/[22m[36massets/three-DOP2z30m.js                                       [39m[1m[33m   983.38 kB[39m[22m[2m │ gzip: 296.18 kB[22m
+[2mdist/[22m[36massets/EditorInterface-C3Sk4QEl.js                             [39m[1m[33m 1,079.27 kB[39m[22m[2m │ gzip: 287.13 kB[22m
+[2mdist/[22m[36massets/index-De6scTiB.js                                       [39m[1m[33m 1,991.08 kB[39m[22m[2m │ gzip: 574.41 kB[22m
+[33m
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.[39m
+[32m✓ built in 54.09s[39m
+Built local editor: 73 offline assets
+(node:31820) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+▲ Next.js 16.4.3 (webpack)
+- Environments: .env.local
+✓ Running next.config.ts took 148ms
+- Cache Components enabled
+- Partial Prefetching enabled
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 28.3s
+  Running TypeScript ...
+  Finished TypeScript in 9.5s ...
+  Collecting page data using 15 workers ...
+  Generating static pages using 15 workers (0/32) ...
+  Generating static pages using 15 workers (8/32) 
+  Generating static pages using 15 workers (16/32) 
+  Generating static pages using 15 workers (24/32) 
+✓ Generating static pages using 15 workers (32/32) in 2.3s
+  Finalizing page optimization ...
+  Collecting build traces ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ƒ /api/edit-plan
+├ ƒ /api/transcribe
+├ ƒ /editor-models/[...asset]
+├ ○ /lab
+├ ○ /privacy
+├ ○ /robots.txt
+├ ○ /sitemap.xml
+├ ○ /studio
+├ ○ /studio-legacy
+├ ○ /supported-formats
+├ ○ /tools
+├ ○ /tools/audio-converter
+├ ○ /tools/audio-cutter
+├ ○ /tools/audio-to-video
+├ ○ /tools/background-remover
+├ ○ /tools/compress-video-to-size
+├ ○ /tools/convert-to-mp4
+├ ○ /tools/extract-audio
+├ ○ /tools/heic-to-jpg
+├ ○ /tools/image-compressor
+├ ○ /tools/image-converter
+├ ○ /tools/image-resizer
+├ ○ /tools/increase-volume
+├ ○ /tools/passport-photo
+├ ○ /tools/remove-audio
+├ ○ /tools/text-to-speech
+├ ○ /tools/trim-video
+├ ○ /tools/video-compressor
+└ ○ /tools/video-to-gif
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

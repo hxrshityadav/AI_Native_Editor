@@ -1,0 +1,1548 @@
+{
+ "url": "http://localhost:3000/",
+ "at": "2026-11-07T17:54:26.446Z",
+ "allow": [],
+ "viewports": [
+  {
+   "width": 1440,
+   "height": 900,
+   "load": "load",
+   "screens": 3,
+   "filled": [
+    0.95,
+    0.82,
+    0.74
+   ],
+   "motion": {
+    "elements": 2,
+    "css": 1,
+    "transitions": 0,
+    "scripted": 1,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "page": {
+     "height": 2416,
+     "screens": 2.7,
+     "words": 422,
+     "img": 5,
+     "video": 0,
+     "canvas": 0,
+     "svg": 60,
+     "sections": 4,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 1,
+     "uiAbuse": false,
+     "realPictures": 4,
+     "videoCount": 0,
+     "uiPictures": 1,
+     "pictureSamples": [
+      "photo.webp",
+      "video.webp",
+      "audio.webp",
+      "ai.webp"
+     ],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Professional media tools. Right in your browser.",
+     "words": 7,
+     "chars": 48,
+     "lines": 1,
+     "size": 44,
+     "vw": 3.1,
+     "font": "RF Display",
+     "weight": 700,
+     "tracking": -0.025,
+     "leading": 1.06,
+     "upper": false,
+     "italic": false,
+     "mono": false,
+     "align": "left",
+     "position": "center",
+     "widthRatio": 0.78,
+     "top": 48,
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "Professional media tools. Right in your browser.",
+     "words": 7,
+     "lines": 1,
+     "size": 44,
+     "font": "RF Display"
+    },
+    "headings": [
+     {
+      "text": "Professional media tools. Right in your browser.",
+      "words": 7,
+      "chars": 48,
+      "lines": 1,
+      "size": 44,
+      "vw": 3.1,
+      "font": "RF Display",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.06,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.78,
+      "top": 48,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "What are you making?",
+      "words": 4,
+      "chars": 20,
+      "lines": 1,
+      "size": 28,
+      "vw": 1.9,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.02,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.18,
+      "top": 754,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Your files stay yours.",
+      "words": 4,
+      "chars": 22,
+      "lines": 1,
+      "size": 28,
+      "vw": 1.9,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.02,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.35,
+      "top": 2056,
+      "tag": "h2",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 3,
+     "maxLines": 1,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": 4,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "system-ui",
+       "share": 0.95,
+       "mono": false
+      },
+      {
+       "family": "RF Display",
+       "share": 0.05,
+       "mono": false
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      13,
+      14,
+      15,
+      16,
+      18,
+      26,
+      28,
+      44
+     ],
+     "sizeCount": 8,
+     "notLoaded": [],
+     "body": {
+      "font": "system-ui",
+      "size": 16,
+      "leading": 1.55,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 8.4
+     },
+     "measureChars": 67,
+     "max": {
+      "size": 44,
+      "vw": 3.1,
+      "font": "RF Display",
+      "text": "Professional media tools. Right in your "
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0,
+     "centerShare": 0.01,
+     "smallText": 0
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#0a0a0a",
+     "bodyBgHsl": {
+      "h": 0,
+      "s": 0,
+      "l": 0.04
+     },
+     "dark": true,
+     "sectionBgs": [
+      {
+       "color": "#08090b",
+       "top": 0,
+       "hsl": {
+        "h": 220,
+        "s": 0.16,
+        "l": 0.04
+       }
+      },
+      {
+       "color": "#0d1015",
+       "top": 0,
+       "hsl": {
+        "h": 218,
+        "s": 0.24,
+        "l": 0.07
+       }
+      },
+      {
+       "color": "#121720",
+       "top": 196,
+       "hsl": {
+        "h": 219,
+        "s": 0.28,
+        "l": 0.1
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#a0a9b7",
+       "share": 0.82
+      },
+      {
+       "color": "#f5f7fa",
+       "share": 0.15
+      },
+      {
+       "color": "#8b95a6",
+       "share": 0.02
+      },
+      {
+       "color": "#08090b",
+       "share": 0.01
+      }
+     ],
+     "button": {
+      "bg": "#ff6b35",
+      "hsl": {
+       "h": 16,
+       "s": 1,
+       "l": 0.6
+      },
+      "fg": "#f5f7fa"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 4,
+     "inHero": 4,
+     "radius": 8,
+     "height": 48,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Home",
+      "Browse tools",
+      "Open the studio",
+      "Compress sample"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 0,
+     "hairlineSamples": [],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 6,
+     "boxRadius": 12,
+     "squareMedia": 0,
+     "roundedMedia": 5,
+     "mediaRadius": 12,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 4,
+       "iconTopped": true,
+       "rounded": true,
+       "top": 813
+      }
+     ]
+    },
+    "heroMedia": [
+     {
+      "type": "img",
+      "ratio": 0.23
+     }
+    ],
+    "nav": {
+     "links": 2,
+     "fixed": true,
+     "height": 900,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "rf display",
+     "__nextjs-geist"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "pageH": 2416,
+    "margins": {
+     "left": 26,
+     "right": 43
+    },
+    "sections": [
+     {
+      "sel": "section.finishing-bench",
+      "tag": "section",
+      "top": 196,
+      "height": 505,
+      "words": 47,
+      "media": 1,
+      "middle": 24,
+      "heading": {
+       "text": "Try the finishing bench",
+       "size": 18,
+       "tag": "h2"
+      },
+      "left": 291,
+      "right": 67,
+      "textLeft": 291,
+      "textRight": 67,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.home-discovery",
+      "tag": "section",
+      "top": 749,
+      "height": 1171,
+      "words": 145,
+      "media": 8,
+      "middle": 24,
+      "heading": {
+       "text": "What are you making?",
+       "size": 28,
+       "tag": "h2"
+      },
+      "left": 267,
+      "right": 43,
+      "textLeft": 267,
+      "textRight": 65,
+      "fullBleed": false,
+      "footer": false,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "section.local-explainer",
+      "tag": "section",
+      "top": 1984,
+      "height": 276,
+      "words": 74,
+      "media": 0,
+      "middle": 108,
+      "heading": {
+       "text": "Your files stay yours.",
+       "size": 28,
+       "tag": "h2"
+      },
+      "left": 299,
+      "right": 153,
+      "textLeft": 299,
+      "textRight": 153,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Professional media tools. Right in your browser.",
+      "size": 44,
+      "top": 48,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 267,
+      "n": 3
+     },
+     {
+      "x": 291,
+      "n": 3
+     },
+     {
+      "x": 724,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 7,
+    "bodySize": 15,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0.06,
+    "voidBox": {
+     "x": 660,
+     "y": 660,
+     "w": 600,
+     "h": 120
+    }
+   },
+   "app": null,
+   "consoleErrors": []
+  },
+  {
+   "width": 768,
+   "height": 1024,
+   "load": "load",
+   "screens": 3,
+   "filled": [
+    0.99,
+    0.79,
+    0.84
+   ],
+   "motion": {
+    "elements": 2,
+    "css": 1,
+    "transitions": 0,
+    "scripted": 1,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "page": {
+     "height": 2523,
+     "screens": 2.5,
+     "words": 324,
+     "img": 5,
+     "video": 0,
+     "canvas": 0,
+     "svg": 60,
+     "sections": 4,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 1,
+     "uiAbuse": false,
+     "realPictures": 4,
+     "videoCount": 0,
+     "uiPictures": 1,
+     "pictureSamples": [
+      "photo.webp",
+      "video.webp",
+      "audio.webp",
+      "ai.webp"
+     ],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Professional media tools. Right in your browser.",
+     "words": 7,
+     "chars": 48,
+     "lines": 2,
+     "size": 31.5,
+     "vw": 4.1,
+     "font": "RF Display",
+     "weight": 700,
+     "tracking": -0.025,
+     "leading": 1.06,
+     "upper": false,
+     "italic": false,
+     "mono": false,
+     "align": "left",
+     "position": "center",
+     "widthRatio": 0.94,
+     "top": 112,
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "Professional media tools. Right in your browser.",
+     "words": 7,
+     "lines": 2,
+     "size": 31.5,
+     "font": "RF Display"
+    },
+    "headings": [
+     {
+      "text": "Professional media tools. Right in your browser.",
+      "words": 7,
+      "chars": 48,
+      "lines": 2,
+      "size": 31.5,
+      "vw": 4.1,
+      "font": "RF Display",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.06,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.94,
+      "top": 112,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "What are you making?",
+      "words": 4,
+      "chars": 20,
+      "lines": 1,
+      "size": 28,
+      "vw": 3.6,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.02,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.34,
+      "top": 878,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Photos",
+      "words": 1,
+      "chars": 6,
+      "lines": 1,
+      "size": 26,
+      "vw": 3.4,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.02,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.35,
+      "top": 961,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "Video",
+      "words": 1,
+      "chars": 5,
+      "lines": 1,
+      "size": 26,
+      "vw": 3.4,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.02,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "right",
+      "widthRatio": 0.35,
+      "top": 961,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "Audio",
+      "words": 1,
+      "chars": 5,
+      "lines": 1,
+      "size": 26,
+      "vw": 3.4,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.02,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.35,
+      "top": 1254,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "AI tools",
+      "words": 2,
+      "chars": 8,
+      "lines": 1,
+      "size": 26,
+      "vw": 3.4,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.02,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "right",
+      "widthRatio": 0.35,
+      "top": 1254,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "Your files stay yours.",
+      "words": 4,
+      "chars": 22,
+      "lines": 1,
+      "size": 28,
+      "vw": 3.6,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.02,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.4,
+      "top": 2076,
+      "tag": "h2",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 7,
+     "maxLines": 2,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": 2,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "system-ui",
+       "share": 0.94,
+       "mono": false
+      },
+      {
+       "family": "RF Display",
+       "share": 0.06,
+       "mono": false
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      13,
+      14,
+      15,
+      16,
+      18,
+      26,
+      28,
+      32
+     ],
+     "sizeCount": 8,
+     "notLoaded": [],
+     "body": {
+      "font": "system-ui",
+      "size": 16,
+      "leading": 1.55,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 8.4
+     },
+     "measureChars": 40,
+     "max": {
+      "size": 31.5,
+      "vw": 4.1,
+      "font": "RF Display",
+      "text": "Professional media tools. Right in your "
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0,
+     "centerShare": 0.01,
+     "smallText": 0
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#0a0a0a",
+     "bodyBgHsl": {
+      "h": 0,
+      "s": 0,
+      "l": 0.04
+     },
+     "dark": true,
+     "sectionBgs": [
+      {
+       "color": "#08090b",
+       "top": 0,
+       "hsl": {
+        "h": 220,
+        "s": 0.16,
+        "l": 0.04
+       }
+      },
+      {
+       "color": "#121720",
+       "top": 344,
+       "hsl": {
+        "h": 219,
+        "s": 0.28,
+        "l": 0.1
+       }
+      },
+      {
+       "color": "#0d1015",
+       "top": 2004,
+       "hsl": {
+        "h": 218,
+        "s": 0.24,
+        "l": 0.07
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#a0a9b7",
+       "share": 0.78
+      },
+      {
+       "color": "#f5f7fa",
+       "share": 0.2
+      },
+      {
+       "color": "#08090b",
+       "share": 0.02
+      }
+     ],
+     "button": {
+      "bg": "#121720",
+      "hsl": {
+       "h": 219,
+       "s": 0.28,
+       "l": 0.1
+      },
+      "fg": "#f5f7fa"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 4,
+     "inHero": 4,
+     "radius": 8,
+     "height": 48,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Menu",
+      "Browse tools",
+      "Open the studio",
+      "Compress sample"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 1,
+     "hairlineSamples": [
+      "header.sticky.top-0 768px"
+     ],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 6,
+     "boxRadius": 12,
+     "squareMedia": 0,
+     "roundedMedia": 5,
+     "mediaRadius": 12,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 4,
+       "iconTopped": true,
+       "rounded": true,
+       "top": 937
+      }
+     ]
+    },
+    "heroMedia": [
+     {
+      "type": "img",
+      "ratio": 0.09
+     }
+    ],
+    "nav": {
+     "links": 0,
+     "fixed": true,
+     "height": 0,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "rf display",
+     "__nextjs-geist"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "pageH": 2523,
+    "margins": {
+     "left": 23,
+     "right": 23
+    },
+    "sections": [
+     {
+      "sel": "div#content.flex.flex-1",
+      "tag": "div",
+      "top": 64,
+      "height": 2339,
+      "words": 293,
+      "media": 9,
+      "middle": 0,
+      "heading": {
+       "text": "Professional media tools.",
+       "size": 31,
+       "tag": "h1"
+      },
+      "left": 23,
+      "right": 23,
+      "textLeft": 23,
+      "textRight": 44,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "footer.public-footer",
+      "tag": "footer",
+      "top": 2403,
+      "height": 120,
+      "words": 22,
+      "media": 0,
+      "middle": 0,
+      "heading": null,
+      "left": 23,
+      "right": 219,
+      "textLeft": 23,
+      "textRight": 219,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Professional media tools. Right in your browser.",
+      "size": 31,
+      "top": 112,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 23,
+      "n": 4
+     },
+     {
+      "x": 47,
+      "n": 3
+     }
+    ],
+    "leftBlocks": 7,
+    "bodySize": 15,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": null,
+   "consoleErrors": []
+  },
+  {
+   "width": 390,
+   "height": 844,
+   "load": "load",
+   "screens": 5,
+   "filled": [
+    0.99,
+    0.9,
+    0.92,
+    0.58,
+    0.98
+   ],
+   "motion": {
+    "elements": 2,
+    "css": 1,
+    "transitions": 0,
+    "scripted": 1,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "page": {
+     "height": 4109,
+     "screens": 4.9,
+     "words": 324,
+     "img": 5,
+     "video": 0,
+     "canvas": 0,
+     "svg": 60,
+     "sections": 4,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 1,
+     "uiAbuse": false,
+     "realPictures": 4,
+     "videoCount": 0,
+     "uiPictures": 1,
+     "pictureSamples": [
+      "photo-compact.webp",
+      "video-compact.webp",
+      "audio-compact.webp",
+      "ai-compact.webp"
+     ],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Professional media tools. Right in your browser.",
+     "words": 7,
+     "chars": 48,
+     "lines": 2,
+     "size": 29.6,
+     "vw": 7.6,
+     "font": "RF Display",
+     "weight": 700,
+     "tracking": -0.025,
+     "leading": 1.06,
+     "upper": false,
+     "italic": false,
+     "mono": false,
+     "align": "left",
+     "position": "center",
+     "widthRatio": 0.9,
+     "top": 92,
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "Professional media tools. Right in your browser.",
+     "words": 7,
+     "lines": 2,
+     "size": 29.6,
+     "font": "RF Display"
+    },
+    "headings": [
+     {
+      "text": "Professional media tools. Right in your browser.",
+      "words": 7,
+      "chars": 48,
+      "lines": 2,
+      "size": 29.6,
+      "vw": 7.6,
+      "font": "RF Display",
+      "weight": 700,
+      "tracking": -0.025,
+      "leading": 1.06,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.9,
+      "top": 92,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "What are you making?",
+      "words": 4,
+      "chars": 20,
+      "lines": 1,
+      "size": 28,
+      "vw": 7.2,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.02,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.67,
+      "top": 1104,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Photos",
+      "words": 1,
+      "chars": 6,
+      "lines": 1,
+      "size": 26,
+      "vw": 6.7,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.02,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.71,
+      "top": 1234,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "Video",
+      "words": 1,
+      "chars": 5,
+      "lines": 1,
+      "size": 26,
+      "vw": 6.7,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.02,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.71,
+      "top": 1571,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "Audio",
+      "words": 1,
+      "chars": 5,
+      "lines": 1,
+      "size": 26,
+      "vw": 6.7,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.02,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.71,
+      "top": 1908,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "AI tools",
+      "words": 2,
+      "chars": 8,
+      "lines": 1,
+      "size": 26,
+      "vw": 6.7,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.02,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.71,
+      "top": 2268,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "Your files stay yours.",
+      "words": 4,
+      "chars": 22,
+      "lines": 1,
+      "size": 28,
+      "vw": 7.2,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.02,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.77,
+      "top": 3354,
+      "tag": "h2",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 7,
+     "maxLines": 2,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": 2,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "system-ui",
+       "share": 0.94,
+       "mono": false
+      },
+      {
+       "family": "RF Display",
+       "share": 0.06,
+       "mono": false
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      13,
+      14,
+      15,
+      16,
+      18,
+      26,
+      28,
+      30
+     ],
+     "sizeCount": 8,
+     "notLoaded": [],
+     "body": {
+      "font": "system-ui",
+      "size": 16,
+      "leading": 1.55,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 8.4
+     },
+     "measureChars": 40,
+     "max": {
+      "size": 29.6,
+      "vw": 7.6,
+      "font": "RF Display",
+      "text": "Professional media tools. Right in your "
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0,
+     "centerShare": 0.01,
+     "smallText": 0
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#0a0a0a",
+     "bodyBgHsl": {
+      "h": 0,
+      "s": 0,
+      "l": 0.04
+     },
+     "dark": true,
+     "sectionBgs": [
+      {
+       "color": "#08090b",
+       "top": 0,
+       "hsl": {
+        "h": 220,
+        "s": 0.16,
+        "l": 0.04
+       }
+      },
+      {
+       "color": "#121720",
+       "top": 320,
+       "hsl": {
+        "h": 219,
+        "s": 0.28,
+        "l": 0.1
+       }
+      },
+      {
+       "color": "#0d1015",
+       "top": 1214,
+       "hsl": {
+        "h": 218,
+        "s": 0.24,
+        "l": 0.07
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#a0a9b7",
+       "share": 0.78
+      },
+      {
+       "color": "#f5f7fa",
+       "share": 0.2
+      },
+      {
+       "color": "#08090b",
+       "share": 0.02
+      }
+     ],
+     "button": {
+      "bg": "#121720",
+      "hsl": {
+       "h": 219,
+       "s": 0.28,
+       "l": 0.1
+      },
+      "fg": "#f5f7fa"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 4,
+     "inHero": 3,
+     "radius": 8,
+     "height": 48,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Menu",
+      "Browse tools",
+      "Open the studio"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 1,
+     "hairlineSamples": [
+      "header.sticky.top-0 390px"
+     ],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 6,
+     "boxRadius": 12,
+     "squareMedia": 0,
+     "roundedMedia": 5,
+     "mediaRadius": 12,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 4,
+       "iconTopped": true,
+       "rounded": true,
+       "top": 1214
+      }
+     ]
+    },
+    "heroMedia": [
+     {
+      "type": "img",
+      "ratio": 0.2
+     }
+    ],
+    "nav": {
+     "links": 0,
+     "fixed": true,
+     "height": 0,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "rf display",
+     "__nextjs-geist"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "pageH": 4109,
+    "margins": {
+     "left": 20,
+     "right": 20
+    },
+    "sections": [
+     {
+      "sel": "div#content.flex.flex-1",
+      "tag": "div",
+      "top": 64,
+      "height": 3861,
+      "words": 293,
+      "media": 9,
+      "middle": 0,
+      "heading": {
+       "text": "Professional media tools.",
+       "size": 30,
+       "tag": "h1"
+      },
+      "left": 20,
+      "right": 20,
+      "textLeft": 20,
+      "textRight": 25,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "footer.public-footer",
+      "tag": "footer",
+      "top": 3925,
+      "height": 184,
+      "words": 22,
+      "media": 0,
+      "middle": 0,
+      "heading": null,
+      "left": 20,
+      "right": 26,
+      "textLeft": 20,
+      "textRight": 26,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Professional media tools. Right in your browser.",
+      "size": 30,
+      "top": 92,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 20,
+      "n": 4
+     },
+     {
+      "x": 36,
+      "n": 3
+     }
+    ],
+    "leftBlocks": 7,
+    "bodySize": 15,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": null,
+   "consoleErrors": []
+  }
+ ],
+ "findings": [
+  {
+   "level": "FAIL",
+   "id": "icon-cards",
+   "width": 1440,
+   "message": "1 row(s) of identical cards each topped with a small icon (4 cards).",
+   "fix": "Replace with one composed section from the direction: a narrative split, a list set in large type, or real imagery per item.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "no-footage",
+   "width": 1440,
+   "message": "No video anywhere on the page.",
+   "fix": "Look for one honest clip with scripts/assets.mjs --video (the place, the material, the process) and use it as a muted loop with a poster frame. Defend its absence only if no clip fits the subject."
+  },
+  {
+   "level": "WARN",
+   "id": "off-centre",
+   "width": 1440,
+   "message": "The margins differ: 26px on the left, 43px on the right, at 1440px.",
+   "fix": "Put the navigation and the content on one pair of margins; check for padding on one side only, a scrollbar gutter, or a header on another inset than the page."
+  },
+  {
+   "level": "FAIL",
+   "id": "still-page",
+   "width": 1440,
+   "message": "Only 2 element(s) moved while the page loaded and scrolled.",
+   "fix": "Build the motion layer (SKILL.md step 9, references/motion.md): the signature move, an entrance for the parts of every section, feedback on every control, and one moving picture. Transform and opacity only, with a reduced-motion fallback."
+  },
+  {
+   "level": "WARN",
+   "id": "hairline",
+   "width": 768,
+   "message": "1 thin rule(s)/divider line(s): header.sticky.top-0 768px",
+   "fix": "Delete. Separate with space, a tone change, or scale. Lines are only for real tables and form fields.",
+   "alsoAt": [
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "small-title",
+   "width": 768,
+   "message": "The h1 is 31px (\"Professional media tools. Right in your browser.\").",
+   "fix": "Set the title at display size, or make the large text of the first screen the h1."
+  }
+ ],
+ "images": [
+  {
+   "viewport": "desktop",
+   "width": 1440,
+   "fold": "C:\\Developer\\AI Native Editor\\.taste-skill\\v2-pass1\\desktop-fold.jpg",
+   "pages": [
+    "C:\\Developer\\AI Native Editor\\.taste-skill\\v2-pass1\\desktop-page-01.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "tablet",
+   "width": 768,
+   "fold": "C:\\Developer\\AI Native Editor\\.taste-skill\\v2-pass1\\tablet-fold.jpg",
+   "pages": [
+    "C:\\Developer\\AI Native Editor\\.taste-skill\\v2-pass1\\tablet-page-01.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "mobile",
+   "width": 390,
+   "fold": "C:\\Developer\\AI Native Editor\\.taste-skill\\v2-pass1\\mobile-fold.jpg",
+   "pages": [
+    "C:\\Developer\\AI Native Editor\\.taste-skill\\v2-pass1\\mobile-page-01.jpg"
+   ],
+   "film": []
+  }
+ ]
+}

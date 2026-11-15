@@ -1,0 +1,24 @@
+/* Zoomable waveform. Spacing from the site scale (--space-*), colours from the site tokens. */
+.root { display: flex; flex-direction: column; gap: var(--space-2); width: 100%; }
+.toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2); }
+.buttons { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1); }
+.icon, .text { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); min-height: 36px; border-radius: var(--radius-sm); color: var(--ink-2); font-size: .875rem; font-weight: 500; transition: background-color .15s ease-out, color .15s ease-out; }
+.icon { width: 36px; }
+.text { padding: 0 var(--space-3); }
+.icon:hover:not(:disabled), .text:hover:not(:disabled) { background: var(--hover); color: var(--ink); }
+.icon:disabled, .text:disabled { color: var(--faint); cursor: not-allowed; }
+.icon:focus-visible, .text:focus-visible, .handle:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+.range { display: flex; gap: var(--space-3); font-family: var(--font-mono); font-size: .75rem; font-variant-numeric: tabular-nums; color: var(--subtle); }
+.surface { position: relative; height: 128px; border-radius: var(--radius-md); background: var(--sunken); touch-action: pan-y; cursor: text; user-select: none; overflow: hidden; }
+.svg { display: block; width: 100%; height: 100%; }
+.selection { fill: var(--brand-soft); }
+.bar { fill: var(--edge-strong); }
+.barOn { fill: var(--brand); }
+/* Edge handles: a 24px hit area around a 2px line, so touch and mouse can grab them. */
+.handle { position: absolute; top: 0; bottom: 0; width: 24px; margin-left: -12px; cursor: ew-resize; touch-action: none; }
+.handle::before { content: ""; position: absolute; top: 0; bottom: 0; left: 11px; width: 2px; background: var(--brand); }
+.handle::after { content: ""; position: absolute; top: 0; left: 6px; width: 12px; height: 12px; border-radius: 0 0 var(--radius-sm) var(--radius-sm); background: var(--brand); }
+.playhead { position: absolute; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: var(--ink); pointer-events: none; }
+.scroll input { width: 100%; accent-color: var(--brand); }
+.footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2); }
+.hint { color: var(--subtle); font-size: .8125rem; }

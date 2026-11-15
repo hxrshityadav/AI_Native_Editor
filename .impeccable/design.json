@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-04T18:10:00Z",
+  "title": "Design System: Reel Finisher",
+  "extensions": {
+    "colorMeta": {
+      "primary": { "role": "primary", "displayName": "Finishing Amber", "canonical": "#efb45b" },
+      "canvas": { "role": "neutral", "displayName": "Darkroom Charcoal", "canonical": "#171717" },
+      "ink": { "role": "neutral", "displayName": "Soft White", "canonical": "#f5f3ed" }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Mukta Bold", "purpose": "Product headlines, using the existing OFL display face." },
+      "body": { "displayName": "Native UI", "purpose": "Readable copy and controls without another font download." }
+    },
+    "shadows": [],
+    "motion": [
+      { "name": "feedback", "value": "160ms ease-out", "purpose": "Hover and state feedback." },
+      { "name": "bench-arrive", "value": "240ms cubic-bezier(.16,1,.3,1)", "purpose": "One already-readable homepage entrance; removed under reduced motion." }
+    ],
+    "breakpoints": [{ "name": "stack-bench", "value": "768px" }, { "name": "desktop-nav", "value": "1024px" }, { "name": "wide-workspace", "value": "1101px" }]
+  },
+  "components": [
+    { "name": "Primary action", "kind": "button", "refersTo": "button-primary", "description": "The next workflow action.", "html": "<button class='ds-primary'>Compress image</button>", "css": ".ds-primary{background:var(--brand,#efb45b);color:#171717;min-height:46px;padding:8px 16px;border:0;border-radius:6px;font:600 14px system-ui;cursor:pointer}.ds-primary:hover{background:#f8c77d}.ds-primary:focus-visible{outline:2px solid #f4bf70;outline-offset:4px}.ds-primary:active{transform:translateY(1px)}" },
+    { "name": "Secondary action", "kind": "button", "refersTo": "button-secondary", "description": "Cancellation or a supporting action.", "html": "<button class='ds-secondary'>Cancel operation</button>", "css": ".ds-secondary{background:#303030;color:#f5f3ed;border:1px solid #77746d;border-radius:6px;min-height:44px;padding:8px 16px;font:600 14px system-ui}.ds-secondary:hover{background:#363636}.ds-secondary:focus-visible{outline:2px solid #f4bf70;outline-offset:4px}" },
+    { "name": "Text field", "kind": "input", "refersTo": "input", "description": "Explicit visible boundary and label.", "html": "<label class='ds-label'>Target size (KB)<input class='ds-input' value='200' /></label>", "css": ".ds-label{display:grid;gap:8px;color:#f5f3ed;font:600 14px system-ui}.ds-input{background:#282828;color:#f5f3ed;border:1px solid #77746d;border-radius:6px;min-height:44px;padding:8px 12px;font:16px system-ui;box-sizing:border-box}.ds-input:focus-visible{outline:2px solid #f4bf70;outline-offset:3px}" },
+    { "name": "Navigation item", "kind": "nav", "description": "Neutral active state, no decorative hue.", "html": "<a class='ds-nav' href='/tools' aria-current='page'>All tools</a>", "css": ".ds-nav{display:flex;align-items:center;min-height:44px;padding:0 12px;color:#f5f3ed;background:#303030;border-radius:6px;text-decoration:none;font:500 14px system-ui}.ds-nav:hover{background:#363636}.ds-nav:focus-visible{outline:2px solid #f4bf70;outline-offset:4px}" },
+    { "name": "Tool discovery row", "kind": "custom", "description": "Readable action and truthful scope without an icon tile.", "html": "<a class='ds-tool' href='/tools/image-compressor'><strong>Image Compressor</strong><span>Adjust quality and compare the measured output.</span></a>", "css": ".ds-tool{display:grid;gap:6px;padding:20px 0;color:#f5f3ed;text-decoration:none;font:16px/1.6 system-ui}.ds-tool span{color:#b9b7b1}.ds-tool:hover strong{color:#efb45b}.ds-tool:focus-visible{outline:2px solid #f4bf70;outline-offset:4px}" }
+  ],
+  "narrative": {
+    "northStar": "The Finishing Bench",
+    "overview": "The user's approved Option A puts a working media demonstration at the center of the homepage. Public tools share its quiet charcoal workspace, warm amber action and readable controls. Actual photos, clips, waveforms, documents and transcripts provide the visual material; the interface makes room for them.",
+    "keyCharacteristics": ["A visible source, intentional settings and a measured result.", "Flat tonal layers and restrained color.", "Locally bundled display typography paired with native control readability.", "No fabricated proof, ornamental progress or automatic model loading."],
+    "rules": [{ "name": "The One Action Rule", "body": "Reserve the strongest fill for the action that moves the current workflow forward. Navigation remains neutral.", "section": "colors" }],
+    "dos": ["Do put the user's media and primary task first.", "Do preserve local processing, cancellation, limits, integrity checks and cleanup."],
+    "donts": ["Don't add stock images or autoplay footage just to satisfy an image/motion count.", "Don't style Studio by changing root tokens or shared editor components."]
+  }
+}

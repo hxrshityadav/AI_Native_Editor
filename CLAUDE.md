@@ -38,32 +38,21 @@ and `/simplify` for reviews.
 ## Commands
 
 - `npm run check`: typegen + `tsc`, ESLint, Vitest. Must pass before every commit.
-- `npm run build`: production build.
-- `npm run e2e`: needs a fresh `npm run build`, plus ffmpeg/ffprobe. Drives `/lab` and then
-  `/studio` (desktop and Pixel 7) in Chromium against generated fixtures and verifies outputs with
-  ffprobe, then server config (abuse controls with a Turnstile stand-in, provider disclosure). Run it for every media or UI change.
-- Postgres tests: `TEST_DATABASE_URL=postgres://... npm test` runs the limiter against a real
-  database (skipped without it). `E2E_DATABASE_URL` does the same for the server-config E2E.
-- `npm run perf`: needs a fresh build. An emulated mid-range phone pass (Pixel 7 profile, CPU ÷4,
-  60 s 1080p clip) that prints step timings, idle main-thread load, the longest stall and Chromium
-  memory. `PERF_SECONDS` and `PERF_SIZE` change the clip. It is not a real-device result.
-- `npm run compat-pack`: needs a fresh build. Builds the platform upload test pack (zip) for manual
-  uploads; see `docs/research/platform-uploads.md`.
-- `npm run sync-check -- --self-test`: needs a fresh build. Validates the caption-sync measurement.
-  `npm run sync-check -- <clips>` measures real clips through `/api/transcribe` (needs `GROQ_API_KEY`
-  in `.env.local`; billable); see `docs/research/caption-sync.md`.
-- `npm run bakeoff -- <clips>`: needs a fresh build and provider keys (billable). Hinglish bake-off,
-  Groq vs Sarvam (plus Instagram Edits by text); see `docs/research/hinglish-bakeoff.md`.
+- `npm run build`: production build (also rebuilds the local-AI workers from `tools/transformers`).
+- `npm run e2e`: needs a fresh `npm run build`, plus ffmpeg/ffprobe. Runs the site, photo, video and
+  local-AI suites in Chromium against generated fixtures and verifies real outputs. Run it for every
+  media or UI change. Individual groups: `e2e:site`, `e2e:photos`, `e2e:video`, `e2e:local`, `e2e:models`.
 
 ## Layout
 
-- `src/lib/captions/`: Word type, grouping, layout, canvas drawing, SRT (pure, unit-tested).
-- `src/lib/media/`: probe, validation, device check, audio extraction, render (browser only).
-- `src/lib/edit/`: edit decision list and source↔output time map (every time-based element goes
-  through it), silence detection, level analysis worker.
-- `src/lib/transcription/`: provider interface, Groq and Sarvam adapters, route handler logic, rate limit,
-  byte sniffing (server), plus `client.ts` (browser fetch helper; must not import node modules).
-- `src/app/api/transcribe/route.ts`: wires the handler to env config.
-- `src/components/editor/`: `useReelSession` (all workflow state and actions) and shared UI parts.
-- `src/app/studio/`: the product UI (layout only, over `useReelSession`).
-- `src/app/lab/`: the internal render lab (every step exposed separately; the main E2E target).
+- `src/app/`: the public site (`/`, `/tools`, `/command-center`, `/privacy`, `/supported-formats`),
+  the 28 tool routes under `/tools/*`, and `local-models/[...asset]` (allowlisted public model files).
+- `src/lib/tools/catalog.ts`: the tool catalog, the single source of truth for names, routes, formats
+  and model downloads.
+- `src/lib/images/`, `src/lib/videos/`, `src/lib/mediatools/`, `src/lib/media/`: photo, video and
+  audio engines and their workers (browser only).
+- `src/lib/localtools/`: local AI (Whisper, SpeechT5, RNNoise, PDF text), model delivery and cache.
+- `tools/local-ai/`: worker entry points bundled by `scripts/build-local-ai.mjs`; `tools/{ort,pdf,
+  neural-audio,transformers}` are isolated installs used only at build time.
+- `src/components/site/`, `src/components/tools/`: the shell, design system and shared tool surface.
+- `src/components/command-center/`, `src/lib/command-center/`: the Command Center and palette.

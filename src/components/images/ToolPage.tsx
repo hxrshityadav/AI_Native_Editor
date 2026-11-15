@@ -1,23 +1,40 @@
-import Link from "next/link";
 import type { Metadata } from "next";
 import { siteOrigin } from "@/lib/site";
 import type { ImageTool as Tool } from "@/lib/images/policy";
 import { PHOTO_TOOLS } from "@/lib/images/tools";
-import { ImageTool } from "./ImageTool";
+import { ToolPageLayout } from "@/components/tools/ToolPageLayout";
+import { ImageCompressor } from "./ImageCompressor";
+import { ImageConverter } from "./ImageConverter";
+import { ImageResizer } from "./ImageResizer";
+
+const PHOTO_FAQS = [
+  { question: "Are my images uploaded or stored?", answer: "No. Processing runs locally in this browser tab. These tools do not upload or persist your image files. Closing or reloading the tab clears the working image; download results you want to keep." },
+  { question: "What are the image limits?", answer: "Choose one still JPEG, PNG or WebP up to 25 MiB, 8192 pixels per side and 16 megapixels total. Animated PNG/WebP, GIF, SVG, HEIC and RAW are not supported. A device with less memory may need smaller files." },
+];
+
+const PHOTO_INFO: Record<Tool, { title: string; paragraphs: string[] }> = {
+  compressor: { title: "Which format should I choose?", paragraphs: [
+    "WebP is usually the smallest choice for photos and keeps transparency. JPEG opens everywhere but cannot store transparency. PNG is lossless: ideal for screenshots and graphics with sharp edges, but rarely smaller than the original.",
+    "If a target size is hard to reach, shrinking the dimensions usually saves far more than lowering quality further. Set “Maximum dimensions” under Advanced.",
+  ] },
+  resizer: { title: "Choosing dimensions", paragraphs: [
+    "Resizing an image to the size it will actually be displayed at often saves more space than lowering its quality. Keep the aspect ratio locked to avoid stretching.",
+    "Fit presets keep the whole image inside a square box, so a portrait photo fitted within 1080 × 1080 becomes 1080 pixels tall. Presets never enlarge a smaller image.",
+  ] },
+  converter: { title: "Converting images with transparency", paragraphs: [
+    "PNG and WebP keep transparent areas. JPEG has no transparency, so transparent pixels are blended onto a background colour you choose before converting.",
+    "Converting does not recover detail: a JPEG converted to PNG keeps its compression artefacts but becomes larger.",
+  ] },
+};
 
 export function photoMetadata(tool: Tool): Metadata {
   const item = PHOTO_TOOLS[tool];
   return { title: `${item.title} · Reel Finisher`, description: item.description, ...(siteOrigin() ? { alternates: { canonical: `/tools/${item.slug}` } } : {}) };
 }
+
 export function ToolPage({ tool }: { tool: Tool }) {
   const item = PHOTO_TOOLS[tool];
-  return <main className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 sm:py-12">
-    <nav aria-label="Photo tools" className="mb-8 flex flex-wrap gap-x-5 gap-y-3 text-sm underline"><Link href="/">Reel Finisher</Link><Link href="/tools">Photo tools</Link>{Object.entries(PHOTO_TOOLS).filter(([key]) => key !== tool).map(([key, other]) => <Link key={key} href={`/tools/${other.slug}`}>{other.title}</Link>)}</nav>
-    <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{item.title}</h1>
-    <p className="mt-4 max-w-2xl text-lg text-muted">{item.description}</p>
-    <ImageTool tool={tool} />
-    <section className="max-w-3xl py-4"><h2 className="text-xl font-semibold">How to use the {item.title.toLowerCase()}</h2><ol className="my-4 list-decimal space-y-3 pl-6 leading-relaxed">{item.instructions.map(step => <li key={step}>{step}</li>)}</ol></section>
-    <section className="max-w-3xl py-4"><h2 className="text-xl font-semibold">Frequently asked questions</h2>{[...item.faqs, { question: "Are my images uploaded or stored?", answer: "No. Processing runs locally in this browser tab. These tools do not upload or persist your image files. Closing or reloading the tab clears the working image; download results you want to keep." }, { question: "What are the image limits?", answer: "Choose one still JPEG, PNG or WebP up to 25 MiB, 8192 pixels per side and 16 megapixels total. Animated PNG/WebP, GIF, SVG, HEIC and RAW are not supported. A device with less memory may need smaller files." }].map(faq => <details key={faq.question} className="border-b border-line py-4"><summary className="cursor-pointer font-medium">{faq.question}</summary><p className="mt-3 leading-relaxed text-muted">{faq.answer}</p></details>)}</section>
-    <footer className="mt-8 flex gap-5 text-sm underline"><Link href="/privacy">Privacy</Link><Link href="/tools">All photo tools</Link></footer>
-  </main>;
+  return <ToolPageLayout href={`/tools/${item.slug}`} category="photo" title={item.title} lead={item.description} stepsTitle={`How to use the ${item.title.toLowerCase()}`} steps={item.instructions} info={PHOTO_INFO[tool]} faqs={[...item.faqs, ...PHOTO_FAQS]}>
+    {{ compressor: <ImageCompressor />, resizer: <ImageResizer />, converter: <ImageConverter /> }[tool]}
+  </ToolPageLayout>;
 }

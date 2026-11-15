@@ -3,13 +3,7 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  /* Studio */
-  --surface: #f4f4f2;
-  --panel: #ffffff;
-  --line: #e2e2de;
-  --muted: #5f5f66;
-  --stage: #141416;
-  /* The caption highlight yellow; used only for primary actions. */
+  /* Fallback accent outside .site; public pages override it. */
   --accent: #ffd60a;
   --accent-ink: #141414;
 }
@@ -17,11 +11,6 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-surface: var(--surface);
-  --color-panel: var(--panel);
-  --color-line: var(--line);
-  --color-muted: var(--muted);
-  --color-stage: var(--stage);
   --color-accent: var(--accent);
   --color-accent-ink: var(--accent-ink);
 }
@@ -30,11 +19,6 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
-    --surface: #0f0f11;
-    --panel: #18181b;
-    --line: #2c2c31;
-    --muted: #a1a1aa;
-    --stage: #000000;
   }
 }
 
@@ -43,3 +27,149 @@ body {
   color: var(--foreground);
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", "Noto Sans Devanagari", sans-serif;
 }
+
+/*
+ * Fallback values for the site token names. Every page mounts .site, whose tokens in
+ * src/components/site/public-site.css replace these.
+ */
+:root {
+  --canvas: #f6f6f7;
+  --raised: #ffffff;
+  --sunken: #eeeef0;
+  --ink: #18181b;
+  --ink-2: #3f3f46;
+  --subtle: #5b5b63;
+  --edge: #e2e2e6;
+  --edge-strong: #c9c9cf;
+  --brand: #047857;
+  --brand-soft: #e3f6ee;
+  --danger: #b42318;
+  --danger-soft: #fdecea;
+  --success: #067647;
+  --success-soft: #e5f5ec;
+  --warning: #93370d;
+  --warning-soft: #fdf2e3;
+  --ring: #047857;
+  --on-ink: #ffffff;
+  --shadow-1: 0 1px 2px rgb(24 24 27 / 0.06);
+  --shadow-2: 0 1px 2px rgb(24 24 27 / 0.05), 0 8px 24px -12px rgb(24 24 27 / 0.18);
+  --checker: #dcdce0;
+  --field: #ffffff;
+  --hover: #f0f0f2;
+  --media-stage: #ececef;
+  --faint: #71717a;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --canvas: #0b0c0e;
+    --raised: #151619;
+    --sunken: #101114;
+    --ink: #f4f4f5;
+    --ink-2: #d4d4d8;
+    --subtle: #a1a1aa;
+    --edge: #26272c;
+    --edge-strong: #393a41;
+    --brand: #34d399;
+    --brand-soft: #0f2d23;
+    --danger: #ff8a80;
+    --danger-soft: #3a1513;
+    --success: #4ade80;
+    --success-soft: #0f2a1a;
+    --warning: #fbbf77;
+    --warning-soft: #33220f;
+    --ring: #34d399;
+    --on-ink: #0e0f11;
+    --shadow-1: 0 1px 0 rgb(0 0 0 / 0.4);
+    --shadow-2: 0 1px 0 rgb(0 0 0 / 0.5), 0 12px 32px -16px rgb(0 0 0 / 0.7);
+    --checker: #26272c;
+    --field: #1c1d21;
+    --hover: #202125;
+    --media-stage: #08090a;
+    --faint: #8b8b94;
+  }
+}
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-raised: var(--raised);
+  --color-sunken: var(--sunken);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-subtle: var(--subtle);
+  --color-edge: var(--edge);
+  --color-edge-strong: var(--edge-strong);
+  --color-brand: var(--brand);
+  --color-brand-soft: var(--brand-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-on-ink: var(--on-ink);
+  --color-field: var(--field);
+  --color-hover: var(--hover);
+  --color-media-stage: var(--media-stage);
+  --color-faint: var(--faint);
+  --radius-sm: 8px;
+  --radius-panel: 14px;
+  --shadow-panel: var(--shadow-2);
+  --text-display: 2.5rem;
+  --text-display--line-height: 1.08;
+  --text-title: 1.75rem;
+  --text-title--line-height: 1.15;
+}
+
+/*
+ * Public pages opt in with .site so legacy routes keep their own background and focus styles.
+ * The site is a focused dark interface whatever the system theme; the editor host bar still follows the system.
+ */
+.site {
+  /* Tokens live in src/components/site/public-site.css (the single public token source). */
+  color-scheme: dark;
+  background: var(--canvas);
+  color: var(--ink);
+  font-feature-settings: "cv11", "ss01";
+}
+.site :focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+.site h1, .site h2, .site h3 { letter-spacing: -0.02em; text-wrap: balance; }
+.site p { text-wrap: pretty; }
+.tabular { font-variant-numeric: tabular-nums; }
+
+@media (prefers-reduced-motion: reduce) {
+  .site *, .site *::before, .site *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}
+
+/* Browser surfaces on the dark site: page canvas, scrollbars, selection, caret and links follow the palette. */
+html:has(.site) { color-scheme: dark; background: #0a0a0b; }
+html[data-site-theme="light"]:has(.site) { color-scheme: light; background: #faf7f2; }
+:root[data-site-theme="light"] .site { color-scheme: light; }
+@media (pointer: fine) { html:has(.site) { overscroll-behavior: none; } }
+.site {
+  scrollbar-color: var(--edge-strong) var(--canvas);
+  caret-color: var(--accent);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+.site ::selection { background: color-mix(in srgb, var(--accent) 35%, transparent); color: var(--ink); }
+.site a { text-underline-offset: 0.2em; }
+
+/* Mukta Bold (OFL, served from /fonts): legacy display face, superseded on public pages by Geist. */
+@font-face {
+  font-family: "RF Display";
+  src: url("/fonts/mukta/mukta-latin-700-normal.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* Public type: Geist and Geist Mono (SIL OFL 1.1, vendored in /fonts/geist). */
+@font-face { font-family: "Geist"; src: url("/fonts/geist/Geist-Variable.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+@font-face { font-family: "Geist Mono"; src: url("/fonts/geist/GeistMono-Variable.woff2") format("woff2"); font-weight: 100 900; font-display: swap; }
+.site { --font-sans: "Geist", system-ui, -apple-system, "Segoe UI", "Noto Sans", "Noto Sans Devanagari", sans-serif; --font-mono: "Geist Mono", ui-monospace, "Cascadia Mono", Consolas, monospace; font-family: var(--font-sans); }
+.site h1, .site h2, .site h3, .site .display { font-family: var(--font-sans); font-weight: 600; }
+.site h1, .site .display { letter-spacing: -0.03em; }

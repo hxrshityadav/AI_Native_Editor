@@ -1,0 +1,547 @@
+
+> reel-finisher@0.1.0 e2e
+> npm run e2e:site && npm run e2e:photos && npm run e2e:video && npm run e2e:local
+
+
+> reel-finisher@0.1.0 e2e:site
+> node tests/e2e/site.e2e.mjs && node tests/e2e/redesign.e2e.mjs && node tests/e2e/command-center.e2e.mjs
+
+PASS  light / @320: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light / @320: touch targets at least 32 px tall
+PASS  light / @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light / @390: touch targets at least 32 px tall
+PASS  light / @768: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light / @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light / @1920: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools @320: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools @320: touch targets at least 32 px tall
+PASS  light /tools @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools @390: touch targets at least 32 px tall
+PASS  light /tools @768: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools @1920: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/image-compressor @320: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/image-compressor @320: touch targets at least 32 px tall
+PASS  light /tools/image-compressor @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/image-compressor @390: touch targets at least 32 px tall
+PASS  light /tools/image-compressor @768: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/image-compressor @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/image-compressor @1920: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/image-resizer @320: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/image-resizer @320: touch targets at least 32 px tall
+PASS  light /tools/image-resizer @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/image-resizer @390: touch targets at least 32 px tall
+PASS  light /tools/image-resizer @768: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/image-resizer @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/image-resizer @1920: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/image-converter @320: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/image-converter @320: touch targets at least 32 px tall
+PASS  light /tools/image-converter @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/image-converter @390: touch targets at least 32 px tall
+PASS  light /tools/image-converter @768: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/image-converter @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/image-converter @1920: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/video-compressor @320: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/video-compressor @320: touch targets at least 32 px tall
+PASS  light /tools/video-compressor @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/video-compressor @390: touch targets at least 32 px tall
+PASS  light /tools/video-compressor @768: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/video-compressor @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/video-compressor @1920: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /privacy @320: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /privacy @320: touch targets at least 32 px tall
+PASS  light /privacy @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /privacy @390: touch targets at least 32 px tall
+PASS  light /privacy @768: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /privacy @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /privacy @1920: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /supported-formats @320: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /supported-formats @320: touch targets at least 32 px tall
+PASS  light /supported-formats @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /supported-formats @390: touch targets at least 32 px tall
+PASS  light /supported-formats @768: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /supported-formats @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /supported-formats @1920: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light: no console or hydration errors
+PASS  light: only same-origin requests
+PASS  light: public utility pages never load editor, AI or PDF runtimes
+PASS  dark / @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark / @390: touch targets at least 32 px tall
+PASS  dark / @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark /tools @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark /tools @390: touch targets at least 32 px tall
+PASS  dark /tools @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark /tools/image-compressor @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark /tools/image-compressor @390: touch targets at least 32 px tall
+PASS  dark /tools/image-compressor @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark /tools/image-resizer @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark /tools/image-resizer @390: touch targets at least 32 px tall
+PASS  dark /tools/image-resizer @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark /tools/image-converter @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark /tools/image-converter @390: touch targets at least 32 px tall
+PASS  dark /tools/image-converter @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark /tools/video-compressor @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark /tools/video-compressor @390: touch targets at least 32 px tall
+PASS  dark /tools/video-compressor @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark /privacy @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark /privacy @390: touch targets at least 32 px tall
+PASS  dark /privacy @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark /supported-formats @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark /supported-formats @390: touch targets at least 32 px tall
+PASS  dark /supported-formats @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark: no console or hydration errors
+PASS  dark: only same-origin requests
+PASS  dark: public utility pages never load editor, AI or PDF runtimes
+PASS  keyboard: first Tab reaches a visible skip link
+PASS  keyboard: skip link moves focus past the navigation
+PASS  rail: names every main destination and marks the current page
+PASS  rail: hover expands the shared layout
+PASS  rail: leaving collapses after delay
+PASS  rail: keyboard focus expands the layout
+PASS  dark surfaces: html is dark and theme-color matches
+PASS  focus: keyboard focus has a visible outline
+PASS  directory: category filter shows only that category's tools
+PASS  directory: local AI tools expose four entries without planned placeholders
+PASS  search: matches formats across tools  (Image to Video, Image Compressor, Image Format Converter, Image Resizer, Background Remover
+AI, Passport Photo Maker)
+PASS  search: no match shows a recovery action
+PASS  search: the query is kept in the URL
+PASS  search: a shared URL restores the filtered view
+PASS  search: clearing restores every tool
+PASS  links: /command-center resolves  (200)
+PASS  links: /supported-formats resolves  (200)
+PASS  links: /tools/lecture-to-notes resolves  (200)
+PASS  links: /tools/video-translator resolves  (200)
+PASS  links: /tools/ai-dubbing resolves  (200)
+PASS  links: /tools/transcribe-to-text resolves  (200)
+PASS  links: /tools/text-to-video resolves  (200)
+PASS  links: /tools/image-to-video resolves  (200)
+PASS  links: /tools/video-compressor resolves  (200)
+PASS  links: /tools/trim-video resolves  (200)
+PASS  links: /tools/video-to-gif resolves  (200)
+PASS  links: /tools/compress-video-to-size resolves  (200)
+PASS  links: /tools/convert-to-mp4 resolves  (200)
+PASS  links: /tools/remove-audio resolves  (200)
+PASS  links: /tools/pdf-to-audio resolves  (200)
+PASS  links: /tools/remove-music resolves  (200)
+PASS  links: /tools/noise-remover resolves  (200)
+PASS  links: /tools/vocal-remover resolves  (200)
+PASS  links: /tools/audio-converter resolves  (200)
+PASS  links: /tools/extract-audio resolves  (200)
+PASS  links: /tools/audio-cutter resolves  (200)
+PASS  links: /tools/increase-volume resolves  (200)
+PASS  links: /tools/audio-to-video resolves  (200)
+PASS  links: /tools/text-to-speech resolves  (200)
+PASS  links: /tools/image-compressor resolves  (200)
+PASS  links: /tools/image-converter resolves  (200)
+PASS  links: /tools/image-resizer resolves  (200)
+PASS  links: /tools/heic-to-jpg resolves  (200)
+PASS  links: /tools/background-remover resolves  (200)
+PASS  links: /tools/passport-photo resolves  (200)
+PASS  links: / resolves  (200)
+PASS  links: /tools resolves  (200)
+PASS  links: /privacy resolves  (200)
+PASS  links: /media-notices/SOURCES.txt resolves  (200)
+PASS  mobile nav: menu opens a drawer without overflow
+PASS  mobile nav: Escape closes the drawer and returns focus to Menu
+PASS  mobile nav: links navigate and close the drawer
+PASS  resizer: percentage mode scales both sides
+PASS  tool page: related tools link to other working tools
+PASS  workspace: settings stay hidden until a file is chosen
+PASS  workspace: a chosen file shows a thumbnail, details, preview and controls
+PASS  format: the segmented choice is a real radio group
+PASS  quality: the exact percentage drives the slider
+PASS  target size: quick picks set the amount and unit
+PASS  target size: a target above the original size is explained before processing
+PASS  result: saving, comparison table and requested target are reported
+PASS  result: focus moves to the result for screen readers
+PASS  result: before/after slider works from the keyboard
+PASS  result: Adjust settings returns to the controls with focus
+PASS  result: Back to result keeps the measured output
+PASS  result: Start over returns to the upload stage
+PASS  home: primary action opens the tool directory
+PASS  removed: /studio returns 404
+PASS  removed: /studio-legacy returns 404
+PASS  removed: /lab returns 404
+PASS  removed: /tools/shorts-maker returns 404
+PASS  motion: reduced motion shortens transitions  (0s)
+
+158/158 checks passed
+PASS  /: renders
+PASS  /: one heading and no overflow at all six widths  ([])
+PASS  /tools: renders
+PASS  /tools: one heading and no overflow at all six widths  ([])
+PASS  /privacy: renders
+PASS  /privacy: one heading and no overflow at all six widths  ([])
+PASS  /supported-formats: renders
+PASS  /supported-formats: one heading and no overflow at all six widths  ([])
+PASS  /tools/ai-dubbing: renders
+PASS  /tools/ai-dubbing: one heading and no overflow at all six widths  ([])
+PASS  /tools/audio-converter: renders
+PASS  /tools/audio-converter: one heading and no overflow at all six widths  ([])
+PASS  /tools/audio-cutter: renders
+PASS  /tools/audio-cutter: one heading and no overflow at all six widths  ([])
+PASS  /tools/audio-to-video: renders
+PASS  /tools/audio-to-video: one heading and no overflow at all six widths  ([])
+PASS  /tools/background-remover: renders
+PASS  /tools/background-remover: one heading and no overflow at all six widths  ([])
+PASS  /tools/compress-video-to-size: renders
+PASS  /tools/compress-video-to-size: one heading and no overflow at all six widths  ([])
+PASS  /tools/convert-to-mp4: renders
+PASS  /tools/convert-to-mp4: one heading and no overflow at all six widths  ([])
+PASS  /tools/extract-audio: renders
+PASS  /tools/extract-audio: one heading and no overflow at all six widths  ([])
+PASS  /tools/heic-to-jpg: renders
+PASS  /tools/heic-to-jpg: one heading and no overflow at all six widths  ([])
+PASS  /tools/image-compressor: renders
+PASS  /tools/image-compressor: one heading and no overflow at all six widths  ([])
+PASS  /tools/image-converter: renders
+PASS  /tools/image-converter: one heading and no overflow at all six widths  ([])
+PASS  /tools/image-resizer: renders
+PASS  /tools/image-resizer: one heading and no overflow at all six widths  ([])
+PASS  /tools/image-to-video: renders
+PASS  /tools/image-to-video: one heading and no overflow at all six widths  ([])
+PASS  /tools/increase-volume: renders
+PASS  /tools/increase-volume: one heading and no overflow at all six widths  ([])
+PASS  /tools/lecture-to-notes: renders
+PASS  /tools/lecture-to-notes: one heading and no overflow at all six widths  ([])
+PASS  /tools/noise-remover: renders
+PASS  /tools/noise-remover: one heading and no overflow at all six widths  ([])
+PASS  /tools/passport-photo: renders
+PASS  /tools/passport-photo: one heading and no overflow at all six widths  ([])
+PASS  /tools/pdf-to-audio: renders
+PASS  /tools/pdf-to-audio: one heading and no overflow at all six widths  ([])
+PASS  /tools/remove-audio: renders
+PASS  /tools/remove-audio: one heading and no overflow at all six widths  ([])
+PASS  /tools/remove-music: renders
+PASS  /tools/remove-music: one heading and no overflow at all six widths  ([])
+PASS  /tools/text-to-speech: renders
+PASS  /tools/text-to-speech: one heading and no overflow at all six widths  ([])
+PASS  /tools/text-to-video: renders
+PASS  /tools/text-to-video: one heading and no overflow at all six widths  ([])
+PASS  /tools/transcribe-to-text: renders
+PASS  /tools/transcribe-to-text: one heading and no overflow at all six widths  ([])
+PASS  /tools/trim-video: renders
+PASS  /tools/trim-video: one heading and no overflow at all six widths  ([])
+PASS  /tools/video-compressor: renders
+PASS  /tools/video-compressor: one heading and no overflow at all six widths  ([])
+PASS  /tools/video-to-gif: renders
+PASS  /tools/video-to-gif: one heading and no overflow at all six widths  ([])
+PASS  /tools/video-translator: renders
+PASS  /tools/video-translator: one heading and no overflow at all six widths  ([])
+PASS  /tools/vocal-remover: renders
+PASS  /tools/vocal-remover: one heading and no overflow at all six widths  ([])
+PASS  all public routes: no browser exceptions
+PASS  all public routes: no automatic model/editor downloads
+PASS  all public routes: same-origin GET/HEAD only
+PASS  speech @390: voice is not covered and consent precedes action
+PASS  speech @768: voice is not covered and consent precedes action
+PASS  speech @1024: voice is not covered and consent precedes action
+PASS  home: unvisited tool and Studio routes are not speculatively fetched  ([])
+PASS  workflow artwork @1440: all four illustrations decode with the correct composition
+PASS  workflow artwork @390: all four illustrations decode with the correct composition
+PASS  workspace navigation @1440: instructions clear the header
+PASS  workspace navigation @1440: returns to the real upload surface
+PASS  workspace navigation @390: instructions clear the header
+PASS  workspace navigation @390: returns to the real upload surface
+PASS  home: no invented output before processing
+PASS  sample WebP: actual valid downloadable output  ({"bytes":419226,"type":"image/webp"})
+PASS  sample WebP: measured result and comparison
+PASS  sample JPEG: actual valid downloadable output  ({"bytes":429081,"type":"image/jpeg"})
+PASS  sample JPEG: measured result and comparison
+PASS  sample PNG (lossless): actual valid downloadable output  ({"bytes":4018015,"type":"image/png"})
+PASS  sample PNG (lossless): measured result and comparison
+PASS  sample PNG: quality is disabled for lossless encoding
+PASS  sample: changing format invalidates old download
+PASS  sample: load failure explains recovery
+PASS  sample: retry recovers
+PASS  sample: cancellation restores action without a download
+
+89/89 checks passed
+PASS  palette: Ctrl+K opens one dialog
+PASS  palette: search field has focus
+PASS  palette: search filters the real catalog  (Video to GIF
+Video · MP4, MOV, WebM)
+PASS  palette: Escape closes it
+PASS  palette: Enter opens the selected tool
+PASS  recent: visited tools are listed
+PASS  recent: storage holds routes and times only  ({"version":1,"favorites":[],"recent":[{"href":"/tools/heic-to-jpg","visitedAt":1794640720698}],"recordHistory":true})
+PASS  favorites: pin survives reload
+PASS  favorites: clear removes pins
+PASS  settings: paused history records nothing new
+PASS  phone: category view opens from hash with no overflow  (Audio 0)
+PASS  no browser exceptions
+PASS  same-origin requests only
+PASS  blocked storage: recovery message shown
+PASS  blocked storage: pinning still works in the session
+
+15/15 checks passed
+
+> reel-finisher@0.1.0 e2e:photos
+> node tests/e2e/photos.e2e.mjs && node tests/e2e/passport.e2e.mjs && node tests/e2e/heic.e2e.mjs && node tests/e2e/background.e2e.mjs
+
+PASS  compressor: drop reads actual dimensions, format and measured bytes  (749.3 KB
+(749,271 bytes)
+600 × 400 px
+PNG)
+PASS  compressor: generated WebP decodes with unchanged dimensions
+PASS  compressor: target report agrees with downloaded bytes
+PASS  download: uses a new matching filename
+PASS  settings: changing an option invalidates the old download
+PASS  compressor: infeasible target is explicit and still measured
+PASS  compressor: PNG explains its lossless quality setting
+PASS  compressor: PNG preserves actual pixels and reports an unmet tiny target
+PASS  converter: warns before flattening alpha
+PASS  converter: actual JPEG has selected opaque background
+PASS  converter: JPEG blends partial alpha onto the background
+PASS  converter: WebP preserves transparent, partial and opaque alpha
+PASS  converter: PNG preserves alpha and real dimensions
+PASS  picker: selecting the same file again clears the previous result
+PASS  orientation: EXIF is baked into actual output pixels
+PASS  resizer: width updates locked height
+PASS  resizer: repeated edits do not drift the ratio
+PASS  resizer: actual file dimensions match the preview
+PASS  resizer: unlocked dimensions are independent
+PASS  resizer: unlocked dimensions are encoded
+PASS  resizer: preset fits whole image without cropping
+PASS  resizer: invalid dimensions give recovery without download
+PASS  validation: missing MIME still requires a real decodable image
+PASS  validation: unsupported.svg rejected
+PASS  validation: mismatch.jpg rejected
+PASS  validation: empty.png rejected
+PASS  validation: oversize.png rejected
+PASS  validation: huge.png rejected
+PASS  validation: broken.png rejected
+PASS  validation: damaged.png rejected
+PASS  resources: replacement/error releases preview and download URLs
+PASS  cancellation: no stale result or download is published
+PASS  cancellation: retry processes successfully
+PASS  resources: route exit revokes all object URLs
+PASS  fallback: HTML image/canvas path produces a local result
+PASS  fallback: unsupported encoder cannot produce a mislabeled download
+PASS  mobile: image-compressor controls fit without horizontal overflow
+PASS  SEO: image-compressor has crawlable unique content
+PASS  mobile: image-resizer controls fit without horizontal overflow
+PASS  SEO: image-resizer has crawlable unique content
+PASS  mobile: image-converter controls fit without horizontal overflow
+PASS  SEO: image-converter has crawlable unique content
+PASS  privacy: requests are local GET/HEAD only
+PASS  isolation: photo tools do not load editor or AI assets
+
+44/44 checks passed
+PASS  upload: shows the crop frame and controls
+PASS  export: 35 × 45 mm photo is a real 413 × 531 px JPEG  (portrait-passport-35x45.jpg)
+PASS  export: framing keeps the subject's top and bottom halves
+PASS  print sheet: 6 × 4 in at 300 DPI with a white border
+PASS  settings: a change invalidates the old download
+PASS  fill: zoomed-out empty area uses the chosen background colour  (220,231,244)
+PASS  keyboard: 0 resets the zoom
+PASS  sizes: 2 × 2 in exports 600 × 600 px
+PASS  validation: unsupported files are rejected with a reason
+PASS  resizer target: dimensions and the reported outcome match the real file  (19994 bytes, achieved=true)
+PASS  mobile: passport workspace fits without horizontal overflow
+PASS  SEO: unique title, H1 and FAQ are server-rendered
+PASS  privacy: only same-origin GET/HEAD requests
+
+13/13 checks passed
+PASS  batch: both photos are listed and waiting
+PASS  lazy loading: the decoder worker loads only when converting  (http://localhost:3157/_next/static/chunks/8546.36829fcff188b369.js)
+PASS  output: real JPEGs with the HEIC dimensions
+PASS  output: decoded pixels match the source colours  (230,40,40)
+PASS  status: completion is announced
+PASS  validation: a file without a HEIF header is rejected on its row
+PASS  cancellation: nothing is published and the photo waits
+PASS  retry: conversion succeeds after cancelling
+PASS  mobile: the batch list fits without horizontal overflow
+PASS  SEO: unique title, H1 and FAQ are server-rendered
+PASS  privacy: only same-origin GET/HEAD requests
+
+11/11 checks passed
+PASS  lazy loading: model and runtime are not downloaded before removing
+PASS  model: runtime and weights load from this site only when removing
+PASS  output: real PNG at the original dimensions
+PASS  output: subject kept opaque with its colour, background transparent  (centre 192,24,24,255 corner 0,0,0,0)
+PASS  settings: a change invalidates the old download
+PASS  background colour: removed area becomes opaque white  (255,255,255,255)
+PASS  WebP: real WebP with transparency
+PASS  cancellation: nothing is published after cancelling
+PASS  retry: removal succeeds after cancelling
+PASS  validation: unsupported files are rejected with a reason
+PASS  mobile: workspace fits without horizontal overflow
+PASS  SEO: unique title, H1 and FAQ are server-rendered
+PASS  privacy: only same-origin GET/HEAD requests
+
+13/13 checks passed
+
+> reel-finisher@0.1.0 e2e:video
+> node tests/e2e/video-compressor.e2e.mjs && node tests/e2e/media.e2e.mjs
+
+BROWSER 157.0.8103.51
+PASS  import: drop probes actual dimensions, duration, codecs and size
+PASS  preview: actual input plays and pauses
+PASS  estimate: before processing it is explicitly not measured
+PASS  export: actual MP4/H.264/AAC container, MIME and extension agree
+PASS  resolution: 480p fits within even pixel bounds and preserves picture aspect
+PASS  export: every encoded frame and audio sample decodes
+PASS  size: reduction and measured bytes correspond to the actual file
+PASS  sync: decoded A/V end times remain aligned
+PASS  sync: actual flash/beep content stays synchronized  (audio 1.000s / picture 1.000s)
+PASS  playback: independently downloaded output plays to its end
+PASS  settings: mute invalidates the old download
+PASS  mute: explicit mute really removes the audio track
+PASS  target: impossible size is reported using measured output
+PASS  fallback: actual WebM/VP9/Opus export preserves audio and decodes
+PASS  orientation: rotated source is baked upright with portrait aspect
+PASS  VFR: output retains duration, avoids upscaling and normalizes frame cadence
+PASS  import: silent WebM is accepted without fabricated audio
+PASS  import: actual MOV container is recognized
+PASS  resources: process-another clears media URLs and downloads
+PASS  validation: empty.mp4 rejected with recovery
+PASS  validation: corrupt.mp4 rejected with recovery
+PASS  validation: mislabeled.webm rejected with recovery
+PASS  validation: audio.mp4 rejected with recovery
+PASS  duration: actual 601-second file is rejected
+PASS  codec: unsupported encoded picture is not accepted from extension alone
+PASS  cancellation: worker stops without a stale download
+PASS  retry: compression succeeds after cancellation
+PASS  replacement: latest input wins without stale output
+PASS  capability: absent encoders block export with a reason
+PASS  audio: unavailable encoder never silently mutes
+PASS  audio: explicit mute is a working recovery
+PASS  failure: encoder errors release the job without a false successful download
+PASS  mobile: controls fit the viewport
+PASS  unmount: all media object URLs are released
+PASS  SEO: title, instructions and FAQ are rendered server-side
+PASS  privacy: all processing requests are local GET/HEAD
+PASS  isolation: standalone tool never loads editor or model assets
+
+37/37 checks passed
+PASS  trim: file details include duration and dimensions
+PASS  trim fast: copied H.264/AAC MP4, cut snapped to the keyframe and reported  (2.533333 s)
+PASS  trim fast: keyframe shift is explained when it happens
+PASS  trim precise: exact 2.5 s clip that decodes cleanly  (2.533333 s)
+PASS  trim: download name describes the result  (source-trimmed.mp4)
+PASS  remove audio: no audio stream, same H.264 video, full duration
+PASS  remove audio: a silent video cannot be processed again
+PASS  convert: VP9/Opus WebM becomes a playable H.264/AAC MP4  (audio:aac,video:h264)
+PASS  convert: H.264 MKV is repackaged without re-encoding
+PASS  extract: M4A contains only AAC audio of the full length
+PASS  extract: WAV is uncompressed PCM
+PASS  extract: Ogg contains Opus audio
+PASS  audio converter: MP3 becomes a WAV of the same length  (5.041633 s)
+PASS  cutter: a real waveform is drawn from the decoded audio
+PASS  cutter: output is the selected 2 s range  (2 s)
+PASS  cutter: fade in is applied to the samples  (-21.2 vs -1.2)
+PASS  volume: normalize lifts the peak to about -1 dBFS  (-38.1 → -1 dB)
+PASS  volume: the applied gain is reported
+PASS  volume: a large boost is limited instead of hard clipping, and says so  (0 dB)
+PASS  gif: real animated GIF at the chosen width with the expected frames  (240px, 24 frames)
+PASS  compress to size: a target is required before compressing
+PASS  compress to size: the requested bitrate is calculated and shown
+PASS  compress to size: the reported outcome matches the measured file  (436225 bytes, achieved=false)
+PASS  audio to video: real H.264/AAC MP4 at the chosen shape and the audio's length  (1280x720, 4.010667 s)
+PASS  text to speech: generation needs consent and offers no fabricated download
+PASS  text to speech: the character count follows the bounded generation text
+PASS  text to speech: existing device playback is preserved
+PASS  validation: a non-media file is rejected with a reason  (This file could not be read as audio or video. It may be damaged or in an unsupported format.)
+PASS  cancellation: nothing is published and the tool can run again
+PASS  mobile: trim-video fits without horizontal overflow
+PASS  mobile: audio-cutter fits without horizontal overflow
+PASS  SEO: trim-video has a unique title, H1 and FAQ
+PASS  SEO: remove-audio has a unique title, H1 and FAQ
+PASS  SEO: convert-to-mp4 has a unique title, H1 and FAQ
+PASS  SEO: extract-audio has a unique title, H1 and FAQ
+PASS  SEO: audio-converter has a unique title, H1 and FAQ
+PASS  SEO: audio-cutter has a unique title, H1 and FAQ
+PASS  SEO: increase-volume has a unique title, H1 and FAQ
+PASS  SEO: video-to-gif has a unique title, H1 and FAQ
+PASS  SEO: compress-video-to-size has a unique title, H1 and FAQ
+PASS  SEO: audio-to-video has a unique title, H1 and FAQ
+PASS  SEO: text-to-speech has a unique title, H1 and FAQ
+PASS  privacy: only same-origin GET/HEAD requests
+
+43/43 checks passed
+
+> reel-finisher@0.1.0 e2e:local
+> node tests/e2e/localtools.e2e.mjs && node tests/e2e/notes.e2e.mjs && node tests/e2e/pdf-audio.e2e.mjs
+
+PASS  noise: real PCM WAV retains sample count and reduces stationary noise
+PASS  settings: edits revoke the previous download
+PASS  stereo: side output cancels centred 440 Hz while preserving panned 880 Hz
+PASS  stereo: centre output retains 440 Hz and rejects opposing 880 Hz
+PASS  validation: mono is rejected without fabricated separation
+PASS  music: real H.264/AAC video keeps duration and reduces panned soundtrack
+PASS  script: generated MP4 contains real caption frames with measured duration
+PASS  script: changing content invalidates the old download
+PASS  photo: real zoom changes decoded pixels and preserves selected portrait shape
+PASS  consent: transcribe-to-text cannot download a model automatically
+PASS  consent: video-translator cannot download a model automatically
+PASS  consent: ai-dubbing cannot download a model automatically
+PASS  models: browsing and DSP never fetch speech/model runtime assets
+PASS  security: model proxy refuses arbitrary model URLs
+PASS  neural noise: runtime download requires consent
+PASS  neural noise: real RNNoise reduces broadband noise, preserves sample count and source rate  (1048 ms; RMS ratio 0.133)
+PASS  neural noise: stereo channels and timing survive repeated processing
+PASS  neural noise: actual cleaned MP4 keeps copied picture and synchronized audio
+SKIP  large-model inference (run LOCAL_AI_INFERENCE=1 for actual Whisper/SpeechT5 downloads)
+PASS  mobile: noise-remover has one H1 and no horizontal overflow
+PASS  SEO: noise-remover renders instructions and honest limitations
+PASS  mobile: vocal-remover has one H1 and no horizontal overflow
+PASS  SEO: vocal-remover renders instructions and honest limitations
+PASS  mobile: remove-music has one H1 and no horizontal overflow
+PASS  SEO: remove-music renders instructions and honest limitations
+PASS  mobile: transcribe-to-text has one H1 and no horizontal overflow
+PASS  SEO: transcribe-to-text renders instructions and honest limitations
+PASS  mobile: video-translator has one H1 and no horizontal overflow
+PASS  SEO: video-translator renders instructions and honest limitations
+PASS  mobile: ai-dubbing has one H1 and no horizontal overflow
+PASS  SEO: ai-dubbing renders instructions and honest limitations
+PASS  mobile: text-to-video has one H1 and no horizontal overflow
+PASS  SEO: text-to-video renders instructions and honest limitations
+PASS  mobile: image-to-video has one H1 and no horizontal overflow
+PASS  SEO: image-to-video renders instructions and honest limitations
+PASS  mobile: speech editor has usable width and settings stack below it
+PASS  mobile: text-to-speech has one H1 and no horizontal overflow
+PASS  SEO: text-to-speech renders instructions and honest limitations
+PASS  cleanup: client navigation revokes all tool object URLs
+PASS  privacy: requests contain only same-origin GET/HEAD asset loads  ([])
+
+39/39 checks passed
+PASS  notes: corrupt media disables processing
+PASS  notes: ten-minute ceiling is preserved
+PASS  notes: no model is downloaded before consent
+PASS  notes: real worker builds source-based study aids
+PASS  notes: actual md contains transcript, time and practice answer
+PASS  notes: actual txt contains transcript, time and practice answer
+PASS  notes: key quote seeks original recording
+PASS  notes: edits invalidate stale downloads
+PASS  notes: overlapping times show a recoverable error
+PASS  notes: repeat processing recovers after validation failure
+PASS  notes: cancellation terminates transcription without a stale download
+PASS  notes: mobile settings and transcript are reachable
+PASS  notes: configured mobile workspace fits the screen
+PASS  notes: all application HTTP requests are same-origin GET/HEAD
+
+14/14 checks passed
+PASS  PDF: parser and AI are not loaded before a document
+PASS  PDF: corrupt.pdf fails with a specific recovery reason
+PASS  PDF: scanned.pdf fails with a specific recovery reason
+PASS  PDF: many.pdf fails with a specific recovery reason
+PASS  PDF: password-protected.pdf fails with a specific recovery reason
+PASS  PDF: renamed non-PDF is rejected before parser load
+PASS  PDF: byte ceiling is enforced
+PASS  PDF: a worker load failure is reported promptly
+PASS  PDF: parser cancellation permits a fresh retry
+PASS  PDF: mixed text/image pages are disclosed
+PASS  PDF: over-limit selections remain intact and require explicit shortening
+PASS  PDF: actual extraction and page range preserve the selected content
+PASS  PDF: no silent truncation at the standalone speech limit
+PASS  PDF: model inference requires explicit consent
+PASS  PDF: speech cancellation leaves a retry without stale output
+PASS  PDF: changing page selection unmounts and releases speech resources
+PASS  PDF: repeated extraction recovers after errors and range changes
+PASS  PDF: job-owned parser workers terminate after success and failure
+PASS  PDF: all application HTTP requests are same-origin GET/HEAD
+PASS  PDF: mobile text and consent are reachable without overflow
+
+20/20 checks passed

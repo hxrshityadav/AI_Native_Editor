@@ -55,22 +55,10 @@ export function makeFixtures(dir) {
 }
 
 
-/**
- * Starts `next start` on `port`. By default without a Groq key, so the real route reports
- * NOT_CONFIGURED and tests never make billable calls. An empty value is used instead of deleting
- * the variable: Next.js doesn't override variables that are already set, so a developer's
- * .env.local key can't leak in. Pass `{ withKey: true }` to use the key from the env or .env.local.
- */
-/**
- * Starts `next start`. Keys and abuse-control settings are blanked so a developer's .env.local
- * can't switch them on (or make billable calls); pass `withKey` or `env` to set them.
- */
-export async function startServer(port, { withKey = false, env: extra = {} } = {}) {
-  const env = { ...process.env, PORT: String(port), REEL_ENABLE_CLOUD: "1" };
-  if (!withKey) for (const k of ["GROQ_API_KEY", "SARVAM_API_KEY", "TRANSCRIBE_PROVIDER"]) env[k] = "";
-  for (const k of ["DATABASE_URL", "TURNSTILE_SITE_KEY", "TURNSTILE_SECRET_KEY", "VERCEL"]) env[k] = "";
-  Object.assign(env, extra);
-  const server = spawn(process.execPath, [join(ROOT, "node_modules/next/dist/bin/next"), "start", "-p", String(port)], {
+/** Starts `next start` (or `next dev` with `dev: true`) on `port`, with optional extra environment variables. */
+export async function startServer(port, { env: extra = {}, dev = false } = {}) {
+  const env = { ...process.env, PORT: String(port), ...extra };
+  const server = spawn(process.execPath, [join(ROOT, "node_modules/next/dist/bin/next"), ...(dev ? ["dev", "--webpack"] : ["start"]), "-p", String(port)], {
     cwd: ROOT,
     env,
     stdio: "pipe",
@@ -79,7 +67,7 @@ export async function startServer(port, { withKey = false, env: extra = {} } = {
   server.stderr.on("data", (d) => process.stderr.write(d));
   for (let i = 0; i < 60; i++) {
     try {
-      if ((await fetch(`http://localhost:${port}/lab`)).ok) return server;
+      if ((await fetch(`http://localhost:${port}/`)).ok) return server;
     } catch {}
     await new Promise((r) => setTimeout(r, 500));
   }

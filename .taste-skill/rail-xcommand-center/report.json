@@ -1,0 +1,1515 @@
+{
+ "url": "http://localhost:3000/command-center",
+ "at": "2026-11-08T05:43:27.230Z",
+ "allow": [],
+ "viewports": [
+  {
+   "width": 1440,
+   "height": 900,
+   "load": "load",
+   "screens": 3,
+   "filled": [
+    0.92,
+    0.96,
+    0.91
+   ],
+   "motion": {
+    "elements": 1,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 1,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "page": {
+     "height": 1816,
+     "screens": 2,
+     "words": 395,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 43,
+     "sections": 5,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Command Center",
+     "words": 2,
+     "chars": 14,
+     "lines": 1,
+     "size": 32,
+     "vw": 2.2,
+     "font": "Geist",
+     "weight": 600,
+     "tracking": -0.02,
+     "leading": 1.25,
+     "top": 128,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "Command Center",
+     "words": 2,
+     "lines": 1,
+     "size": 32,
+     "font": "Geist"
+    },
+    "headings": [
+     {
+      "text": "Command Center",
+      "words": 2,
+      "chars": 14,
+      "lines": 1,
+      "size": 32,
+      "vw": 2.2,
+      "font": "Geist",
+      "weight": 600,
+      "tracking": -0.025,
+      "leading": 1.25,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.46,
+      "top": 128,
+      "tag": "h1",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 1,
+     "maxLines": 1,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": null,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Geist",
+       "share": 0.91,
+       "mono": false
+      },
+      {
+       "family": "Geist Mono",
+       "share": 0.09,
+       "mono": true
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      20,
+      32
+     ],
+     "sizeCount": 10,
+     "notLoaded": [],
+     "body": {
+      "font": "Geist",
+      "size": 14,
+      "leading": 1.5,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 9.6
+     },
+     "measureChars": 78,
+     "max": {
+      "size": 32,
+      "vw": 2.2,
+      "font": "Geist",
+      "text": "Command Center"
+     },
+     "monoShare": 0.09,
+     "monoProseShare": 0.09,
+     "monoFamilies": [
+      "Geist Mono"
+     ],
+     "monoSamples": [
+      "JPEG · PNG · WebP",
+      "JPEG · PNG · WebP",
+      "JPEG · PNG · WebP",
+      "MP4 · MOV · WebM",
+      "MP4 · MOV · WebM",
+      "MP4 · MOV · WebM"
+     ],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0.03,
+     "centerShare": 0,
+     "smallText": 0
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#0a0a0a",
+     "bodyBgHsl": {
+      "h": 0,
+      "s": 0,
+      "l": 0.04
+     },
+     "dark": true,
+     "sectionBgs": [
+      {
+       "color": "#0a0a0b",
+       "top": 0,
+       "hsl": {
+        "h": 240,
+        "s": 0.05,
+        "l": 0.04
+       }
+      },
+      {
+       "color": "#1c1c1f",
+       "top": 12,
+       "hsl": {
+        "h": 240,
+        "s": 0.05,
+        "l": 0.12
+       }
+      },
+      {
+       "color": "#131315",
+       "top": 1354,
+       "hsl": {
+        "h": 240,
+        "s": 0.05,
+        "l": 0.08
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#babac2",
+       "share": 0.59
+      },
+      {
+       "color": "#f6f6f7",
+       "share": 0.18
+      },
+      {
+       "color": "#dcdce1",
+       "share": 0.13
+      },
+      {
+       "color": "#90909a",
+       "share": 0.08
+      },
+      {
+       "color": "#0a0a0b",
+       "share": 0.01
+      }
+     ],
+     "button": {
+      "bg": "#131315",
+      "hsl": {
+       "h": 240,
+       "s": 0.05,
+       "l": 0.08
+      },
+      "fg": "#babac2"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 3,
+     "inHero": 3,
+     "radius": "pill",
+     "height": 44,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Search tools, formats or tasks Ctrl K",
+      "Command Center",
+      "Overview"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 0,
+     "hairlineSamples": [],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 20,
+     "boxRadius": 10,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 1,
+     "fixed": true,
+     "height": 568,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "geist",
+     "geist mono",
+     "__nextjs-geist"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "pageH": 1816,
+    "margins": {
+     "left": 151,
+     "right": 74
+    },
+    "sections": [
+     {
+      "sel": "div#content.flex.flex-1",
+      "tag": "div",
+      "top": 88,
+      "height": 1218,
+      "words": 251,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Command Center",
+       "size": 32,
+       "tag": "h1"
+      },
+      "left": 151,
+      "right": 55,
+      "textLeft": 151,
+      "textRight": 55,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "footer.public-footer",
+      "tag": "footer",
+      "top": 1354,
+      "height": 426,
+      "words": 107,
+      "media": 0,
+      "middle": 71,
+      "heading": {
+       "text": "AI tools",
+       "size": 13,
+       "tag": "h2"
+      },
+      "left": 172,
+      "right": 94,
+      "textLeft": 172,
+      "textRight": 94,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Command Center",
+      "size": 32,
+      "top": 128,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 414,
+      "n": 3
+     },
+     {
+      "x": 151,
+      "n": 2
+     },
+     {
+      "x": 438,
+      "n": 1
+     },
+     {
+      "x": 472,
+      "n": 1
+     },
+     {
+      "x": 916,
+      "n": 1
+     },
+     {
+      "x": 974,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 9,
+    "bodySize": 14,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0.09,
+    "voidBox": {
+     "x": 780,
+     "y": 120,
+     "w": 660,
+     "h": 180
+    }
+   },
+   "app": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "dark": true,
+    "ground": "#0a0a0a",
+    "sidebar": null,
+    "topbar": null,
+    "canvas": {
+     "left": 50,
+     "right": 88
+    },
+    "hero": {
+     "text": "Command Center",
+     "words": 2,
+     "chars": 14,
+     "lines": 1,
+     "size": 32,
+     "vw": 2.2,
+     "font": "Geist",
+     "weight": 600,
+     "tracking": -0.02,
+     "leading": 1.25,
+     "top": 128,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 19,
+     "firstScreen": 12,
+     "ragged": [
+      {
+       "diff": 296,
+       "top": 269
+      }
+     ],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 19,
+     "radii": [
+      [
+       10,
+       16
+      ],
+      [
+       24,
+       3
+      ]
+     ],
+     "heavyBorders": 0,
+     "borderSamples": [],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 2,
+     "tabularShare": 1,
+     "kpiMax": 13
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0.02,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      20,
+      32
+     ]
+    },
+    "title": {
+     "text": "Command Center",
+     "size": 32,
+     "top": 128
+    },
+    "colourShare": 0
+   },
+   "consoleErrors": []
+  },
+  {
+   "width": 768,
+   "height": 1024,
+   "load": "load",
+   "screens": 4,
+   "filled": [
+    0.93,
+    0.73,
+    0.96,
+    0.92
+   ],
+   "motion": {
+    "elements": 1,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 1,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "page": {
+     "height": 3119,
+     "screens": 3,
+     "words": 370,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 43,
+     "sections": 5,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 1,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Command Center",
+     "words": 2,
+     "chars": 14,
+     "lines": 1,
+     "size": 32,
+     "vw": 4.2,
+     "font": "Geist",
+     "weight": 600,
+     "tracking": -0.02,
+     "leading": 1.25,
+     "top": 100,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "Command Center",
+     "words": 2,
+     "lines": 1,
+     "size": 32,
+     "font": "Geist"
+    },
+    "headings": [
+     {
+      "text": "Command Center",
+      "words": 2,
+      "chars": 14,
+      "lines": 1,
+      "size": 32,
+      "vw": 4.2,
+      "font": "Geist",
+      "weight": 600,
+      "tracking": -0.025,
+      "leading": 1.25,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.86,
+      "top": 100,
+      "tag": "h1",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 1,
+     "maxLines": 1,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": null,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Geist",
+       "share": 0.9,
+       "mono": false
+      },
+      {
+       "family": "Geist Mono",
+       "share": 0.1,
+       "mono": true
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      20,
+      32
+     ],
+     "sizeCount": 9,
+     "notLoaded": [],
+     "body": {
+      "font": "Geist",
+      "size": 14,
+      "leading": 1.5,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 9.6
+     },
+     "measureChars": 78,
+     "max": {
+      "size": 32,
+      "vw": 4.2,
+      "font": "Geist",
+      "text": "Command Center"
+     },
+     "monoShare": 0.1,
+     "monoProseShare": 0.1,
+     "monoFamilies": [
+      "Geist Mono"
+     ],
+     "monoSamples": [
+      "JPEG · PNG · WebP",
+      "JPEG · PNG · WebP",
+      "JPEG · PNG · WebP",
+      "MP4 · MOV · WebM",
+      "MP4 · MOV · WebM",
+      "MP4 · MOV · WebM"
+     ],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0.03,
+     "centerShare": 0.01,
+     "smallText": 0
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#0a0a0a",
+     "bodyBgHsl": {
+      "h": 0,
+      "s": 0,
+      "l": 0.04
+     },
+     "dark": true,
+     "sectionBgs": [
+      {
+       "color": "#0a0a0b",
+       "top": 0,
+       "hsl": {
+        "h": 240,
+        "s": 0.05,
+        "l": 0.04
+       }
+      },
+      {
+       "color": "#131315",
+       "top": 1962,
+       "hsl": {
+        "h": 240,
+        "s": 0.05,
+        "l": 0.08
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#babac2",
+       "share": 0.58
+      },
+      {
+       "color": "#f6f6f7",
+       "share": 0.2
+      },
+      {
+       "color": "#dcdce1",
+       "share": 0.14
+      },
+      {
+       "color": "#90909a",
+       "share": 0.08
+      },
+      {
+       "color": "#1a1206",
+       "share": 0
+      }
+     ],
+     "button": {
+      "bg": "#1c1c1f",
+      "hsl": {
+       "h": 240,
+       "s": 0.05,
+       "l": 0.12
+      },
+      "fg": "#f6f6f7"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 3,
+     "inHero": 3,
+     "radius": 10,
+     "height": 44,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Menu",
+      "Overview",
+      "Command"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 1,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 0,
+     "hairlineSamples": [],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 18,
+     "boxRadius": 10,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 0,
+     "fixed": false,
+     "height": 0,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "geist",
+     "geist mono",
+     "__nextjs-geist"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "pageH": 3119,
+    "margins": {
+     "left": 23,
+     "right": 23
+    },
+    "sections": [
+     {
+      "sel": "div#content.flex.flex-1",
+      "tag": "div",
+      "top": 60,
+      "height": 1854,
+      "words": 246,
+      "media": 0,
+      "middle": 177,
+      "heading": {
+       "text": "Command Center",
+       "size": 32,
+       "tag": "h1"
+      },
+      "left": 23,
+      "right": 0,
+      "textLeft": 23,
+      "textRight": 23,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "footer.public-footer",
+      "tag": "footer",
+      "top": 1962,
+      "height": 1069,
+      "words": 107,
+      "media": 0,
+      "middle": 67,
+      "heading": {
+       "text": "AI tools",
+       "size": 13,
+       "tag": "h2"
+      },
+      "left": 39,
+      "right": 239,
+      "textLeft": 39,
+      "textRight": 239,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Command Center",
+      "size": 32,
+      "top": 100,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 23,
+      "n": 5
+     },
+     {
+      "x": 47,
+      "n": 1
+     },
+     {
+      "x": 81,
+      "n": 1
+     },
+     {
+      "x": 400,
+      "n": 1
+     },
+     {
+      "x": 458,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 9,
+    "bodySize": 14,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "dark": true,
+    "ground": "#0a0a0a",
+    "sidebar": null,
+    "topbar": {
+     "h": 60
+    },
+    "canvas": {
+     "left": 23,
+     "right": -173
+    },
+    "hero": {
+     "text": "Command Center",
+     "words": 2,
+     "chars": 14,
+     "lines": 1,
+     "size": 32,
+     "vw": 4.2,
+     "font": "Geist",
+     "weight": 600,
+     "tracking": -0.02,
+     "leading": 1.25,
+     "top": 100,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 18,
+     "firstScreen": 10,
+     "ragged": [],
+     "voids": [
+      {
+       "gap": 43,
+       "at": 1523,
+       "panel": "AI tools"
+      },
+      {
+       "gap": 43,
+       "at": 1523,
+       "panel": "Video"
+      },
+      {
+       "gap": 43,
+       "at": 1699,
+       "panel": "Audio"
+      },
+      {
+       "gap": 43,
+       "at": 1699,
+       "panel": "Photos"
+      }
+     ]
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 18,
+     "radii": [
+      [
+       10,
+       16
+      ],
+      [
+       24,
+       2
+      ]
+     ],
+     "heavyBorders": 0,
+     "borderSamples": [],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 0,
+     "tabularShare": null,
+     "kpiMax": null
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0.02,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      20,
+      32
+     ]
+    },
+    "title": {
+     "text": "Command Center",
+     "size": 32,
+     "top": 100
+    },
+    "colourShare": 0.003
+   },
+   "consoleErrors": []
+  },
+  {
+   "width": 390,
+   "height": 844,
+   "load": "load",
+   "screens": 5,
+   "filled": [
+    0.89,
+    0.81,
+    1,
+    0.93,
+    0.96
+   ],
+   "motion": {
+    "elements": 1,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 1,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "page": {
+     "height": 3476,
+     "screens": 4.1,
+     "words": 370,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 43,
+     "sections": 5,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 1,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Command Center",
+     "words": 2,
+     "chars": 14,
+     "lines": 1,
+     "size": 32,
+     "vw": 8.2,
+     "font": "Geist",
+     "weight": 600,
+     "tracking": -0.02,
+     "leading": 1.25,
+     "top": 88,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "Command Center",
+     "words": 2,
+     "lines": 1,
+     "size": 32,
+     "font": "Geist"
+    },
+    "headings": [
+     {
+      "text": "Command Center",
+      "words": 2,
+      "chars": 14,
+      "lines": 1,
+      "size": 32,
+      "vw": 8.2,
+      "font": "Geist",
+      "weight": 600,
+      "tracking": -0.025,
+      "leading": 1.25,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.9,
+      "top": 88,
+      "tag": "h1",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 1,
+     "maxLines": 1,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": null,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Geist",
+       "share": 0.9,
+       "mono": false
+      },
+      {
+       "family": "Geist Mono",
+       "share": 0.1,
+       "mono": true
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      20,
+      32
+     ],
+     "sizeCount": 9,
+     "notLoaded": [],
+     "body": {
+      "font": "Geist",
+      "size": 14,
+      "leading": 1.5,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 9.6
+     },
+     "measureChars": 41,
+     "max": {
+      "size": 32,
+      "vw": 8.2,
+      "font": "Geist",
+      "text": "Command Center"
+     },
+     "monoShare": 0.1,
+     "monoProseShare": 0.1,
+     "monoFamilies": [
+      "Geist Mono"
+     ],
+     "monoSamples": [
+      "JPEG · PNG · WebP",
+      "JPEG · PNG · WebP",
+      "JPEG · PNG · WebP",
+      "MP4 · MOV · WebM",
+      "MP4 · MOV · WebM",
+      "MP4 · MOV · WebM"
+     ],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0.03,
+     "centerShare": 0.01,
+     "smallText": 0
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#0a0a0a",
+     "bodyBgHsl": {
+      "h": 0,
+      "s": 0,
+      "l": 0.04
+     },
+     "dark": true,
+     "sectionBgs": [
+      {
+       "color": "#0a0a0b",
+       "top": 0,
+       "hsl": {
+        "h": 240,
+        "s": 0.05,
+        "l": 0.04
+       }
+      },
+      {
+       "color": "#131315",
+       "top": 2319,
+       "hsl": {
+        "h": 240,
+        "s": 0.05,
+        "l": 0.08
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#babac2",
+       "share": 0.58
+      },
+      {
+       "color": "#f6f6f7",
+       "share": 0.2
+      },
+      {
+       "color": "#dcdce1",
+       "share": 0.14
+      },
+      {
+       "color": "#90909a",
+       "share": 0.08
+      },
+      {
+       "color": "#1a1206",
+       "share": 0
+      }
+     ],
+     "button": {
+      "bg": "#1c1c1f",
+      "hsl": {
+       "h": 240,
+       "s": 0.05,
+       "l": 0.12
+      },
+      "fg": "#f6f6f7"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 3,
+     "inHero": 3,
+     "radius": 10,
+     "height": 44,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Menu",
+      "Overview",
+      "Command"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 1,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 0,
+     "hairlineSamples": [],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 18,
+     "boxRadius": 10,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 0,
+     "fixed": false,
+     "height": 0,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "geist",
+     "geist mono",
+     "__nextjs-geist"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "pageH": 3476,
+    "margins": {
+     "left": 20,
+     "right": 20
+    },
+    "sections": [
+     {
+      "sel": "div#content.flex.flex-1",
+      "tag": "div",
+      "top": 60,
+      "height": 2211,
+      "words": 241,
+      "media": 0,
+      "middle": 552,
+      "heading": {
+       "text": "Command Center",
+       "size": 32,
+       "tag": "h1"
+      },
+      "left": 20,
+      "right": 0,
+      "textLeft": 20,
+      "textRight": 20,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "footer.public-footer",
+      "tag": "footer",
+      "top": 2319,
+      "height": 1069,
+      "words": 107,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "AI tools",
+       "size": 13,
+       "tag": "h2"
+      },
+      "left": 36,
+      "right": 50,
+      "textLeft": 36,
+      "textRight": 50,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Command Center",
+      "size": 32,
+      "top": 88,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 20,
+      "n": 6
+     },
+     {
+      "x": 78,
+      "n": 2
+     },
+     {
+      "x": 42,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 9,
+    "bodySize": 14,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "dark": true,
+    "ground": "#0a0a0a",
+    "sidebar": null,
+    "topbar": {
+     "h": 60
+    },
+    "canvas": {
+     "left": 20,
+     "right": -548
+    },
+    "hero": {
+     "text": "Command Center",
+     "words": 2,
+     "chars": 14,
+     "lines": 1,
+     "size": 32,
+     "vw": 8.2,
+     "font": "Geist",
+     "weight": 600,
+     "tracking": -0.02,
+     "leading": 1.25,
+     "top": 88,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 18,
+     "firstScreen": 3,
+     "ragged": [],
+     "voids": []
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 18,
+     "radii": [
+      [
+       10,
+       16
+      ],
+      [
+       24,
+       2
+      ]
+     ],
+     "heavyBorders": 0,
+     "borderSamples": [],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 0,
+     "tabularShare": null,
+     "kpiMax": null
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0.02,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      20,
+      32
+     ]
+    },
+    "title": {
+     "text": "Command Center",
+     "size": 32,
+     "top": 88
+    },
+    "colourShare": 0.003
+   },
+   "consoleErrors": []
+  }
+ ],
+ "findings": [
+  {
+   "level": "WARN",
+   "id": "ragged-row",
+   "width": 1440,
+   "message": "1 pair(s) of cards in one row end at different heights (by 296px).",
+   "fix": "Cards that share a row share a bottom edge: balance them by their content (the same number of rows, a block of similar height beside it), or stack them. In testing, ragged rows were marked down every time."
+  },
+  {
+   "level": "WARN",
+   "id": "app-title-size",
+   "width": 390,
+   "message": "The h1 is 32px (\"Command Center\").",
+   "fix": "An app screen is not a landing page: the title is 18-32px (20-24px on a phone)."
+  }
+ ],
+ "images": [
+  {
+   "viewport": "desktop",
+   "width": 1440,
+   "fold": "C:\\Developer\\AI Native Editor\\.taste-skill\\rail-xcommand-center\\desktop-fold.jpg",
+   "pages": [
+    "C:\\Developer\\AI Native Editor\\.taste-skill\\rail-xcommand-center\\desktop-page-01.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "tablet",
+   "width": 768,
+   "fold": "C:\\Developer\\AI Native Editor\\.taste-skill\\rail-xcommand-center\\tablet-fold.jpg",
+   "pages": [
+    "C:\\Developer\\AI Native Editor\\.taste-skill\\rail-xcommand-center\\tablet-page-01.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "mobile",
+   "width": 390,
+   "fold": "C:\\Developer\\AI Native Editor\\.taste-skill\\rail-xcommand-center\\mobile-fold.jpg",
+   "pages": [
+    "C:\\Developer\\AI Native Editor\\.taste-skill\\rail-xcommand-center\\mobile-page-01.jpg"
+   ],
+   "film": []
+  }
+ ]
+}

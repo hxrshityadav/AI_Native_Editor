@@ -6,7 +6,7 @@ export class BoundedVideoBytes {
   private readonly pageSize = 1024 * 1024;
   constructor(private readonly limit: number = VIDEO_LIMITS.outputBytes) {}
   write(data: Uint8Array, position: number) {
-    if (!Number.isSafeInteger(position) || position < 0 || position + data.length > this.limit) throw new Error("The encoded output exceeds its 128 MiB memory limit. Choose a lower resolution or bitrate and try again.");
+    if (!Number.isSafeInteger(position) || position < 0 || position + data.length > this.limit) throw new Error(`The encoded output exceeds its ${Math.round(this.limit / 1048576)} MiB memory limit. Choose a lower resolution, bitrate or shorter range and try again.`);
     let offset = 0;
     while (offset < data.length) {
       const index = Math.floor((position + offset) / this.pageSize), start = (position + offset) % this.pageSize;

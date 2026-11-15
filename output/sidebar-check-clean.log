@@ -1,0 +1,34 @@
+
+> reel-finisher@0.1.0 check
+> npm run typecheck && npm run lint && npm run test
+
+
+> reel-finisher@0.1.0 typecheck
+> next typegen && tsc --noEmit
+
+Generating route types...
+✓ Types generated successfully
+
+> reel-finisher@0.1.0 lint
+> eslint
+
+
+C:\Developer\AI Native Editor\src\components\site\Sidebar.tsx
+  99:5  warning  Unused eslint-disable directive (no problems were reported from 'react-hooks/set-state-in-effect')
+
+✖ 1 problem (0 errors, 1 warning)
+  0 errors and 1 warning potentially fixable with the `--fix` option.
+
+
+> reel-finisher@0.1.0 test
+> vitest run
+
+
+ RUN  v5.0.5 C:/Developer/AI Native Editor
+
+
+ Test Files  14 passed (14)
+      Tests  84 passed (84)
+   Start at  12:28:42
+   Duration  930ms (tests 44%, import 33%, transform 15%, worker 8%)
+

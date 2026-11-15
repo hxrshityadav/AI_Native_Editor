@@ -1,0 +1,561 @@
+
+> reel-finisher@0.1.0 e2e
+> node tests/e2e/lab.e2e.mjs && node tests/e2e/studio.e2e.mjs && node tests/e2e/server.e2e.mjs && node tests/e2e/phone.e2e.mjs && node tests/e2e/silence.e2e.mjs && node tests/e2e/advanced.e2e.mjs && node tests/e2e/manual.e2e.mjs && node tests/e2e/ripple.e2e.mjs && npm run e2e:editor && npm run e2e:photos && npm run e2e:video && npm run e2e:site
+
+PASS  vertical: accepted
+PASS  vertical: placeholder captions are labelled
+PASS  extract: completed
+PASS  extract: Ogg container  (ogg)
+PASS  extract: Opus mono  (opus 1ch)
+PASS  extract: audio only
+PASS  extract: duration ≈ 4 s  (4.006500)
+PASS  extract: small (< 40 KB for 4 s)  (16656 B)
+PASS  transcribe: disclosure follows the server's config (no provider here, so nothing is sent)
+PASS  data flow: every step says where data goes; only Transcribe leaves the device  (false,false,true,false,false)
+PASS  offline: transcribe disabled with an explanation, restored when back online
+PASS  transcribe: unconfigured server reports it
+[transcribe] NOT_CONFIGURED
+PASS  route: rejects when not configured before reading body  (503)
+PASS  hinglish: is the default caption language
+PASS  transcribe: cancel returns to idle; a late answer is ignored
+PASS  hinglish: fallback warning shown
+PASS  hinglish: request asked for Hinglish
+PASS  transcribe: Hinglish words appear in the editor
+PASS  hinglish: no warning when romanized
+PASS  transcribe: upload is the extracted Ogg, not the video  (16943 B)
+PASS  preview: captions now come from transcript
+PASS  edit: text fix applies
+PASS  edit: Shift+] moves end 50 ms later
+PASS  edit: delete then undo  (2 → 3)
+PASS  edit: caption source says edited
+PASS  srt: reflects edits  ("1\n00:00:00,500 --> 00:00:01,950\nNamaste doston\n")
+PASS  style: Pop selectable
+PASS  autosave: edits restored after reload
+PASS  autosave: restore needs no new upload  (0 uploads)
+PASS  style: restored with the draft
+      longest main-thread stall during render: 29 ms
+PASS  device report: has step timings and clip details
+PASS  device report: no file name or transcript
+PASS  render: ran in a worker, streamed to device storage
+PASS  render: H.264  (h264)
+PASS  render: 720×1280 preserved  (720x1280)
+PASS  render: original AAC audio copied  (aac)
+PASS  render: duration ≈ source  (4.000000)
+PASS  render: MP4 container  (mov,mp4,m4a,3gp,3g2,mj2)
+PASS  render: fast start (moov before mdat), as YouTube recommends  (ftyp,moov,mdat)
+PASS  render: every frame and sample decodes after the moov move
+PASS  render: AAC source audio copied, no compatibility warning
+      render took 3032 ms
+PASS  render: captions burned in at 1.0 s  (caption band Δ22.34, top Δ3.00)
+PASS  render: deleted word not burned in (2.3 s)  (Δ3.00, control Δ3.00)
+PASS  render: no caption after last word (3.5 s)  (Δ3.00, control Δ3.00)
+PASS  start over: back to placeholder words
+PASS  start over: draft deleted
+PASS  rotated: probed as 720×1280 with rotation
+PASS  style: Boxed selectable
+PASS  style: Boxed font files fetched  (/fonts/poppins/poppins-devanagari-700-normal.woff2 /fonts/poppins/poppins-latin-700-normal.woff2 /fonts/poppins/poppins-devanagari-700-normal.woff2 /fonts/poppins/poppins-latin-700-normal.woff2 /fonts/baloo-2/baloo-2-devanagari-800-normal.woff2 /fonts/baloo-2/baloo-2-latin-800-normal.woff2 /fonts/poppins/poppins-devanagari-700-normal.woff2 /fonts/poppins/poppins-latin-700-normal.woff2 /fonts/poppins/poppins-devanagari-700-normal.woff2 /fonts/poppins/poppins-latin-700-normal.woff2 /fonts/baloo-2/baloo-2-devanagari-800-normal.woff2 /fonts/baloo-2/baloo-2-latin-800-normal.woff2 /fonts/baloo-2/baloo-2-devanagari-800-normal.woff2 /fonts/baloo-2/baloo-2-latin-800-normal.woff2 /fonts/poppins/poppins-devanagari-700-normal.woff2 /fonts/poppins/poppins-latin-700-normal.woff2 /fonts/baloo-2/baloo-2-devanagari-800-normal.woff2 /fonts/baloo-2/baloo-2-latin-800-normal.woff2 /fonts/poppins/poppins-devanagari-700-normal.woff2 /fonts/poppins/poppins-latin-700-normal.woff2 /fonts/mukta/mukta-devanagari-700-normal.woff2 /fonts/mukta/mukta-latin-700-normal.woff2 /fonts/mukta/mukta-devanagari-700-normal.woff2 /fonts/mukta/mukta-latin-700-normal.woff2)
+PASS  style: Boxed draws a dark band behind the text  (Δ45.98)
+PASS  brand kit: red captions burned in at the kit position  (red px @30%: 3709, @74%: 0)
+PASS  brand kit: Hind font fetched for the render
+PASS  brand kit: summary says on while collapsed
+PASS  brand kit: kept after reload
+PASS  rotated: output upright 720×1280, no rotation metadata  (720x1280 rot 0)
+PASS  leave warning: on while rendering, off afterwards
+PASS  cancel: stops cleanly
+PASS  webm: H.264 video; audio codec matches what the app reports  (aac / aac)
+PASS  webm: non-AAC audio comes with a compatibility warning
+PASS  hdr: accepted with a washed-out-colour warning  (Duration / 2.01 s / Video / vp9 540×960 / Audio / opus 1 ch 48000 Hz / Size / 22.2 KB / Device / H.264 encode ✓ (from 540×960) · Opus encode ✓ · 16 GB RAM · 16 )
+PASS  hevc: accepted, or rejected with a recovery action  (This video is in HEVC (H.265), which this browser can't decode on this device. /  / Record in H.264 instead: in your camera settings, turn off "High efficiency video" (Samsung) or set the video codec to H.264 (Pixel and others). Or re-export the clip as H.264 MP4.)
+PASS  reject: no-audio.mp4  (This video has no sound, so there is no speech to caption. /  / Pick a version of the video with its original audio.)
+PASS  reject: no-audio.mp4 disables later steps
+PASS  reject: audio-only.m4a  (This file has no video picture, only audio. /  / Pick the video file itself, not an audio export.)
+PASS  reject: audio-only.m4a disables later steps
+PASS  reject: garbage.mp4  (We couldn't read this file as a video. /  / Use an MP4, MOV or WebM file. If it is a screen recording or download, re-save it as MP4.)
+PASS  reject: garbage.mp4 disables later steps
+
+67/67 checks passed
+PASS  setup: missing key names GROQ_API_KEY and .env.local before extraction or upload
+PASS  duration: exact 600-second video produces audio within the API duration boundary  (600 s)
+PASS  duration: corrected Opus end marker and checksum decode cleanly
+PASS  desktop: steps rail visible
+PASS  desktop: later steps locked until a video is picked
+PASS  desktop: unreadable file rejected with a reason and a way out
+PASS  desktop: video step shows the clip in the rail
+PASS  duration: exactly 600 seconds accepted
+PASS  duration: valid to invalid clears preview and locks processing
+PASS  duration: invalid to valid permits continuing
+PASS  desktop: full disclosure shown before anything is sent
+PASS  desktop: export accepts video-only edits
+PASS  desktop: one click extracts locally, then uploads only Ogg Opus speech audio, as Hinglish  (16943 B)
+PASS  desktop: disclosure folds away after captions are made
+PASS  desktop: rail shows the word count
+PASS  desktop: word edited
+PASS  desktop: style chosen
+PASS  desktop: export is H.264 720×1280 with the original AAC audio
+PASS  desktop: Boxed captions burned in  (Δ35.84)
+PASS  desktop: SRT has the edited words
+PASS  desktop: reopening the same video restores captions and edits without uploading
+PASS  desktop: no sideways scroll
+PASS  preset: landscape Fill crops to 9:16 without upscaling  ({"shown":"404x720","framed":"404x720","actual":"404x720","path":"C:\\Developer\\AI Native Editor\\tests\\e2e\\.out-studio\\preset-fill.mp4"})
+PASS  preset: preview frame matches the export  (404x720)
+PASS  preset: landscape Fit is 1080×1920 with bars above and the video in the middle  (bars 100% black, middle 0% black)
+PASS  preset: Original keeps 1280×720 and asks no framing question
+PASS  preset: Smaller file brings 1080×1920 down to 720×1280  (720x1280)
+PASS  transcription: duplicate clicks send only one request and timeout has recovery
+PASS  transcription: retry succeeds after timeout
+PASS  transcription: empty result shows no speech and retains video-only export
+PASS  phone: tool selector and heading shown
+PASS  phone: Next goes to Captions
+PASS  phone: word editor reachable under the preview
+PASS  phone: Back returns to Video
+PASS  phone: reaches Export
+PASS  phone: export works
+PASS  phone: main buttons are at least 40 px tall  (40, 40, 40)
+PASS  phone: no sideways scroll
+PASS  phone: long video rejected with Next disabled
+
+39/39 checks passed
+PASS  config GET returns the site key at request time, uncached
+PASS  upload without a token is refused before anything else  ({"status":403,"code":"HUMAN_CHECK_REQUIRED"})
+PASS  disclosure names Cloudflare Turnstile and what it sees
+PASS  disclosure names the configured provider (Groq) and links its policy
+PASS  widget rendered once with the server's site key, shown only if interaction is needed  ({"sitekey":"1x00000000000000000000AA","appearance":"interaction-only"})
+PASS  Transcribe is disabled, with a visible reason, until the check passes
+PASS  Transcribe is enabled once a token arrives
+[transcribe] PROVIDER_AUTH_FAILED
+PASS  the upload carries the token in its header  (["XXXX.DUMMY.TOKEN.XXXX"])
+PASS  a failed verification or invalid provider key has a reason and next step  (The transcription provider rejected the server API key.
+
+Replace the selected provider's GROQ_API_KEY or SARVAM_API_KEY in .env.local or your hosting environment, verify account permissions, then restart or redeploy.)
+PASS  the spent token is dropped and the widget reset for a new one
+PASS  a fresh token re-enables Transcribe
+PASS  Cloudflare's script is fetched once per page, not again for each token  (requests: 1)
+PASS  a blocked check script shows a reason and a retry
+PASS  retry loads the check after the block is lifted
+SKIP  shared limiter rows (set E2E_DATABASE_URL)
+[transcribe] RATE_LIMIT_UNAVAILABLE
+PASS  limiter database down: refused with 503, not let through  ({"status":503,"code":"RATE_LIMIT_UNAVAILABLE"})
+PASS  Sarvam stays off until its training opt-out is confirmed  (null)
+PASS  config names Sarvam AI as the receiver  ({"setupError":null,"humanCheckSiteKey":null,"provider":{"name":"Sarvam AI","privacyUrl":"https://www.sarvam.ai/privacy-policy"},"romanizerName":null})
+PASS  disclosure names Sarvam AI, links its policy, and doesn't mention Groq
+[transcribe] ABUSE_CONTROLS_MISSING
+PASS  public deployment without abuse controls refuses uploads  ({"status":503,"code":"ABUSE_CONTROLS_MISSING"})
+PASS  and asks the browser for no check
+
+20/20 checks passed
+PASS  4K clip is accepted on a phone that can't encode 4K  (Duration
+3.00 s
+Video
+avc 2160×3840
+Audio
+aac 1 ch 48000 Hz
+Size
+23.4 MB
+Device
+H.264 encode ✓ (from 720×1280) · Opus encode ✓ · 16 GB RAM · 16 cores)
+PASS  default export is 1080×1920 and allowed
+PASS  Original size (4K) is explained and blocked instead of failing mid-export
+PASS  4K clip exports at 1080×1920  (1080×1920)
+PASS  extraction succeeds through Web Audio when the WebCodecs decoder fails
+PASS  fallback audio is mono Opus, 48 kHz, full length  (opus 1 ch 48000 Hz 6.51 s vs 6.50 s)
+PASS  fallback audio keeps speech timing (phrase starts ±20 ms)  (drift ms: 0,-10,10)
+PASS  when both fail: says it's the speech audio, no tab/4K advice  (Couldn't extract the speech audio on this device (WebCodecs: EncodingError; Web Audio: EncodingError). Try again. If it keeps failing, use the latest Chrome or re-export the video with AAC audio.)
+
+8/8 checks passed
+PASS  silence tool says it stays on the device
+PASS  finds the 3 real silences and keeps the 0.3 s pause
+PASS  shows measured levels
+PASS  minimum pause narrows suggestions
+PASS  restoring minimum restores the defaults
+PASS  a suggestion can be kept instead
+PASS  preview playback jumps over a proposed cut
+PASS  apply reports the new length
+PASS  export with cuts succeeds
+PASS  export duration matches the edit decision list (±0.1 s)  (file 8.28 s, EDL 8.26 s)
+PASS  video and audio tracks have the same length (±0.1 s)  (v 8.260000 a 8.277333)
+PASS  after cuts, each flash still lines up with its sound (±40 ms)  (flashes 2.88,6.80 · offsets ms 10,10)
+PASS  the 0.3 s natural pause survives the export  (speech -17 dB, pause min -88 dB)
+PASS  SRT is on the cut timeline  (last cue ends 8.094 s)
+PASS  no silence: says so instead of inventing cuts
+PASS  picking a new video cleared the old cuts
+
+16/16 checks passed
+Advanced suite browser: Playwright Chromium
+PASS  composition: 9:16 MP4 and preview dimensions agree
+PASS  composition: 9:16 decodes cleanly
+PASS  composition: 16:9 MP4 and preview dimensions agree
+PASS  composition: 16:9 decodes cleanly
+PASS  composition: 1:1 MP4 and preview dimensions agree
+PASS  composition: 1:1 decodes cleanly
+PASS  composition: 4:3 MP4 and preview dimensions agree
+PASS  composition: 4:3 decodes cleanly
+PASS  export: changing composition invalidates the previous downloadable render
+PASS  composition: crop position changes the actual source region
+PASS  composition: Fit uses the chosen letterbox color
+PASS  presets: a saved custom preset reapplies styling without resetting composition
+PASS  fonts: malformed font is rejected with recovery
+PASS  placement: drag snaps normalized caption position to center
+PASS  fonts/animation: uploaded font and Word Pop match preview/export pixels  (mean RGB delta 3.81)
+PASS  fonts: uploaded face is used in the export (magenta caption pixels)
+PASS  animation: No animation matches exported pixels  (mean RGB delta 3.81)
+PASS  animation: Fade in matches exported pixels  (mean RGB delta 3.75)
+PASS  animation: Slide up matches exported pixels  (mean RGB delta 3.83)
+PASS  animation: Scale in matches exported pixels  (mean RGB delta 3.83)
+PASS  animation: Bounce matches exported pixels  (mean RGB delta 3.81)
+PASS  animation: Typewriter matches exported pixels  (mean RGB delta 3.74)
+PASS  animation: Word reveal matches exported pixels  (mean RGB delta 3.75)
+PASS  fonts: a user-uploaded WOFF2 face renders into a decodable MP4
+PASS  overlays: title is burned into the MP4
+PASS  silence: actual decoded audio produces reviewable pause candidates  (2 intervals)
+PASS  silence: proposed cuts skip in preview before applying
+PASS  silence: previewing proposals leaves export unchanged
+PASS  silence: edited duration shortens and audio/video remain synchronized  (video 3.22, audio 3.242667)
+PASS  silence: every edited frame and audio sample decodes cleanly
+PASS  silence: decoded audio phrase onsets follow the edit mapping within 50 ms  (onsets 0.5, 1.8900000000000001, expected 0.5, 1.8800000000000001)
+PASS  silence: SRT has remapped Hindi/English captions
+PASS  timeline: Undo restores original duration
+PASS  persistence: selected animation survives reload
+PASS  persistence: custom subtitle preset survives reload
+PASS  persistence: uploaded font selection is restored
+PASS  persistence: title text is restored
+PASS  persistence: composition ratio and letterbox color are restored
+PASS  persistence: restored cuts drive the exported timeline
+PASS  fonts: uploaded font can be renamed, searched, and favorited
+PASS  fonts: removal clears the stored face and reports no matching fonts
+PASS  mobile: typography controls remain accessible without horizontal overflow
+
+42/42 checks passed
+PASS  timeline: dragging caption moves its source interval
+PASS  timeline: dragging an edge resizes caption timing
+PASS  history: timeline movement and timing undo independently
+PASS  manual: caption text and timing work without a key or upload
+PASS  manual: split produces two caption blocks
+PASS  manual: merge restores the words
+PASS  preview: dragging selected caption updates normalized position  (y 0.5)
+PASS  history: one Undo reverses the whole drag
+PASS  preview: locked caption ignores movement
+PASS  styles: global changes retain individual color and font
+PASS  overlays: independent font and timeline block
+PASS  audio: preview volume matches settings
+PASS  timeline: playhead follows real video playback
+PASS  audio: exported PCM gain is actually halved  (gain 0.4992489722228931)
+PASS  export: selected caption position/font and independent overlay match preview
+PASS  export: per-caption green text is burned in
+PASS  export: overlay cyan text is burned in
+PASS  timeline: source video splits into two selectable clips
+PASS  timeline: deleting a clip retains the other source segment
+PASS  history: Undo restores deleted segment
+PASS  timeline: trim inputs update retained source boundaries
+PASS  audio: preview mute is immediate
+PASS  export: real clip deletion shortens the encoded video
+PASS  export: mute removes the encoded audio track
+PASS  export: edited MP4 decodes
+PASS  export: manual caption text is in SRT
+PASS  AI: missing server configuration is explicit
+PASS  privacy: manual edits and exports made no uploads
+PASS  persistence: manual text, cuts and mute restored without transcript
+PASS  AI: plan requires review before settings change
+PASS  AI: edited unsupported plan is rejected without applying
+PASS  AI: validated plan applies through the shared engine
+PASS  AI: Undo restores pre-plan project
+PASS  AI: stale plans cannot overwrite newer manual edits
+PASS  AI: discard leaves current settings intact
+PASS  desktop: no page exceptions
+PASS  phone: manual captions and properties are reachable
+PASS  phone: normalized positioning is functional
+PASS  phone: timeline collapses to recover editing space
+PASS  phone: zoom remains within its scroll container
+PASS  manual: silent source footage is accepted
+PASS  export: silent footage with manual captions encodes without audio
+
+42/42 checks passed
+PASS  gap: ordinary delete leaves a selectable two-second gap
+PASS  gap: output duration is retained before ripple
+PASS  gap: encoded video stays six seconds before closing
+PASS  gap: exported gap is black instead of deleted source footage
+PASS  gap: linked source audio is silent in the gap
+PASS  ripple: selected gap disappears and duration drops by exactly two seconds
+PASS  ripple: following clip starts at the contiguous output join
+PASS  ripple: playhead inside a removed gap moves to the next retained source frame
+PASS  ripple: clip properties retain original source timestamps
+PASS  seek: output seeking crosses the removed gap correctly
+PASS  export: closed gap reduces actual A/V duration
+PASS  export: blue source clip starts immediately at output two seconds
+PASS  export: audio source content shifts with the blue video clip
+PASS  export: remapped caption and animated title agree with preview
+PASS  captions: overlapping removed word disappears and timing remaps
+PASS  history: Undo restores the gap and six-second output
+PASS  history: Redo closes the gap again
+PASS  ripple delete: removes the clip without leaving another gap
+PASS  trim: source trim after ripple deletion exports the correct duration
+PASS  runtime: no page errors
+
+20/20 checks passed
+
+> reel-finisher@0.1.0 e2e:editor
+> node tests/e2e/openreel.e2e.mjs && node tests/e2e/openreel-migration.e2e.mjs
+
+PASS  local: transcribe route rejects processing
+PASS  local: edit-plan route rejects processing
+PASS  host: containing page and iframe are cross-origin isolated
+PASS  import: unsupported media gives a recovery error
+PASS  import: native studio rejects a 601-second video
+PASS  playback: editor preview advances and pauses
+PASS  trim: native trim keeps source and output bounds
+PASS  split: native split preserves both source intervals
+PASS  audio: native clip gain persists
+PASS  audio: separation creates a native audio track  ({"media":3,"tracks":[{"type":"video","count":1},{"type":"video","count":1},{"type":"audio","count":1}]})
+PASS  captions: Hindi SRT preserves output timing
+PASS  project: multiple local files use native tracks and one caption extension  ({"media":3,"tracks":[{"type":"text","clips":[]},{"type":"video","clips":[{"start":0,"duration":4,"in":0,"out":4}]},{"type":"video","clips":[{"start":4,"duration":4,"in":0,"out":4}]},{"type":"audio","clips":[{"start":0,"duration":4,"in":0,"out":4}]}]})
+PASS  export: downloaded native MP4 decodes with synchronized A/V duration
+PASS  export: audio gain matches the edited clip
+PASS  captions: shared preview/export pixels agree  (mean RGB difference 5.24)
+PASS  export: Hindi caption is painted in front of video
+PASS  export: caption disappears outside its timing
+PASS  export: second source appears at its output position
+PASS  history: native undo removes the caption
+PASS  history: native redo restores the caption
+PASS  range: In/Out deletion closes exactly two seconds
+PASS  range: caption end follows the same output map
+PASS  range: separate audio is trimmed with its video  ([{"start":0,"duration":2,"in":0,"out":2}])
+PASS  range: one undo restores video and captions
+PASS  range export: downloaded A/V lasts six seconds
+PASS  range export: source switches at the preview's new boundary
+PASS  range export: audio switches with the picture
+PASS  range export: independent HTML video plays to the expected end
+PASS  network: all editor processing uses local GETs or confirmed model assets
+PASS  offline: reload recovers the editor and original local media
+PASS  offline: detached audio survives save/reload
+PASS  offline: editor worker leaves website caches intact
+PASS  offline: editing and downloaded export work without a network
+PASS  phone: caption controls fit the browser viewport
+
+34/34 checks passed
+PASS  migration: rejects the wrong original before creating a project
+PASS  migration: original draft is byte-for-byte unchanged
+PASS  migration: separate project preserves source intervals and blank output gaps
+PASS  migration: Hindi words and overrides survive in caption extension
+PASS  migration: migrated video/audio decode with the cut duration
+PASS  migration: a non-ripple deleted gap exports as empty time
+PASS  native gap: global close-gap reduces output time by the actual empty interval
+PASS  native gap: caption shifts with the media
+PASS  native gap: one undo restores the gap
+
+9/9 checks passed
+
+> reel-finisher@0.1.0 e2e:photos
+> node tests/e2e/photos.e2e.mjs
+
+PASS  compressor: drop reads actual dimensions, format and measured bytes  (600 × 400 px
+PNG
+749.27 KB (749,271 bytes))
+PASS  compressor: generated WebP decodes with unchanged dimensions
+PASS  compressor: target report agrees with downloaded bytes
+PASS  download: uses a new matching filename
+PASS  settings: changing an option invalidates the old download
+PASS  compressor: infeasible target is explicit and still measured
+PASS  compressor: PNG explains its lossless quality setting
+PASS  compressor: PNG preserves actual pixels and reports an unmet tiny target
+PASS  converter: warns before flattening alpha
+PASS  converter: actual JPEG has selected opaque background
+PASS  converter: JPEG blends partial alpha onto the background
+PASS  converter: WebP preserves transparent, partial and opaque alpha
+PASS  converter: PNG preserves alpha and real dimensions
+PASS  picker: selecting the same file again clears the previous result
+PASS  orientation: EXIF is baked into actual output pixels
+PASS  resizer: width updates locked height
+PASS  resizer: repeated edits do not drift the ratio
+PASS  resizer: actual file dimensions match the preview
+PASS  resizer: unlocked dimensions are independent
+PASS  resizer: unlocked dimensions are encoded
+PASS  resizer: preset fits whole image without cropping
+PASS  resizer: invalid dimensions give recovery without download
+PASS  validation: missing MIME still requires a real decodable image
+PASS  validation: unsupported.svg rejected
+PASS  validation: mismatch.jpg rejected
+PASS  validation: empty.png rejected
+PASS  validation: oversize.png rejected
+PASS  validation: huge.png rejected
+PASS  validation: broken.png rejected
+PASS  validation: damaged.png rejected
+PASS  resources: replacement/error releases preview and download URLs
+PASS  cancellation: no stale result or download is published
+PASS  cancellation: retry processes successfully
+PASS  resources: route exit revokes all object URLs
+PASS  fallback: HTML image/canvas path produces a local result
+PASS  fallback: unsupported encoder cannot produce a mislabeled download
+PASS  mobile: image-compressor controls fit without horizontal overflow
+PASS  SEO: image-compressor has crawlable unique content
+PASS  mobile: image-resizer controls fit without horizontal overflow
+PASS  SEO: image-resizer has crawlable unique content
+PASS  mobile: image-converter controls fit without horizontal overflow
+PASS  SEO: image-converter has crawlable unique content
+PASS  privacy: requests are local GET/HEAD only
+PASS  isolation: photo tools do not load editor or AI assets
+
+44/44 checks passed
+
+> reel-finisher@0.1.0 e2e:video
+> node tests/e2e/video-compressor.e2e.mjs
+
+BROWSER 156.0.8078.74
+PASS  import: drop probes actual dimensions, duration, codecs and size
+PASS  preview: actual input plays and pauses
+PASS  estimate: before processing it is explicitly not measured
+PASS  export: actual MP4/H.264/AAC container, MIME and extension agree
+PASS  resolution: 480p fits within even pixel bounds and preserves picture aspect
+PASS  export: every encoded frame and audio sample decodes
+PASS  size: reduction and measured bytes correspond to the actual file
+PASS  sync: decoded A/V end times remain aligned
+PASS  sync: actual flash/beep content stays synchronized  (audio 1.000s / picture 1.000s)
+PASS  playback: independently downloaded output plays to its end
+PASS  settings: mute invalidates the old download
+PASS  mute: explicit mute really removes the audio track
+PASS  target: impossible size is reported using measured output
+PASS  fallback: actual WebM/VP9/Opus export preserves audio and decodes
+PASS  orientation: rotated source is baked upright with portrait aspect
+PASS  VFR: output retains duration, avoids upscaling and normalizes frame cadence
+PASS  import: silent WebM is accepted without fabricated audio
+PASS  import: actual MOV container is recognized
+PASS  resources: process-another clears media URLs and downloads
+PASS  validation: empty.mp4 rejected with recovery
+PASS  validation: corrupt.mp4 rejected with recovery
+PASS  validation: mislabeled.webm rejected with recovery
+PASS  validation: audio.mp4 rejected with recovery
+PASS  duration: actual 601-second file is rejected
+PASS  codec: unsupported encoded picture is not accepted from extension alone
+PASS  cancellation: worker stops without a stale download
+PASS  retry: compression succeeds after cancellation
+PASS  replacement: latest input wins without stale output
+PASS  capability: absent encoders block export with a reason
+PASS  audio: unavailable encoder never silently mutes
+PASS  audio: explicit mute is a working recovery
+PASS  failure: encoder errors release the job without a false successful download
+PASS  mobile: controls fit the viewport
+PASS  unmount: all media object URLs are released
+PASS  SEO: title, instructions and FAQ are rendered server-side
+PASS  privacy: all processing requests are local GET/HEAD
+PASS  isolation: standalone tool never loads editor or model assets
+
+37/37 checks passed
+
+> reel-finisher@0.1.0 e2e:site
+> node tests/e2e/site.e2e.mjs
+
+PASS  light / @320: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light / @320: touch targets at least 32 px tall
+PASS  light / @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light / @390: touch targets at least 32 px tall
+PASS  light / @768: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light / @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light / @1920: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools @320: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools @320: touch targets at least 32 px tall
+PASS  light /tools @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools @390: touch targets at least 32 px tall
+PASS  light /tools @768: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools @1920: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/image-compressor @320: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/image-compressor @320: touch targets at least 32 px tall
+PASS  light /tools/image-compressor @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/image-compressor @390: touch targets at least 32 px tall
+PASS  light /tools/image-compressor @768: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/image-compressor @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/image-compressor @1920: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/image-resizer @320: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/image-resizer @320: touch targets at least 32 px tall
+PASS  light /tools/image-resizer @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/image-resizer @390: touch targets at least 32 px tall
+PASS  light /tools/image-resizer @768: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/image-resizer @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/image-resizer @1920: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/image-converter @320: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/image-converter @320: touch targets at least 32 px tall
+PASS  light /tools/image-converter @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/image-converter @390: touch targets at least 32 px tall
+PASS  light /tools/image-converter @768: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/image-converter @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/image-converter @1920: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/video-compressor @320: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/video-compressor @320: touch targets at least 32 px tall
+PASS  light /tools/video-compressor @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/video-compressor @390: touch targets at least 32 px tall
+PASS  light /tools/video-compressor @768: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/video-compressor @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /tools/video-compressor @1920: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /privacy @320: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /privacy @320: touch targets at least 32 px tall
+PASS  light /privacy @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /privacy @390: touch targets at least 32 px tall
+PASS  light /privacy @768: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /privacy @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /privacy @1920: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /supported-formats @320: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /supported-formats @320: touch targets at least 32 px tall
+PASS  light /supported-formats @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /supported-formats @390: touch targets at least 32 px tall
+PASS  light /supported-formats @768: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /supported-formats @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light /supported-formats @1920: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  light: no console or hydration errors
+PASS  light: only same-origin requests
+PASS  light: public pages never load the editor runtime
+PASS  dark / @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark / @390: touch targets at least 32 px tall
+PASS  dark / @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark /tools @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark /tools @390: touch targets at least 32 px tall
+PASS  dark /tools @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark /tools/image-compressor @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark /tools/image-compressor @390: touch targets at least 32 px tall
+PASS  dark /tools/image-compressor @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark /tools/image-resizer @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark /tools/image-resizer @390: touch targets at least 32 px tall
+PASS  dark /tools/image-resizer @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark /tools/image-converter @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark /tools/image-converter @390: touch targets at least 32 px tall
+PASS  dark /tools/image-converter @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark /tools/video-compressor @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark /tools/video-compressor @390: touch targets at least 32 px tall
+PASS  dark /tools/video-compressor @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark /privacy @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark /privacy @390: touch targets at least 32 px tall
+PASS  dark /privacy @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark /supported-formats @390: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark /supported-formats @390: touch targets at least 32 px tall
+PASS  dark /supported-formats @1280: no horizontal overflow and one h1  ({"overflow":0,"h1":1,"small":[]})
+PASS  dark: no console or hydration errors
+PASS  dark: only same-origin requests
+PASS  dark: public pages never load the editor runtime
+PASS  keyboard: first Tab reaches a visible skip link
+PASS  keyboard: skip link moves focus past the header
+PASS  nav: Tools menu lists every tool and marks the current page
+PASS  nav: Escape closes the menu and returns focus to its button
+PASS  focus: keyboard focus has a visible outline
+PASS  directory: empty audio category explains itself without placeholder tools
+PASS  search: matches formats across tools  (Image Compressor, Image Resizer, Image Format Converter)
+PASS  search: no match shows a recovery action
+PASS  search: clearing restores every tool
+PASS  links: /tools/image-compressor resolves  (200)
+PASS  links: /tools/image-resizer resolves  (200)
+PASS  links: /tools/image-converter resolves  (200)
+PASS  links: /tools/video-compressor resolves  (200)
+PASS  links: /studio resolves  (200)
+PASS  links: / resolves  (200)
+PASS  links: /privacy resolves  (200)
+PASS  links: /supported-formats resolves  (200)
+PASS  links: /media-notices/SOURCES.txt resolves  (200)
+PASS  mobile nav: menu opens a full panel without overflow
+PASS  mobile nav: links navigate and close the menu
+PASS  workspace: settings stay hidden until a file is chosen
+PASS  workspace: a chosen file opens preview, settings and a before summary
+PASS  result: before/after slider works from the keyboard
+PASS  result: Adjust settings moves focus into the settings panel
+PASS  result: Process another file returns to the upload stage
+PASS  home: primary action opens the tool directory
+PASS  SEO: editor, legacy and lab keep noindex
+PASS  isolation: editor, legacy and lab render without the public site shell
+PASS  motion: reduced motion shortens transitions
+
+115/115 checks passed

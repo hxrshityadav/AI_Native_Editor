@@ -1,0 +1,13 @@
+PASS  batch: both photos are listed and waiting
+PASS  lazy loading: the decoder worker loads only when converting  (http://localhost:3157/_next/static/chunks/8546.36829fcff188b369.js)
+PASS  output: real JPEGs with the HEIC dimensions
+PASS  output: decoded pixels match the source colours  (230,40,40)
+PASS  status: completion is announced
+PASS  validation: a file without a HEIF header is rejected on its row
+PASS  cancellation: nothing is published and the photo waits
+PASS  retry: conversion succeeds after cancelling
+PASS  mobile: the batch list fits without horizontal overflow
+PASS  SEO: unique title, H1 and FAQ are server-rendered
+PASS  privacy: only same-origin GET/HEAD requests
+
+11/11 checks passed

@@ -1,6 +1,8 @@
 import { encodeToTarget, fitWithin, imageHeader, validateDimensions, validateImageFile, type ImageFormat } from "./policy";
 
-export type ImageRequest = { kind: "inspect"; file: File } | { kind: "process"; file: File; width: number; height: number; format: ImageFormat; quality: number; targetBytes?: number; background: string };
+/** Source rectangle in decoded-image pixels. It may extend past the image edges; uncovered output is filled with `fill`. */
+export type CropRect = { x: number; y: number; width: number; height: number };
+export type ImageRequest = { kind: "inspect"; file: File } | { kind: "process"; file: File; width: number; height: number; format: ImageFormat; quality: number; targetBytes?: number; background: string; crop?: CropRect; fill?: string };
 export type ImageInfo = { width: number; height: number; format: ImageFormat; transparent: boolean; preview: Blob };
 export type ImageOutput = { blob: Blob; preview: Blob; width: number; height: number; format: ImageFormat; quality: number; targetMet: boolean };
 export class ImageCapabilityError extends Error {}
@@ -65,7 +67,15 @@ export async function processImage(request: ImageRequest, signal?: AbortSignal):
     const context = surface.getContext("2d", { willReadFrequently: request.kind === "inspect" }) as CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D | null;
     if (!context) throw new ImageCapabilityError("A 2D canvas is unavailable. Try another browser.");
     if (request.kind === "process" && request.format === "image/jpeg") { if (!/^#[0-9a-f]{6}$/i.test(request.background)) throw new Error("Choose a valid background colour."); context.fillStyle = request.background; context.fillRect(0, 0, width, height); }
-    context.imageSmoothingEnabled = true; context.imageSmoothingQuality = "high"; context.drawImage(decoded.image, 0, 0, width, height);
+    if (request.kind === "process" && request.fill !== undefined) { if (!/^#[0-9a-f]{6}$/i.test(request.fill)) throw new Error("Choose a valid background colour."); context.fillStyle = request.fill; context.fillRect(0, 0, width, height); }
+    context.imageSmoothingEnabled = true; context.imageSmoothingQuality = "high";
+    const crop = request.kind === "process" ? request.crop : undefined;
+    if (crop) {
+      if (![crop.x, crop.y, crop.width, crop.height].every(Number.isFinite) || crop.width <= 0 || crop.height <= 0) throw new Error("Choose a valid crop area.");
+      // Draw the whole image scaled so the crop rectangle fills the output; this stays correct when the rectangle leaves the image.
+      const scaleX = width / crop.width, scaleY = height / crop.height;
+      context.drawImage(decoded.image, -crop.x * scaleX, -crop.y * scaleY, decoded.width * scaleX, decoded.height * scaleY);
+    } else context.drawImage(decoded.image, 0, 0, width, height);
     if (request.kind === "inspect") {
       let transparent = false;
       if (header.format !== "image/jpeg") for (let y = 0; y < height && !transparent; y += 128) {

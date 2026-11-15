@@ -1,0 +1,5 @@
+{
+  "name": "reel-finisher-pdf-runtime",
+  "private": true,
+  "dependencies": { "pdfjs-dist": "6.5.438" }
+}

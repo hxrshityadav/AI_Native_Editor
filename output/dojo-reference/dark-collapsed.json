@@ -1,0 +1,51 @@
+{
+  "nav": {
+    "x": 48,
+    "y": 108,
+    "width": 56,
+    "height": 368,
+    "top": 108,
+    "right": 104,
+    "bottom": 476,
+    "left": 48
+  },
+  "capsule": {
+    "x": 48,
+    "y": 108,
+    "width": 56,
+    "height": 368,
+    "top": 108,
+    "right": 104,
+    "bottom": 476,
+    "left": 48
+  },
+  "capsuleStyle": {
+    "background": "rgb(19, 19, 21)",
+    "padding": "6px",
+    "radius": "28px",
+    "gap": "8px"
+  },
+  "item": {
+    "rect": {
+      "x": 54,
+      "y": 114,
+      "width": 44,
+      "height": 44,
+      "top": 114,
+      "right": 98,
+      "bottom": 158,
+      "left": 54
+    },
+    "background": "rgb(246, 246, 247)",
+    "color": "rgb(10, 10, 11)",
+    "font": "16px"
+  },
+  "tokens": {
+    "--background": "#0a0a0b",
+    "--surface": "#131315",
+    "--surface-2": "#1c1c1f",
+    "--foreground": "#f6f6f7",
+    "--muted": "#babac2",
+    "--border": "#27272b"
+  }
+}

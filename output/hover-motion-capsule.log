@@ -1,0 +1,88 @@
+PASS  dark 1600 expanded: correct capsule width and no overlap
+PASS  dark 1600: photo category active
+PASS  dark 1600 collapsed: correct capsule width and no overlap
+PASS  dark 1600: photo category active
+PASS  dark 1600: keyboard focus reveals navigation
+PASS  dark 1600: icons keep their position inside the capsule
+PASS  dark 1440 expanded: correct capsule width and no overlap
+PASS  dark 1440: photo category active
+PASS  dark 1440 collapsed: correct capsule width and no overlap
+PASS  dark 1440: photo category active
+PASS  dark 1440: keyboard focus reveals navigation
+PASS  dark 1440: icons keep their position inside the capsule
+PASS  dark 1280 expanded: correct capsule width and no overlap
+PASS  dark 1280: photo category active
+PASS  dark 1280 collapsed: correct capsule width and no overlap
+PASS  dark 1280: photo category active
+PASS  dark 1280: keyboard focus reveals navigation
+PASS  dark 1280: icons keep their position inside the capsule
+PASS  dark 1024 expanded: correct capsule width and no overlap
+PASS  dark 1024: photo category active
+PASS  dark 1024 collapsed: correct capsule width and no overlap
+PASS  dark 1024: photo category active
+PASS  dark 1024: keyboard focus reveals navigation
+PASS  dark 1024: icons keep their position inside the capsule
+PASS  dark 768: mobile reuses capsule and locks page
+PASS  dark 768: no clipped capsule
+PASS  dark 768: Escape returns focus
+PASS  dark 430: mobile reuses capsule and locks page
+PASS  dark 430: no clipped capsule
+PASS  dark 430: Escape returns focus
+PASS  dark 390: mobile reuses capsule and locks page
+PASS  dark 390: no clipped capsule
+PASS  dark 390: Escape returns focus
+PASS  dark 360: mobile reuses capsule and locks page
+PASS  dark 360: no clipped capsule
+PASS  dark 360: Escape returns focus
+PASS  dark / true: footer clearance
+PASS  dark / false: footer clearance
+PASS  dark /command-center true: footer clearance
+PASS  dark /command-center false: footer clearance
+PASS  dark: saved collapse survives reload
+PASS  dark: backdrop dismisses drawer
+PASS  dark: tool selection dismisses drawer
+PASS  light 1600 expanded: correct capsule width and no overlap
+PASS  light 1600: photo category active
+PASS  light 1600 collapsed: correct capsule width and no overlap
+PASS  light 1600: photo category active
+PASS  light 1600: keyboard focus reveals navigation
+PASS  light 1600: icons keep their position inside the capsule
+PASS  light 1440 expanded: correct capsule width and no overlap
+PASS  light 1440: photo category active
+PASS  light 1440 collapsed: correct capsule width and no overlap
+PASS  light 1440: photo category active
+PASS  light 1440: keyboard focus reveals navigation
+PASS  light 1440: icons keep their position inside the capsule
+PASS  light 1280 expanded: correct capsule width and no overlap
+PASS  light 1280: photo category active
+PASS  light 1280 collapsed: correct capsule width and no overlap
+PASS  light 1280: photo category active
+PASS  light 1280: keyboard focus reveals navigation
+PASS  light 1280: icons keep their position inside the capsule
+PASS  light 1024 expanded: correct capsule width and no overlap
+PASS  light 1024: photo category active
+PASS  light 1024 collapsed: correct capsule width and no overlap
+PASS  light 1024: photo category active
+PASS  light 1024: keyboard focus reveals navigation
+PASS  light 1024: icons keep their position inside the capsule
+PASS  light 768: mobile reuses capsule and locks page
+PASS  light 768: no clipped capsule
+PASS  light 768: Escape returns focus
+PASS  light 430: mobile reuses capsule and locks page
+PASS  light 430: no clipped capsule
+PASS  light 430: Escape returns focus
+PASS  light 390: mobile reuses capsule and locks page
+PASS  light 390: no clipped capsule
+PASS  light 390: Escape returns focus
+PASS  light 360: mobile reuses capsule and locks page
+PASS  light 360: no clipped capsule
+PASS  light 360: Escape returns focus
+PASS  light / true: footer clearance
+PASS  light / false: footer clearance
+PASS  light /command-center true: footer clearance
+PASS  light /command-center false: footer clearance
+PASS  light: saved collapse survives reload
+PASS  light: backdrop dismisses drawer
+PASS  light: tool selection dismisses drawer
+
+86/86 checks passed

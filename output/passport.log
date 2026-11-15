@@ -1,0 +1,15 @@
+PASS  upload: shows the crop frame and controls
+PASS  export: 35 × 45 mm photo is a real 413 × 531 px JPEG  (portrait-passport-35x45.jpg)
+PASS  export: framing keeps the subject's top and bottom halves
+PASS  print sheet: 6 × 4 in at 300 DPI with a white border
+PASS  settings: a change invalidates the old download
+PASS  fill: zoomed-out empty area uses the chosen background colour  (220,231,244)
+PASS  keyboard: 0 resets the zoom
+PASS  sizes: 2 × 2 in exports 600 × 600 px
+PASS  validation: unsupported files are rejected with a reason
+PASS  resizer target: dimensions and the reported outcome match the real file  (19994 bytes, achieved=true)
+PASS  mobile: passport workspace fits without horizontal overflow
+PASS  SEO: unique title, H1 and FAQ are server-rendered
+PASS  privacy: only same-origin GET/HEAD requests
+
+13/13 checks passed

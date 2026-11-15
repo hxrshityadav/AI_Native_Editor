@@ -1,0 +1,6858 @@
+[
+ {
+  "route": "/",
+  "width": 1920,
+  "overflow": 0,
+  "clipped": [],
+  "small": [],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1896
+  ],
+  "headX": [
+   104,
+   1896
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools",
+  "width": 1920,
+  "overflow": 0,
+  "clipped": [
+   "Turns",
+   "into",
+   "Turns",
+   "into",
+   "Turns",
+   "into",
+   "Turns",
+   "into",
+   "Turns",
+   "into",
+   "Turns",
+   "into"
+  ],
+  "small": [],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1896
+  ],
+  "headX": [
+   104,
+   1896
+  ],
+  "errors": []
+ },
+ {
+  "route": "/command-center",
+  "width": 1920,
+  "overflow": 0,
+  "clipped": [],
+  "small": [],
+  "offScale": {
+   "marginBottom:18": 10,
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1896
+  ],
+  "headX": [
+   104,
+   1896
+  ],
+  "errors": []
+ },
+ {
+  "route": "/privacy",
+  "width": 1920,
+  "overflow": 0,
+  "clipped": [],
+  "small": [],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1896
+  ],
+  "headX": [
+   104,
+   1896
+  ],
+  "errors": []
+ },
+ {
+  "route": "/supported-formats",
+  "width": 1920,
+  "overflow": 0,
+  "clipped": [],
+  "small": [],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1896
+  ],
+  "headX": [
+   104,
+   1896
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/ai-dubbing",
+  "width": 1920,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1896
+  ],
+  "headX": [
+   104,
+   1896
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/audio-converter",
+  "width": 1920,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1896
+  ],
+  "headX": [
+   104,
+   1896
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/audio-cutter",
+  "width": 1920,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1896
+  ],
+  "headX": [
+   104,
+   1896
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/audio-to-video",
+  "width": 1920,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1896
+  ],
+  "headX": [
+   104,
+   1896
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/background-remover",
+  "width": 1920,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1896
+  ],
+  "headX": [
+   104,
+   1896
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/compress-video-to-size",
+  "width": 1920,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1896
+  ],
+  "headX": [
+   104,
+   1896
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/convert-to-mp4",
+  "width": 1920,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1896
+  ],
+  "headX": [
+   104,
+   1896
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/extract-audio",
+  "width": 1920,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1896
+  ],
+  "headX": [
+   104,
+   1896
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/heic-to-jpg",
+  "width": 1920,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1896
+  ],
+  "headX": [
+   104,
+   1896
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/image-compressor",
+  "width": 1920,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1896
+  ],
+  "headX": [
+   104,
+   1896
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/image-converter",
+  "width": 1920,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1896
+  ],
+  "headX": [
+   104,
+   1896
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/image-resizer",
+  "width": 1920,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1896
+  ],
+  "headX": [
+   104,
+   1896
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/image-to-video",
+  "width": 1920,
+  "overflow": 0,
+  "clipped": [
+   "Preview",
+   "Features"
+  ],
+  "small": [
+   "INPUT 18x18",
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1896
+  ],
+  "headX": [
+   104,
+   1896
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/increase-volume",
+  "width": 1920,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1896
+  ],
+  "headX": [
+   104,
+   1896
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/lecture-to-notes",
+  "width": 1920,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1896
+  ],
+  "headX": [
+   104,
+   1896
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/music-mixer",
+  "width": 1920,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1896
+  ],
+  "headX": [
+   104,
+   1896
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/noise-remover",
+  "width": 1920,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1896
+  ],
+  "headX": [
+   104,
+   1896
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/passport-photo",
+  "width": 1920,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1896
+  ],
+  "headX": [
+   104,
+   1896
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/pdf-to-audio",
+  "width": 1920,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1896
+  ],
+  "headX": [
+   104,
+   1896
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/remove-audio",
+  "width": 1920,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1896
+  ],
+  "headX": [
+   104,
+   1896
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/remove-music",
+  "width": 1920,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1896
+  ],
+  "headX": [
+   104,
+   1896
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/subtitle-studio",
+  "width": 1920,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1896
+  ],
+  "headX": [
+   104,
+   1896
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/text-to-speech",
+  "width": 1920,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "Allow speech model download 18x18",
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1896
+  ],
+  "headX": [
+   104,
+   1896
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/text-to-video",
+  "width": 1920,
+  "overflow": 0,
+  "clipped": [
+   "Preview",
+   "Features"
+  ],
+  "small": [
+   "INPUT 18x18",
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1896
+  ],
+  "headX": [
+   104,
+   1896
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/transcribe-to-text",
+  "width": 1920,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1896
+  ],
+  "headX": [
+   104,
+   1896
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/trim-video",
+  "width": 1920,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1896
+  ],
+  "headX": [
+   104,
+   1896
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/video-compressor",
+  "width": 1920,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1896
+  ],
+  "headX": [
+   104,
+   1896
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/video-to-gif",
+  "width": 1920,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1896
+  ],
+  "headX": [
+   104,
+   1896
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/video-translator",
+  "width": 1920,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1896
+  ],
+  "headX": [
+   104,
+   1896
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/vocal-remover",
+  "width": 1920,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1896
+  ],
+  "headX": [
+   104,
+   1896
+  ],
+  "errors": []
+ },
+ {
+  "route": "/",
+  "width": 1440,
+  "overflow": 0,
+  "clipped": [],
+  "small": [],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1416
+  ],
+  "headX": [
+   104,
+   1416
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools",
+  "width": 1440,
+  "overflow": 0,
+  "clipped": [
+   "Turns",
+   "into",
+   "Turns",
+   "into",
+   "Turns",
+   "into",
+   "Turns",
+   "into",
+   "Turns",
+   "into",
+   "Turns",
+   "into"
+  ],
+  "small": [],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1416
+  ],
+  "headX": [
+   104,
+   1416
+  ],
+  "errors": []
+ },
+ {
+  "route": "/command-center",
+  "width": 1440,
+  "overflow": 0,
+  "clipped": [],
+  "small": [],
+  "offScale": {
+   "marginBottom:18": 10,
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1416
+  ],
+  "headX": [
+   104,
+   1416
+  ],
+  "errors": []
+ },
+ {
+  "route": "/privacy",
+  "width": 1440,
+  "overflow": 0,
+  "clipped": [],
+  "small": [],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1416
+  ],
+  "headX": [
+   104,
+   1416
+  ],
+  "errors": []
+ },
+ {
+  "route": "/supported-formats",
+  "width": 1440,
+  "overflow": 0,
+  "clipped": [],
+  "small": [],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1416
+  ],
+  "headX": [
+   104,
+   1416
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/ai-dubbing",
+  "width": 1440,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1416
+  ],
+  "headX": [
+   104,
+   1416
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/audio-converter",
+  "width": 1440,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1416
+  ],
+  "headX": [
+   104,
+   1416
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/audio-cutter",
+  "width": 1440,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1416
+  ],
+  "headX": [
+   104,
+   1416
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/audio-to-video",
+  "width": 1440,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1416
+  ],
+  "headX": [
+   104,
+   1416
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/background-remover",
+  "width": 1440,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1416
+  ],
+  "headX": [
+   104,
+   1416
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/compress-video-to-size",
+  "width": 1440,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1416
+  ],
+  "headX": [
+   104,
+   1416
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/convert-to-mp4",
+  "width": 1440,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1416
+  ],
+  "headX": [
+   104,
+   1416
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/extract-audio",
+  "width": 1440,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1416
+  ],
+  "headX": [
+   104,
+   1416
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/heic-to-jpg",
+  "width": 1440,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1416
+  ],
+  "headX": [
+   104,
+   1416
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/image-compressor",
+  "width": 1440,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1416
+  ],
+  "headX": [
+   104,
+   1416
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/image-converter",
+  "width": 1440,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1416
+  ],
+  "headX": [
+   104,
+   1416
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/image-resizer",
+  "width": 1440,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1416
+  ],
+  "headX": [
+   104,
+   1416
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/image-to-video",
+  "width": 1440,
+  "overflow": 0,
+  "clipped": [
+   "Preview",
+   "Features"
+  ],
+  "small": [
+   "INPUT 18x18",
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1416
+  ],
+  "headX": [
+   104,
+   1416
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/increase-volume",
+  "width": 1440,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1416
+  ],
+  "headX": [
+   104,
+   1416
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/lecture-to-notes",
+  "width": 1440,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1416
+  ],
+  "headX": [
+   104,
+   1416
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/music-mixer",
+  "width": 1440,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1416
+  ],
+  "headX": [
+   104,
+   1416
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/noise-remover",
+  "width": 1440,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1416
+  ],
+  "headX": [
+   104,
+   1416
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/passport-photo",
+  "width": 1440,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1416
+  ],
+  "headX": [
+   104,
+   1416
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/pdf-to-audio",
+  "width": 1440,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1416
+  ],
+  "headX": [
+   104,
+   1416
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/remove-audio",
+  "width": 1440,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1416
+  ],
+  "headX": [
+   104,
+   1416
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/remove-music",
+  "width": 1440,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1416
+  ],
+  "headX": [
+   104,
+   1416
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/subtitle-studio",
+  "width": 1440,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1416
+  ],
+  "headX": [
+   104,
+   1416
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/text-to-speech",
+  "width": 1440,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "Allow speech model download 18x18",
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1416
+  ],
+  "headX": [
+   104,
+   1416
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/text-to-video",
+  "width": 1440,
+  "overflow": 0,
+  "clipped": [
+   "Preview",
+   "Features"
+  ],
+  "small": [
+   "INPUT 18x18",
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1416
+  ],
+  "headX": [
+   104,
+   1416
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/transcribe-to-text",
+  "width": 1440,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1416
+  ],
+  "headX": [
+   104,
+   1416
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/trim-video",
+  "width": 1440,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1416
+  ],
+  "headX": [
+   104,
+   1416
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/video-compressor",
+  "width": 1440,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1416
+  ],
+  "headX": [
+   104,
+   1416
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/video-to-gif",
+  "width": 1440,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1416
+  ],
+  "headX": [
+   104,
+   1416
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/video-translator",
+  "width": 1440,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1416
+  ],
+  "headX": [
+   104,
+   1416
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/vocal-remover",
+  "width": 1440,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1416
+  ],
+  "headX": [
+   104,
+   1416
+  ],
+  "errors": []
+ },
+ {
+  "route": "/",
+  "width": 1280,
+  "overflow": 0,
+  "clipped": [],
+  "small": [],
+  "offScale": {
+   "marginTop:21": 1,
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1256
+  ],
+  "headX": [
+   104,
+   1256
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools",
+  "width": 1280,
+  "overflow": 0,
+  "clipped": [
+   "Turns",
+   "into",
+   "Turns",
+   "into",
+   "Turns",
+   "into",
+   "Turns",
+   "into",
+   "Turns",
+   "into",
+   "Turns",
+   "into"
+  ],
+  "small": [],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1256
+  ],
+  "headX": [
+   104,
+   1256
+  ],
+  "errors": []
+ },
+ {
+  "route": "/command-center",
+  "width": 1280,
+  "overflow": 0,
+  "clipped": [],
+  "small": [],
+  "offScale": {
+   "marginBottom:18": 7,
+   "marginTop:21": 3,
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1256
+  ],
+  "headX": [
+   104,
+   1256
+  ],
+  "errors": []
+ },
+ {
+  "route": "/privacy",
+  "width": 1280,
+  "overflow": 0,
+  "clipped": [],
+  "small": [],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1256
+  ],
+  "headX": [
+   104,
+   1256
+  ],
+  "errors": []
+ },
+ {
+  "route": "/supported-formats",
+  "width": 1280,
+  "overflow": 0,
+  "clipped": [],
+  "small": [],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1256
+  ],
+  "headX": [
+   104,
+   1256
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/ai-dubbing",
+  "width": 1280,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1256
+  ],
+  "headX": [
+   104,
+   1256
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/audio-converter",
+  "width": 1280,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1256
+  ],
+  "headX": [
+   104,
+   1256
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/audio-cutter",
+  "width": 1280,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1256
+  ],
+  "headX": [
+   104,
+   1256
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/audio-to-video",
+  "width": 1280,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1256
+  ],
+  "headX": [
+   104,
+   1256
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/background-remover",
+  "width": 1280,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1256
+  ],
+  "headX": [
+   104,
+   1256
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/compress-video-to-size",
+  "width": 1280,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1256
+  ],
+  "headX": [
+   104,
+   1256
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/convert-to-mp4",
+  "width": 1280,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1256
+  ],
+  "headX": [
+   104,
+   1256
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/extract-audio",
+  "width": 1280,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1256
+  ],
+  "headX": [
+   104,
+   1256
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/heic-to-jpg",
+  "width": 1280,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1256
+  ],
+  "headX": [
+   104,
+   1256
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/image-compressor",
+  "width": 1280,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1256
+  ],
+  "headX": [
+   104,
+   1256
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/image-converter",
+  "width": 1280,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1256
+  ],
+  "headX": [
+   104,
+   1256
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/image-resizer",
+  "width": 1280,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1256
+  ],
+  "headX": [
+   104,
+   1256
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/image-to-video",
+  "width": 1280,
+  "overflow": 0,
+  "clipped": [
+   "Preview",
+   "Features"
+  ],
+  "small": [
+   "INPUT 18x18",
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1256
+  ],
+  "headX": [
+   104,
+   1256
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/increase-volume",
+  "width": 1280,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1256
+  ],
+  "headX": [
+   104,
+   1256
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/lecture-to-notes",
+  "width": 1280,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1256
+  ],
+  "headX": [
+   104,
+   1256
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/music-mixer",
+  "width": 1280,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1256
+  ],
+  "headX": [
+   104,
+   1256
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/noise-remover",
+  "width": 1280,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1256
+  ],
+  "headX": [
+   104,
+   1256
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/passport-photo",
+  "width": 1280,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1256
+  ],
+  "headX": [
+   104,
+   1256
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/pdf-to-audio",
+  "width": 1280,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1256
+  ],
+  "headX": [
+   104,
+   1256
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/remove-audio",
+  "width": 1280,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1256
+  ],
+  "headX": [
+   104,
+   1256
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/remove-music",
+  "width": 1280,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1256
+  ],
+  "headX": [
+   104,
+   1256
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/subtitle-studio",
+  "width": 1280,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1256
+  ],
+  "headX": [
+   104,
+   1256
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/text-to-speech",
+  "width": 1280,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "Allow speech model download 18x18",
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1256
+  ],
+  "headX": [
+   104,
+   1256
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/text-to-video",
+  "width": 1280,
+  "overflow": 0,
+  "clipped": [
+   "Preview",
+   "Features"
+  ],
+  "small": [
+   "INPUT 18x18",
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1256
+  ],
+  "headX": [
+   104,
+   1256
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/transcribe-to-text",
+  "width": 1280,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1256
+  ],
+  "headX": [
+   104,
+   1256
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/trim-video",
+  "width": 1280,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1256
+  ],
+  "headX": [
+   104,
+   1256
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/video-compressor",
+  "width": 1280,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1256
+  ],
+  "headX": [
+   104,
+   1256
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/video-to-gif",
+  "width": 1280,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1256
+  ],
+  "headX": [
+   104,
+   1256
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/video-translator",
+  "width": 1280,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1256
+  ],
+  "headX": [
+   104,
+   1256
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/vocal-remover",
+  "width": 1280,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1256
+  ],
+  "headX": [
+   104,
+   1256
+  ],
+  "errors": []
+ },
+ {
+  "route": "/",
+  "width": 1024,
+  "overflow": 0,
+  "clipped": [],
+  "small": [],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1000
+  ],
+  "headX": [
+   104,
+   1000
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools",
+  "width": 1024,
+  "overflow": 0,
+  "clipped": [
+   "Turns",
+   "into",
+   "Turns",
+   "into",
+   "Turns",
+   "into",
+   "Turns",
+   "into",
+   "Turns",
+   "into",
+   "Turns",
+   "into"
+  ],
+  "small": [],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1000
+  ],
+  "headX": [
+   104,
+   1000
+  ],
+  "errors": []
+ },
+ {
+  "route": "/command-center",
+  "width": 1024,
+  "overflow": 0,
+  "clipped": [],
+  "small": [],
+  "offScale": {
+   "marginBottom:18": 10,
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1000
+  ],
+  "headX": [
+   104,
+   1000
+  ],
+  "errors": []
+ },
+ {
+  "route": "/privacy",
+  "width": 1024,
+  "overflow": 0,
+  "clipped": [],
+  "small": [],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1000
+  ],
+  "headX": [
+   104,
+   1000
+  ],
+  "errors": []
+ },
+ {
+  "route": "/supported-formats",
+  "width": 1024,
+  "overflow": 0,
+  "clipped": [],
+  "small": [],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1000
+  ],
+  "headX": [
+   104,
+   1000
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/ai-dubbing",
+  "width": 1024,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1000
+  ],
+  "headX": [
+   104,
+   1000
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/audio-converter",
+  "width": 1024,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1000
+  ],
+  "headX": [
+   104,
+   1000
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/audio-cutter",
+  "width": 1024,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1000
+  ],
+  "headX": [
+   104,
+   1000
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/audio-to-video",
+  "width": 1024,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1000
+  ],
+  "headX": [
+   104,
+   1000
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/background-remover",
+  "width": 1024,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1000
+  ],
+  "headX": [
+   104,
+   1000
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/compress-video-to-size",
+  "width": 1024,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1000
+  ],
+  "headX": [
+   104,
+   1000
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/convert-to-mp4",
+  "width": 1024,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1000
+  ],
+  "headX": [
+   104,
+   1000
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/extract-audio",
+  "width": 1024,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1000
+  ],
+  "headX": [
+   104,
+   1000
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/heic-to-jpg",
+  "width": 1024,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1000
+  ],
+  "headX": [
+   104,
+   1000
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/image-compressor",
+  "width": 1024,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1000
+  ],
+  "headX": [
+   104,
+   1000
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/image-converter",
+  "width": 1024,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1000
+  ],
+  "headX": [
+   104,
+   1000
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/image-resizer",
+  "width": 1024,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1000
+  ],
+  "headX": [
+   104,
+   1000
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/image-to-video",
+  "width": 1024,
+  "overflow": 0,
+  "clipped": [
+   "Preview",
+   "Features"
+  ],
+  "small": [
+   "INPUT 18x18",
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1000
+  ],
+  "headX": [
+   104,
+   1000
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/increase-volume",
+  "width": 1024,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1000
+  ],
+  "headX": [
+   104,
+   1000
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/lecture-to-notes",
+  "width": 1024,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1000
+  ],
+  "headX": [
+   104,
+   1000
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/music-mixer",
+  "width": 1024,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1000
+  ],
+  "headX": [
+   104,
+   1000
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/noise-remover",
+  "width": 1024,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1000
+  ],
+  "headX": [
+   104,
+   1000
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/passport-photo",
+  "width": 1024,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1000
+  ],
+  "headX": [
+   104,
+   1000
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/pdf-to-audio",
+  "width": 1024,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1000
+  ],
+  "headX": [
+   104,
+   1000
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/remove-audio",
+  "width": 1024,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1000
+  ],
+  "headX": [
+   104,
+   1000
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/remove-music",
+  "width": 1024,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1000
+  ],
+  "headX": [
+   104,
+   1000
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/subtitle-studio",
+  "width": 1024,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1000
+  ],
+  "headX": [
+   104,
+   1000
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/text-to-speech",
+  "width": 1024,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "Allow speech model download 18x18",
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1000
+  ],
+  "headX": [
+   104,
+   1000
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/text-to-video",
+  "width": 1024,
+  "overflow": 0,
+  "clipped": [
+   "Preview",
+   "Features"
+  ],
+  "small": [
+   "INPUT 18x18",
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1000
+  ],
+  "headX": [
+   104,
+   1000
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/transcribe-to-text",
+  "width": 1024,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1000
+  ],
+  "headX": [
+   104,
+   1000
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/trim-video",
+  "width": 1024,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1000
+  ],
+  "headX": [
+   104,
+   1000
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/video-compressor",
+  "width": 1024,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1000
+  ],
+  "headX": [
+   104,
+   1000
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/video-to-gif",
+  "width": 1024,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1000
+  ],
+  "headX": [
+   104,
+   1000
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/video-translator",
+  "width": 1024,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1000
+  ],
+  "headX": [
+   104,
+   1000
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/vocal-remover",
+  "width": 1024,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 1,
+   "paddingRight:6": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   104,
+   1000
+  ],
+  "headX": [
+   104,
+   1000
+  ],
+  "errors": []
+ },
+ {
+  "route": "/",
+  "width": 768,
+  "overflow": 0,
+  "clipped": [],
+  "small": [],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2,
+   "marginTop:21": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   768
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools",
+  "width": 768,
+  "overflow": 0,
+  "clipped": [
+   "Turns",
+   "into",
+   "Turns",
+   "into",
+   "Turns",
+   "into",
+   "Turns",
+   "into",
+   "Turns",
+   "into",
+   "Turns",
+   "into"
+  ],
+  "small": [],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   768
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/command-center",
+  "width": 768,
+  "overflow": 0,
+  "clipped": [],
+  "small": [],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2,
+   "marginBottom:18": 10
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   768
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/privacy",
+  "width": 768,
+  "overflow": 0,
+  "clipped": [],
+  "small": [],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   768
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/supported-formats",
+  "width": 768,
+  "overflow": 0,
+  "clipped": [],
+  "small": [],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   768
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/ai-dubbing",
+  "width": 768,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   768
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/audio-converter",
+  "width": 768,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   768
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/audio-cutter",
+  "width": 768,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   768
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/audio-to-video",
+  "width": 768,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   768
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/background-remover",
+  "width": 768,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   768
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/compress-video-to-size",
+  "width": 768,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   768
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/convert-to-mp4",
+  "width": 768,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   768
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/extract-audio",
+  "width": 768,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   768
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/heic-to-jpg",
+  "width": 768,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   768
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/image-compressor",
+  "width": 768,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   768
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/image-converter",
+  "width": 768,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   768
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/image-resizer",
+  "width": 768,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   768
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/image-to-video",
+  "width": 768,
+  "overflow": 0,
+  "clipped": [
+   "Preview",
+   "Features"
+  ],
+  "small": [
+   "INPUT 18x18",
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   768
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/increase-volume",
+  "width": 768,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   768
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/lecture-to-notes",
+  "width": 768,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   768
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/music-mixer",
+  "width": 768,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   768
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/noise-remover",
+  "width": 768,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   768
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/passport-photo",
+  "width": 768,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   768
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/pdf-to-audio",
+  "width": 768,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   768
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/remove-audio",
+  "width": 768,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   768
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/remove-music",
+  "width": 768,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   768
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/subtitle-studio",
+  "width": 768,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   768
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/text-to-speech",
+  "width": 768,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "Allow speech model download 18x18",
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   768
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/text-to-video",
+  "width": 768,
+  "overflow": 0,
+  "clipped": [
+   "Preview",
+   "Features"
+  ],
+  "small": [
+   "INPUT 18x18",
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   768
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/transcribe-to-text",
+  "width": 768,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   768
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/trim-video",
+  "width": 768,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   768
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/video-compressor",
+  "width": 768,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   768
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/video-to-gif",
+  "width": 768,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   768
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/video-translator",
+  "width": 768,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   768
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/vocal-remover",
+  "width": 768,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   768
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/",
+  "width": 390,
+  "overflow": 0,
+  "clipped": [],
+  "small": [],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   390
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools",
+  "width": 390,
+  "overflow": 0,
+  "clipped": [
+   "Turns",
+   "into",
+   "Turns",
+   "into",
+   "Turns",
+   "into",
+   "Turns",
+   "into",
+   "Turns",
+   "into",
+   "Turns",
+   "into"
+  ],
+  "small": [],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   390
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/command-center",
+  "width": 390,
+  "overflow": 0,
+  "clipped": [],
+  "small": [],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2,
+   "marginTop:21": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   390
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/privacy",
+  "width": 390,
+  "overflow": 0,
+  "clipped": [],
+  "small": [],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   390
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/supported-formats",
+  "width": 390,
+  "overflow": 0,
+  "clipped": [],
+  "small": [],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   390
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/ai-dubbing",
+  "width": 390,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   390
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/audio-converter",
+  "width": 390,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   390
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/audio-cutter",
+  "width": 390,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   390
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/audio-to-video",
+  "width": 390,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   390
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/background-remover",
+  "width": 390,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   390
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/compress-video-to-size",
+  "width": 390,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   390
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/convert-to-mp4",
+  "width": 390,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   390
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/extract-audio",
+  "width": 390,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   390
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/heic-to-jpg",
+  "width": 390,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   390
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/image-compressor",
+  "width": 390,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   390
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/image-converter",
+  "width": 390,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   390
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/image-resizer",
+  "width": 390,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   390
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/image-to-video",
+  "width": 390,
+  "overflow": 0,
+  "clipped": [
+   "Preview",
+   "Features"
+  ],
+  "small": [
+   "INPUT 18x18",
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   390
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/increase-volume",
+  "width": 390,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   390
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/lecture-to-notes",
+  "width": 390,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   390
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/music-mixer",
+  "width": 390,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   390
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/noise-remover",
+  "width": 390,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   390
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/passport-photo",
+  "width": 390,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   390
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/pdf-to-audio",
+  "width": 390,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   390
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/remove-audio",
+  "width": 390,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   390
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/remove-music",
+  "width": 390,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   390
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/subtitle-studio",
+  "width": 390,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   390
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/text-to-speech",
+  "width": 390,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "Allow speech model download 18x18",
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   390
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/text-to-video",
+  "width": 390,
+  "overflow": 0,
+  "clipped": [
+   "Preview",
+   "Features"
+  ],
+  "small": [
+   "INPUT 18x18",
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   390
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/transcribe-to-text",
+  "width": 390,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   390
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/trim-video",
+  "width": 390,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   390
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/video-compressor",
+  "width": 390,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   390
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/video-to-gif",
+  "width": 390,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   390
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/video-translator",
+  "width": 390,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   390
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/vocal-remover",
+  "width": 390,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   390
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/",
+  "width": 375,
+  "overflow": 0,
+  "clipped": [],
+  "small": [],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   375
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools",
+  "width": 375,
+  "overflow": 0,
+  "clipped": [
+   "Turns",
+   "into",
+   "Turns",
+   "into",
+   "Turns",
+   "into",
+   "Turns",
+   "into",
+   "Turns",
+   "into",
+   "Turns",
+   "into"
+  ],
+  "small": [],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   375
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/command-center",
+  "width": 375,
+  "overflow": 0,
+  "clipped": [],
+  "small": [],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2,
+   "marginTop:21": 1
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   375
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/privacy",
+  "width": 375,
+  "overflow": 0,
+  "clipped": [],
+  "small": [],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   375
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/supported-formats",
+  "width": 375,
+  "overflow": 0,
+  "clipped": [],
+  "small": [],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   375
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/ai-dubbing",
+  "width": 375,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   375
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/audio-converter",
+  "width": 375,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   375
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/audio-cutter",
+  "width": 375,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   375
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/audio-to-video",
+  "width": 375,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   375
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/background-remover",
+  "width": 375,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   375
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/compress-video-to-size",
+  "width": 375,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   375
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/convert-to-mp4",
+  "width": 375,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   375
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/extract-audio",
+  "width": 375,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   375
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/heic-to-jpg",
+  "width": 375,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   375
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/image-compressor",
+  "width": 375,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   375
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/image-converter",
+  "width": 375,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   375
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/image-resizer",
+  "width": 375,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   375
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/image-to-video",
+  "width": 375,
+  "overflow": 0,
+  "clipped": [
+   "Preview",
+   "Features"
+  ],
+  "small": [
+   "INPUT 18x18",
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   375
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/increase-volume",
+  "width": 375,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   375
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/lecture-to-notes",
+  "width": 375,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   375
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/music-mixer",
+  "width": 375,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   375
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/noise-remover",
+  "width": 375,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   375
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/passport-photo",
+  "width": 375,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   375
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/pdf-to-audio",
+  "width": 375,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   375
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/remove-audio",
+  "width": 375,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   375
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/remove-music",
+  "width": 375,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   375
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/subtitle-studio",
+  "width": 375,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   375
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/text-to-speech",
+  "width": 375,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "Allow speech model download 18x18",
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   375
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/text-to-video",
+  "width": 375,
+  "overflow": 0,
+  "clipped": [
+   "Preview",
+   "Features"
+  ],
+  "small": [
+   "INPUT 18x18",
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   375
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/transcribe-to-text",
+  "width": 375,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   375
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/trim-video",
+  "width": 375,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   375
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/video-compressor",
+  "width": 375,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   375
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/video-to-gif",
+  "width": 375,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   375
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/video-translator",
+  "width": 375,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   375
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ },
+ {
+  "route": "/tools/vocal-remover",
+  "width": 375,
+  "overflow": 0,
+  "clipped": [
+   "Features"
+  ],
+  "small": [
+   "privacy notes 86x16"
+  ],
+  "offScale": {
+   "paddingLeft:6": 2,
+   "paddingRight:6": 2
+  },
+  "heavy": [],
+  "tracked": [],
+  "emoji": [],
+  "h1": 1,
+  "mainX": [
+   0,
+   375
+  ],
+  "headX": [
+   0,
+   0
+  ],
+  "errors": []
+ }
+]

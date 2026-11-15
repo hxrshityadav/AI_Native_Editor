@@ -1,0 +1,2575 @@
+{
+ "url": "http://localhost:3000/",
+ "at": "2026-11-07T17:58:44.412Z",
+ "allow": [],
+ "viewports": [
+  {
+   "width": 1440,
+   "height": 900,
+   "load": "load",
+   "screens": 8,
+   "filled": [
+    0.81,
+    0.96,
+    0.97,
+    0.97,
+    0.93,
+    0.97,
+    0.97,
+    0.97
+   ],
+   "motion": {
+    "elements": 36,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 36,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "page": {
+     "height": 6876,
+     "screens": 7.6,
+     "words": 839,
+     "img": 5,
+     "video": 0,
+     "canvas": 0,
+     "svg": 76,
+     "sections": 11,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 2,
+     "uiAbuse": false,
+     "realPictures": 4,
+     "videoCount": 0,
+     "uiPictures": 2,
+     "pictureSamples": [
+      "photo.webp",
+      "video.webp",
+      "audio.webp",
+      "ai.webp"
+     ],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Your creative workspace. Without the overhead.",
+     "words": 6,
+     "chars": 46,
+     "lines": 4,
+     "size": 92.2,
+     "vw": 6.4,
+     "font": "RF Display",
+     "weight": 700,
+     "tracking": -0.035,
+     "leading": 0.98,
+     "upper": false,
+     "italic": false,
+     "mono": false,
+     "align": "left",
+     "position": "center",
+     "widthRatio": 0.57,
+     "top": 56,
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "Your creative workspace. Without the overhead.",
+     "words": 6,
+     "lines": 4,
+     "size": 92.2,
+     "font": "RF Display"
+    },
+    "headings": [
+     {
+      "text": "Your creative workspace. Without the overhead.",
+      "words": 6,
+      "chars": 46,
+      "lines": 4,
+      "size": 92.2,
+      "vw": 6.4,
+      "font": "RF Display",
+      "weight": 700,
+      "tracking": -0.035,
+      "leading": 0.98,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.57,
+      "top": 56,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Every tool, one keystroke away.",
+      "words": 5,
+      "chars": 31,
+      "lines": 2,
+      "size": 49,
+      "vw": 3.4,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.03,
+      "leading": 1.04,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.31,
+      "top": 1304,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "The tools people reach for first",
+      "words": 6,
+      "chars": 32,
+      "lines": 1,
+      "size": 36,
+      "vw": 2.5,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.025,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.32,
+      "top": 1927,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Image Compressor",
+      "words": 2,
+      "chars": 16,
+      "lines": 1,
+      "size": 34,
+      "vw": 2.4,
+      "font": "RF Display",
+      "weight": 700,
+      "tracking": -0.02,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.31,
+      "top": 2034,
+      "tag": "strong",
+      "kind": "statement"
+     },
+     {
+      "text": "Video Compressor",
+      "words": 2,
+      "chars": 16,
+      "lines": 1,
+      "size": 34,
+      "vw": 2.4,
+      "font": "RF Display",
+      "weight": 700,
+      "tracking": -0.02,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.31,
+      "top": 2161,
+      "tag": "strong",
+      "kind": "statement"
+     },
+     {
+      "text": "Audio Cutter",
+      "words": 2,
+      "chars": 12,
+      "lines": 1,
+      "size": 34,
+      "vw": 2.4,
+      "font": "RF Display",
+      "weight": 700,
+      "tracking": -0.02,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.31,
+      "top": 2288,
+      "tag": "strong",
+      "kind": "statement"
+     },
+     {
+      "text": "Noise Remover",
+      "words": 2,
+      "chars": 13,
+      "lines": 1,
+      "size": 34,
+      "vw": 2.4,
+      "font": "RF Display",
+      "weight": 700,
+      "tracking": -0.02,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.31,
+      "top": 2416,
+      "tag": "strong",
+      "kind": "statement"
+     },
+     {
+      "text": "Text to Speech",
+      "words": 3,
+      "chars": 14,
+      "lines": 1,
+      "size": 34,
+      "vw": 2.4,
+      "font": "RF Display",
+      "weight": 700,
+      "tracking": -0.02,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.31,
+      "top": 2543,
+      "tag": "strong",
+      "kind": "statement"
+     },
+     {
+      "text": "Photo, video, audio and AI",
+      "words": 5,
+      "chars": 26,
+      "lines": 1,
+      "size": 36,
+      "vw": 2.5,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.025,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.27,
+      "top": 2782,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "AI that runs on your device.",
+      "words": 6,
+      "chars": 28,
+      "lines": 2,
+      "size": 49,
+      "vw": 3.4,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.03,
+      "leading": 1.04,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.24,
+      "top": 3802,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "From a long recording to a finished Short.",
+      "words": 8,
+      "chars": 42,
+      "lines": 1,
+      "size": 49,
+      "vw": 3.4,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.03,
+      "leading": 1.04,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.78,
+      "top": 4299,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Clean the sound",
+      "words": 3,
+      "chars": 15,
+      "lines": 1,
+      "size": 28,
+      "vw": 1.9,
+      "font": "RF Display",
+      "weight": 700,
+      "tracking": -0.02,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.26,
+      "top": 4414,
+      "tag": "strong",
+      "kind": "statement"
+     },
+     {
+      "text": "Find the moment",
+      "words": 3,
+      "chars": 15,
+      "lines": 1,
+      "size": 28,
+      "vw": 1.9,
+      "font": "RF Display",
+      "weight": 700,
+      "tracking": -0.02,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "right",
+      "widthRatio": 0.2,
+      "top": 4414,
+      "tag": "strong",
+      "kind": "statement"
+     },
+     {
+      "text": "Caption and export",
+      "words": 3,
+      "chars": 18,
+      "lines": 1,
+      "size": 28,
+      "vw": 1.9,
+      "font": "RF Display",
+      "weight": 700,
+      "tracking": -0.02,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "right",
+      "widthRatio": 0.2,
+      "top": 4414,
+      "tag": "strong",
+      "kind": "statement"
+     },
+     {
+      "text": "Your files stay yours.",
+      "words": 4,
+      "chars": 22,
+      "lines": 2,
+      "size": 77.8,
+      "vw": 5.4,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.03,
+      "leading": 0.98,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.35,
+      "top": 4870,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "How it works",
+      "words": 3,
+      "chars": 12,
+      "lines": 1,
+      "size": 49,
+      "vw": 3.4,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.03,
+      "leading": 1.04,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.78,
+      "top": 5267,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Questions",
+      "words": 1,
+      "chars": 9,
+      "lines": 1,
+      "size": 49,
+      "vw": 3.4,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.03,
+      "leading": 1.04,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.24,
+      "top": 5624,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Bring a file. Leave with it finished.",
+      "words": 7,
+      "chars": 37,
+      "lines": 2,
+      "size": 86.4,
+      "vw": 6,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.035,
+      "leading": 0.98,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.5,
+      "top": 6172,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Reel Finisher",
+      "words": 2,
+      "chars": 13,
+      "lines": 1,
+      "size": 151.2,
+      "vw": 10.5,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.045,
+      "leading": 0.9,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.78,
+      "top": 6614,
+      "tag": "p",
+      "kind": "statement"
+     }
+    ],
+    "headingSummary": {
+     "count": 19,
+     "maxLines": 4,
+     "over2Lines": 1,
+     "statements": 9,
+     "centered": 0,
+     "medianWords": 3,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "system-ui",
+       "share": 0.91,
+       "mono": false
+      },
+      {
+       "family": "RF Display",
+       "share": 0.09,
+       "mono": false
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      24,
+      26,
+      28,
+      34,
+      36,
+      49,
+      78,
+      86,
+      92,
+      151
+     ],
+     "sizeCount": 18,
+     "notLoaded": [],
+     "body": {
+      "font": "system-ui",
+      "size": 16,
+      "leading": 1.55,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 13.4
+     },
+     "measureChars": 73,
+     "max": {
+      "size": 151.2,
+      "vw": 10.5,
+      "font": "RF Display",
+      "text": "Reel Finisher"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0.01,
+     "centerShare": 0.01,
+     "smallText": 0
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#0a0a0a",
+     "bodyBgHsl": {
+      "h": 0,
+      "s": 0,
+      "l": 0.04
+     },
+     "dark": true,
+     "sectionBgs": [
+      {
+       "color": "#08090b",
+       "top": 0,
+       "hsl": {
+        "h": 220,
+        "s": 0.16,
+        "l": 0.04
+       }
+      },
+      {
+       "color": "#0d1015",
+       "top": 0,
+       "hsl": {
+        "h": 218,
+        "s": 0.24,
+        "l": 0.07
+       }
+      },
+      {
+       "color": "#143c91",
+       "top": 4764,
+       "hsl": {
+        "h": 221,
+        "s": 0.76,
+        "l": 0.32
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#d3d9e2",
+       "share": 0.48
+      },
+      {
+       "color": "#a0a9b7",
+       "share": 0.24
+      },
+      {
+       "color": "#f5f7fa",
+       "share": 0.2
+      },
+      {
+       "color": "#e3ebff",
+       "share": 0.03
+      },
+      {
+       "color": "#8b95a6",
+       "share": 0.03
+      }
+     ],
+     "button": {
+      "bg": "#121720",
+      "hsl": {
+       "h": 219,
+       "s": 0.28,
+       "l": 0.1
+      },
+      "fg": "#a0a9b7"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 12,
+     "inHero": 4,
+     "radius": 8,
+     "height": 48,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Search tools K",
+      "Home",
+      "Explore tools",
+      "Open Command Center"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 1,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 0,
+     "hairlineSamples": [],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 17,
+     "boxRadius": 14,
+     "squareMedia": 0,
+     "roundedMedia": 5,
+     "mediaRadius": 12,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 4,
+       "iconTopped": true,
+       "rounded": true,
+       "top": 2846
+      }
+     ]
+    },
+    "heroMedia": [
+     {
+      "type": "img",
+      "ratio": 0.15
+     }
+    ],
+    "nav": {
+     "links": 1,
+     "fixed": true,
+     "height": 900,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "rf display",
+     "__nextjs-geist"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "pageH": 6876,
+    "margins": {
+     "left": 26,
+     "right": 43
+    },
+    "sections": [
+     {
+      "sel": "div#content.flex.flex-1",
+      "tag": "div",
+      "top": 0,
+      "height": 6510,
+      "words": 851,
+      "media": 9,
+      "middle": 0,
+      "heading": {
+       "text": "Your creative workspace.",
+       "size": 92,
+       "tag": "h1"
+      },
+      "left": 267,
+      "right": 43,
+      "textLeft": 267,
+      "textRight": 54,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "footer.public-footer",
+      "tag": "footer",
+      "top": 6558,
+      "height": 318,
+      "words": 29,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Reel Finisher",
+       "size": 151,
+       "tag": "p"
+      },
+      "left": 267,
+      "right": 413,
+      "textLeft": 267,
+      "textRight": 413,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Your creative workspace. Without the overhead.",
+      "size": 92,
+      "top": 56,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 267,
+      "n": 13
+     },
+     {
+      "x": 714,
+      "n": 6
+     },
+     {
+      "x": 295,
+      "n": 1
+     },
+     {
+      "x": 354,
+      "n": 1
+     },
+     {
+      "x": 894,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 22,
+    "bodySize": 16,
+    "stage": false,
+    "explains": true,
+    "slivers": [],
+    "voidShare": 0.18,
+    "voidBox": {
+     "x": 780,
+     "y": 120,
+     "w": 660,
+     "h": 360
+    }
+   },
+   "app": null,
+   "consoleErrors": []
+  },
+  {
+   "width": 768,
+   "height": 1024,
+   "load": "load",
+   "screens": 7,
+   "filled": [
+    0.86,
+    0.88,
+    0.98,
+    0.93,
+    0.99,
+    0.94,
+    1
+   ],
+   "motion": {
+    "elements": 36,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 36,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "page": {
+     "height": 6931,
+     "screens": 6.8,
+     "words": 738,
+     "img": 5,
+     "video": 0,
+     "canvas": 0,
+     "svg": 76,
+     "sections": 11,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 2,
+     "uiAbuse": false,
+     "realPictures": 4,
+     "videoCount": 0,
+     "uiPictures": 2,
+     "pictureSamples": [
+      "photo.webp",
+      "video.webp",
+      "audio.webp",
+      "ai.webp"
+     ],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Your creative workspace. Without the overhead.",
+     "words": 6,
+     "chars": 46,
+     "lines": 4,
+     "size": 49.2,
+     "vw": 6.4,
+     "font": "RF Display",
+     "weight": 700,
+     "tracking": -0.035,
+     "leading": 0.98,
+     "upper": false,
+     "italic": false,
+     "mono": false,
+     "align": "left",
+     "position": "left",
+     "widthRatio": 0.57,
+     "top": 120,
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "Your creative workspace. Without the overhead.",
+     "words": 6,
+     "lines": 4,
+     "size": 49.2,
+     "font": "RF Display"
+    },
+    "headings": [
+     {
+      "text": "Your creative workspace. Without the overhead.",
+      "words": 6,
+      "chars": 46,
+      "lines": 4,
+      "size": 49.2,
+      "vw": 6.4,
+      "font": "RF Display",
+      "weight": 700,
+      "tracking": -0.035,
+      "leading": 0.98,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.57,
+      "top": 120,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Every tool, one keystroke away.",
+      "words": 5,
+      "chars": 31,
+      "lines": 1,
+      "size": 32,
+      "vw": 4.2,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.03,
+      "leading": 1.04,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.94,
+      "top": 1187,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "The tools people reach for first",
+      "words": 6,
+      "chars": 32,
+      "lines": 1,
+      "size": 28,
+      "vw": 3.6,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.025,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.46,
+      "top": 2187,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Photo, video, audio and AI",
+      "words": 5,
+      "chars": 26,
+      "lines": 1,
+      "size": 28,
+      "vw": 3.6,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.025,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.39,
+      "top": 3103,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Photos",
+      "words": 1,
+      "chars": 6,
+      "lines": 1,
+      "size": 26,
+      "vw": 3.4,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.02,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.35,
+      "top": 3186,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "Video",
+      "words": 1,
+      "chars": 5,
+      "lines": 1,
+      "size": 26,
+      "vw": 3.4,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.02,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "right",
+      "widthRatio": 0.35,
+      "top": 3186,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "Audio",
+      "words": 1,
+      "chars": 5,
+      "lines": 1,
+      "size": 26,
+      "vw": 3.4,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.02,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.35,
+      "top": 3479,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "AI tools",
+      "words": 2,
+      "chars": 8,
+      "lines": 1,
+      "size": 26,
+      "vw": 3.4,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.02,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "right",
+      "widthRatio": 0.35,
+      "top": 3479,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "AI that runs on your device.",
+      "words": 6,
+      "chars": 28,
+      "lines": 1,
+      "size": 32,
+      "vw": 4.2,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.03,
+      "leading": 1.04,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.94,
+      "top": 3875,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "From a long recording to a finished Short.",
+      "words": 8,
+      "chars": 42,
+      "lines": 1,
+      "size": 32,
+      "vw": 4.2,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.03,
+      "leading": 1.04,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.94,
+      "top": 4507,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Clean the sound",
+      "words": 3,
+      "chars": 15,
+      "lines": 1,
+      "size": 28,
+      "vw": 3.6,
+      "font": "RF Display",
+      "weight": 700,
+      "tracking": -0.02,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.87,
+      "top": 4604,
+      "tag": "strong",
+      "kind": "statement"
+     },
+     {
+      "text": "Find the moment",
+      "words": 3,
+      "chars": 15,
+      "lines": 1,
+      "size": 28,
+      "vw": 3.6,
+      "font": "RF Display",
+      "weight": 700,
+      "tracking": -0.02,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.87,
+      "top": 4740,
+      "tag": "strong",
+      "kind": "statement"
+     },
+     {
+      "text": "Caption and export",
+      "words": 3,
+      "chars": 18,
+      "lines": 1,
+      "size": 28,
+      "vw": 3.6,
+      "font": "RF Display",
+      "weight": 700,
+      "tracking": -0.02,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.87,
+      "top": 4875,
+      "tag": "strong",
+      "kind": "statement"
+     },
+     {
+      "text": "Your files stay yours.",
+      "words": 4,
+      "chars": 22,
+      "lines": 1,
+      "size": 41.5,
+      "vw": 5.4,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.03,
+      "leading": 0.98,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.82,
+      "top": 5117,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "How it works",
+      "words": 3,
+      "chars": 12,
+      "lines": 1,
+      "size": 32,
+      "vw": 4.2,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.03,
+      "leading": 1.04,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.94,
+      "top": 5483,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Questions",
+      "words": 1,
+      "chars": 9,
+      "lines": 1,
+      "size": 32,
+      "vw": 4.2,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.03,
+      "leading": 1.04,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.94,
+      "top": 5813,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Bring a file. Leave with it finished.",
+      "words": 7,
+      "chars": 37,
+      "lines": 2,
+      "size": 46.1,
+      "vw": 6,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.035,
+      "leading": 0.98,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "left",
+      "widthRatio": 0.5,
+      "top": 6371,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Reel Finisher",
+      "words": 2,
+      "chars": 13,
+      "lines": 1,
+      "size": 80.6,
+      "vw": 10.5,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.045,
+      "leading": 0.9,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.94,
+      "top": 6733,
+      "tag": "p",
+      "kind": "statement"
+     }
+    ],
+    "headingSummary": {
+     "count": 18,
+     "maxLines": 4,
+     "over2Lines": 1,
+     "statements": 4,
+     "centered": 0,
+     "medianWords": 3,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "system-ui",
+       "share": 0.9,
+       "mono": false
+      },
+      {
+       "family": "RF Display",
+       "share": 0.1,
+       "mono": false
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      24,
+      26,
+      28,
+      32,
+      42,
+      46,
+      49,
+      81
+     ],
+     "sizeCount": 15,
+     "notLoaded": [],
+     "body": {
+      "font": "system-ui",
+      "size": 16,
+      "leading": 1.55,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 13.4
+     },
+     "measureChars": 73,
+     "max": {
+      "size": 80.6,
+      "vw": 10.5,
+      "font": "RF Display",
+      "text": "Reel Finisher"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0.02,
+     "centerShare": 0.01,
+     "smallText": 0
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#0a0a0a",
+     "bodyBgHsl": {
+      "h": 0,
+      "s": 0,
+      "l": 0.04
+     },
+     "dark": true,
+     "sectionBgs": [
+      {
+       "color": "#08090b",
+       "top": 0,
+       "hsl": {
+        "h": 220,
+        "s": 0.16,
+        "l": 0.04
+       }
+      },
+      {
+       "color": "#0d1015",
+       "top": 538,
+       "hsl": {
+        "h": 218,
+        "s": 0.24,
+        "l": 0.07
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#d3d9e2",
+       "share": 0.53
+      },
+      {
+       "color": "#f5f7fa",
+       "share": 0.23
+      },
+      {
+       "color": "#a0a9b7",
+       "share": 0.15
+      },
+      {
+       "color": "#e3ebff",
+       "share": 0.04
+      },
+      {
+       "color": "#8b95a6",
+       "share": 0.02
+      }
+     ],
+     "button": {
+      "bg": "#121720",
+      "hsl": {
+       "h": 219,
+       "s": 0.28,
+       "l": 0.1
+      },
+      "fg": "#f5f7fa"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 11,
+     "inHero": 4,
+     "radius": 8,
+     "height": 48,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Menu",
+      "Explore tools",
+      "Open Command Center",
+      "Compress sample"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 1,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 0,
+     "hairlineSamples": [],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 17,
+     "boxRadius": 14,
+     "squareMedia": 0,
+     "roundedMedia": 5,
+     "mediaRadius": 12,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 4,
+       "iconTopped": true,
+       "rounded": true,
+       "top": 3162
+      }
+     ]
+    },
+    "heroMedia": [
+     {
+      "type": "img",
+      "ratio": 0.1
+     }
+    ],
+    "nav": {
+     "links": 0,
+     "fixed": true,
+     "height": 0,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "rf display",
+     "__nextjs-geist"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "pageH": 6931,
+    "margins": {
+     "left": 23,
+     "right": 23
+    },
+    "sections": [
+     {
+      "sel": "div#content.flex.flex-1",
+      "tag": "div",
+      "top": 64,
+      "height": 6565,
+      "words": 851,
+      "media": 9,
+      "middle": 0,
+      "heading": {
+       "text": "Your creative workspace.",
+       "size": 49,
+       "tag": "h1"
+      },
+      "left": 23,
+      "right": 23,
+      "textLeft": 23,
+      "textRight": 24,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "footer.public-footer",
+      "tag": "footer",
+      "top": 6677,
+      "height": 254,
+      "words": 29,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Reel Finisher",
+       "size": 81,
+       "tag": "p"
+      },
+      "left": 23,
+      "right": 127,
+      "textLeft": 23,
+      "textRight": 127,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Your creative workspace. Without the overhead.",
+      "size": 49,
+      "top": 120,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 23,
+      "n": 13
+     },
+     {
+      "x": 45,
+      "n": 7
+     },
+     {
+      "x": 69,
+      "n": 2
+     }
+    ],
+    "leftBlocks": 22,
+    "bodySize": 16,
+    "stage": false,
+    "explains": true,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": null,
+   "consoleErrors": []
+  },
+  {
+   "width": 390,
+   "height": 844,
+   "load": "load",
+   "screens": 11,
+   "filled": [
+    0.85,
+    0.92,
+    0.97,
+    1,
+    0.96,
+    0.99,
+    0.95,
+    0.99,
+    0.89,
+    0.99,
+    0.99
+   ],
+   "motion": {
+    "elements": 35,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 35,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "page": {
+     "height": 8863,
+     "screens": 10.5,
+     "words": 733,
+     "img": 5,
+     "video": 0,
+     "canvas": 0,
+     "svg": 76,
+     "sections": 11,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 2,
+     "uiAbuse": false,
+     "realPictures": 4,
+     "videoCount": 0,
+     "uiPictures": 2,
+     "pictureSamples": [
+      "photo-compact.webp",
+      "video-compact.webp",
+      "audio-compact.webp",
+      "ai-compact.webp"
+     ],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Your creative workspace. Without the overhead.",
+     "words": 6,
+     "chars": 46,
+     "lines": 4,
+     "size": 40.6,
+     "vw": 10.4,
+     "font": "RF Display",
+     "weight": 700,
+     "tracking": -0.035,
+     "leading": 0.98,
+     "upper": false,
+     "italic": false,
+     "mono": false,
+     "align": "left",
+     "position": "center",
+     "widthRatio": 0.9,
+     "top": 96,
+     "tag": "h1",
+     "kind": "heading"
+    },
+    "h1": {
+     "text": "Your creative workspace. Without the overhead.",
+     "words": 6,
+     "lines": 4,
+     "size": 40.6,
+     "font": "RF Display"
+    },
+    "headings": [
+     {
+      "text": "Your creative workspace. Without the overhead.",
+      "words": 6,
+      "chars": 46,
+      "lines": 4,
+      "size": 40.6,
+      "vw": 10.4,
+      "font": "RF Display",
+      "weight": 700,
+      "tracking": -0.035,
+      "leading": 0.98,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.9,
+      "top": 96,
+      "tag": "h1",
+      "kind": "heading"
+     },
+     {
+      "text": "Every tool, one keystroke away.",
+      "words": 5,
+      "chars": 31,
+      "lines": 2,
+      "size": 32,
+      "vw": 8.2,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.03,
+      "leading": 1.04,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.9,
+      "top": 1397,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "The tools people reach for first",
+      "words": 6,
+      "chars": 32,
+      "lines": 2,
+      "size": 28,
+      "vw": 7.2,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.025,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.9,
+      "top": 2491,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Image Compressor",
+      "words": 2,
+      "chars": 16,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "RF Display",
+      "weight": 700,
+      "tracking": -0.02,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.7,
+      "top": 2654,
+      "tag": "strong",
+      "kind": "statement"
+     },
+     {
+      "text": "Video Compressor",
+      "words": 2,
+      "chars": 16,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "RF Display",
+      "weight": 700,
+      "tracking": -0.02,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.7,
+      "top": 2833,
+      "tag": "strong",
+      "kind": "statement"
+     },
+     {
+      "text": "Audio Cutter",
+      "words": 2,
+      "chars": 12,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "RF Display",
+      "weight": 700,
+      "tracking": -0.02,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.7,
+      "top": 3011,
+      "tag": "strong",
+      "kind": "statement"
+     },
+     {
+      "text": "Noise Remover",
+      "words": 2,
+      "chars": 13,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "RF Display",
+      "weight": 700,
+      "tracking": -0.02,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.7,
+      "top": 3190,
+      "tag": "strong",
+      "kind": "statement"
+     },
+     {
+      "text": "Text to Speech",
+      "words": 3,
+      "chars": 14,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "RF Display",
+      "weight": 700,
+      "tracking": -0.02,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.7,
+      "top": 3393,
+      "tag": "strong",
+      "kind": "statement"
+     },
+     {
+      "text": "Photo, video, audio and AI",
+      "words": 5,
+      "chars": 26,
+      "lines": 1,
+      "size": 28,
+      "vw": 7.2,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.025,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.78,
+      "top": 3660,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Photos",
+      "words": 1,
+      "chars": 6,
+      "lines": 1,
+      "size": 26,
+      "vw": 6.7,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.02,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.71,
+      "top": 3790,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "Video",
+      "words": 1,
+      "chars": 5,
+      "lines": 1,
+      "size": 26,
+      "vw": 6.7,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.02,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.71,
+      "top": 4127,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "Audio",
+      "words": 1,
+      "chars": 5,
+      "lines": 1,
+      "size": 26,
+      "vw": 6.7,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.02,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.71,
+      "top": 4464,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "AI tools",
+      "words": 2,
+      "chars": 8,
+      "lines": 1,
+      "size": 26,
+      "vw": 6.7,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.02,
+      "leading": 1.2,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.71,
+      "top": 4824,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "AI that runs on your device.",
+      "words": 6,
+      "chars": 28,
+      "lines": 2,
+      "size": 32,
+      "vw": 8.2,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.03,
+      "leading": 1.04,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.9,
+      "top": 5245,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "From a long recording to a finished Short.",
+      "words": 8,
+      "chars": 42,
+      "lines": 2,
+      "size": 32,
+      "vw": 8.2,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.03,
+      "leading": 1.04,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.9,
+      "top": 5922,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Clean the sound",
+      "words": 3,
+      "chars": 15,
+      "lines": 1,
+      "size": 28,
+      "vw": 7.2,
+      "font": "RF Display",
+      "weight": 700,
+      "tracking": -0.02,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.75,
+      "top": 6052,
+      "tag": "strong",
+      "kind": "statement"
+     },
+     {
+      "text": "Find the moment",
+      "words": 3,
+      "chars": 15,
+      "lines": 1,
+      "size": 28,
+      "vw": 7.2,
+      "font": "RF Display",
+      "weight": 700,
+      "tracking": -0.02,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.75,
+      "top": 6212,
+      "tag": "strong",
+      "kind": "statement"
+     },
+     {
+      "text": "Caption and export",
+      "words": 3,
+      "chars": 18,
+      "lines": 1,
+      "size": 28,
+      "vw": 7.2,
+      "font": "RF Display",
+      "weight": 700,
+      "tracking": -0.02,
+      "leading": 1.1,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.75,
+      "top": 6373,
+      "tag": "strong",
+      "kind": "statement"
+     },
+     {
+      "text": "Your files stay yours.",
+      "words": 4,
+      "chars": 22,
+      "lines": 2,
+      "size": 40,
+      "vw": 10.3,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.03,
+      "leading": 0.98,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.77,
+      "top": 6642,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "How it works",
+      "words": 3,
+      "chars": 12,
+      "lines": 1,
+      "size": 32,
+      "vw": 8.2,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.03,
+      "leading": 1.04,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.9,
+      "top": 7108,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Choose a file",
+      "words": 3,
+      "chars": 13,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.02,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.9,
+      "top": 7177,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "Set it up and run",
+      "words": 5,
+      "chars": 17,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.02,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.9,
+      "top": 7313,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "Check it, then download",
+      "words": 4,
+      "chars": 23,
+      "lines": 1,
+      "size": 24,
+      "vw": 6.2,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.02,
+      "leading": 1.15,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.9,
+      "top": 7449,
+      "tag": "h3",
+      "kind": "heading"
+     },
+     {
+      "text": "Questions",
+      "words": 1,
+      "chars": 9,
+      "lines": 1,
+      "size": 32,
+      "vw": 8.2,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.03,
+      "leading": 1.04,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.9,
+      "top": 7649,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Bring a file. Leave with it finished.",
+      "words": 7,
+      "chars": 37,
+      "lines": 2,
+      "size": 40,
+      "vw": 10.3,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.035,
+      "leading": 0.98,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.85,
+      "top": 8234,
+      "tag": "h2",
+      "kind": "heading"
+     },
+     {
+      "text": "Reel Finisher",
+      "words": 2,
+      "chars": 13,
+      "lines": 1,
+      "size": 48,
+      "vw": 12.3,
+      "font": "RF Display",
+      "weight": 400,
+      "tracking": -0.045,
+      "leading": 0.9,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.9,
+      "top": 8628,
+      "tag": "p",
+      "kind": "statement"
+     }
+    ],
+    "headingSummary": {
+     "count": 26,
+     "maxLines": 4,
+     "over2Lines": 1,
+     "statements": 9,
+     "centered": 0,
+     "medianWords": 3,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "system-ui",
+       "share": 0.9,
+       "mono": false
+      },
+      {
+       "family": "RF Display",
+       "share": 0.1,
+       "mono": false
+      }
+     ],
+     "familyCount": 2,
+     "sizes": [
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      24,
+      26,
+      28,
+      32,
+      40,
+      41,
+      48
+     ],
+     "sizeCount": 13,
+     "notLoaded": [],
+     "body": {
+      "font": "system-ui",
+      "size": 16,
+      "leading": 1.55,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 13.4
+     },
+     "measureChars": 44,
+     "max": {
+      "size": 48,
+      "vw": 12.3,
+      "font": "RF Display",
+      "text": "Reel Finisher"
+     },
+     "monoShare": 0,
+     "monoProseShare": 0,
+     "monoFamilies": [],
+     "monoSamples": [],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0.02,
+     "centerShare": 0.01,
+     "smallText": 0
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#0a0a0a",
+     "bodyBgHsl": {
+      "h": 0,
+      "s": 0,
+      "l": 0.04
+     },
+     "dark": true,
+     "sectionBgs": [
+      {
+       "color": "#08090b",
+       "top": 0,
+       "hsl": {
+        "h": 220,
+        "s": 0.16,
+        "l": 0.04
+       }
+      },
+      {
+       "color": "#0d1015",
+       "top": 532,
+       "hsl": {
+        "h": 218,
+        "s": 0.24,
+        "l": 0.07
+       }
+      },
+      {
+       "color": "#121720",
+       "top": 873,
+       "hsl": {
+        "h": 219,
+        "s": 0.28,
+        "l": 0.1
+       }
+      },
+      {
+       "color": "#143c91",
+       "top": 6610,
+       "hsl": {
+        "h": 221,
+        "s": 0.76,
+        "l": 0.32
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#d3d9e2",
+       "share": 0.54
+      },
+      {
+       "color": "#f5f7fa",
+       "share": 0.23
+      },
+      {
+       "color": "#a0a9b7",
+       "share": 0.15
+      },
+      {
+       "color": "#e3ebff",
+       "share": 0.04
+      },
+      {
+       "color": "#8b95a6",
+       "share": 0.02
+      }
+     ],
+     "button": {
+      "bg": "#121720",
+      "hsl": {
+       "h": 219,
+       "s": 0.28,
+       "l": 0.1
+      },
+      "fg": "#f5f7fa"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 11,
+     "inHero": 3,
+     "radius": 8,
+     "height": 48,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Menu",
+      "Explore tools",
+      "Open Command Center"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 1,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 0,
+     "hairlineSamples": [],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 19,
+     "boxRadius": 8,
+     "squareMedia": 0,
+     "roundedMedia": 5,
+     "mediaRadius": 12,
+     "textShadow": 0,
+     "cardRows": [
+      {
+       "count": 4,
+       "iconTopped": true,
+       "rounded": true,
+       "top": 3770
+      }
+     ]
+    },
+    "heroMedia": [
+     {
+      "type": "img",
+      "ratio": 0.2
+     }
+    ],
+    "nav": {
+     "links": 0,
+     "fixed": true,
+     "height": 0,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "rf display",
+     "__nextjs-geist"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "pageH": 8863,
+    "margins": {
+     "left": 20,
+     "right": 20
+    },
+    "sections": [
+     {
+      "sel": "div#content.flex.flex-1",
+      "tag": "div",
+      "top": 64,
+      "height": 8460,
+      "words": 846,
+      "media": 9,
+      "middle": 0,
+      "heading": {
+       "text": "Your creative workspace.",
+       "size": 41,
+       "tag": "h1"
+      },
+      "left": 20,
+      "right": 20,
+      "textLeft": 20,
+      "textRight": 22,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "footer.public-footer",
+      "tag": "footer",
+      "top": 8572,
+      "height": 291,
+      "words": 29,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Reel Finisher",
+       "size": 48,
+       "tag": "p"
+      },
+      "left": 20,
+      "right": 60,
+      "textLeft": 20,
+      "textRight": 60,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Your creative workspace. Without the overhead.",
+      "size": 41,
+      "top": 96,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 20,
+      "n": 13
+     },
+     {
+      "x": 36,
+      "n": 9
+     }
+    ],
+    "leftBlocks": 22,
+    "bodySize": 16,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": null,
+   "consoleErrors": []
+  }
+ ],
+ "findings": [
+  {
+   "level": "FAIL",
+   "id": "headline-lines",
+   "width": 1440,
+   "message": "1 headline(s) wrap past two lines at 1440px: \"Your creative workspace. Without the overhead.\" → 4 lines (6 words, 92.2px)",
+   "fix": "Cut words first (a headline is a title, not a sentence). Then give it a wider measure. Lower the size only as a last resort and never below the scale you chose. A real statement paragraph belongs in a <p> or <blockquote> at 36px or less."
+  },
+  {
+   "level": "FAIL",
+   "id": "icon-cards",
+   "width": 1440,
+   "message": "1 row(s) of identical cards each topped with a small icon (4 cards).",
+   "fix": "Replace with one composed section from the direction: a narrative split, a list set in large type, or real imagery per item.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "size-count",
+   "width": 1440,
+   "message": "18 different font sizes (12, 13, 14, 15, 16, 17, 18, 19, 24, 26, 28, 34, 36, 49, 78, 86, 92, 151).",
+   "fix": "A page needs about five: display, heading, lead, body, small.",
+   "alsoAt": [
+    768,
+    390
+   ]
+  },
+  {
+   "level": "WARN",
+   "id": "no-footage",
+   "width": 1440,
+   "message": "No video anywhere on the page.",
+   "fix": "Look for one honest clip with scripts/assets.mjs --video (the place, the material, the process) and use it as a muted loop with a poster frame. Defend its absence only if no clip fits the subject."
+  },
+  {
+   "level": "WARN",
+   "id": "off-centre",
+   "width": 1440,
+   "message": "The margins differ: 26px on the left, 43px on the right, at 1440px.",
+   "fix": "Put the navigation and the content on one pair of margins; check for padding on one side only, a scrollbar gutter, or a header on another inset than the page."
+  },
+  {
+   "level": "FAIL",
+   "id": "headline-lines",
+   "width": 768,
+   "message": "1 headline(s) wrap past two lines at 768px: \"Your creative workspace. Without the overhead.\" → 4 lines (6 words, 49.2px)",
+   "fix": "Cut words first (a headline is a title, not a sentence). Then give it a wider measure. Lower the size only as a last resort and never below the scale you chose. A real statement paragraph belongs in a <p> or <blockquote> at 32px or less."
+  },
+  {
+   "level": "FAIL",
+   "id": "headline-lines",
+   "width": 390,
+   "message": "1 headline(s) wrap past two lines at 390px: \"Your creative workspace. Without the overhead.\" → 4 lines (6 words, 40.6px)",
+   "fix": "Cut words first (a headline is a title, not a sentence). Then give it a wider measure. Lower the size only as a last resort and never below the scale you chose. A real statement paragraph belongs in a <p> or <blockquote> at 24px or less."
+  }
+ ],
+ "images": [
+  {
+   "viewport": "desktop",
+   "width": 1440,
+   "fold": "C:\\Developer\\AI Native Editor\\.taste-skill\\v2-pass2\\desktop-fold.jpg",
+   "pages": [
+    "C:\\Developer\\AI Native Editor\\.taste-skill\\v2-pass2\\desktop-page-01.jpg",
+    "C:\\Developer\\AI Native Editor\\.taste-skill\\v2-pass2\\desktop-page-02.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "tablet",
+   "width": 768,
+   "fold": "C:\\Developer\\AI Native Editor\\.taste-skill\\v2-pass2\\tablet-fold.jpg",
+   "pages": [
+    "C:\\Developer\\AI Native Editor\\.taste-skill\\v2-pass2\\tablet-page-01.jpg",
+    "C:\\Developer\\AI Native Editor\\.taste-skill\\v2-pass2\\tablet-page-02.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "mobile",
+   "width": 390,
+   "fold": "C:\\Developer\\AI Native Editor\\.taste-skill\\v2-pass2\\mobile-fold.jpg",
+   "pages": [
+    "C:\\Developer\\AI Native Editor\\.taste-skill\\v2-pass2\\mobile-page-01.jpg",
+    "C:\\Developer\\AI Native Editor\\.taste-skill\\v2-pass2\\mobile-page-02.jpg"
+   ],
+   "film": []
+  }
+ ]
+}

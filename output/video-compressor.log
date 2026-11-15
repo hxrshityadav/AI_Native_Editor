@@ -1,0 +1,40 @@
+BROWSER 156.0.8078.74
+PASS  import: drop probes actual dimensions, duration, codecs and size
+PASS  preview: actual input plays and pauses
+PASS  estimate: before processing it is explicitly not measured
+PASS  export: actual MP4/H.264/AAC container, MIME and extension agree
+PASS  resolution: 480p fits within even pixel bounds and preserves picture aspect
+PASS  export: every encoded frame and audio sample decodes
+PASS  size: reduction and measured bytes correspond to the actual file
+PASS  sync: decoded A/V end times remain aligned
+PASS  sync: actual flash/beep content stays synchronized  (audio 1.000s / picture 1.000s)
+PASS  playback: independently downloaded output plays to its end
+PASS  settings: mute invalidates the old download
+PASS  mute: explicit mute really removes the audio track
+PASS  target: impossible size is reported using measured output
+PASS  fallback: actual WebM/VP9/Opus export preserves audio and decodes
+PASS  orientation: rotated source is baked upright with portrait aspect
+PASS  VFR: output retains duration, avoids upscaling and normalizes frame cadence
+PASS  import: silent WebM is accepted without fabricated audio
+PASS  import: actual MOV container is recognized
+PASS  resources: process-another clears media URLs and downloads
+PASS  validation: empty.mp4 rejected with recovery
+PASS  validation: corrupt.mp4 rejected with recovery
+PASS  validation: mislabeled.webm rejected with recovery
+PASS  validation: audio.mp4 rejected with recovery
+PASS  duration: actual 601-second file is rejected
+PASS  codec: unsupported encoded picture is not accepted from extension alone
+PASS  cancellation: worker stops without a stale download
+PASS  retry: compression succeeds after cancellation
+PASS  replacement: latest input wins without stale output
+PASS  capability: absent encoders block export with a reason
+PASS  audio: unavailable encoder never silently mutes
+PASS  audio: explicit mute is a working recovery
+PASS  failure: encoder errors release the job without a false successful download
+PASS  mobile: controls fit the viewport
+PASS  unmount: all media object URLs are released
+PASS  SEO: title, instructions and FAQ are rendered server-side
+PASS  privacy: all processing requests are local GET/HEAD
+PASS  isolation: standalone tool never loads editor or model assets
+
+37/37 checks passed

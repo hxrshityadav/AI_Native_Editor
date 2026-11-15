@@ -1,0 +1,14 @@
+▲ Next.js 16.4.3 (webpack)
+- Environments: .env.local
+✓ Running next.config.ts took 37ms
+- Cache Components enabled
+- Partial Prefetching enabled
+
+  Creating an optimized production build ...
+uncaughtException TypeError: Cannot read properties of undefined (reading 'length')
+    at WasmHash._updateWithBuffer (C:\Developer\AI Native Editor\node_modules\next\dist\compiled\webpack\bundle5.js:29:1435171)
+    at WasmHash.update (C:\Developer\AI Native Editor\node_modules\next\dist\compiled\webpack\bundle5.js:29:1434506)
+    at BatchedHash.update (C:\Developer\AI Native Editor\node_modules\next\dist\compiled\webpack\bundle5.js:29:1430867)
+    at <unknown> (C:\Developer\AI Native Editor\node_modules\next\dist\compiled\webpack\bundle5.js:29:303529)
+    at processQueue (C:\Developer\AI Native Editor\node_modules\next\dist\compiled\webpack\bundle5.js:29:1448866)
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
