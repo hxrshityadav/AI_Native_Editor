@@ -58,7 +58,7 @@ export function GifMaker() {
   return <section aria-label="Video to GIF workspace" className={styles.root}>
     <ToolSurface onFiles={files => void load(files)}
       file={<FileDetails name={file.name} factsLabel="Original details" onStartOver={clear}
-        thumb={<span className={`${styles.thumb} grid place-items-center text-brand`} aria-hidden><ImagePlay size={20} /></span>}
+        thumb={<span className={`${styles.thumb} grid place-items-center text-subtle`} aria-hidden><ImagePlay size={20} /></span>}
         picker={<FilePicker label="Replace file" inputLabel="Choose file" accept={ACCEPT} onFiles={files => void load(files)} />}
         facts={<><span>{info.duration.toFixed(1)} s</span><span>{info.video!.width} × {info.video!.height}</span><span>{shortSize(file.size)}</span></>} />}
       stage={<Stage plain busy={!!busy} processing={<ProcessingPanel title="Creating GIF" status={busy} progress={progress} onCancel={cancel} />}>

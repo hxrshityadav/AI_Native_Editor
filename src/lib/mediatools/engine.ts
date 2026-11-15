@@ -9,7 +9,9 @@ import { BoundedVideoBytes } from "../videos/bounded-target";
  * uploaded. Every output is re-probed before it is offered for download.
  */
 
-export const MEDIA_LIMITS = { inputBytes: 512 * 1024 * 1024, outputBytes: 512 * 1024 * 1024, peaks: 800 } as const;
+export const MEDIA_LIMITS = { inputBytes: 512 * 1024 * 1024, outputBytes: 512 * 1024 * 1024, peaks: 800, maxPeaks: 30000 } as const;
+/** A peaks request may cover a window of the file; only that window is decoded. */
+export type PeakWindow = { start?: number; end?: number; buckets?: number };
 const VIDEO_MIMES = ["video/mp4", "video/quicktime", "video/webm", "video/x-matroska"];
 const AUDIO_MIMES = ["audio/mpeg", "audio/wav", "audio/x-wav", "audio/ogg", "audio/flac", "audio/aac", "audio/mp4", "audio/webm"];
 
@@ -18,23 +20,26 @@ export type MediaInfo = {
   video: { width: number; height: number; codec: string; rotation: number } | null;
   audio: { codec: string; channels: number; sampleRate: number } | null;
 };
-export type AudioFormat = "m4a" | "wav" | "ogg";
+/** `m4r` is AAC in MP4 with the iPhone ringtone extension; it is offered only by the Audio Cutter and limited to 40 s. */
+export type AudioFormat = "m4a" | "m4r" | "wav" | "ogg";
+export const RINGTONE_MAX_SECONDS = 40;
 export type AudioEdit = { start?: number; end?: number; fadeIn?: number; fadeOut?: number; gainDb?: number; normalize?: boolean };
 export type MediaOperation =
   | { kind: "trim"; start: number; end: number; mode: "fast" | "precise" }
   | { kind: "mute" }
   | { kind: "mp4" }
   | { kind: "audio"; format: AudioFormat; bitrate?: number; edit?: AudioEdit };
-export type MediaRequest = { kind: "inspect"; file: File; expect: "video" | "audio" | "any" } | { kind: "peaks"; file: File } | { kind: "process"; file: File; operation: MediaOperation } | { kind: "gif"; file: File; options: import("./gif").GifOptions } | { kind: "audiovideo"; file: File; options: import("./audiovideo").AudioVideoOptions };
+export type MediaRequest = { kind: "inspect"; file: File; expect: "video" | "audio" | "any" } | { kind: "peaks"; file: File; window?: PeakWindow } | { kind: "process"; file: File; operation: MediaOperation } | { kind: "gif"; file: File; options: import("./gif").GifOptions } | { kind: "audiovideo"; file: File; options: import("./audiovideo").AudioVideoOptions } | { kind: "mix"; file: File; music: File; options: import("./mixer").MixOptions } | { kind: "burn"; file: File; options: import("../subtitles/burn").BurnOptions };
 export type MediaResult = { blob: Blob; info: MediaInfo; copied: boolean; clipped?: number; appliedGainDb?: number };
-export type Peaks = { peaks: number[]; duration: number; peak: number };
+export type Peaks = { peaks: number[]; duration: number; peak: number; start: number; end: number };
 
 const AUDIO_OUTPUT: Record<AudioFormat, { codec: "aac" | "pcm-s16" | "opus"; mime: string; make: () => OutputFormat }> = {
   m4a: { codec: "aac", mime: "audio/mp4", make: () => new Mp4OutputFormat({ fastStart: false }) },
+  m4r: { codec: "aac", mime: "audio/mp4", make: () => new Mp4OutputFormat({ fastStart: "in-memory" }) },
   wav: { codec: "pcm-s16", mime: "audio/wav", make: () => new WavOutputFormat() },
   ogg: { codec: "opus", mime: "audio/ogg", make: () => new OggOutputFormat() },
 };
-export const audioExtension = (format: AudioFormat) => ({ m4a: "m4a", wav: "wav", ogg: "ogg" }[format]);
+export const audioExtension = (format: AudioFormat) => ({ m4a: "m4a", m4r: "m4r", wav: "wav", ogg: "ogg" }[format]);
 const videoContainer = (mime: string) => mime.startsWith("video/webm") ? { mime: "video/webm", ext: "webm", make: () => new WebMOutputFormat() }
   : mime.startsWith("video/x-matroska") ? { mime: "video/x-matroska", ext: "mkv", make: () => new MkvOutputFormat() }
   : { mime: "video/mp4", ext: "mp4", make: () => new Mp4OutputFormat({ fastStart: false }) };
@@ -61,27 +66,34 @@ export async function inspectMedia(file: Blob, expect: "video" | "audio" | "any"
   };
 }
 
-/** Real waveform data: the peak level of evenly spaced slices of the decoded audio. */
-export async function audioPeaks(file: File, signal?: AbortSignal): Promise<Peaks> {
+/**
+ * Real waveform data: the peak level of evenly spaced slices of the decoded audio. With a window, only that time range
+ * is decoded, so zooming in on a long file does not decode the whole file again.
+ */
+export async function audioPeaks(file: File, signal?: AbortSignal, window: PeakWindow = {}): Promise<Peaks> {
   const input = new Input({ source: new BlobSource(file, { maxCacheSize: 8 * 1024 * 1024 }), formats: ALL_FORMATS });
   try {
     const track = await input.getPrimaryAudioTrack();
     if (!track || !(await track.canDecode())) throw new Error("The audio could not be decoded in this browser.");
-    const duration = await input.computeDuration(), buckets = new Array<number>(MEDIA_LIMITS.peaks).fill(0);
+    const duration = await input.computeDuration();
+    const start = Math.max(0, Math.min(window.start ?? 0, duration)), end = Math.max(start, Math.min(window.end ?? duration, duration)), span = end - start;
+    if (!(span > 0)) throw new Error("Choose a waveform range inside the audio.");
+    const count = Math.max(1, Math.min(MEDIA_LIMITS.maxPeaks, Math.round(window.buckets ?? MEDIA_LIMITS.peaks))), buckets = new Array<number>(count).fill(0);
     let peak = 0;
-    for await (const sample of new AudioSampleSink(track).samples()) {
+    for await (const sample of new AudioSampleSink(track).samples(start, end)) {
       abortIfNeeded(signal);
       const frames = sample.numberOfFrames, plane = new Float32Array(frames);
       for (let channel = 0; channel < sample.numberOfChannels; channel++) {
         sample.copyTo(plane, { planeIndex: channel, format: "f32-planar" });
         for (let i = 0; i < frames; i++) {
-          const value = Math.abs(plane[i]), index = Math.min(buckets.length - 1, Math.floor((sample.timestamp + i / sample.sampleRate) / duration * buckets.length));
+          const t = sample.timestamp + i / sample.sampleRate; if (t < start || t >= end) continue;
+          const value = Math.abs(plane[i]), index = Math.min(buckets.length - 1, Math.floor((t - start) / span * buckets.length));
           if (value > buckets[index]) buckets[index] = value; if (value > peak) peak = value;
         }
       }
       sample.close();
     }
-    return { peaks: buckets.map(value => Math.round(value * 1000) / 1000), duration, peak };
+    return { peaks: buckets.map(value => Math.round(value * 1000) / 1000), duration, peak, start, end };
   } finally { input.dispose(); }
 }
 
@@ -153,8 +165,9 @@ export async function processMedia(file: File, operation: MediaOperation, progre
     } else {
       const edit = operation.edit ?? {}, start = edit.start ?? 0, end = edit.end ?? info.duration;
       if (!(start >= 0 && end > start + 0.05 && end <= info.duration + 0.01)) throw new Error("Choose a start before the end, inside the audio.");
+      if (operation.format === "m4r" && end - start > RINGTONE_MAX_SECONDS + 0.05) throw new Error(`iPhone ringtones can be at most ${RINGTONE_MAX_SECONDS} seconds. Shorten the selection, or choose M4A for a longer clip.`);
       if (edit.gainDb !== undefined && !(edit.gainDb >= -24 && edit.gainDb <= 24)) throw new Error("Choose a volume change between -24 dB and +24 dB.");
-      if (audioOut!.codec !== "pcm-s16" && !await canEncodeAudio(audioOut!.codec, { numberOfChannels: Math.min(2, info.audio!.channels), sampleRate: 48000 })) throw new Error(`This browser cannot encode ${operation.format === "m4a" ? "AAC (M4A)" : "Opus (Ogg)"} audio. Choose WAV, or try Chrome or Edge.`);
+      if (audioOut!.codec !== "pcm-s16" && !await canEncodeAudio(audioOut!.codec, { numberOfChannels: Math.min(2, info.audio!.channels), sampleRate: 48000 })) throw new Error(`This browser cannot encode ${operation.format === "m4a" || operation.format === "m4r" ? "AAC (M4A)" : "Opus (Ogg)"} audio. Choose WAV, or try Chrome or Edge.`);
       let gain = dbToGain(edit.gainDb ?? 0);
       if (edit.normalize) {
         phase("Measuring the loudest peak");

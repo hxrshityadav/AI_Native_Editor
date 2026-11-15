@@ -1,9 +1,11 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AudioLines, AudioWaveform, FileAudio, FileVideo, Scissors, Volume2, VolumeX, type LucideIcon } from "lucide-react";
-import type { AudioFormat, MediaInfo, MediaOperation, MediaResult, Peaks } from "@/lib/mediatools/engine";
+import { RINGTONE_MAX_SECONDS, type AudioFormat, type MediaInfo, type MediaOperation, type MediaResult, type Peaks } from "@/lib/mediatools/engine";
 import { runMediaTask } from "@/lib/mediatools/client";
 import { useBlobUrl } from "../tools/useBlobUrl";
+import { ZoomWaveform } from "./ZoomWaveform";
+import { MEDIA_LIMITS } from "@/lib/mediatools/engine";
 import { ControlGroup, DetailsTable, FileDetails, FileDropzone, FilePicker, InlineMessage, PrimaryButton, ProcessingPanel, ResultPanel, SegmentedChoice, Stage, ToolControls, ToolSurface, shortSize, styles, useResultView, type Row } from "../tools/surface/ToolSurface";
 
 /*
@@ -25,19 +27,11 @@ const CONFIG: Record<MediaToolId, Config> = {
   volume: { name: "Increase Volume", icon: Volume2, expect: "audio", drop: "Drop an audio file here", accept: AUDIO_ACCEPT, facts: "Audio, or a video's soundtrack", action: "Change volume", busyTitle: "Processing audio", resultTitle: "Adjusted", download: "Download audio" },
 };
 const FORMATS: { value: AudioFormat; label: string }[] = [{ value: "m4a", label: "M4A (AAC)" }, { value: "wav", label: "WAV" }, { value: "ogg", label: "Ogg (Opus)" }];
-const FORMAT_HINT: Record<AudioFormat, string> = { m4a: "Small and widely playable, including on iPhone.", wav: "Uncompressed and lossless. Large files; plays everywhere.", ogg: "Small Opus audio. Not supported by some older Apple apps." };
+const CUTTER_FORMATS: { value: AudioFormat; label: string }[] = [...FORMATS.slice(0, 1), { value: "m4r", label: "M4R ringtone" }, ...FORMATS.slice(1)];
+const FORMAT_HINT: Record<AudioFormat, string> = { m4a: "Small and widely playable, including on iPhone.", m4r: `AAC with the .m4r extension iPhone uses for ringtones. Up to ${RINGTONE_MAX_SECONDS} seconds; add it to the iPhone with Finder, iTunes or GarageBand.`, wav: "Uncompressed and lossless. Large files; plays everywhere.", ogg: "Small Opus audio. Not supported by some older Apple apps." };
 const time = (seconds: number) => `${Math.floor(seconds / 60)}:${(seconds % 60).toFixed(1).padStart(4, "0")}`;
 const baseName = (name: string) => name.replace(/\.[^.]+$/, "").replace(/[<>:"/\\|?*\u0000-\u001f]/g, "_").slice(0, 100) || "media";
 const SUFFIX: Record<MediaToolId, string> = { trim: "trimmed", mute: "muted", mp4: "converted", extract: "audio", "audio-convert": "converted", cutter: "cut", volume: "louder" };
-
-/** Real waveform from decoded peaks, with the selected range highlighted. */
-function Waveform({ peaks, start, end, duration }: { peaks: number[]; start: number; end: number; duration: number }) {
-  const max = Math.max(0.01, ...peaks);
-  return <svg aria-hidden viewBox={`0 0 ${peaks.length} 100`} preserveAspectRatio="none" className="h-24 w-full">
-    <rect x={start / duration * peaks.length} y={0} width={(end - start) / duration * peaks.length} height={100} fill="var(--brand-soft)" />
-    {peaks.map((value, index) => { const t = index / peaks.length * duration, h = Math.max(1, value / max * 92); return <rect key={index} x={index} y={50 - h / 2} width={0.8} height={h} fill={t >= start && t <= end ? "var(--brand)" : "var(--edge-strong)"} />; })}
-  </svg>;
-}
 
 export function RangeControls({ duration, start, end, onChange, media, disabled }: { duration: number; start: number; end: number; onChange: (start: number, end: number) => void; media: React.RefObject<HTMLMediaElement | null>; disabled: boolean }) {
   const set = (nextStart: number, nextEnd: number) => onChange(Math.max(0, Math.min(nextStart, duration)), Math.max(0, Math.min(nextEnd, duration)));
@@ -79,7 +73,7 @@ export function MediaTool({ tool }: { tool: MediaToolId }) {
       if (controller.signal.aborted) return;
       if (tool !== "extract" && config.expect === "video" && !inspected.video) throw new Error("This file has no video track. Choose a video.");
       setFile(selected); setInfo(inspected); setStart(0); setEnd(inspected.duration);
-      if (tool === "cutter") { setBusy("Drawing the waveform…"); const wave = await runMediaTask({ kind: "peaks", file: selected }, controller.signal); if (!controller.signal.aborted) setPeaks(wave); }
+      if (tool === "cutter") { setBusy("Drawing the waveform…"); const wave = await runMediaTask({ kind: "peaks", file: selected, window: { buckets: Math.min(MEDIA_LIMITS.maxPeaks, Math.max(MEDIA_LIMITS.peaks, Math.round(inspected.duration * 50))) } }, controller.signal); if (!controller.signal.aborted) setPeaks(wave); }
     } catch (failure) { if (!controller.signal.aborted) setError(failure instanceof Error ? failure.message : "This file could not be read."); }
     finally { if (active.current === controller) { active.current = null; setBusy(""); } }
   }
@@ -107,18 +101,21 @@ export function MediaTool({ tool }: { tool: MediaToolId }) {
     {error && <InlineMessage role="alert" tone="error">{error}</InlineMessage>}
   </section>;
 
+  const ringtoneTooLong = tool === "cutter" && format === "m4r" && end - start > RINGTONE_MAX_SECONDS + 0.05;
+  /** Ringtone preset: 30 s from the current start (or the whole file if shorter), short fades, M4R. */
+  const ringtone = () => { const s = Math.min(start, Math.max(0, info.duration - 30)); setStart(s); setEnd(Math.min(info.duration, s + 30)); setFadeIn(0.5); setFadeOut(1.5); setFormat("m4r"); changed(); };
   const isVideoTool = tool === "trim" || tool === "mute" || tool === "mp4";
   const facts = (value: MediaInfo): Row[] => [["Container", value.mime], ["Duration", `${value.duration.toFixed(2)} s`], ["Size", shortSize(value.size)],
     ...(value.video ? [["Video", `${value.video.codec.toUpperCase()}, ${value.video.width} × ${value.video.height}`] as Row] : []),
     ["Audio", value.audio ? `${value.audio.codec.toUpperCase()}, ${value.audio.channels === 1 ? "mono" : `${value.audio.channels} ch`}, ${(value.audio.sampleRate / 1000).toFixed(1)} kHz` : "None"]];
   const mp4Copy = tool === "mp4" && info.video?.codec === "avc" && (!info.audio || info.audio.codec === "aac");
-  const extension = result ? (result.info.mime === "audio/mp4" ? "m4a" : result.info.mime === "audio/wav" ? "wav" : result.info.mime === "audio/ogg" ? "ogg" : result.info.mime === "video/webm" ? "webm" : result.info.mime === "video/x-matroska" ? "mkv" : "mp4") : "";
+  const extension = result ? (result.info.mime === "audio/mp4" ? (operation.kind === "audio" && operation.format === "m4r" ? "m4r" : "m4a") : result.info.mime === "audio/wav" ? "wav" : result.info.mime === "audio/ogg" ? "ogg" : result.info.mime === "video/webm" ? "webm" : result.info.mime === "video/x-matroska" ? "mkv" : "mp4") : "";
   const player = (src: string, label: string) => isVideoTool ? <video key={src} ref={media as React.RefObject<HTMLVideoElement>} src={src} controls playsInline preload="metadata" aria-label={label} /> : <audio key={src} ref={media as React.RefObject<HTMLAudioElement>} src={src} controls preload="metadata" aria-label={label} className="w-full" />;
 
   return <section aria-label={`${config.name} workspace`} className={styles.root}>
     <ToolSurface onFiles={files => void load(files)}
       file={<FileDetails name={file.name} factsLabel="Original details" onStartOver={clear}
-        thumb={<span className={`${styles.thumb} grid place-items-center text-brand`} aria-hidden><config.icon size={20} /></span>}
+        thumb={<span className={`${styles.thumb} grid place-items-center text-subtle`} aria-hidden><config.icon size={20} /></span>}
         picker={<FilePicker label="Replace file" inputLabel="Choose file" accept={config.accept} onFiles={files => void load(files)} />}
         facts={<><span>{time(info.duration)}</span>{info.video && <span>{info.video.width} × {info.video.height}</span>}<span>{shortSize(file.size)}<span className="sr-only"> ({file.size.toLocaleString()} bytes)</span></span><span>{info.mime}</span></>} />}
       stage={<Stage plain busy={!!busy} processing={<ProcessingPanel title={config.busyTitle} status={busy} progress={progress} onCancel={cancel} />}>
@@ -128,7 +125,7 @@ export function MediaTool({ tool }: { tool: MediaToolId }) {
             <figure className="flex flex-col gap-2"><span className={styles.note}>{config.resultTitle}</span>{isVideoTool ? <video src={outputUrl} controls playsInline preload="metadata" aria-label="Result preview" /> : <audio src={outputUrl} controls preload="metadata" aria-label="Result preview" className="w-full" />}</figure>
           </div> : <>
             {sourceUrl && player(sourceUrl, "Original preview")}
-            {peaks && <Waveform peaks={peaks.peaks} start={start} end={end} duration={peaks.duration} />}
+            {peaks && file && <ZoomWaveform key={`${file.name}-${file.size}-${file.lastModified}`} file={file} fine={peaks} start={start} end={end} media={media} disabled={!!busy} onChange={(nextStart, nextEnd) => { setStart(nextStart); setEnd(nextEnd); changed(); }} />}
           </>}
         </div>
       </Stage>}
@@ -145,7 +142,8 @@ export function MediaTool({ tool }: { tool: MediaToolId }) {
         : <ToolControls title={`${config.name} settings`} controlsRef={view.controls} action={<>
           {notice && <InlineMessage role="status">{notice}</InlineMessage>}
           {error && <InlineMessage role="alert" tone="error">{error}</InlineMessage>}
-          <PrimaryButton label={config.action} busyLabel={`${config.busyTitle}…`} busy={!!busy} disabled={(tool === "mute" && !info.audio) || (config.expect === "audio" && !info.audio)} onClick={() => void run()} />
+          {ringtoneTooLong && <InlineMessage role="note" tone="warn">The selection is {time(end - start)}. iPhone ringtones can be at most {RINGTONE_MAX_SECONDS} seconds; shorten it or choose M4A.</InlineMessage>}
+          <PrimaryButton label={config.action} busyLabel={`${config.busyTitle}…`} busy={!!busy} disabled={(tool === "mute" && !info.audio) || (config.expect === "audio" && !info.audio) || ringtoneTooLong} onClick={() => void run()} />
           {view.adjusting && <button type="button" className={`${styles.secondary} ${styles.ghost}`} onClick={view.showLatest}>Back to result</button>}
         </>}>
           {(tool === "trim" || tool === "cutter") && <RangeControls duration={info.duration} start={start} end={end} media={media} disabled={!!busy} onChange={(nextStart, nextEnd) => { setStart(nextStart); setEnd(nextEnd); changed(); }} />}
@@ -165,7 +163,8 @@ export function MediaTool({ tool }: { tool: MediaToolId }) {
             <label>Fade in (s)<input className={styles.field} aria-label="Fade in seconds" type="number" min={0} max={10} step={0.1} value={fadeIn} disabled={!!busy} onChange={event => { setFadeIn(Math.max(0, Math.min(10, Number(event.target.value)))); changed(); }} /></label>
             <label>Fade out (s)<input className={styles.field} aria-label="Fade out seconds" type="number" min={0} max={10} step={0.1} value={fadeOut} disabled={!!busy} onChange={event => { setFadeOut(Math.max(0, Math.min(10, Number(event.target.value)))); changed(); }} /></label>
           </div>}
-          {config.expect === "audio" && <SegmentedChoice legend="Output format" name="audio-format" options={FORMATS} value={format} disabled={!!busy} onChange={value => { setFormat(value); changed(); }} hint={FORMAT_HINT[format]} />}
+          {tool === "cutter" && <div className={styles.group}><button type="button" className={styles.secondary} disabled={!!busy} onClick={ringtone}>Ringtone preset: 30 s, M4R</button><span className={styles.help}>Selects 30 seconds from the start point, adds short fades and chooses M4R. Adjust the range afterwards.</span></div>}
+          {config.expect === "audio" && <SegmentedChoice legend="Output format" name="audio-format" options={tool === "cutter" ? CUTTER_FORMATS : FORMATS} value={format} disabled={!!busy} onChange={value => { setFormat(value); changed(); }} hint={FORMAT_HINT[format]} />}
           {config.expect === "audio" && <p className={styles.help}>MP3 output is not offered: browsers have no MP3 encoder. MP3 files can be opened and converted to M4A, WAV or Ogg.</p>}
         </ToolControls>} />
   </section>;

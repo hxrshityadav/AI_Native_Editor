@@ -7,7 +7,7 @@ import { ROOT, startServer, stopServer, createChecks, probe, streams } from "./h
 const OUT = join(ROOT, process.env.PHOTO_TEST_DIR || "output/launch-photos"), PORT = Number(process.env.PHOTO_TEST_PORT || 3150), BASE = `http://localhost:${PORT}`;
 mkdirSync(OUT, { recursive: true });
 const { check, finish } = createChecks();
-const server = await startServer(PORT, { env: { REEL_ENABLE_CLOUD: "" } });
+const server = await startServer(PORT);
 const browser = process.env.PHOTO_BROWSER === "firefox" ? await firefox.launch({ executablePath: join(ROOT, "output/firefox-test/firefox/firefox.exe") }) : await chromium.launch({ channel: "chrome" });
 const context = await browser.newContext({ viewport: { width: 1280, height: 1000 }, acceptDownloads: true });
 const requests = []; context.on("request", req => requests.push({ url: req.url(), method: req.method() }));

@@ -1,0 +1,33 @@
+
+> reel-finisher@0.1.0 check
+> npm run typecheck && npm run lint && npm run test
+
+
+> reel-finisher@0.1.0 typecheck
+> next typegen && tsc --noEmit
+
+Generating route types...
+✓ Types generated successfully
+
+> reel-finisher@0.1.0 lint
+> eslint
+
+
+C:\Developer\AI Native Editor\tests\e2e\capsule-navigation.e2e.mjs
+  52:11  warning  'toggle' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+✖ 1 problem (0 errors, 1 warning)
+
+
+> reel-finisher@0.1.0 test
+> vitest run
+
+
+ RUN  v5.0.5 C:/Developer/AI Native Editor
+
+
+ Test Files  14 passed (14)
+      Tests  84 passed (84)
+   Start at  14:42:15
+   Duration  871ms (tests 46%, import 32%, transform 13%, worker 9%)
+

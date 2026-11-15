@@ -2,8 +2,8 @@ import { cpSync, mkdirSync, realpathSync, readFileSync, writeFileSync, existsSyn
 import { createRequire } from "node:module";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-const root=resolve(dirname(fileURLToPath(import.meta.url)),".."),vendor=join(root,"vendor/openreel/apps/web/node_modules");
-const viteRequire=createRequire(realpathSync(join(vendor,"vite/package.json"))),{build,transform}=viteRequire("esbuild");
+const root=resolve(dirname(fileURLToPath(import.meta.url)),".."),vendor=join(root,"tools/transformers/node_modules");
+const buildRequire=createRequire(join(vendor,"..","package.json")),{build,transform}=buildRequire("esbuild");
 const transformer=dirname(realpathSync(join(vendor,"@huggingface/transformers/package.json"))),output=join(root,"public/local-ai");mkdirSync(output,{recursive:true});
 const pdfPackage=join(root,"tools/pdf/node_modules/pdfjs-dist"),pdfOutput=join(root,"public/pdfjs/6.5.438");
 mkdirSync(join(pdfOutput,"standard_fonts"),{recursive:true});
@@ -27,7 +27,7 @@ const transformerRequire=createRequire(join(transformer,"package.json")),runtime
 const ortVersion=JSON.parse(readFileSync(join(dirname(runtime),"package.json"),"utf8")).version;
 if(ortVersion!=="1.22.0-dev.20250409-89f8206ba4")throw new Error("Review and update the pinned local AI runtime's matching third-party notices before changing ONNX Runtime.");
 for(const file of ["ort-wasm-simd-threaded.jsep.wasm","ort-wasm-simd-threaded.jsep.mjs"])cpSync(join(runtime,file),join(output,file));
-cpSync(join(transformer,"LICENSE"),join(output,"TRANSFORMERS-LICENSE.txt"));cpSync(join(root,"vendor/openreel/licenses/ONNXRUNTIME-LICENSE.txt"),join(output,"ONNXRUNTIME-LICENSE.txt"));
+cpSync(join(transformer,"LICENSE"),join(output,"TRANSFORMERS-LICENSE.txt"));cpSync(join(root,"tools/local-ai/ONNXRUNTIME-LICENSE.txt"),join(output,"ONNXRUNTIME-LICENSE.txt"));
 cpSync(join(root,"tools/local-ai/SPEECHT5-LICENSE.txt"),join(output,"SPEECHT5-LICENSE.txt"));
 for(const file of ["ONNXRUNTIME-ThirdPartyNotices.txt","CMU-ARCTIC-COPYING.txt","CMU-XVECTOR-README.md"])cpSync(join(root,"tools/local-ai",file),join(output,file));
 writeFileSync(join(output,"SPEAKER-NOTICE.txt"),"The unchanged generic vector is cmu_us_slt_arctic-wav-arctic_a0508, row 7306 of Matthijs/cmu-arctic-xvectors (MIT dataset declaration), revision 5c1297a9eb6c91714ea77c0d4ac5aca9b6a952e5. The dataset's unmodified README/provenance is beside this notice. It was derived from the CMU US SLT ARCTIC corpus; Carnegie Mellon University copyright (c) 2003 and permissive commercial-use terms are retained in CMU-ARCTIC-COPYING.txt. Transformation: X-vector extraction using SpeechBrain, as documented by the dataset publisher; the vector is not modified by Reel Finisher. Its 512 float32 values hash to SHA-256 7384027325428d6eda21f47213572541443f5864044295a2e5c07fbaaf372bb3, byte-for-byte identical to the pre-existing Transformers.js example at Xenova/transformers.js-docs revision 542437c29cc5273cfd29e25c77696f2b349badd7. No user voice is cloned and no endorsement is implied.\nSources: https://huggingface.co/datasets/Matthijs/cmu-arctic-xvectors/tree/5c1297a9eb6c91714ea77c0d4ac5aca9b6a952e5 ; http://festvox.org/cmu_arctic/cmu_arctic/cmu_us_slt_arctic/COPYING\n");

@@ -28,7 +28,7 @@ export async function inspectVideo(file: File | Blob, declaredType = file.type, 
   try {
     const video = await input.getPrimaryVideoTrack(), videos = await input.getVideoTracks(), audios = await input.getAudioTracks();
     if (!video) throw new Error("No readable video track. Choose another file.");
-    if (videos.length !== 1 || audios.length > 1) throw new Error("Use a file with one video and at most one audio track. Mix multiple recorded streams in the studio first.");
+    if (videos.length !== 1 || audios.length > 1) throw new Error("Use a file with one video and at most one audio track. Mix multiple recorded streams in a video editor first.");
     const stats = await video.computePacketStats(100);
     info.frameRate = Number.isFinite(stats.averagePacketRate) && stats.averagePacketRate > 0 ? stats.averagePacketRate : 30;
     const sink = new VideoSampleSink(video);

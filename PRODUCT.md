@@ -8,7 +8,7 @@ web
 
 ## Users
 
-Casual users and creators preparing photos, short videos, audio, captions and learning materials. Standalone tools serve a focused task; Reel Studio serves timeline editing.
+Casual users and creators preparing photos, short videos, audio, subtitles and learning materials. Each tool serves one focused task.
 
 ## Product Purpose
 
@@ -20,23 +20,23 @@ A free-first, local-first media toolkit. Core tools process user media in the br
 
 ## Operating Context
 
-Next.js and TypeScript public website, shared standalone tool surfaces and workers, and a separate pinned OpenReel browser editor. Source availability is maintained in `src/lib/tools/catalog.ts`; limitations and evidence are documented in `docs/tools-matrix.md` and `docs/production-readiness-report.md`.
+Next.js and TypeScript public website with shared tool surfaces and workers. Reel Studio (the OpenReel timeline editor), Studio Legacy, Lab and Shorts Maker were removed on 8 November 2026. Source availability is maintained in `src/lib/tools/catalog.ts`; limitations and evidence are documented in `docs/tools-matrix.md` and `docs/production-readiness-report.md`.
 
 The November 6 Reel Finisher 2.0 brief adds a Command Center for tool discovery,
 favorites and local route-only recent activity, without mandatory accounts.
 User-selected surface direction: command-led workstation. Browser-local preference
 storage is optional; blocked storage must have a clear recovery path. This surface
-does not claim to observe processing jobs inside unrelated tools or Studio.
+does not claim to observe processing jobs inside tools.
 
 ## Capabilities and Constraints
 
 - Image compression, resizing, conversion, HEIC conversion, subject cutout and passport crops.
-- Video compression, trimming, conversion, audio removal, GIF creation and Studio handoff.
+- Video compression, trimming, conversion, audio removal, GIF creation, script-card and photo-animation videos.
 - Audio conversion, cutting, gain, extraction and cleanup; stereo centre/side tools are not neural stem separation.
 - Optional local Whisper, English SpeechT5, RNNoise and PDF.js. Models require consent; downloading a model does not upload media or text.
 - Ten-minute video limit remains. Individual tools may impose lower limits. Browser codecs, memory and storage constrain support.
 - Generated sizes must be measured. Progress must come from the pipeline. Errors must explain recovery. No fake controls or proof.
-- Studio, Studio Legacy and Lab are excluded from the public redesign. Existing engines, cancellation, cleanup, project storage and export behavior remain authoritative.
+- Existing engines, cancellation, cleanup and export behavior remain authoritative.
 - Production release certification currently remains NO-GO; a visual redesign does not change the outstanding deployment, device and quality gates.
 
 ## Brand Commitments
@@ -52,8 +52,8 @@ Existing working interfaces, local QA fixture outputs and automated processing s
 - Keep private files on the device during local processing.
 - Put the actual task before marketing content.
 - Make unsupported capabilities and optional downloads clear before starting.
-- Preserve valid output, recoverability and existing Studio projects.
-- Keep heavy models and editor runtimes off unrelated pages.
+- Preserve valid output and recoverability.
+- Keep heavy models off unrelated pages.
 
 ## Accessibility & Inclusion
 

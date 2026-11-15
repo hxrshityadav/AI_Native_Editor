@@ -38,6 +38,7 @@ const FEATURES: Record<ToolCategory, Feature[]> = {
 const CATEGORY_NAME: Record<ToolCategory, string> = { photo: "Photos", video: "Video", audio: "Audio", ai: "AI tools" };
 
 export function ToolPageHeader({ href, category, title, lead }: { href: string; category: ToolCategory; title: string; lead: string }) {
+  const tool = availableTools.find(item => item.href === href);
   return <>
     <nav aria-label="Breadcrumb"><ol className={styles.breadcrumb}>
       <li><Link prefetch={false} href="/tools">All tools</Link></li>
@@ -47,11 +48,12 @@ export function ToolPageHeader({ href, category, title, lead }: { href: string; 
       <li aria-current="page" className="text-ink"><a href={href}>{title}</a></li>
     </ol></nav>
     <header className={`tool-header mt-2 ${styles.pageHeader}`}>
-      <div className="flex items-center gap-3.5">
-        <h1 className="text-[2rem] leading-[1.1] sm:text-[2.5rem]">{title}</h1>
+      <div className="tool-title-row">
+        {tool && <span aria-hidden className="tool-tile tool-tile-lg"><ToolGlyph icon={tool.icon} /></span>}
+        <h1>{title}</h1>
       </div>
-      <p className="mt-2 max-w-2xl text-base leading-relaxed text-subtle sm:text-[1.05rem]">{lead}</p>
-      <div className="mt-4"><PrivacyBadge /></div>
+      <p className="tool-lead">{lead}</p>
+      <div className="tool-meta"><PrivacyBadge />{tool && <p className="meta">{tool.formats.join(" · ")}</p>}</div>
       <nav className="workspace-navigation" aria-label="On this tool page"><a href="#workspace">Workspace</a><a href="#how-to">How to use</a><Link prefetch={false} href={`/tools?category=${category}`}>More {category === "ai" ? "AI tools" : CATEGORY_NAME[category].toLowerCase()}</Link></nav>
     </header>
   </>;
@@ -59,7 +61,7 @@ export function ToolPageHeader({ href, category, title, lead }: { href: string; 
 
 /** The steps are a real sequence, so they are numbered. Horizontal on wide screens, a list on phones. */
 export function ToolHowTo({ title, steps }: { title: string; steps: string[] }) {
-  return <section aria-labelledby="how-to">
+  return <section aria-labelledby="how-to" className="panel">
     <h2 id="how-to" className="text-xl font-semibold">{title}</h2>
     <ol className={styles.stepList}>
       {steps.map((step, index) => <li key={step}>
@@ -85,14 +87,14 @@ export function FeatureGrid({ category, features }: { category: ToolCategory; fe
 }
 
 export function ToolInfo({ title, paragraphs }: { title: string; paragraphs: string[] }) {
-  return <section aria-labelledby="information" className="max-w-[68ch]">
+  return <section aria-labelledby="information" className="panel tool-info">
     <h2 id="information" className="text-xl font-semibold">{title}</h2>
     <div className="mt-4 space-y-4 leading-relaxed text-ink-2">{paragraphs.map(text => <p key={text}>{text}</p>)}</div>
   </section>;
 }
 
 export function FAQSection({ items }: { items: Faq[] }) {
-  return <section aria-labelledby="faq" className="grid gap-6 lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-12">
+  return <section aria-labelledby="faq" className="panel grid gap-6 lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-12">
     <div>
       <h2 id="faq" className="text-xl font-semibold">Frequently asked questions</h2>
       <p className="mt-2 text-sm leading-relaxed text-subtle">How files are handled is covered in the <Link prefetch={false} href="/privacy" className="text-ink underline hover:text-brand">privacy notes</Link>.</p>
@@ -109,7 +111,7 @@ export function FAQSection({ items }: { items: Faq[] }) {
 /** Other working tools, same category first. */
 export function RelatedTools({ href, category }: { href: string; category: ToolCategory }) {
   const others = availableTools.filter(tool => tool.href !== href && tool.title !== "Auto Subtitles").sort((a, b) => Number(b.category === category) - Number(a.category === category)).slice(0, 4);
-  return <section aria-labelledby="related">
+  return <section aria-labelledby="related" className="panel">
     <h2 id="related" className="text-xl font-semibold">Related tools</h2>
     <ul className={styles.relatedList}>{others.map(tool => <li key={tool.href} className="min-w-0">
       <Link prefetch={false} href={tool.href!} className={`group ${styles.relatedLink}`}>
@@ -128,9 +130,9 @@ export function ToolPageLayout({ href, category, title, lead, steps, stepsTitle,
     <main className={`tool-page tool-${category}`} data-tool={href.split("/").pop()}>
       <ToolPageHeader href={href} category={category} title={title} lead={lead} />
       <div className="tool-workspace" id="workspace">{children}</div>
-      <div className="tool-support space-y-16">
+      <div className="tool-support">
         <ToolHowTo title={stepsTitle} steps={steps} />
-        <div className="space-y-12"><FeatureGrid category={category} features={features} /><ToolInfo {...info} /></div>
+        <FeatureGrid category={category} features={features} /><ToolInfo {...info} />
         <FAQSection items={faqs} />
         <RelatedTools href={href} category={category} />
       </div>

@@ -20,7 +20,7 @@ export function parseWorkspace(raw: string | null): WorkspaceData {
   return { version: 1, favorites, recent, recordHistory: data.recordHistory };
 }
 
-/** Stores route names and visit times only. It never reads media, transcripts or Studio databases. */
+/** Stores route names and visit times only. It never reads media or transcripts. */
 export function createWorkspaceStore(getStorage: () => StorageAdapter = () => window.localStorage) {
   let snapshot = EMPTY_WORKSPACE;
   const listeners = new Set<() => void>();

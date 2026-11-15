@@ -46,7 +46,6 @@ next-env.d.ts
 # env (keep the example)
 !.env.example
 /tests/perf/.out/
-/tests/e2e/.out-studio/
 /tests/e2e/.out-server/
 /tests/e2e/.out-phone/
 /tests/e2e/.out-silence/
@@ -55,7 +54,6 @@ next-env.d.ts
 /tests/e2e/.out-ripple/
 /public/editor/
 /public/media-notices/
-/tests/e2e/.out-openreel/
 /tests/compat/.out/
 /tests/sync/.out/
 /tests/bakeoff/.out/
@@ -65,8 +63,6 @@ next-env.d.ts
 /output/local-ai-*
 /output/launch-*
 /output/firefox*
-/vendor/openreel/apps/web/public/whisper-runtime/
-/vendor/openreel/apps/web/public/runtime/
 /public/ort/
 /public/local-ai/
 /output/missing-tools*
@@ -84,3 +80,9 @@ next-env.d.ts
 /.taste-skill/before/
 /.taste-skill/after-home/
 /.impeccable/review/
+/output/design-reference/
+
+/tools/transformers/node_modules/
+
+# Local speech benchmark audio (user recordings, FLEURS clips): never committed
+output/caption-bench/

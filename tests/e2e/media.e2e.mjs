@@ -13,10 +13,11 @@ ff("-f", "lavfi", "-i", "testsrc2=size=480x270:rate=30", "-f", "lavfi", "-i", "s
 ff("-i", f("source.mp4"), "-c", "copy", f("source.mkv"));
 ff("-f", "lavfi", "-i", "sine=frequency=500:sample_rate=44100", "-t", "5", "-c:a", "libmp3lame", "-b:a", "128k", f("tone.mp3"));
 ff("-f", "lavfi", "-i", "sine=frequency=500:sample_rate=48000", "-t", "4", "-af", "volume=0.1", "-c:a", "pcm_s16le", f("quiet.wav"));
-ff("-f", "lavfi", "-i", "sine=frequency=500:sample_rate=48000", "-t", "4", "-af", "volume=7", "-c:a", "pcm_s16le", f("loud.wav")); // lavfi sine is 1/8 amplitude; ×7 ≈ -1.2 dBFS
+ff("-f", "lavfi", "-i", "sine=frequency=500:sample_rate=48000", "-t", "4", "-af", "volume=7", "-c:a", "pcm_s16le", f("loud.wav"));
+ff("-f", "lavfi", "-i", "sine=frequency=600:sample_rate=44100", "-t", "50", "-c:a", "libmp3lame", "-b:a", "128k", f("song.mp3")); // lavfi sine is 1/8 amplitude; ×7 ≈ -1.2 dBFS
 
 const { check, finish } = createChecks();
-const server = await startServer(PORT, { env: { REEL_ENABLE_CLOUD: "" } });
+const server = await startServer(PORT);
 const browser = await chromium.launch({ channel: "chrome" });
 const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, acceptDownloads: true });
 const requests = []; context.on("request", req => requests.push({ url: req.url(), method: req.method() }));
@@ -87,6 +88,14 @@ try {
   const cut = await run("Cut audio", "Download audio", "cut.wav");
   check("cutter: output is the selected 2 s range", Math.abs(duration(cut.path) - 2) < 0.06, `${duration(cut.path)} s`);
   check("cutter: fade in is applied to the samples", maxVolume(cut.path, 0, 0.05) < maxVolume(cut.path, 1, 0.5) - 12, `${maxVolume(cut.path, 0, 0.05)} vs ${maxVolume(cut.path, 1, 0.5)}`);
+
+  // Audio Cutter ringtone: preset gives a real 30 s AAC .m4r; a selection over 40 s is explained and blocked.
+  await open("audio-cutter", f("song.mp3")); await page.getByRole("button", { name: "Cut audio", exact: true }).waitFor();
+  await page.getByRole("button", { name: "Ringtone preset: 30 s, M4R" }).click();
+  const tone = await run("Cut audio", "Download audio", "ringtone.m4r"), toneAudio = streams(probe(tone.path), "audio")[0];
+  check("ringtone: preset produces a 30 s AAC file named .m4r", tone.suggested.endsWith(".m4r") && toneAudio.codec_name === "aac" && /mp4|m4a|mov/.test(probe(tone.path).format.format_name) && Math.abs(duration(tone.path) - 30) < 0.1 && decodeErrors(tone.path) === "", `${tone.suggested} ${toneAudio.codec_name} ${duration(tone.path)} s`);
+  await adjust(); await page.getByLabel("End seconds").fill("45");
+  check("ringtone: over 40 s is explained and cannot run", await page.getByText(/iPhone ringtones can be at most 40 seconds/).isVisible() && await page.getByRole("button", { name: "Cut audio", exact: true }).isDisabled());
 
   // Increase Volume
   await open("increase-volume", f("quiet.wav")); await page.getByRole("button", { name: "Change volume", exact: true }).waitFor();

@@ -22,6 +22,7 @@ const eslintConfig = defineConfig([
     "output/stageshow-workshop-build/**",
     // Third-party agent skills (see .claude/skills/SOURCES.md) are not project code.
     ".claude/skills/**",
+    ".agents/skills/**",
   ]),
 ]);
 

@@ -4,10 +4,10 @@ import { join } from "node:path";
 import { ROOT, startServer, stopServer, createChecks } from "./helpers.mjs";
 
 // Public site shell: navigation, keyboard access, responsive layout and request isolation.
-const OUT = join(ROOT, "output/site"), PORT = Number(process.env.SITE_TEST_PORT || 3160), BASE = `http://localhost:${PORT}`;
+const OUT = join(ROOT, process.env.SITE_TEST_OUT || "output/site"), PORT = Number(process.env.SITE_TEST_PORT || 3160), BASE = `http://localhost:${PORT}`;
 mkdirSync(OUT, { recursive: true });
 const { check, finish } = createChecks();
-const server = await startServer(PORT, { env: { REEL_ENABLE_CLOUD: "" } });
+const server = await startServer(PORT);
 const browser = await chromium.launch({ channel: "chrome" });
 const ROUTES = ["/", "/tools", "/tools/image-compressor", "/tools/image-resizer", "/tools/image-converter", "/tools/video-compressor", "/privacy", "/supported-formats"];
 const WIDTHS = [[320, 640], [390, 844], [768, 1024], [1280, 900], [1920, 1080]];
@@ -42,39 +42,39 @@ try {
   await page.keyboard.press("Enter"); await page.keyboard.press("Tab");
   check("keyboard: skip link moves focus past the navigation", await page.evaluate(() => !document.activeElement?.closest("header, aside")));
   const side = page.getByRole("navigation", { name: "Main" });
-  const SIDEBAR_TOOLS = ["Home", "Command Center", "All tools", "Auto Subtitles", "Auto Editing", "Compress Video", "Reel Studio", "Trim Video", "Video to GIF", "Convert to MP4", "Compress to Size", "Remove Audio", "Audio Converter", "Extract Audio", "Audio Cutter", "Increase Volume", "Audio to Video", "Text to Speech", "Compress Image", "Convert Image", "Resize Image", "HEIC to JPG", "Remove Background", "Passport Photo", "Remove Music", "Video Translator", "AI Dubbing", "Noise Remover", "Vocal Remover", "Transcribe", "Text to Video", "Image to Video", "Shorts Maker", "Lecture to Notes", "PDF to Audio"];
-  check("sidebar: lists every working tool and marks the current page", await side.getByRole("link").count() === SIDEBAR_TOOLS.length && await side.getByRole("link", { name: "All tools" }).getAttribute("aria-current") === "page");
-  check("sidebar: only working tools are links", (await side.getByRole("link").allInnerTexts()).every(name => SIDEBAR_TOOLS.some(tool => name.trim().startsWith(tool))));
-  check("sidebar: former planned tools have real links", await side.locator("details").count() === 0 && await side.locator('a[href="/tools/transcribe-to-text"]').count() === 1);
-  await side.getByLabel("Find a tool").fill("webp");
-  check("sidebar: quick filter narrows the tool list", await side.getByRole("link").count() === 3 + 6);
-  await side.getByLabel("Find a tool").press("Escape");
-  check("sidebar: Escape clears the filter", await side.getByRole("link").count() === SIDEBAR_TOOLS.length);
-  await page.getByRole("button", { name: "Collapse sidebar" }).click();
-  check("sidebar: collapses to an icon rail with named links", await page.getByRole("button", { name: "Expand sidebar" }).isVisible() && await side.getByRole("link", { name: "Compress Image" }).isVisible() && await side.getByLabel("Find a tool").count() === 0);
-  await page.getByRole("button", { name: "Expand sidebar" }).click();
-  check("dark surfaces: html is dark and theme-color matches", await page.evaluate(() => getComputedStyle(document.documentElement).colorScheme === "dark" && document.querySelector("meta[name=theme-color]")?.getAttribute("content") === "#08090b"));
+  const RAIL = ["Home", "All tools", "Command Center", "Photo tools", "Video tools", "Audio tools", "AI tools", "Supported formats", "Privacy"];
+  check("rail: names every main destination and marks the current page", (await side.getByRole("link").evaluateAll(links => links.map(link => link.getAttribute("aria-label")))).join("|") === RAIL.join("|") && await side.getByRole("link", { name: "All tools" }).getAttribute("aria-current") === "page");
+  await page.locator("main h1").click(); await page.mouse.move(1000,700); await page.waitForTimeout(600);
+  const rest = await page.locator("main").evaluate(el => el.getBoundingClientRect().left);
+  const railGeometry = await page.locator(".app-frame").evaluate(el => { const s = getComputedStyle(el); return { expanded: parseFloat(s.getPropertyValue("--rail-capsule-expanded")), delta: parseFloat(s.getPropertyValue("--rail-capsule-expanded")) - parseFloat(s.getPropertyValue("--rail-capsule")) }; });
+  await side.getByRole("link", { name: "Video tools", exact: true }).hover(); await page.waitForTimeout(400);
+  check("rail: hover expands the shared layout", await page.locator("#desktop-navigation").evaluate(el=>el.getBoundingClientRect().width)===railGeometry.expanded && await page.locator("main").evaluate(el=>el.getBoundingClientRect().left)===rest+railGeometry.delta);
+  await page.mouse.move(1000,700); await page.waitForTimeout(600);
+  check("rail: leaving collapses after delay",await page.locator("#desktop-navigation").evaluate(el=>el.getBoundingClientRect().width)===56);
+  await side.getByRole("link",{name:"Home",exact:true}).focus(); await page.waitForTimeout(300);
+  check("rail: keyboard focus expands the layout",await page.locator("#desktop-navigation").evaluate(el=>el.getBoundingClientRect().width)===railGeometry.expanded && await page.locator("main").evaluate(el=>el.getBoundingClientRect().left)===rest+railGeometry.delta);
+  await page.locator("main h1").click();  check("dark surfaces: html is dark and theme-color matches", await page.evaluate(() => getComputedStyle(document.documentElement).colorScheme === "dark" && document.querySelector("meta[name=theme-color]")?.getAttribute("content") === "#0a0a0b"));
   await page.keyboard.press("Shift"); // keyboard modality, so :focus-visible applies to the programmatic focus below
   const outline = await page.getByRole("link", { name: "Video", exact: false }).first().evaluate(el => { el.focus(); return getComputedStyle(el).outlineStyle; });
   check("focus: keyboard focus has a visible outline", outline !== "none");
   await page.getByRole("group", { name: "Filter by category" }).getByRole("button", { name: /Audio/ }).click();
-  check("directory: category filter shows only that category's tools", await page.locator("main ul a").count() === 10);
+  check("directory: category filter shows only that category's tools", await page.locator("main .category-tools a").count() === 11);
   await page.getByRole("group", { name: "Filter by category" }).getByRole("button", { name: /AI tools/ }).click();
-  check("directory: local AI tools expose six entries without planned placeholders", await page.locator("main").getByText("Planned, not available yet").count() === 0 && await page.locator("main ul a").count() === 6);
+  check("directory: local AI tools expose four entries without planned placeholders", await page.locator("main").getByText("Planned, not available yet").count() === 0 && await page.locator("main .category-tools a").count() === 4);
   await page.getByRole("group", { name: "Filter by category" }).getByRole("button", { name: /All/ }).click();
   await page.getByLabel("Search tools").fill("webp");
-  const found = await page.locator("main ul a h3").allInnerTexts();
+  const found = await page.locator("main .category-tools a h3").allInnerTexts();
   check("search: matches formats across tools", found.length === 6 && found.every(title => /^(Image|Passport|Background)/.test(title)), found.join(", "));
   await page.getByLabel("Search tools").fill("zzz");
   check("search: no match shows a recovery action", await page.getByText(/No tools match/).isVisible());
   check("search: the query is kept in the URL", new URL(page.url()).searchParams.get("q") === "zzz");
   await page.goto(BASE + "/tools?q=webp"); await page.getByLabel("Search tools").waitFor();
   // The prerendered fallback lists every tool; wait for the URL-aware finder to hydrate before counting.
-  await page.waitForFunction(() => document.querySelector("input[aria-label='Search tools']")?.value === "webp" && document.querySelectorAll("main ul a").length < 10);
-  check("search: a shared URL restores the filtered view", await page.getByLabel("Search tools").inputValue() === "webp" && await page.locator("main ul a").count() === 6);
+  await page.waitForFunction(() => document.querySelector("input[aria-label='Search tools']")?.value === "webp" && document.querySelectorAll("main .category-tools a").length < 10);
+  check("search: a shared URL restores the filtered view", await page.getByLabel("Search tools").inputValue() === "webp" && await page.locator("main .category-tools a").count() === 6);
   await page.getByLabel("Search tools").fill("zzz");
   await page.getByRole("button", { name: "Clear search" }).click();
-  check("search: clearing restores every tool", await page.locator("main ul a").count() === 32);
+  check("search: clearing restores every tool", await page.locator("main .category-tools a").count() === 30);
   for (const href of await page.locator("main a[href^='/'], footer a[href^='/']").evaluateAll(links => [...new Set(links.map(link => link.getAttribute("href").split("#")[0]))])) {
     const response = await fetch(BASE + href); check(`links: ${href} resolves`, response.ok, String(response.status));
   }
@@ -126,12 +126,15 @@ try {
 
   await page.goto(BASE + "/"); await page.getByRole("link", { name: "Explore tools" }).first().click(); await page.getByRole("heading", { name: "Video, audio & photo tools", exact: true }).waitFor();
   check("home: primary action opens the tool directory", true);
-  const studio = await (await fetch(BASE + "/studio")).text(), legacy = await (await fetch(BASE + "/studio-legacy")).text(), lab = await (await fetch(BASE + "/lab")).text();
-  check("SEO: editor, legacy and lab keep noindex", [studio, legacy, lab].every(html => /name="robots" content="noindex/.test(html)));
-  check("isolation: editor, legacy and lab render without the public site shell", [studio, legacy, lab].every(html => !html.includes("Skip to content")));
+  for (const path of ["/studio", "/studio-legacy", "/lab", "/tools/shorts-maker"]) check(`removed: ${path} returns 404`, (await fetch(BASE + path)).status === 404);
   const reduced = await browser.newPage({ reducedMotion: "reduce" }); await reduced.goto(BASE + "/tools", { waitUntil: "networkidle" }); await reduced.getByLabel("Search tools").waitFor();
-  const motion = await reduced.locator("main ul a").first().evaluate(el => getComputedStyle(el).transitionDuration);
+  const motion = await reduced.locator("main .category-tools a").first().evaluate(el => getComputedStyle(el).transitionDuration);
   check("motion: reduced motion shortens transitions", motion.split(",").every(value => parseFloat(value) < 0.01), motion); await reduced.close();
   await page.close();
 } finally { await browser.close(); await stopServer(server); }
 finish();
+
+
+
+
+

@@ -9,7 +9,7 @@ const OUT = join(ROOT, "output/launch-heic"), PORT = Number(process.env.HEIC_TES
 const SAMPLE = join(ROOT, "tests/fixtures/sample.heic"), PORTRAIT = join(ROOT, "tests/fixtures/portrait.heic");
 mkdirSync(OUT, { recursive: true });
 const { check, finish } = createChecks();
-const server = await startServer(PORT, { env: { REEL_ENABLE_CLOUD: "" } });
+const server = await startServer(PORT);
 const browser = await chromium.launch({ channel: "chrome" });
 const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, acceptDownloads: true });
 const requests = []; context.on("request", req => requests.push({ url: req.url(), method: req.method() }));

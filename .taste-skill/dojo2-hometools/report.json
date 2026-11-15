@@ -1,0 +1,1576 @@
+{
+ "url": "http://localhost:3000/tools",
+ "at": "2026-11-08T04:55:05.040Z",
+ "allow": [],
+ "viewports": [
+  {
+   "width": 1440,
+   "height": 900,
+   "load": "load",
+   "screens": 6,
+   "filled": [
+    0.84,
+    0.86,
+    0.84,
+    0.82,
+    0.83,
+    0.84
+   ],
+   "motion": {
+    "elements": 1,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 1,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "page": {
+     "height": 4627,
+     "screens": 5.1,
+     "words": 1328,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 125,
+     "sections": 4,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Video, audio & photo tools",
+     "words": 5,
+     "chars": 26,
+     "lines": 1,
+     "size": 32,
+     "vw": 2.2,
+     "font": "Geist",
+     "weight": 600,
+     "tracking": -0.02,
+     "leading": 1.25,
+     "top": 100,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "Video, audio & photo tools",
+     "words": 5,
+     "lines": 1,
+     "size": 32,
+     "font": "Geist"
+    },
+    "headings": [
+     {
+      "text": "Video, audio & photo tools",
+      "words": 5,
+      "chars": 26,
+      "lines": 1,
+      "size": 32,
+      "vw": 2.2,
+      "font": "Geist",
+      "weight": 600,
+      "tracking": -0.025,
+      "leading": 1.25,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.77,
+      "top": 100,
+      "tag": "h1",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 1,
+     "maxLines": 1,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": null,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Geist",
+       "share": 0.81,
+       "mono": false
+      },
+      {
+       "family": "Geist Mono",
+       "share": 0.18,
+       "mono": true
+      },
+      {
+       "family": "system-ui",
+       "share": 0,
+       "mono": false
+      }
+     ],
+     "familyCount": 3,
+     "sizes": [
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      20,
+      32
+     ],
+     "sizeCount": 9,
+     "notLoaded": [],
+     "body": {
+      "font": "Geist",
+      "size": 14,
+      "leading": 1.6,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 9.6
+     },
+     "measureChars": 50,
+     "max": {
+      "size": 32,
+      "vw": 2.2,
+      "font": "Geist",
+      "text": "Video, audio & photo tools"
+     },
+     "monoShare": 0.18,
+     "monoProseShare": 0.18,
+     "monoFamilies": [
+      "Geist Mono"
+     ],
+     "monoSamples": [
+      "32 tools available now",
+      "6",
+      "10",
+      "10",
+      "6",
+      "32"
+     ],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0.01,
+     "centerShare": 0,
+     "smallText": 1
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#0a0a0a",
+     "bodyBgHsl": {
+      "h": 0,
+      "s": 0,
+      "l": 0.04
+     },
+     "dark": true,
+     "sectionBgs": [
+      {
+       "color": "#0a0a0b",
+       "top": 0,
+       "hsl": {
+        "h": 240,
+        "s": 0.05,
+        "l": 0.04
+       }
+      },
+      {
+       "color": "#1c1c1f",
+       "top": 12,
+       "hsl": {
+        "h": 240,
+        "s": 0.05,
+        "l": 0.12
+       }
+      },
+      {
+       "color": "#131315",
+       "top": 4165,
+       "hsl": {
+        "h": 240,
+        "s": 0.05,
+        "l": 0.08
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#babac2",
+       "share": 0.7
+      },
+      {
+       "color": "#90909a",
+       "share": 0.18
+      },
+      {
+       "color": "#f6f6f7",
+       "share": 0.09
+      },
+      {
+       "color": "#dcdce1",
+       "share": 0.03
+      },
+      {
+       "color": "#1a1206",
+       "share": 0
+      }
+     ],
+     "button": {
+      "bg": "#131315",
+      "hsl": {
+       "h": 240,
+       "s": 0.05,
+       "l": 0.08
+      },
+      "fg": "#dcdce1"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 9,
+     "inHero": 9,
+     "radius": "pill",
+     "height": 40,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "All tools",
+      "Search tools, formats or tasks Ctrl K",
+      "Command Center",
+      "Reel Studio",
+      "All 32"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 0,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 0,
+     "hairlineSamples": [],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 35,
+     "boxRadius": 18,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 2,
+     "fixed": true,
+     "height": 876,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "geist",
+     "geist mono",
+     "__nextjs-geist"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "pageH": 4627,
+    "margins": {
+     "left": 56,
+     "right": 80
+    },
+    "sections": [
+     {
+      "sel": "div#content.flex.flex-1",
+      "tag": "div",
+      "top": 84,
+      "height": 4033,
+      "words": 1115,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Video, audio & photo tools",
+       "size": 32,
+       "tag": "h1"
+      },
+      "left": 279,
+      "right": 55,
+      "textLeft": 279,
+      "textRight": 74,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "footer.public-footer",
+      "tag": "footer",
+      "top": 4165,
+      "height": 426,
+      "words": 111,
+      "media": 0,
+      "middle": 51,
+      "heading": {
+       "text": "AI tools",
+       "size": 13,
+       "tag": "h2"
+      },
+      "left": 300,
+      "right": 88,
+      "textLeft": 300,
+      "textRight": 88,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Video, audio & photo tools",
+      "size": 32,
+      "top": 100,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 532,
+      "n": 7
+     },
+     {
+      "x": 612,
+      "n": 3
+     },
+     {
+      "x": 279,
+      "n": 2
+     },
+     {
+      "x": 597,
+      "n": 2
+     },
+     {
+      "x": 622,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 15,
+    "bodySize": 14,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0.07,
+    "voidBox": {
+     "x": 240,
+     "y": 600,
+     "w": 300,
+     "h": 300
+    }
+   },
+   "app": {
+    "viewport": {
+     "w": 1440,
+     "h": 900
+    },
+    "dark": true,
+    "ground": "#0a0a0a",
+    "sidebar": null,
+    "topbar": null,
+    "canvas": {
+     "left": 40,
+     "right": 73
+    },
+    "hero": {
+     "text": "Video, audio & photo tools",
+     "words": 5,
+     "chars": 26,
+     "lines": 1,
+     "size": 32,
+     "vw": 2.2,
+     "font": "Geist",
+     "weight": 600,
+     "tracking": -0.02,
+     "leading": 1.25,
+     "top": 100,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 34,
+     "firstScreen": 5,
+     "ragged": [],
+     "voids": [
+      {
+       "gap": 71,
+       "at": 3966,
+       "panel": "Passport Photo Maker"
+      },
+      {
+       "gap": 48,
+       "at": 1617,
+       "panel": "Video Compressor"
+      }
+     ]
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 34,
+     "radii": [
+      [
+       18,
+       32
+      ],
+      [
+       24,
+       2
+      ]
+     ],
+     "heavyBorders": 0,
+     "borderSamples": [],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 5,
+     "tabularShare": 1,
+     "kpiMax": 12
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0.01,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      20,
+      32
+     ]
+    },
+    "title": {
+     "text": "Video, audio & photo tools",
+     "size": 32,
+     "top": 100
+    },
+    "colourShare": 0
+   },
+   "consoleErrors": []
+  },
+  {
+   "width": 768,
+   "height": 1024,
+   "load": "load",
+   "screens": 6,
+   "filled": [
+    0.79,
+    0.88,
+    0.88,
+    0.89,
+    1,
+    0.93
+   ],
+   "motion": {
+    "elements": 1,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 1,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "page": {
+     "height": 5680,
+     "screens": 5.5,
+     "words": 1208,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 125,
+     "sections": 4,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Video, audio & photo tools",
+     "words": 5,
+     "chars": 26,
+     "lines": 1,
+     "size": 32,
+     "vw": 4.2,
+     "font": "Geist",
+     "weight": 600,
+     "tracking": -0.02,
+     "leading": 1.25,
+     "top": 76,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "Video, audio & photo tools",
+     "words": 5,
+     "lines": 1,
+     "size": 32,
+     "font": "Geist"
+    },
+    "headings": [
+     {
+      "text": "Video, audio & photo tools",
+      "words": 5,
+      "chars": 26,
+      "lines": 1,
+      "size": 32,
+      "vw": 4.2,
+      "font": "Geist",
+      "weight": 600,
+      "tracking": -0.025,
+      "leading": 1.25,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.94,
+      "top": 76,
+      "tag": "h1",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 1,
+     "maxLines": 1,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": null,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Geist",
+       "share": 0.8,
+       "mono": false
+      },
+      {
+       "family": "Geist Mono",
+       "share": 0.2,
+       "mono": true
+      },
+      {
+       "family": "system-ui",
+       "share": 0,
+       "mono": false
+      }
+     ],
+     "familyCount": 3,
+     "sizes": [
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      20,
+      32
+     ],
+     "sizeCount": 9,
+     "notLoaded": [],
+     "body": {
+      "font": "Geist",
+      "size": 14,
+      "leading": 1.6,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 9.6
+     },
+     "measureChars": 40,
+     "max": {
+      "size": 32,
+      "vw": 4.2,
+      "font": "Geist",
+      "text": "Video, audio & photo tools"
+     },
+     "monoShare": 0.2,
+     "monoProseShare": 0.2,
+     "monoFamilies": [
+      "Geist Mono"
+     ],
+     "monoSamples": [
+      "32 tools available now",
+      "32",
+      "6",
+      "10",
+      "10",
+      "6"
+     ],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0.02,
+     "centerShare": 0.01,
+     "smallText": 1
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#0a0a0a",
+     "bodyBgHsl": {
+      "h": 0,
+      "s": 0,
+      "l": 0.04
+     },
+     "dark": true,
+     "sectionBgs": [
+      {
+       "color": "#0a0a0b",
+       "top": 0,
+       "hsl": {
+        "h": 240,
+        "s": 0.05,
+        "l": 0.04
+       }
+      },
+      {
+       "color": "#131315",
+       "top": 4459,
+       "hsl": {
+        "h": 240,
+        "s": 0.05,
+        "l": 0.08
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#babac2",
+       "share": 0.69
+      },
+      {
+       "color": "#90909a",
+       "share": 0.19
+      },
+      {
+       "color": "#f6f6f7",
+       "share": 0.1
+      },
+      {
+       "color": "#dcdce1",
+       "share": 0.02
+      },
+      {
+       "color": "#1a1206",
+       "share": 0
+      }
+     ],
+     "button": {
+      "bg": "#131315",
+      "hsl": {
+       "h": 240,
+       "s": 0.05,
+       "l": 0.08
+      },
+      "fg": "#dcdce1"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 7,
+     "inHero": 7,
+     "radius": "pill",
+     "height": 40,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Menu",
+      "All 32",
+      "AI tools 6",
+      "Video 10",
+      "Audio 10"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 1,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 0,
+     "hairlineSamples": [],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 33,
+     "boxRadius": 18,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 0,
+     "fixed": true,
+     "height": 0,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "geist",
+     "geist mono",
+     "__nextjs-geist"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "pageH": 5680,
+    "margins": {
+     "left": 23,
+     "right": 44
+    },
+    "sections": [
+     {
+      "sel": "div#content.flex.flex-1",
+      "tag": "div",
+      "top": 60,
+      "height": 4351,
+      "words": 1102,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Video, audio & photo tools",
+       "size": 32,
+       "tag": "h1"
+      },
+      "left": 23,
+      "right": 23,
+      "textLeft": 23,
+      "textRight": 42,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "footer.public-footer",
+      "tag": "footer",
+      "top": 4459,
+      "height": 1133,
+      "words": 111,
+      "media": 0,
+      "middle": 67,
+      "heading": {
+       "text": "AI tools",
+       "size": 13,
+       "tag": "h2"
+      },
+      "left": 39,
+      "right": 239,
+      "textLeft": 39,
+      "textRight": 239,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Video, audio & photo tools",
+      "size": 32,
+      "top": 76,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 23,
+      "n": 9
+     },
+     {
+      "x": 102,
+      "n": 3
+     },
+     {
+      "x": 88,
+      "n": 2
+     },
+     {
+      "x": 113,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 15,
+    "bodySize": 14,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": {
+    "viewport": {
+     "w": 768,
+     "h": 1024
+    },
+    "dark": true,
+    "ground": "#0a0a0a",
+    "sidebar": null,
+    "topbar": {
+     "h": 60
+    },
+    "canvas": {
+     "left": 23,
+     "right": 41
+    },
+    "hero": {
+     "text": "Video, audio & photo tools",
+     "words": 5,
+     "chars": 26,
+     "lines": 1,
+     "size": 32,
+     "vw": 4.2,
+     "font": "Geist",
+     "weight": 600,
+     "tracking": -0.02,
+     "leading": 1.25,
+     "top": 76,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 33,
+     "firstScreen": 6,
+     "ragged": [],
+     "voids": [
+      {
+       "gap": 71,
+       "at": 1637,
+       "panel": "Video Compressor"
+      },
+      {
+       "gap": 71,
+       "at": 4188,
+       "panel": "Passport Photo Maker"
+      },
+      {
+       "gap": 48,
+       "at": 2596,
+       "panel": "Remove Music from Video"
+      },
+      {
+       "gap": 48,
+       "at": 3447,
+       "panel": "Audio to Video"
+      }
+     ]
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 33,
+     "radii": [
+      [
+       18,
+       32
+      ],
+      [
+       24,
+       1
+      ]
+     ],
+     "heavyBorders": 0,
+     "borderSamples": [],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 3,
+     "tabularShare": 1,
+     "kpiMax": 12
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0.01,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      20,
+      32
+     ]
+    },
+    "title": {
+     "text": "Video, audio & photo tools",
+     "size": 32,
+     "top": 76
+    },
+    "colourShare": 0.003
+   },
+   "consoleErrors": []
+  },
+  {
+   "width": 390,
+   "height": 844,
+   "load": "load",
+   "screens": 12,
+   "filled": [
+    0.8,
+    0.99,
+    0.86,
+    1,
+    1,
+    0.93,
+    1,
+    0.99,
+    0.92,
+    1,
+    1,
+    0.95
+   ],
+   "motion": {
+    "elements": 1,
+    "css": 0,
+    "transitions": 0,
+    "scripted": 1,
+    "videos": 0,
+    "playingVideos": 0
+   },
+   "metrics": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "page": {
+     "height": 10252,
+     "screens": 12.1,
+     "words": 1208,
+     "img": 0,
+     "video": 0,
+     "canvas": 0,
+     "svg": 125,
+     "sections": 4,
+     "horizontalOverflow": 0,
+     "overflowCulprits": [],
+     "uiFragments": 0,
+     "uiAbuse": false,
+     "realPictures": 0,
+     "videoCount": 0,
+     "uiPictures": 0,
+     "pictureSamples": [],
+     "blendText": 0,
+     "sideScrollers": 0,
+     "brokenImages": [],
+     "emoji": [],
+     "videosNoPoster": 0
+    },
+    "hero": {
+     "text": "Video, audio & photo tools",
+     "words": 5,
+     "chars": 26,
+     "lines": 2,
+     "size": 32,
+     "vw": 8.2,
+     "font": "Geist",
+     "weight": 600,
+     "tracking": -0.02,
+     "leading": 1.25,
+     "top": 76,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "h1": {
+     "text": "Video, audio & photo tools",
+     "words": 5,
+     "lines": 2,
+     "size": 32,
+     "font": "Geist"
+    },
+    "headings": [
+     {
+      "text": "Video, audio & photo tools",
+      "words": 5,
+      "chars": 26,
+      "lines": 2,
+      "size": 32,
+      "vw": 8.2,
+      "font": "Geist",
+      "weight": 600,
+      "tracking": -0.025,
+      "leading": 1.25,
+      "upper": false,
+      "italic": false,
+      "mono": false,
+      "align": "left",
+      "position": "center",
+      "widthRatio": 0.9,
+      "top": 76,
+      "tag": "h1",
+      "kind": "heading"
+     }
+    ],
+    "headingSummary": {
+     "count": 1,
+     "maxLines": 2,
+     "over2Lines": 0,
+     "statements": 0,
+     "centered": 0,
+     "medianWords": null,
+     "mixedFontHeadings": 0
+    },
+    "type": {
+     "families": [
+      {
+       "family": "Geist",
+       "share": 0.8,
+       "mono": false
+      },
+      {
+       "family": "Geist Mono",
+       "share": 0.2,
+       "mono": true
+      },
+      {
+       "family": "system-ui",
+       "share": 0,
+       "mono": false
+      }
+     ],
+     "familyCount": 3,
+     "sizes": [
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      20,
+      32
+     ],
+     "sizeCount": 9,
+     "notLoaded": [],
+     "body": {
+      "font": "Geist",
+      "size": 14,
+      "leading": 1.6,
+      "weight": 400,
+      "tracking": 0,
+      "contrast": 9.6
+     },
+     "measureChars": 14,
+     "max": {
+      "size": 32,
+      "vw": 8.2,
+      "font": "Geist",
+      "text": "Video, audio & photo tools"
+     },
+     "monoShare": 0.2,
+     "monoProseShare": 0.2,
+     "monoFamilies": [
+      "Geist Mono"
+     ],
+     "monoSamples": [
+      "32 tools available now",
+      "32",
+      "6",
+      "10",
+      "10",
+      "6"
+     ],
+     "microLabels": 0,
+     "microLabelShare": 0,
+     "microSamples": [],
+     "upperShare": 0.02,
+     "centerShare": 0.01,
+     "smallText": 1
+    },
+    "eyebrows": [],
+    "numbered": [],
+    "color": {
+     "bodyBg": "#0a0a0a",
+     "bodyBgHsl": {
+      "h": 0,
+      "s": 0,
+      "l": 0.04
+     },
+     "dark": true,
+     "sectionBgs": [
+      {
+       "color": "#0a0a0b",
+       "top": 0,
+       "hsl": {
+        "h": 240,
+        "s": 0.05,
+        "l": 0.04
+       }
+      },
+      {
+       "color": "#131315",
+       "top": 1110,
+       "hsl": {
+        "h": 240,
+        "s": 0.05,
+        "l": 0.08
+       }
+      }
+     ],
+     "textColors": [
+      {
+       "color": "#babac2",
+       "share": 0.69
+      },
+      {
+       "color": "#90909a",
+       "share": 0.19
+      },
+      {
+       "color": "#f6f6f7",
+       "share": 0.1
+      },
+      {
+       "color": "#dcdce1",
+       "share": 0.02
+      },
+      {
+       "color": "#1a1206",
+       "share": 0
+      }
+     ],
+     "button": {
+      "bg": "#131315",
+      "hsl": {
+       "h": 240,
+       "s": 0.05,
+       "l": 0.08
+      },
+      "fg": "#dcdce1"
+     },
+     "lowContrast": []
+    },
+    "buttons": {
+     "count": 7,
+     "inHero": 7,
+     "radius": "pill",
+     "height": 40,
+     "withShadow": 0,
+     "withGradient": 0,
+     "mono": 0,
+     "upper": 0,
+     "heroLabels": [
+      "Menu",
+      "All 32",
+      "AI tools 6",
+      "Video 10",
+      "Audio 10"
+     ]
+    },
+    "surfaces": {
+     "shadowStatic": 0,
+     "shadowOverlay": 1,
+     "shadowSamples": [],
+     "gradients": 0,
+     "scrims": 0,
+     "gradientSamples": [],
+     "gradientText": 0,
+     "hairlines": 0,
+     "hairlineSamples": [],
+     "outlinedBoxes": 0,
+     "dashed": 0,
+     "blurred": 0,
+     "roundedBoxes": 33,
+     "boxRadius": 18,
+     "squareMedia": 0,
+     "roundedMedia": 0,
+     "mediaRadius": 0,
+     "textShadow": 0,
+     "cardRows": []
+    },
+    "heroMedia": [],
+    "nav": {
+     "links": 0,
+     "fixed": true,
+     "height": 0,
+     "floatingPill": false,
+     "blur": false
+    },
+    "fontsLoaded": [
+     "geist",
+     "geist mono",
+     "__nextjs-geist"
+    ]
+   },
+   "layout": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "pageH": 10252,
+    "margins": {
+     "left": 20,
+     "right": 32
+    },
+    "sections": [
+     {
+      "sel": "div#content.flex.flex-1",
+      "tag": "div",
+      "top": 60,
+      "height": 8923,
+      "words": 1102,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "Video, audio & photo tools",
+       "size": 32,
+       "tag": "h1"
+      },
+      "left": 20,
+      "right": 20,
+      "textLeft": 20,
+      "textRight": 21,
+      "fullBleed": false,
+      "footer": false,
+      "hero": true,
+      "continues": false,
+      "pinned": false
+     },
+     {
+      "sel": "footer.public-footer",
+      "tag": "footer",
+      "top": 9031,
+      "height": 1133,
+      "words": 111,
+      "media": 0,
+      "middle": 0,
+      "heading": {
+       "text": "AI tools",
+       "size": 13,
+       "tag": "h2"
+      },
+      "left": 36,
+      "right": 50,
+      "textLeft": 36,
+      "textRight": 50,
+      "fullBleed": false,
+      "footer": true,
+      "hero": false,
+      "continues": false,
+      "pinned": false
+     }
+    ],
+    "gaps": [],
+    "h1s": [
+     {
+      "text": "Video, audio & photo tools",
+      "size": 32,
+      "top": 76,
+      "firstScreen": true
+     }
+    ],
+    "edgeText": [],
+    "edges": [
+     {
+      "x": 20,
+      "n": 9
+     },
+     {
+      "x": 99,
+      "n": 3
+     },
+     {
+      "x": 85,
+      "n": 2
+     },
+     {
+      "x": 110,
+      "n": 1
+     }
+    ],
+    "leftBlocks": 15,
+    "bodySize": 14,
+    "stage": false,
+    "explains": false,
+    "slivers": [],
+    "voidShare": 0,
+    "voidBox": null
+   },
+   "app": {
+    "viewport": {
+     "w": 390,
+     "h": 844
+    },
+    "dark": true,
+    "ground": "#0a0a0a",
+    "sidebar": null,
+    "topbar": {
+     "h": 60
+    },
+    "canvas": {
+     "left": 20,
+     "right": 32
+    },
+    "hero": {
+     "text": "Video, audio & photo tools",
+     "words": 5,
+     "chars": 26,
+     "lines": 2,
+     "size": 32,
+     "vw": 8.2,
+     "font": "Geist",
+     "weight": 600,
+     "tracking": -0.02,
+     "leading": 1.25,
+     "top": 76,
+     "tag": "h1",
+     "kind": "heading",
+     "align": "left",
+     "position": "left"
+    },
+    "charts": 0,
+    "layout": {
+     "panels": 33,
+     "firstScreen": 2,
+     "ragged": [],
+     "voids": [
+      {
+       "gap": 291,
+       "at": 8556,
+       "panel": "Passport Photo Maker"
+      },
+      {
+       "gap": 114,
+       "at": 3243,
+       "panel": "Video Compressor"
+      },
+      {
+       "gap": 112,
+       "at": 5223,
+       "panel": "Remove Music from Video"
+      },
+      {
+       "gap": 95,
+       "at": 4129,
+       "panel": "Video to GIF"
+      }
+     ]
+    },
+    "tiles": 0,
+    "panels": {
+     "count": 33,
+     "radii": [
+      [
+       18,
+       32
+      ],
+      [
+       24,
+       1
+      ]
+     ],
+     "heavyBorders": 0,
+     "borderSamples": [],
+     "heavyShadows": 0,
+     "softShadows": 0,
+     "shadowSamples": [],
+     "glass": 0
+    },
+    "chips": {
+     "count": 0,
+     "hues": 0,
+     "samples": []
+    },
+    "numbers": {
+     "cells": 0,
+     "leftAligned": 0,
+     "figures": 3,
+     "tabularShare": 1,
+     "kpiMax": 12
+    },
+    "rows": null,
+    "chartHues": 0,
+    "placeholders": [],
+    "type": {
+     "under13": 0.01,
+     "tiny": 0,
+     "tinySamples": [],
+     "sizes": [
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      20,
+      32
+     ]
+    },
+    "title": {
+     "text": "Video, audio & photo tools",
+     "size": 32,
+     "top": 76
+    },
+    "colourShare": 0.002
+   },
+   "consoleErrors": []
+  }
+ ],
+ "findings": [
+  {
+   "level": "WARN",
+   "id": "below-fold",
+   "width": 1440,
+   "message": "Only 5 of 34 blocks start on the first 1440px screen.",
+   "fix": "Every block the brief names shows its header and first rows on the first desktop screen: size the headline block to its question, cap long lists with \"View all\", and put time-sensitive blocks before long tables."
+  },
+  {
+   "level": "WARN",
+   "id": "panel-void",
+   "width": 1440,
+   "message": "2 card(s) hold a blank band inside: 71px in \"Passport Photo Maker\", 48px in \"Video Compressor\".",
+   "fix": "A card stretches to its neighbour only when it has content to fill. Keep a legend or a note directly under its chart (only an action or a total may sit at a stretched card's foot), let a short card keep its own height (align-items: start), and let a filtered block shrink to its rows."
+  },
+  {
+   "level": "WARN",
+   "id": "app-title-size",
+   "width": 390,
+   "message": "The h1 is 32px (\"Video, audio & photo tools\").",
+   "fix": "An app screen is not a landing page: the title is 18-32px (20-24px on a phone)."
+  }
+ ],
+ "images": [
+  {
+   "viewport": "desktop",
+   "width": 1440,
+   "fold": "C:\\Developer\\AI Native Editor\\.taste-skill\\dojo2-hometools\\desktop-fold.jpg",
+   "pages": [
+    "C:\\Developer\\AI Native Editor\\.taste-skill\\dojo2-hometools\\desktop-page-01.jpg",
+    "C:\\Developer\\AI Native Editor\\.taste-skill\\dojo2-hometools\\desktop-page-02.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "tablet",
+   "width": 768,
+   "fold": "C:\\Developer\\AI Native Editor\\.taste-skill\\dojo2-hometools\\tablet-fold.jpg",
+   "pages": [
+    "C:\\Developer\\AI Native Editor\\.taste-skill\\dojo2-hometools\\tablet-page-01.jpg"
+   ],
+   "film": []
+  },
+  {
+   "viewport": "mobile",
+   "width": 390,
+   "fold": "C:\\Developer\\AI Native Editor\\.taste-skill\\dojo2-hometools\\mobile-fold.jpg",
+   "pages": [
+    "C:\\Developer\\AI Native Editor\\.taste-skill\\dojo2-hometools\\mobile-page-01.jpg",
+    "C:\\Developer\\AI Native Editor\\.taste-skill\\dojo2-hometools\\mobile-page-02.jpg"
+   ],
+   "film": []
+  }
+ ]
+}

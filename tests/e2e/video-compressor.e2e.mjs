@@ -15,7 +15,7 @@ ff("-display_rotation","90","-i",source,"-c","copy",rotated);
 ff("-f","lavfi","-i","testsrc2=s=320x180:r=30:d=4","-vf","select='if(lt(t,2),not(mod(n,3)),1)'","-fps_mode","vfr","-c:v","libx264","-pix_fmt","yuv420p",vfr);
 ff("-f","lavfi","-i","color=c=blue:s=16x16:r=1:d=601","-c:v","libx264","-pix_fmt","yuv420p",long);
 writeFileSync(join(OUT,"corrupt.mp4"),Buffer.from("not a video"));
-const server = await startServer(PORT, { env: { REEL_ENABLE_CLOUD: "" } });
+const server = await startServer(PORT);
 const isFirefox = process.env.VIDEO_BROWSER === "firefox";
 const browser = isFirefox ? await firefox.launch({ executablePath: join(ROOT,"output/firefox-test/firefox/firefox.exe") }) : await chromium.launch({ channel: process.env.VIDEO_CHANNEL || "chrome" });
 console.log("BROWSER", browser.version());

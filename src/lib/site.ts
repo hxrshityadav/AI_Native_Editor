@@ -10,4 +10,4 @@ export function siteOrigin(): string | undefined {
 }
 
 /** Browser chrome colour for the dark public site (matches --canvas under .site). */
-export const siteViewport = { themeColor: "#08090b" };
+export const siteViewport = { themeColor: "#0a0a0b" };

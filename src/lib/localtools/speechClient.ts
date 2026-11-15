@@ -1,6 +1,8 @@
 import type { Cue } from "./text";
-export type SpeechRequest={kind:"transcribe";file:File;language:string;translate:boolean;longRecording?:boolean}|{kind:"synthesize";text:string}|{kind:"document";text:string}|{kind:"dub";duration:number;cues:Cue[]};
-export type Transcript={text:string;cues:Cue[];duration:number};
+export type SpeechRequest={kind:"transcribe";file:File;language:string;translate:boolean;longRecording?:boolean;/** Subtitle Studio: timestamped export with real word timings; "base" is the optional larger model. */captionModel?:"tiny"|"base"|"hinglish-swift";/** Weight precision of the caption model (default q4). */captionDtype?:"q4"|"q8"|"fp16"|"fp32";/** Constrain the output script (captions only). Hindi defaults to Devanagari. */script?:"devanagari"|"latin"}|{kind:"synthesize";text:string}|{kind:"document";text:string}|{kind:"dub";duration:number;cues:Cue[]};
+export type TranscriptWord={text:string;start:number;end:number};
+/** `language` is the language token actually used. `detected` is present when it was chosen by real language identification. */
+export type Transcript={text:string;cues:Cue[];duration:number;language?:string;detected?:{code:string;probability:number;top:[string,number][]};words?:TranscriptWord[];model?:string;seconds?:number;/** Words cut from a detected decoding loop. */loopsRemoved?:number;/** Script the decoder was constrained to, if any. */script?:"devanagari"|"latin";/** False when the model has no word timing and captions use phrase timing. */wordTiming?:boolean};
 export type SpeechAudio={blob:Blob;duration:number;segments?:number};
 export function runSpeech<T extends Transcript|SpeechAudio>(request:SpeechRequest,signal:AbortSignal,status:(message:string)=>void,progress:(fraction:number)=>void=()=>{}):Promise<T>{
   if(signal.aborted)return Promise.reject(new DOMException("Cancelled","AbortError"));

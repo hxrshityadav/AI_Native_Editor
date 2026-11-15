@@ -5,6 +5,85 @@ Statuses: **Not started** · **In progress** · **Implemented** (code exists, no
 
 Automated media checks use generated fixtures on Windows, including installed Chrome/Edge, Firefox and Pixel 7 viewport emulation. Earlier milestones retain their original platform notes. No task is verified on a real phone yet.
 
+## Roman Hinglish transcription fix (2026-11-15)
+
+- **Tested (root causes):**
+  - auto mode silently forced English (Transformers.js has no language identification), now fixed;
+  - generic Whisper Tiny and Base cannot write Hinglish or Hindi usefully (measured);
+  - per-chunk resampling left a silent 16 kHz sample per chunk, replaced by a streaming resampler.
+- **Tested:** Roman Hinglish as its own pipeline:
+  - the Hindi2Hinglish Swift model by default, with separate consent;
+  - Roman enforced word by word, and Devanagari in a Hinglish caption is a validation error with "Convert to Roman";
+  - no script selector, and the raw transcript is kept;
+  - conservative normalization that never replaces words.
+- **Measured (medians):**
+
+  | Set | Swift | Tiny | Base |
+  |---|---|---|---|
+  | 7 Hinglish regression clips (synthetic en-IN voices) | 27% WER, 10% CER | 70% / 33% | 82% / 41% |
+  | 20 real FLEURS Hindi clips (vs romanised references) | 40% WER, 23% CER | 90% | 97% |
+
+  Reports: `output/caption-bench/report-*.md`.
+- **Tested:** Names and terms. Vocabulary suggestions for near-miss spellings (accept, ignore or undo; raw kept). On the real reel: 5 correct suggestions and no false ones, taking WER from 38.0% to 29.1%. Results: unit tests 6; studio E2E 37/37.
+- **Measured on the first real Hinglish clip** (the owner's reel, verified reference): Swift 38% WER and 17% CER; Tiny and Base looped (442% and 86% WER). Most remaining errors are product names and English jargon.
+- **Not done:**
+  - real code-switched Hinglish recordings from varied speakers (none available; needs approval for a dataset or user recordings);
+  - Devanagari Hindi at usable accuracy (no browser model passed);
+  - word timing for Swift;
+  - peak memory measurement.
+
+## Caption Generator 2.0 in Subtitle Studio (2026-11-15)
+
+- **Tested (root-cause fix):** "Detect automatically" used to force English. Transformers.js 3.8 has no Whisper language identification and silently uses `<|en|>`, which turned Hindi into English. Now:
+  - real language identification runs first, and Hindi and Hinglish set `<|hi|>` with transcribe, never translate;
+  - this also fixes Transcribe to Text, Lecture to Notes and the Video Translator.
+- **Tested:** word timing from the timestamped Whisper exports: Tiny (95 MiB) by default, Base (140 MiB) as a separate opt-in. Revisions are pinned. Results: a real Whisper Tiny run passed, with word highlighting found in 3 of 4 sampled exported frames.
+- **Tested:**
+  - **Language modes:** Auto, English, Hindi, Hinglish (Roman, or Devanagari with English words). Rule-based transliteration and English restoration (`hinglish.ts`), with the original kept.
+  - **Captions:** a loop guard; dynamic highlighting (current word, current line, progressive reveal, karaoke) only with real timings, otherwise whole captions with a notice; entrances (fade, pop, rise, typewriter).
+  - **Styles:** 15 distinct presets with renderer-drawn thumbnails, typography, colour, outline and shadow controls, and saved styles in this browser.
+  - **Frame and fonts:** 9:16, 4:3, 16:9, 1:1 or Original frames (contain, cover, crop with pan and zoom, export scale); caption drag with centre snap, width and safe-area margin; custom fonts (TTF, OTF, WOFF, WOFF2, validated and coverage-measured, stored in IndexedDB, sent to the export worker).
+  - **Clean-up:** filler words, punctuation and capitals, split long, merge short, script conversion, rebuild from words.
+  - **Results:** `subtitle-studio.e2e.mjs` 34/34 with real inference (31/31 without); unit tests 131.
+- **Measured (proxy only):** `output/caption-bench/report.md`, synthetic local voices.
+  - English: WER 2.6% (Tiny and Base), language ID 3 of 3.
+  - Roman-Hinglish read by Indian-English voices: Tiny 72% WER, Base about 90% (Base tends to translate).
+- **Not run:** a Hindi benchmark on real speech (needs recorded Hindi with references, for example FLEURS hi_in; the download is awaiting the owner's approval). Hindi and Hinglish accuracy is not claimed.
+- **Not implemented:** Whisper initial prompts (unsupported in Transformers.js 3.8); generative mistake correction (needs a language model); per-word manual styling; peak memory measurement.
+- **Pending:** physical-device checks.
+
+## Subtitle Studio, zoomable waveform and unslop pass (2026-11-15)
+
+- **Tested:** Audio Cutter zoomable waveform. Zoom from the whole file down to a 0.5 s window, scrolling, windowed worker peaks, keyboard nudging and Play selection. Results: unit tests 8/8; `cutter-zoom.e2e.mjs` 21/21, covering playback stopping at the selection end and a 14.50 s M4R matching a zoomed selection.
+- **Tested:** Subtitle Studio (`/tools/subtitle-studio`): local Whisper Tiny with consent, or captions by hand; edit, split, merge, add, delete, undo/redo and shortcuts; five presets; Latin and Devanagari fonts; SRT, VTT and burned-in H.264 MP4. Results: unit tests 16/16; `subtitle-studio.e2e.mjs` 25/25. The preview and export caption boxes matched to the pixel. A real Whisper pass (`SUBTITLE_INFERENCE=1`) passed 26/26.
+- **Not implemented:** word-level highlighting (the model gives phrase timings; the preset is disabled with the reason).
+- **Not run:** the Hindi and Hinglish Tiny vs Base benchmark. Hindi is not claimed as accurate.
+- **Tested:** unslop audit and polish across 35 routes × 7 widths (`ui-sweep.e2e.mjs`):
+  - off-grid spacing values cut from 3,772 to 754 (the rest are intentional centring);
+  - 700-weight text and negative tracking on small text removed;
+  - checkboxes are 18px;
+  - Command Center tablet rail overlap fixed;
+  - phone directory is one column;
+  - tool header baseline aligned.
+- **Tested:** document scrolling. The scrollbar is at the viewport edge, outside the frame; the header and rail are sticky; the frame corners are masked. Results: `scrollbar.e2e.mjs` 178/178 and `header-spacing.e2e.mjs` 872/872.
+- **Stale tests:** `capsule-navigation`, `dynamic-sidebar`, `hover-sidebar` and `sidebar-layout` still expect the old 72/208px rail geometry.
+- **Pending:** physical phone and tablet checks.
+- Details: `docs/subtitle-studio-and-unslop-report.md`.
+
+## ClipUtils gap pass: Music Mixer and ringtones (2026-11-15)
+
+- **Tested:** Music Mixer (`/tools/music-mixer`). Voice or video plus music, with voice and music levels, real automatic ducking from a measured speech map, fades, a music start offset and looping. Output is M4A or WAV, or the video's own container with the picture copied. Results: unit tests 11/11; `mixer.e2e.mjs` 15/15. The E2E run measured 11.9 dB of ducking at the 12 dB setting, recovery after speech, a looped 4 s MP3, and 300 of 300 video frames copied.
+- **Tested:** Audio Cutter M4R ringtone export, 30 s preset and 40 s limit. Media E2E 45/45, including the two new ringtone checks.
+- **Tested:** catalog now lists 29 tools (Audio: 11). Results: `npm run check` (95 unit tests), production build, site E2E 159/159, Command Center 15/15.
+- **Not started:** zoomable cutter waveform, AI Reel Generator, Advanced Subtitle Studio, Shorts Maker rebuild, preset landing pages.
+- **Deferred (owner decision, 2026-11-15):** multilingual and Hindi TTS stays local-only. There is no cloud TTS and no GPL code; it waits for a permissive, phonemizer-free browser model. kokoro-js is English only, Hindi needs espeak-ng (GPL-3.0), and Piper is GPL-3.0. See `DECISIONS.md`. MP3 output needs a licence and size review of `@mediabunny/mp3-encoder` (MPL-2.0, based on LAME).
+- **Not run:** the photo and local-AI E2E groups (no engine change touches them); physical-device checks.
+- Details: `docs/cliputils-feature-gap-analysis.md`, `docs/cliputils-implementation-roadmap.md`.
+
+## Reel Studio removed (2026-11-08)
+
+- **Tested:** Studio, Studio Legacy, Lab, Shorts Maker, the editor model proxy and the cloud API routes are removed. Removed URLs return 404, and the catalog lists 28 tools. The local-AI workers now build from `tools/transformers`. Check, build and the E2E suites below pass. See `DECISIONS.md` (2026-11-08).
+
 ## Reel Finisher 2.0 redesign and Command Center (2026-11-08)
 
 - **Tested:** black / electric-blue / orange token system (single `.site` source), defined button system, role-corrected tool surface, rebuilt homepage (real bench hero, live catalog search fragment, local model table, GSAP on the homepage only), new footer.

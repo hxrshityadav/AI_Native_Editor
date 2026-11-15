@@ -15,10 +15,10 @@ const VARIANTS: Record<Variant, string> = {
   ghost: "bg-transparent text-ink border-transparent hover:bg-sunken",
   destructive: "ds-destructive",
 };
-const SIZES: Record<Size, string> = { md: "min-h-11 px-4 text-sm", lg: "min-h-12 px-5 text-[0.95rem]" };
+const SIZES: Record<Size, string> = { md: "text-sm", lg: "text-sm" }; // One button geometry: 40px pill, 20px padding (public-site.css).
 /** Class list for any button-like element: <button>, <a> or <Link>. */
 export const buttonClass = (variant: Variant = "primary", size: Size = "md", extra?: string) => cx(
-  "ds-button inline-flex items-center justify-center gap-2 rounded-[var(--radius-control)] border font-semibold transition-colors duration-150",
+  "ds-button inline-flex items-center justify-center gap-2 rounded-[var(--radius-sm)] border font-semibold transition-colors duration-150",
   "disabled:cursor-not-allowed disabled:opacity-50 aria-disabled:cursor-not-allowed aria-disabled:opacity-50",
   VARIANTS[variant], SIZES[size], extra);
 
@@ -32,14 +32,14 @@ export type Tone = keyof typeof TONES;
 /** A message with an icon and a text tone, so state never relies on colour alone. Pass role for live announcements. */
 export function Notice({ tone = "info", role, title, children, className }: { tone?: Tone; role?: "status" | "alert" | "note"; title?: string; children: ReactNode; className?: string }) {
   const { icon: Icon, box, mark } = TONES[tone];
-  return <div role={role} className={cx("flex gap-3 rounded-[var(--radius-control)] border px-3.5 py-3 text-sm leading-relaxed", box, className)}>
+  return <div role={role} className={cx("flex gap-3 rounded-[var(--radius-sm)] border px-3.5 py-3 text-sm leading-relaxed", box, className)}>
     <Icon aria-hidden className={cx("mt-0.5 size-4 shrink-0", mark)} />
     <div className="min-w-0">{title && <p className="font-semibold">{title}</p>}{children}</div>
   </div>;
 }
 
 export function Chip({ children }: { children: ReactNode }) {
-  return <span className="inline-flex items-center rounded-full border border-edge bg-raised px-2 py-0.5 text-xs font-medium text-subtle">{children}</span>;
+  return <span className="inline-flex items-center rounded-full bg-raised px-2 py-0.5 text-xs font-medium text-subtle">{children}</span>;
 }
 
 export function ToolGlyph({ icon, small }: { icon: ToolIcon; small?: boolean }) {
@@ -57,7 +57,7 @@ export function PageHeader({ title, lead, children }: { title: string; lead?: Re
 
 /** Honest empty state: says what is missing and offers the next step. */
 export function EmptyState({ title, children, action }: { title?: string; children: ReactNode; action?: ReactNode }) {
-  return <div className="rounded-[var(--radius-panel)] border border-dashed border-edge-strong px-5 py-6 text-sm leading-relaxed text-subtle">
+  return <div className="rounded-[var(--radius-md)] bg-raised px-5 py-6 text-sm leading-relaxed text-subtle">
     {title && <p className="font-semibold text-ink">{title}</p>}
     <div className={title ? "mt-1" : undefined}>{children}</div>
     {action && <div className="mt-4">{action}</div>}
@@ -67,7 +67,7 @@ export function EmptyState({ title, children, action }: { title?: string; childr
 /** Compact local-processing promise for tool headers. */
 export function PrivacyBadge() {
   return <p className="privacy-line">
-    <ShieldCheck aria-hidden className="size-4 text-brand" />
+    <ShieldCheck aria-hidden className="size-4 text-subtle" />
     <span className="font-semibold text-ink">Runs locally in your browser</span>
     <span className="text-subtle">Your files are not uploaded to our servers.</span>
   </p>;

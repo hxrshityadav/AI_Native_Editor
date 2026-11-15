@@ -1,0 +1,126 @@
+PASS  1600 /: column actually grows 72 to 224
+PASS  1600 /: main gains/loses 152px
+PASS  1600 /: header gains/loses 152px
+PASS  1600 /: footer gains/loses 152px
+PASS  1600 /: capsule tracks its column
+PASS  1600 /: no horizontal overflow in either state
+PASS  1600: homepage grid uses recovered width
+PASS  1600 /: leave restores content width
+PASS  1600 /tools/image-compressor: column actually grows 72 to 224
+PASS  1600 /tools/image-compressor: main gains/loses 152px
+PASS  1600 /tools/image-compressor: header gains/loses 152px
+PASS  1600 /tools/image-compressor: footer gains/loses 152px
+PASS  1600 /tools/image-compressor: capsule tracks its column
+PASS  1600 /tools/image-compressor: no horizontal overflow in either state
+PASS  1600 /tools/image-compressor: leave restores content width
+PASS  1600 /command-center: column actually grows 72 to 224
+PASS  1600 /command-center: main gains/loses 152px
+PASS  1600 /command-center: header gains/loses 152px
+PASS  1600 /command-center: footer gains/loses 152px
+PASS  1600 /command-center: capsule tracks its column
+PASS  1600 /command-center: no horizontal overflow in either state
+PASS  1600 /command-center: leave restores content width
+PASS  1440 /: column actually grows 72 to 224
+PASS  1440 /: main gains/loses 152px
+PASS  1440 /: header gains/loses 152px
+PASS  1440 /: footer gains/loses 152px
+PASS  1440 /: capsule tracks its column
+PASS  1440 /: no horizontal overflow in either state
+PASS  1440: homepage grid uses recovered width
+PASS  1440 /: leave restores content width
+PASS  1440 /tools/image-compressor: column actually grows 72 to 224
+PASS  1440 /tools/image-compressor: main gains/loses 152px
+PASS  1440 /tools/image-compressor: header gains/loses 152px
+PASS  1440 /tools/image-compressor: footer gains/loses 152px
+PASS  1440 /tools/image-compressor: capsule tracks its column
+PASS  1440 /tools/image-compressor: no horizontal overflow in either state
+PASS  1440 /tools/image-compressor: leave restores content width
+PASS  1440 /command-center: column actually grows 72 to 224
+PASS  1440 /command-center: main gains/loses 152px
+PASS  1440 /command-center: header gains/loses 152px
+PASS  1440 /command-center: footer gains/loses 152px
+PASS  1440 /command-center: capsule tracks its column
+PASS  1440 /command-center: no horizontal overflow in either state
+PASS  1440 /command-center: leave restores content width
+PASS  1280 /: column actually grows 72 to 224
+PASS  1280 /: main gains/loses 152px
+PASS  1280 /: header gains/loses 152px
+PASS  1280 /: footer gains/loses 152px
+PASS  1280 /: capsule tracks its column
+PASS  1280 /: no horizontal overflow in either state
+PASS  1280: homepage grid uses recovered width
+PASS  1280 /: leave restores content width
+PASS  1280 /tools/image-compressor: column actually grows 72 to 224
+PASS  1280 /tools/image-compressor: main gains/loses 152px
+PASS  1280 /tools/image-compressor: header gains/loses 152px
+PASS  1280 /tools/image-compressor: footer gains/loses 152px
+PASS  1280 /tools/image-compressor: capsule tracks its column
+PASS  1280 /tools/image-compressor: no horizontal overflow in either state
+PASS  1280 /tools/image-compressor: leave restores content width
+PASS  1280 /command-center: column actually grows 72 to 224
+PASS  1280 /command-center: main gains/loses 152px
+PASS  1280 /command-center: header gains/loses 152px
+PASS  1280 /command-center: footer gains/loses 152px
+PASS  1280 /command-center: capsule tracks its column
+PASS  1280 /command-center: no horizontal overflow in either state
+PASS  1280 /command-center: leave restores content width
+PASS  1024 /: column actually grows 72 to 224
+PASS  1024 /: main gains/loses 152px
+PASS  1024 /: header gains/loses 152px
+PASS  1024 /: footer gains/loses 152px
+PASS  1024 /: capsule tracks its column
+PASS  1024 /: no horizontal overflow in either state
+PASS  1024: homepage grid uses recovered width
+PASS  1024 /: leave restores content width
+PASS  1024 /tools/image-compressor: column actually grows 72 to 224
+PASS  1024 /tools/image-compressor: main gains/loses 152px
+PASS  1024 /tools/image-compressor: header gains/loses 152px
+PASS  1024 /tools/image-compressor: footer gains/loses 152px
+PASS  1024 /tools/image-compressor: capsule tracks its column
+PASS  1024 /tools/image-compressor: no horizontal overflow in either state
+PASS  1024 /tools/image-compressor: leave restores content width
+PASS  1024 /command-center: column actually grows 72 to 224
+PASS  1024 /command-center: main gains/loses 152px
+PASS  1024 /command-center: header gains/loses 152px
+PASS  1024 /command-center: footer gains/loses 152px
+PASS  1024 /command-center: capsule tracks its column
+PASS  1024 /command-center: no horizontal overflow in either state
+PASS  1024 /command-center: leave restores content width
+PASS  768 /: no desktop column consumes space
+PASS  768 /: drawer opens
+PASS  768 /: drawer returns focus
+PASS  768 /tools/image-compressor: no desktop column consumes space
+PASS  768 /tools/image-compressor: drawer opens
+PASS  768 /tools/image-compressor: drawer returns focus
+PASS  768 /command-center: no desktop column consumes space
+PASS  768 /command-center: drawer opens
+PASS  768 /command-center: drawer returns focus
+PASS  430 /: no desktop column consumes space
+PASS  430 /: drawer opens
+PASS  430 /: drawer returns focus
+PASS  430 /tools/image-compressor: no desktop column consumes space
+PASS  430 /tools/image-compressor: drawer opens
+PASS  430 /tools/image-compressor: drawer returns focus
+PASS  430 /command-center: no desktop column consumes space
+PASS  430 /command-center: drawer opens
+PASS  430 /command-center: drawer returns focus
+PASS  390 /: no desktop column consumes space
+PASS  390 /: drawer opens
+PASS  390 /: drawer returns focus
+PASS  390 /tools/image-compressor: no desktop column consumes space
+PASS  390 /tools/image-compressor: drawer opens
+PASS  390 /tools/image-compressor: drawer returns focus
+PASS  390 /command-center: no desktop column consumes space
+PASS  390 /command-center: drawer opens
+PASS  390 /command-center: drawer returns focus
+PASS  360 /: no desktop column consumes space
+PASS  360 /: drawer opens
+PASS  360 /: drawer returns focus
+PASS  360 /tools/image-compressor: no desktop column consumes space
+PASS  360 /tools/image-compressor: drawer opens
+PASS  360 /tools/image-compressor: drawer returns focus
+PASS  360 /command-center: no desktop column consumes space
+PASS  360 /command-center: drawer opens
+PASS  360 /command-center: drawer returns focus
+
+124/124 checks passed

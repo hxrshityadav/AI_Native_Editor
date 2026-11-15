@@ -9,7 +9,7 @@ const MODEL_BYTES: Record<string, number> = {
   "onnx-community/whisper-tiny/resolve/main/onnx/decoder_model_merged_q4.onnx": 86713702,
 };
 
-/** Public model assets only: isolated from Studio/project caches and never cleared implicitly. */
+/** Public model assets only: isolated from other caches and never cleared implicitly. */
 export function publicModelCache(origin: string) {
   const storage=globalThis.caches?.open(LOCAL_MODEL_CACHE).catch(()=>undefined);
   const key=(input:RequestInfo|URL)=>{

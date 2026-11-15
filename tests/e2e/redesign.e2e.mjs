@@ -5,7 +5,7 @@ import { ROOT, startServer, stopServer, createChecks, probe } from './helpers.mj
 const OUT=join(ROOT,'output/redesign'), PORT=3192, BASE=`http://localhost:${PORT}`;
 mkdirSync(OUT,{recursive:true});
 const {check,finish}=createChecks();
-const server=await startServer(PORT,{env:{REEL_ENABLE_CLOUD:''}});
+const server=await startServer(PORT);
 const browser=await chromium.launch({channel:'chrome'});
 const widths=[1440,1280,1024,768,390,360];
 const routes=['/','/tools','/privacy','/supported-formats',...readdirSync(join(ROOT,'src/app/tools'),{withFileTypes:true}).filter(e=>e.isDirectory()&&existsSync(join(ROOT,'src/app/tools',e.name,'page.tsx'))).map(e=>`/tools/${e.name}`)];
@@ -44,7 +44,7 @@ try {
  check('home: unvisited tool and Studio routes are not speculatively fetched',speculative.length===0,JSON.stringify(speculative));
  for(const width of [1440,390]){
   await page.setViewportSize({width,height:900});
-  const artwork=page.locator('.workflow-grid img');
+  const artwork=page.locator('.category-grid img');
   for(const image of await artwork.all()){
    await image.scrollIntoViewIfNeeded();
    await image.evaluate(el=>el.decode());

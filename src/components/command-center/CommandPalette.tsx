@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useId, useRef, useState, type KeyboardEvent } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowUpRight, Command, Search, X } from "lucide-react";
+import { ArrowUpRight, Search, X } from "lucide-react";
 import { CATEGORIES } from "@/lib/tools/catalog";
 import { searchTools, toolByHref, type CategoryFilter } from "@/lib/command-center/catalog";
 import { TOOL_ICONS } from "@/components/site/toolIcons";
@@ -9,11 +9,8 @@ import { useWorkspace } from "./useWorkspace";
 import "./command-center.css";
 
 const OPEN_EVENT = "rf:open-command-palette";
-
-/** A button that opens the one global palette mounted by the site shell. */
-export function CommandPaletteLauncher({ compact = false }: { compact?: boolean }) {
-  return <button type="button" className={`cc-launcher${compact ? " cc-launcher-compact" : ""}`} onClick={() => window.dispatchEvent(new Event(OPEN_EVENT))} aria-label="Open command palette" aria-haspopup="dialog" title="Search tools (Ctrl or ⌘ K)"><Search aria-hidden size={17} />{!compact && <><span>Search tools</span><kbd><Command aria-hidden size={12} /> K</kbd></>}</button>;
-}
+export const openCommandPalette = () => window.dispatchEvent(new Event(OPEN_EVENT));
+const SUGGESTIONS = ["compress", "mp4", "gif", "heic", "wav", "captions"];
 
 /** The single palette instance: Ctrl/⌘ K or any launcher opens it. */
 export function CommandPalette() {
@@ -57,6 +54,7 @@ export function CommandPalette() {
     <dialog ref={dialog} className="cc-palette" aria-labelledby={`${listId}-title`} onClose={() => { setOpen(false); previousFocus.current?.focus(); }} onClick={event => { if (event.target === dialog.current) close(); }}>
       {open && <><div className="cc-palette-heading"><span id={`${listId}-title`}>Go anywhere</span><button type="button" onClick={close} aria-label="Close command palette"><X aria-hidden size={18} /></button></div>
         <div className="cc-command-input"><Search aria-hidden size={20} /><input ref={input} role="combobox" aria-label="Search commands" aria-expanded="true" aria-controls={listId} aria-autocomplete="list" aria-activedescendant={results[active] ? `${listId}-${active}` : undefined} value={query} onChange={event => { setQuery(event.target.value); setActive(0); }} onKeyDown={keyboard} placeholder="Find a tool, format or operation…" autoComplete="off" spellCheck={false} /></div>
+        {!query && <div className="cc-command-try"><span>Try</span>{SUGGESTIONS.map(word => <button type="button" key={word} onClick={() => { setQuery(word); setActive(0); input.current?.focus(); }}>{word}</button>)}</div>}
         <div className="cc-command-filters" role="group" aria-label="Command category"><button type="button" aria-pressed={category === "all"} onClick={() => { setCategory("all"); setActive(0); }}>All</button>{CATEGORIES.map(item => <button type="button" key={item.id} aria-pressed={category === item.id} onClick={() => { setCategory(item.id); setActive(0); }}>{item.title}</button>)}</div>
         <p className="cc-command-context" aria-live="polite">{recent.length ? "Recent tools first" : `${results.length} ${results.length === 1 ? "destination" : "destinations"}`}</p>
         <ul id={listId} role="listbox" aria-label="Tool commands" className="cc-command-results">{results.map((tool, index) => { const Icon = TOOL_ICONS[tool.icon]; return <li key={tool.href} id={`${listId}-${index}`} role="option" aria-selected={index === active} onMouseMove={() => setActive(index)} onClick={() => navigate(tool.href!)}><Icon aria-hidden size={19} /><span><strong>{tool.title}</strong><small>{tool.category === "ai" ? "AI tools" : tool.category} · {tool.formats.slice(0, 3).join(", ")}</small></span><ArrowUpRight aria-hidden size={16} /></li>; })}</ul>

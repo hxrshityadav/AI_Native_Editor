@@ -2,20 +2,18 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { House, LayoutGrid, Command, Menu, PanelLeftClose, PanelLeftOpen, Search, ShieldCheck, X, type LucideIcon } from "lucide-react";
-import { CATEGORIES, toolsIn, type ToolEntry } from "@/lib/tools/catalog";
+import { PanelLeftClose, PanelLeftOpen, AudioLines, Command, FileType2, House, Image as ImageIcon, LayoutGrid, Menu, Search, ShieldCheck, Sparkles, Video, X, type LucideIcon } from "lucide-react";
+import { CATEGORIES, availableTools, toolsIn, type ToolCategory, type ToolEntry } from "@/lib/tools/catalog";
 import { TOOL_ICONS } from "./toolIcons";
-import { CommandPaletteLauncher } from "@/components/command-center/CommandPalette";
 import { cx } from "./ui";
 
 const MAIN = [{ href: "/", label: "Home", icon: House }, { href: "/command-center", label: "Command Center", icon: Command }, { href: "/tools", label: "All tools", icon: LayoutGrid }];
-const COLLAPSED_KEY = "rf-sidebar-collapsed";
 
 function Item({ href, label, icon: Icon, current, compact, onNavigate }: { href: string; label: string; icon: LucideIcon; current: boolean; compact?: boolean; onNavigate?: () => void }) {
   return <li><Link prefetch={false} href={href} onClick={onNavigate} aria-current={current ? "page" : undefined} title={compact ? label : undefined} className={cx(
-    "relative flex min-h-10 items-center gap-3 rounded-[var(--radius-control)] text-sm font-medium transition-colors duration-150",
+    "relative flex min-h-10 items-center gap-3 rounded-[var(--radius-sm)] text-sm font-medium transition-colors duration-150",
     compact ? "justify-center px-0" : "px-3",
-    current ? "bg-brand-soft text-ink" : "text-subtle hover:bg-hover hover:text-ink")}>
+    current ? "bg-hover text-ink" : "text-subtle hover:bg-hover hover:text-ink")}>
     <Icon aria-hidden className="size-4 shrink-0 text-subtle" strokeWidth={1.75} />
     <span className={compact ? "sr-only" : "min-w-0 flex-1 truncate"}>{label}</span>
   </Link></li>;
@@ -35,7 +33,7 @@ function PlannedItem({ tool }: { tool: ToolEntry }) {
  * Main links, a quick filter, then each category: working tools as links, planned tools behind a small disclosure.
  * `compact` renders the icon rail used when the desktop sidebar is collapsed (working tools only).
  */
-export function AppSidebarNav({ compact, onNavigate }: { compact?: boolean; onNavigate?: () => void }) {
+export function AppSidebarNav({ compact, onNavigate, includeMain = true }: { compact?: boolean; onNavigate?: () => void; includeMain?: boolean }) {
   const path = usePathname();
   const [query, setQuery] = useState("");
   const words = query.toLowerCase().split(/\s+/).filter(Boolean);
@@ -45,11 +43,11 @@ export function AppSidebarNav({ compact, onNavigate }: { compact?: boolean; onNa
     return { category, links: tools.filter(tool => tool.status === "available"), planned: tools.filter(tool => tool.status === "planned") };
   }).filter(group => group.links.length || (!compact && group.planned.length));
   return <div className={cx("flex flex-col", compact ? "gap-4" : "gap-6")}>
-    <ul className="space-y-0.5">{MAIN.map(item => <Item key={item.href} {...item} compact={compact} current={path === item.href} onNavigate={onNavigate} />)}</ul>
+    {includeMain && <ul className="space-y-0.5">{MAIN.map(item => <Item key={item.href} {...item} compact={compact} current={path === item.href} onNavigate={onNavigate} />)}</ul>}
     {!compact && <div className="relative">
       <Search aria-hidden className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-faint" />
       <input type="search" value={query} onChange={event => setQuery(event.target.value)} onKeyDown={event => { if (event.key === "Escape") setQuery(""); }} aria-label="Find a tool" placeholder="Find a tool…" autoComplete="off" spellCheck={false}
-        className="min-h-10 w-full rounded-[var(--radius-control)] border border-edge bg-field pl-9 pr-3 text-sm text-ink placeholder:text-faint hover:border-edge-strong" />
+        className="min-h-10 w-full rounded-[var(--radius-sm)] border border-edge bg-sunken pl-9 pr-3 text-sm text-ink placeholder:text-faint hover:border-edge-strong" />
     </div>}
     {groups.map(({ category, links, planned }) => <div key={category.id}>
       {compact ? null : <p id={`side-${category.id}`} className="px-3 pb-1.5 text-[0.8125rem] font-semibold text-faint">{category.navTitle}</p>}
@@ -59,7 +57,7 @@ export function AppSidebarNav({ compact, onNavigate }: { compact?: boolean; onNa
       {!compact && planned.length > 0 && (words.length
         ? <ul aria-label={`${category.navTitle}, planned`}>{planned.map(tool => <PlannedItem key={tool.title} tool={tool} />)}</ul>
         : <details className="group">
-          <summary className="flex min-h-9 cursor-pointer list-none items-center gap-2 rounded-[var(--radius-control)] px-3 text-[0.8125rem] text-faint hover:text-subtle [&::-webkit-details-marker]:hidden">
+          <summary className="flex min-h-9 cursor-pointer list-none items-center gap-2 rounded-[var(--radius-sm)] px-3 text-[0.8125rem] text-faint hover:text-subtle [&::-webkit-details-marker]:hidden">
             <span aria-hidden className="transition-transform duration-150 group-open:rotate-90">›</span>{planned.length} planned
           </summary>
           <ul aria-label={`${category.navTitle}, planned`}>{planned.map(tool => <PlannedItem key={tool.title} tool={tool} />)}</ul>
@@ -69,29 +67,64 @@ export function AppSidebarNav({ compact, onNavigate }: { compact?: boolean; onNa
   </div>;
 }
 
-/** Persistent desktop sidebar with a collapse toggle; the choice is remembered in this browser when storage allows. */
-export function AppSidebar({ wordmark, mark }: { wordmark: ReactNode; mark: ReactNode }) {
-  const [collapsed, setCollapsed] = useState(false);
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- Read the saved preference after hydration so server and client markup match.
-    try { if (localStorage.getItem(COLLAPSED_KEY) === "1") setCollapsed(true); } catch { /* storage blocked: stay expanded */ }
-  }, []);
-  const toggle = () => { const next = !collapsed; setCollapsed(next); try { localStorage.setItem(COLLAPSED_KEY, next ? "1" : "0"); } catch { /* not persisted */ } };
-  const Toggle = collapsed ? PanelLeftOpen : PanelLeftClose;
-  return <div className={cx("hidden bg-sunken transition-[width] duration-150 lg:block", collapsed ? "w-[4.25rem]" : "w-56")}>
-    <aside className="sticky top-0 flex h-dvh flex-col">
-      <div className={cx("flex h-16 shrink-0 items-center", collapsed ? "justify-center" : "justify-between pl-5 pr-3")}>
-        {collapsed ? mark : wordmark}
-        {!collapsed && <button type="button" onClick={toggle} aria-expanded aria-label="Collapse sidebar" title="Collapse sidebar" className="grid size-9 place-items-center rounded-[var(--radius-control)] text-faint hover:bg-hover hover:text-ink"><Toggle aria-hidden className="size-4" /></button>}
-      </div>
-      <div className={cx("pb-3", collapsed ? "px-2" : "px-4")}><CommandPaletteLauncher compact={collapsed} /></div>
-      <nav aria-label="Main" className={cx("flex-1 overflow-y-auto pb-6 pt-2", collapsed ? "px-2" : "px-4")}><AppSidebarNav compact={collapsed} /></nav>
-      {collapsed
-        ? <div className="flex justify-center py-3"><button type="button" onClick={toggle} aria-expanded={false} aria-label="Expand sidebar" title="Expand sidebar" className="grid size-10 place-items-center rounded-[var(--radius-control)] text-faint hover:bg-hover hover:text-ink"><Toggle aria-hidden className="size-4" /></button></div>
-        : <div className="bg-canvas/40 px-5 py-4">
-          <p className="flex gap-2 text-[0.8125rem] leading-relaxed text-subtle"><ShieldCheck aria-hidden className="mt-px size-4 shrink-0 text-brand" />Local tools process files in your browser. Nothing is uploaded.</p>
-          <ul className="mt-2 flex flex-wrap gap-x-4">{[["/privacy", "Privacy"], ["/supported-formats", "Supported formats"]].map(([href, label]) => <li key={href}><Link prefetch={false} href={href} className="inline-flex min-h-9 items-center text-[0.8125rem] text-subtle hover:text-ink">{label}</Link></li>)}</ul>
-        </div>}
+const RAIL: { href: string; label: string; icon: LucideIcon; category?: ToolCategory }[] = [
+  { href: "/", label: "Home", icon: House },
+  { href: "/tools", label: "All tools", icon: LayoutGrid },
+  { href: "/command-center", label: "Command Center", icon: Command },
+  { href: "/tools?category=photo", label: "Photo tools", icon: ImageIcon, category: "photo" },
+  { href: "/tools?category=video", label: "Video tools", icon: Video, category: "video" },
+  { href: "/tools?category=audio", label: "Audio tools", icon: AudioLines, category: "audio" },
+  { href: "/tools?category=ai", label: "AI tools", icon: Sparkles, category: "ai" },
+  { href: "/supported-formats", label: "Supported formats", icon: FileType2 },
+  { href: "/privacy", label: "Privacy", icon: ShieldCheck },
+];
+
+/** One capsule geometry for the desktop rail and the mobile drawer. */
+function NavigationCapsule({ id, onNavigate }: { id?: string; onNavigate?: () => void }) {
+  const path = usePathname();
+  const category = availableTools.find(tool => tool.href === path)?.category;
+  return <nav id={id} aria-label="Main" className="rail"><ul>{RAIL.map(item => {
+    const current = item.category ? item.category === category : path === item.href;
+    return <li key={item.href}><Link prefetch={false} href={item.href} onClick={onNavigate} aria-current={current ? "page" : undefined} aria-label={item.label}>
+      <item.icon aria-hidden size={20} strokeWidth={1.6} /><span className="rail-label">{item.label}</span><span className="rail-tooltip" aria-hidden="true">{item.label}</span>
+    </Link></li>;
+  })}</ul></nav>;
+}
+
+/**
+ * Desktop navigation rail (reference: LLM Dojo). Hover/focus expansion changes the shared grid column; never overlays the
+ * page. Header, content and footer inherit the grid width. Tool pages mark their category as current.
+ */
+export function AppSidebar({ mark }: { mark: ReactNode }) {
+  const [collapsed, setCollapsed] = useState(true);
+  const region = useRef<HTMLElement>(null);
+  const pending = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const pointerInside = useRef(false);
+  const focusInside = useRef(false);
+  function clearPending() { if (pending.current !== null) clearTimeout(pending.current); pending.current = null; }
+  function setExpanded(expanded: boolean) {
+    const frame = region.current?.closest<HTMLElement>(".app-frame");
+    if (frame) frame.dataset.sidebar = expanded ? "expanded" : "collapsed";
+    setCollapsed(!expanded);
+  }
+  function schedule(expanded: boolean, delay: number) {
+    clearPending();
+    pending.current = setTimeout(() => {
+      pending.current = null;
+      if (expanded || (!pointerInside.current && !focusInside.current)) setExpanded(expanded);
+    }, delay);
+  }
+  useEffect(() => () => { if (pending.current !== null) clearTimeout(pending.current); }, []);
+  function toggle() { clearPending(); setExpanded(collapsed); }
+  return <div className="rail-column">
+    <aside ref={region} className="rail-sticky"
+      onPointerEnter={event => { if (event.pointerType !== "mouse" || !matchMedia("(any-hover:hover)").matches) return; pointerInside.current = true; schedule(true, 100); }}
+      onPointerLeave={event => { if (event.pointerType !== "mouse") return; pointerInside.current = false; if (!focusInside.current) schedule(false, 250); }}
+      onFocusCapture={event => { focusInside.current = true; clearPending(); if (!(event.target as HTMLElement).closest(".rail-toggle")) setExpanded(true); }}
+      onBlurCapture={event => { if (event.currentTarget.contains(event.relatedTarget)) return; focusInside.current = false; if (!pointerInside.current) schedule(false, 250); }}>
+      <div className="rail-mark">{mark}</div>
+      <NavigationCapsule id="desktop-navigation" />
+      <button className="rail-toggle" type="button" onClick={toggle} aria-label="Toggle sidebar" title={collapsed ? "Expand sidebar" : "Collapse sidebar"} aria-controls="desktop-navigation" aria-expanded={!collapsed}><PanelLeftClose className="collapse-icon" aria-hidden size={20}/><PanelLeftOpen className="expand-icon" aria-hidden size={20}/><span>Collapse sidebar</span></button>
     </aside>
   </div>;
 }
@@ -101,21 +134,31 @@ export function MobileNav() {
   const dialog = useRef<HTMLDialogElement>(null);
   const [open, setOpen] = useState(false);
   const close = () => dialog.current?.close();
+  useEffect(() => () => document.documentElement.classList.remove("navigation-open"), []);
   return <>
-    <button type="button" aria-haspopup="dialog" aria-expanded={open} onClick={() => { dialog.current?.showModal(); setOpen(true); }} className="inline-flex min-h-11 items-center gap-2 rounded-[var(--radius-control)] border border-edge-strong bg-raised px-3 text-sm font-semibold hover:bg-hover">
+    <button type="button" aria-haspopup="dialog" aria-controls="mobile-navigation" aria-expanded={open} onClick={() => { dialog.current?.showModal(); document.documentElement.classList.add("navigation-open"); setOpen(true); }} className="inline-flex min-h-11 items-center gap-2 rounded-full bg-sunken px-4 text-sm font-medium hover:bg-raised">
       <Menu aria-hidden className="size-4" />Menu
     </button>
-    <dialog ref={dialog} aria-label="Site navigation" onClose={() => setOpen(false)} onClick={event => { if (event.target === dialog.current) close(); }}
+    <dialog id="mobile-navigation" ref={dialog} aria-label="Site navigation" onClose={() => { document.documentElement.classList.remove("navigation-open"); setOpen(false); }} onClick={event => { if (event.target === dialog.current) close(); }}
       className="m-0 h-dvh max-h-none w-[min(20rem,88vw)] max-w-none overscroll-contain bg-raised p-0 text-ink backdrop:bg-black/60">
       <div className="flex h-full flex-col">
         <div className="flex h-16 shrink-0 items-center justify-between bg-sunken px-4">
           <span className="text-sm font-semibold">Menu</span>
-          <button type="button" onClick={close} className="grid size-11 place-items-center rounded-[var(--radius-control)] hover:bg-hover" aria-label="Close menu"><X aria-hidden className="size-5" /></button>
+          <button type="button" onClick={close} className="grid size-11 place-items-center rounded-[var(--radius-sm)] hover:bg-hover" aria-label="Close menu"><X aria-hidden className="size-5" /></button>
         </div>
-        <nav aria-label="Main" className="flex-1 overflow-y-auto overscroll-contain px-4 py-5">{open && <AppSidebarNav onNavigate={close} />}</nav>
+        <div className="mobile-navigation-content flex-1 overflow-y-auto overscroll-contain px-4 py-5">{open && <><NavigationCapsule onNavigate={close} /><nav aria-label="Individual tools" className="mt-6"><AppSidebarNav includeMain={false} onNavigate={close} /></nav></>}</div>
       </div>
     </dialog>
   </>;
 }
+
+
+
+
+
+
+
+
+
 
 

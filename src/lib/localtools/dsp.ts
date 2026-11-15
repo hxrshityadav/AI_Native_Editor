@@ -20,6 +20,34 @@ export function resampleMono(channels: Float32Array[], sourceRate: number, targe
   return result;
 }
 
+/**
+ * Streaming mono resampler (area average, the same filter as resampleMono) that carries its position and the unused
+ * tail of the input across chunks. Resampling each decoded chunk on its own dropped about one output sample per
+ * chunk, leaving periodic silent samples (clicks) in the speech audio given to Whisper.
+ */
+export class StreamingResampler {
+  private buffer = new Float32Array(0); private bufferStart = 0; private next = 0; private readonly ratio: number;
+  constructor(sourceRate: number, readonly targetRate = 16000) { this.ratio = sourceRate / targetRate; }
+  /** Index of the next output sample. */
+  get position() { return this.next; }
+  /** Adds mono source samples (contiguous with the previous push) and returns every output sample now complete. */
+  push(mono: Float32Array, final = false): Float32Array {
+    const joined = new Float32Array(this.buffer.length + mono.length); joined.set(this.buffer); joined.set(mono, this.buffer.length); this.buffer = joined;
+    const end = this.bufferStart + this.buffer.length, out: number[] = [];
+    while (final ? this.next * this.ratio < end : (this.next + 1) * this.ratio <= end) {
+      const from = this.next * this.ratio, to = Math.min(end, (this.next + 1) * this.ratio);
+      let sum = 0, weight = 0;
+      for (let j = Math.floor(from); j < Math.ceil(to); j++) { const w = Math.max(0, Math.min(to, j + 1) - Math.max(from, j)); sum += this.buffer[j - this.bufferStart] * w; weight += w; }
+      out.push(weight ? sum / weight : 0); this.next++;
+    }
+    const keep = Math.max(this.bufferStart, Math.floor(this.next * this.ratio));
+    this.buffer = this.buffer.slice(keep - this.bufferStart); this.bufferStart = keep;
+    return Float32Array.from(out);
+  }
+  /** Skips source samples (a gap in the file), keeping output time aligned. */
+  skip(sourceSamples: number) { if (sourceSamples > 0) this.push(new Float32Array(sourceSamples)); }
+}
+
 /** Stereo centre/side cancellation. This is not neural stem separation. */
 export function stereoStems(channels: Float32Array[]) {
   if (channels.length !== 2) throw new Error("This method needs true stereo audio. Mono cannot be separated by centre cancellation; choose another recording.");

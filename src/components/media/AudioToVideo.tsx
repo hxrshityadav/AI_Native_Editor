@@ -52,7 +52,7 @@ export function AudioToVideo() {
   return <section aria-label="Audio to Video workspace" className={styles.root}>
     <ToolSurface onFiles={files => void load(files)}
       file={<FileDetails name={file.name} factsLabel="Original details" onStartOver={clear}
-        thumb={<span className={`${styles.thumb} grid place-items-center text-brand`} aria-hidden><Video size={20} /></span>}
+        thumb={<span className={`${styles.thumb} grid place-items-center text-subtle`} aria-hidden><Video size={20} /></span>}
         picker={<FilePicker label="Replace file" inputLabel="Choose file" accept={ACCEPT} onFiles={files => void load(files)} />}
         facts={<><span>{info.duration.toFixed(1)} s</span><span>{info.audio?.codec.toUpperCase()}</span><span>{shortSize(file.size)}</span></>} />}
       stage={<Stage plain busy={!!busy} processing={<ProcessingPanel title="Creating video" status={busy} progress={progress} onCancel={cancel} />}>

@@ -133,3 +133,20 @@ Instagram, Facebook and WhatsApp specs say AAC. WhatsApp's app defaults to 100 M
 
 Current source/revision/size/license/integrity inventory and the actual speech-content comparison are in [local models](../local-models.md) and the [implementation ledger](../local-ai-implementation.md). Primary sources include Microsoft's SpeechT5 model/license, OpenAI Whisper, the original [CMU SLT COPYING](http://festvox.org/cmu_arctic/cmu_arctic/cmu_us_slt_arctic/COPYING), the [derived vector dataset](https://huggingface.co/datasets/Matthijs/cmu-arctic-xvectors), Jitsi/Xiph RNNoise and the exact PDF.js/ORT releases. The fixed voice vector was matched byte-for-byte to the documented SLT example; it was not replaced. UVR redistribution permission remains unresolved; no weights downloaded. Kokoro/local LLM metadata review is not an inference-quality or device benchmark.
 
+## Local multilingual TTS and MP3 encoding (checked 2026-11-15)
+
+- Kokoro.js (kokoro-js, Transformers.js): Apache-2.0 weights. Its phonemizer supports English (US and UK) only (hexgrad/kokoro issue 209). Non-English Kokoro relies on espeak-ng, which is GPL-3.0.
+- Piper: the maintained repository OHF-Voice/piper1-gpl is GPL-3.0-or-later (the archived rhasspy/piper was MIT) and embeds espeak-ng (GPL-3.0). Each voice has its own licence. Voices are about 25–65 MB, some about 100 MB.
+- `@mediabunny/mp3-encoder` 1.66.0 (npm): MPL-2.0, "MP3 encoder extension for Mediabunny, based on LAME". LAME is LGPL. Size and compatibility with mediabunny 1.62 are not yet checked.
+
+
+## Hindi speech benchmark data (downloaded 2026-11-15, with the owner's approval)
+
+- **Source:** FLEURS (Conneau et al., 2022), `google/fleurs`, config `hi_in`, validation split, CC BY 4.0. It was fetched
+  as individual WAV files through the Hugging Face datasets-server `first-rows` preview, because the test split's
+  archive is hundreds of MB.
+- **Selection:** the 20 shortest distinct sentences, 3.96–8.40 s and 122.9 s in all. The WAVs are 16 kHz mono float32,
+  7.5 MiB in total; the owner approved about 5 MB, so this exceeds the estimate.
+- **Speakers:** all 20 are labelled female in the dataset, so speaker variety is limited.
+- **Storage:** `output/caption-bench/fleurs-hi/`, with reference transcriptions (`raw_transcription`) and `SOURCE.json`.
+  Used only for local benchmarking; not shipped with the app.

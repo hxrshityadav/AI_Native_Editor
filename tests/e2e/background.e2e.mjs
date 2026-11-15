@@ -8,7 +8,7 @@ import { ROOT, startServer, stopServer, createChecks, probe, streams } from "./h
 const OUT = join(ROOT, "output/launch-background"), PORT = Number(process.env.BACKGROUND_TEST_PORT || 3158), BASE = `http://localhost:${PORT}`;
 mkdirSync(OUT, { recursive: true });
 const { check, finish } = createChecks();
-const server = await startServer(PORT, { env: { REEL_ENABLE_CLOUD: "" } });
+const server = await startServer(PORT);
 const browser = await chromium.launch({ channel: "chrome" });
 const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, acceptDownloads: true });
 const requests = []; context.on("request", req => requests.push({ url: req.url(), method: req.method() }));

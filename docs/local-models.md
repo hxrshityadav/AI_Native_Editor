@@ -8,6 +8,8 @@ Public models/runtime assets only; no media, document or transcript is sent for 
 |---|---|---:|---|
 | Whisper Tiny q4 encoder | `onnx-community/whisper-tiny`, `ff4177021cc41f7db950912b73ea4fdf7d01d8e7` | 9,020,667 | OpenAI Whisper Apache-2.0; multilingual ASR, estimated segment times |
 | Whisper Tiny merged q4 decoder | Same | 86,713,702 | Same; weights total 95,734,369 bytes / 91.30 MiB, plus configs/tokenizer/runtime |
+| Whisper Tiny **timestamped** q4 (Subtitle Studio) | `onnx-community/whisper-tiny_timestamped`, `517244293732ee2d58139af5814231b7e6830a0d` | 9,019,892 + 86,804,581 | Same OpenAI Whisper weights (Apache-2.0 via `openai/whisper-tiny`), exported with cross-attentions so word timestamps are real; 91.39 MiB weights + tokenizer/configs ≈ 95 MiB; cached separately from `whisper-tiny` |
+| Whisper Base **timestamped** q4 (optional) | `onnx-community/whisper-base_timestamped`, `608c49e61301901684bc36cac8f74b95ff6b5a8e` | 18,771,046 + 123,738,327 | `openai/whisper-base`, Apache-2.0; 135.91 MiB weights ≈ 140 MiB total; separate consent |
 | SpeechT5 q8 encoder | `Xenova/speecht5_tts`, `1723781b8ce2d02f0400c8337be04ae8ee3d6d56` | 88,402,301 | Microsoft's MIT SpeechT5, ONNX conversion; English generic voice |
 | SpeechT5 **fp32** merged decoder | Same | 244,486,683 | Replaces q8 decoder after actual spoken-content failure |
 | HiFiGAN fp32 | `Xenova/speecht5_hifigan`, `cf980c3610d7b7f20919960031066ef7905737bd` | 55,432,026 | Microsoft MIT; current speech weights total **388,321,010 bytes / 370.33 MiB** |

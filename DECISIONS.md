@@ -351,3 +351,121 @@ The rule is that the Studio (`/studio`, `vendor/openreel`) is not modified. The 
 - `vendor/openreel/apps/web/src/reelfinisher/creator-import.ts` (new): loads the IndexedDB handoff (`src/lib/localtools/creator-handoff.ts`; UUID id, 24 h expiry, 512 MiB cap, fingerprint check), checks that the duration matches, then builds and saves one native project through the existing media bridge and project store.
 
 The original video stays on the device. It moves from the tool page to the Studio through IndexedDB only. Covered by `tests/e2e/creator.e2e.mjs`. Any further Studio change still needs its own approval.
+
+## 2026-11-08 — Reel Studio removed from the website (user decision)
+
+The user asked to remove Reel Studio from the website and chose the complete removal over unlinking it. Removed:
+
+- **Routes:** `/studio`, `/studio-legacy`, `/lab`, `/editor-models`, `/api/transcribe`, `/api/edit-plan` and `/tools/shorts-maker`.
+- **The editor itself:** the vendored OpenReel editor (`vendor/openreel`, including the Shorts handoff patch recorded on 2026-11-07, which this supersedes) and its build output `public/editor`.
+- **Studio-only code:** `src/components/editor`, `src/lib/{editor,edit,captions,transcription}`, the render pipeline in `src/lib/media`, drafts, brand kit and local DB, the Shorts handoff, and moments.
+- **Catalog entries:** Reel Studio, Auto Subtitles, Automatic Editing and Shorts Maker.
+- **Tests and harnesses:** the Studio-only unit tests, E2E suites and perf, sync, bakeoff and compat harnesses.
+- **Dependencies:** `idb` and `postgres`.
+- **Configuration:** the cloud provider settings in `.env.example`, and the Studio headers in `next.config.ts`.
+
+**Kept and re-homed:** the local speech tools need Transformers.js and its pinned ONNX Runtime Web, which previously came from OpenReel's `node_modules`. They now come from an isolated install, `tools/transformers` (Transformers.js 3.8.1, ONNX Runtime Web 1.22.0-dev.20250409-89f8206ba4, esbuild 0.21.5). These are the same versions, so the notices and built worker files are unchanged. The ONNX Runtime licence text moved to `tools/local-ai/ONNXRUNTIME-LICENSE.txt`.
+
+**Consequences:**
+- Removed URLs return 404.
+- Projects people saved in the Studio stay in their browsers' storage but are no longer reachable from this site.
+- Subtitles are still available through Transcribe to Text (TXT, SRT and VTT) and Video Translator.
+- Everything is recoverable from git (`e7bbc26` and earlier).
+
+## 2026-11-15: Multilingual (Hindi) text to speech waits for a local, non-GPL model
+
+The owner chose to keep text to speech local-only and wait. No cloud TTS provider is added, and no GPL-3.0 code is
+shipped for it. Kokoro's browser phonemizer covers English only. Kokoro's Hindi path and Piper both need espeak-ng
+(GPL-3.0), and Piper's maintained engine is GPL-3.0 (see `docs/research/README.md`, 2026-11-15). SpeechT5 remains the
+English voice, and the browser's own `speechSynthesis` stays listening-only because it cannot produce an honest download.
+Revisit if a phonemizer-free multilingual TTS model with a permissive licence runs in the browser and passes the
+Whisper round-trip intelligibility check, or if the owner later approves a GPL worker after legal review.
+
+## 2026-11-15: Subtitle Studio uses phrase timing; word highlighting waits for real word timestamps
+
+Subtitle Studio reuses the existing Whisper Tiny worker (one ASR engine), which returns phrase-level timestamps. The
+caption model and renderer accept per-word timings, but the Highlighted word preset is disabled until a transcript
+actually carries them. Spreading a phrase's duration evenly over its words would look synchronised and be wrong.
+Preview and burned-in export share one renderer (`src/lib/subtitles/captions.ts`, `drawCaption`) at the export
+resolution. The E2E test measures the caption bounding box in the preview canvas and in the exported frame and requires
+them to agree within 6 px. They matched exactly in the 2026-11-15 run. Caption fonts are the bundled OFL faces. A
+caption whose script the chosen font lacks blocks export with a reason instead of being drawn in a fallback face.
+Revisit word timing with a timestamped Whisper export (its own consent, revision pin and benchmark). Do not claim
+Hindi accuracy until a Tiny vs Base WER/CER benchmark on real clips exists.
+
+## 2026-11-15: One spacing scale for the shell, tool surface and Command Center
+
+An unslop audit (heydamir/unslop, CC BY 4.0) measured every public route at seven widths. It found 3,772 rendered
+spacing values off the 4px grid, from hand-typed values in `public-site.css`, `command-center.css` and
+`ToolSurface.module.css` (for example `.35rem`, `.85rem`, `14px`, `22px`). They were snapped to the nearest 4px step,
+using `--space-*` tokens where one exists, which left 754, nearly all intentional 6px centring padding in small controls.
+The rail capsule's 6px centring padding and keycap padding are kept on purpose. New CSS should use `--space-*` only.
+
+## 2026-11-15: Caption transcription sets the language explicitly and uses timestamped Whisper exports
+
+**Root cause of "Hindi comes out as English".** Transformers.js 3.8.1 has no Whisper language identification
+(`models.js`: "TODO: Implement language detection"). When no language is passed, it silently forces `<|en|>`. The
+warning is stripped by our build. "Detect automatically", the default in every speech tool, therefore decoded Hindi
+with the English token, which yields English text and often a translation.
+
+**Fix:**
+- The speech worker now runs real identification for "auto": one decoder step after `<|startoftranscript|>` on the
+  first 30 seconds, then a softmax over the 99 language tokens. It passes the winning code explicitly and reports it,
+  with its probability and the runners-up.
+- Hindi and Hinglish always use `<|hi|>` with task `transcribe`; captions never use `translate`.
+- This also fixes Transcribe to Text, Lecture to Notes and the Video Translator, which share the worker.
+
+**Models:** Subtitle Studio uses `onnx-community/whisper-tiny_timestamped` (≈95 MiB) by default and offers
+`whisper-base_timestamped` (≈140 MiB) as a separate opt-in. These are the same OpenAI weights (Apache-2.0), exported with
+cross-attentions, so `return_timestamps: "word"` gives real word times (DTW over the alignment heads). Revisions are
+pinned in `modelAssets.ts`.
+
+**Measurement:** a benchmark on synthetic local voices (English and Roman-Hinglish proxies) measured:
+- English WER 2.6% for both models, and language ID 3 of 3 correct;
+- Hinglish proxies: Tiny 72% WER, Base about 90%. Base tends to translate accented romanised speech into English.
+
+That is not Hindi evidence, so no default change is made on accuracy grounds and no Hindi accuracy is claimed. A real
+Hindi benchmark needs recorded Hindi with reference transcripts (for example FLEURS hi_in, CC BY 4.0), which needs a
+download the owner has not yet approved.
+
+**Other decisions:**
+- **Hinglish script:** Roman output and English-word restoration are deterministic and local (`hinglish.ts`, a
+  transliterator plus a lexicon), applied word by word so timings survive. The recognised original is kept.
+- **Decoding loops:** runs of the same word or phrase repeated more than three times are cut, and the result is
+  flagged for review.
+- **Not done:** Whisper `prompt_ids` (to bias code-switching) is not implemented in this Transformers.js version. A
+  generative "correct mistakes" cleanup needs a language model and is not offered.
+
+## 2026-11-15: Roman Hinglish uses a Hinglish-tuned Whisper; Hindi Devanagari has no adequate browser model yet
+
+**Measured** in real Chrome with the app's own worker (`tests/e2e/caption-bench.e2e.mjs`, scorer `caption-bench-score.mjs`):
+- **20 real Hindi recordings** (FLEURS hi_in validation, CC BY 4.0).
+- **7 Hinglish regression clips**: the brief's own example sentences plus three others, read by local en-IN voices.
+  These are synthetic, not real people.
+
+| Model (q4 unless noted) | Hinglish clips: median WER / CER | FLEURS Hindi vs romanised reference: median WER / CER | Notes |
+|---|---|---|---|
+| Whisper Tiny (timestamped) | 70% / 33% | 90% / 37% | Phonetic garble; with `<|en|>` it translates |
+| Whisper Base (timestamped) | 82% / 41% | 97% / 31% | Sometimes translates to English or writes Urdu script, even with `<|hi|>` |
+| Oriserve Hindi2Hinglish **Swift** (q8) | **27% / 10%** | **40% / 23%** | Roman output, English terms kept; no word timing |
+| ARTPARK whisper-tiny-vaani-hindi (ONNX by astronova001) | — | 100% / 100% | Degenerate output from this conversion |
+| vasista22 whisper-hindi-small (ONNX) | — | 100% / 100% | Outputs "#!": conversion lacks a usable language setup; 6× real time |
+| Tiny or Base with Devanagari-only token constraint | — | 94–99% WER | Decoder loops; rejected and opt-in only |
+
+No model produced reliable Devanagari: 1 of 80 generic runs wrote mostly Devanagari.
+
+**Decisions:**
+- **Roman Hinglish** is a separate pipeline with Roman-only output: the Swift model by default (Apache-2.0, pinned
+  revision, separate consent, about 100 MiB), the `<|hi|>` token and `transcribe`.
+  - Every recognised word passes through `enforceRoman`, and Hinglish captions containing Devanagari fail validation,
+    including after edits and clean-up.
+  - There is no Devanagari script option in this mode. The raw model output is kept beside the captions.
+  - Swift has no word timing (phrase timing only), and the UI says so.
+- **Hindi** stays Devanagari with Tiny or Base, plus a measured warning. Recommend Roman Hinglish for Hindi speech
+  until a browser-sized Devanagari model measures adequately.
+- **Normalization** (`normalizeHinglish`) only fixes spacing, sentence capitals and the danda. It never replaces words.
+- **Audio:** per-chunk resampling dropped one 16 kHz sample per decoded chunk (about 37 zeroed samples per second).
+  It was replaced by a streaming resampler (`StreamingResampler`), which a unit test shows equals whole-file resampling.
+
+**Not measured:** peak memory, real code-switched recordings from many speakers, and noise robustness. These need real
+Hinglish recordings with verified references; none are available locally yet.

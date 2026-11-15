@@ -1,0 +1,585 @@
+▲ Next.js 16.4.3 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://10.39.249.47:3000
+- Environments: .env.local
+✓ Ready in 860ms
+✓ Running next.config.ts took 281ms
+- Cache Components enabled
+- Partial Prefetching enabled
+
+○ Compiling / ...
+ GET / 200 in 869ms (next.js: 249ms, application-code: 620ms)
+ GET /command-center 200 in 152ms (next.js: 33ms, application-code: 119ms)
+[browser] Encountered a script tag while rendering React component. Scripts inside React components are never executed when rendering on the client. Consider using template tag instead (https://developer.mozilla.org/en-US/docs/Web/HTML/Element/template). 
+✓ Compiled in 847ms
+ GET / 200 in 372ms (next.js: 4ms, application-code: 369ms)
+ GET /tools/image-compressor 200 in 372ms (next.js: 23ms, application-code: 349ms)
+[browser] A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <RenderFromTemplateContext>
+      <ScrollHandler renderTree={{...}}>
+        <InnerScrollHandler scrollRef={{scrollRef:null, ...}} renderTree={{...}}>
+          <ErrorBoundary errorComponent={undefined} errorStyles={undefined} errorScripts={undefined}>
+            <LoadingBoundary name="image-comp..." loading={null}>
+              <HTTPAccessFallbackBoundary notFound={undefined} forbidden={undefined} unauthorized={undefined}>
+                <RedirectBoundary>
+                  <RedirectErrorBoundary router={{...}}>
+                    <InnerLayoutRouter url="/tools/ima..." tree={[...]} params={{}} renderTree={{...}} ...>
+                      <SegmentViewNode type="page" pagePath="tools/imag...">
+                        <SegmentTrieNode>
+                        <Page>
+                          <ToolPage>
+                            <ToolPageLayout>
+                              <SiteShell>
+                                <div className="site min-h...">
+                                  <script>
+                                  <div>
+                                  <div
+                                    className="app-frame lg:grid"
+-                                   data-sidebar="collapsed"
+                                  >
+                      ...
+                    ...
+          ...
+ 
+ GET /command-center 200 in 242ms (next.js: 5ms, application-code: 237ms)
+[browser] A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <RenderFromTemplateContext>
+      <ScrollHandler renderTree={{...}}>
+        <InnerScrollHandler scrollRef={{scrollRef:null, ...}} renderTree={{...}}>
+          <ErrorBoundary errorComponent={undefined} errorStyles={undefined} errorScripts={undefined}>
+            <LoadingBoundary name="command-ce..." loading={null}>
+              <HTTPAccessFallbackBoundary notFound={undefined} forbidden={undefined} unauthorized={undefined}>
+                <RedirectBoundary>
+                  <RedirectErrorBoundary router={{...}}>
+                    <InnerLayoutRouter url="/command-c..." tree={[...]} params={{}} renderTree={{...}} ...>
+                      <SegmentViewNode type="page" pagePath="command-ce...">
+                        <SegmentTrieNode>
+                        <Page>
+                          <SiteShell>
+                            <div className="site min-h...">
+                              <script>
+                              <div>
+                              <div
+                                className="app-frame lg:grid"
+-                               data-sidebar="collapsed"
+                              >
+                      ...
+                    ...
+          ...
+ 
+ GET / 200 in 269ms (next.js: 2ms, application-code: 267ms)
+[browser] A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <RenderFromTemplateContext>
+      <ScrollHandler renderTree={{...}}>
+        <InnerScrollHandler scrollRef={{scrollRef:null, ...}} renderTree={{...}}>
+          <ErrorBoundary errorComponent={undefined} errorStyles={undefined} errorScripts={undefined}>
+            <LoadingBoundary name="/" loading={null}>
+              <HTTPAccessFallbackBoundary notFound={{...}} forbidden={undefined} unauthorized={undefined}>
+                <HTTPAccessFallbackErrorBoundary pathname="/" notFound={{...}} forbidden={undefined} ...>
+                  <RedirectBoundary>
+                    <RedirectErrorBoundary router={{...}}>
+                      <InnerLayoutRouter url="/" tree={[...]} params={{}} renderTree={{...}} segmentPath={[...]} ...>
+                        <SegmentViewNode type="page" pagePath="page.tsx">
+                          <SegmentTrieNode>
+                          <Home>
+                            <SiteShell>
+                              <div className="site min-h...">
+                                <script>
+                                <div>
+                                <div
+                                  className="app-frame lg:grid"
+-                                 data-sidebar="collapsed"
+                                >
+                        ...
+                      ...
+          ...
+ 
+⨯ The directory at "C:\Developer\AI Native Editor\.next\dev" was deleted.
+
+Deleting this directory removes caches and will cause slower performance.
+
+Deleting this directory while Next.js is running can lead to undefined behavior. Restarting the server to recover...
+▲ Next.js 16.4.3 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://10.39.249.47:3000
+- Environments: .env.local
+✓ Ready in 881ms
+✓ Running next.config.ts took 48ms
+- Cache Components enabled
+- Partial Prefetching enabled
+
+⨯ The directory at "C:\Developer\AI Native Editor\.next\dev" was deleted.
+
+Deleting this directory removes caches and will cause slower performance.
+
+Deleting this directory while Next.js is running can lead to undefined behavior. Restarting the server to recover...
+▲ Next.js 16.4.3 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://10.39.249.47:3000
+- Environments: .env.local
+✓ Ready in 345ms
+✓ Running next.config.ts took 37ms
+- Cache Components enabled
+- Partial Prefetching enabled
+
+⨯ The directory at "C:\Developer\AI Native Editor\.next\dev" was deleted.
+
+Deleting this directory removes caches and will cause slower performance.
+
+Deleting this directory while Next.js is running can lead to undefined behavior. Restarting the server to recover...
+▲ Next.js 16.4.3 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://10.39.249.47:3000
+- Environments: .env.local
+✓ Ready in 364ms
+✓ Running next.config.ts took 36ms
+- Cache Components enabled
+- Partial Prefetching enabled
+
+⨯ The directory at "C:\Developer\AI Native Editor\.next\dev" was deleted.
+
+Deleting this directory removes caches and will cause slower performance.
+
+Deleting this directory while Next.js is running can lead to undefined behavior. Restarting the server to recover...
+▲ Next.js 16.4.3 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://10.39.249.47:3000
+- Environments: .env.local
+✓ Ready in 326ms
+✓ Running next.config.ts took 36ms
+- Cache Components enabled
+- Partial Prefetching enabled
+
+○ Compiling / ...
+ GET / 200 in 1103ms (next.js: 383ms, application-code: 720ms)
+[browser] A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <RenderFromTemplateContext>
+      <ScrollHandler renderTree={{...}}>
+        <InnerScrollHandler scrollRef={{scrollRef:null, ...}} renderTree={{...}}>
+          <ErrorBoundary errorComponent={undefined} errorStyles={undefined} errorScripts={undefined}>
+            <LoadingBoundary name="/" loading={null}>
+              <HTTPAccessFallbackBoundary notFound={{...}} forbidden={undefined} unauthorized={undefined}>
+                <HTTPAccessFallbackErrorBoundary pathname="/" notFound={{...}} forbidden={undefined} ...>
+                  <RedirectBoundary>
+                    <RedirectErrorBoundary router={{...}}>
+                      <InnerLayoutRouter url="/" tree={[...]} params={{}} renderTree={{...}} segmentPath={[...]} ...>
+                        <SegmentViewNode type="page" pagePath="page.tsx">
+                          <SegmentTrieNode>
+                          <Home>
+                            <SiteShell>
+                              <div className="site min-h...">
+                                <script>
+                                <div
+                                  className="app-frame lg:grid"
+-                                 data-sidebar="collapsed"
+                                >
+                        ...
+                      ...
+          ...
+ 
+✓ Compiled in 668ms
+✓ Compiled in 707ms
+⨯ The directory at "C:\Developer\AI Native Editor\.next\dev" was deleted.
+
+Deleting this directory removes caches and will cause slower performance.
+
+Deleting this directory while Next.js is running can lead to undefined behavior. Restarting the server to recover...
+▲ Next.js 16.4.3 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://10.39.249.47:3000
+- Environments: .env.local
+✓ Ready in 763ms
+✓ Running next.config.ts took 55ms
+- Cache Components enabled
+- Partial Prefetching enabled
+
+○ Compiling / ...
+ GET / 200 in 1186ms (next.js: 469ms, application-code: 718ms)
+[browser] A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <RenderFromTemplateContext>
+      <ScrollHandler renderTree={{...}}>
+        <InnerScrollHandler scrollRef={{scrollRef:null, ...}} renderTree={{...}}>
+          <ErrorBoundary errorComponent={undefined} errorStyles={undefined} errorScripts={undefined}>
+            <LoadingBoundary name="/" loading={null}>
+              <HTTPAccessFallbackBoundary notFound={{...}} forbidden={undefined} unauthorized={undefined}>
+                <HTTPAccessFallbackErrorBoundary pathname="/" notFound={{...}} forbidden={undefined} ...>
+                  <RedirectBoundary>
+                    <RedirectErrorBoundary router={{...}}>
+                      <InnerLayoutRouter url="/" tree={[...]} params={{}} renderTree={{...}} segmentPath={[...]} ...>
+                        <SegmentViewNode type="page" pagePath="page.tsx">
+                          <SegmentTrieNode>
+                          <Home>
+                            <SiteShell>
+                              <div className="site min-h...">
+                                <script>
+                                <div
+                                  className="app-frame lg:grid"
+-                                 data-sidebar="collapsed"
+                                >
+                        ...
+                      ...
+          ...
+ 
+○ Compiling /command-center ...
+ GET /command-center 200 in 179ms (next.js: 62ms, application-code: 117ms)
+ GET /tools 200 in 176ms (next.js: 22ms, application-code: 154ms)
+ GET /command-center 200 in 159ms (next.js: 22ms, application-code: 136ms)
+[browser] Encountered a script tag while rendering React component. Scripts inside React components are never executed when rendering on the client. Consider using template tag instead (https://developer.mozilla.org/en-US/docs/Web/HTML/Element/template). 
+ GET / 200 in 160ms (next.js: 3ms, application-code: 156ms)
+✓ Compiled in 881ms
+⨯ The directory at "C:\Developer\AI Native Editor\.next\dev" was deleted.
+
+Deleting this directory removes caches and will cause slower performance.
+
+Deleting this directory while Next.js is running can lead to undefined behavior. Restarting the server to recover...
+▲ Next.js 16.4.3 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://10.39.249.47:3000
+- Environments: .env.local
+✓ Ready in 787ms
+✓ Running next.config.ts took 59ms
+- Cache Components enabled
+- Partial Prefetching enabled
+
+○ Compiling / ...
+ GET / 200 in 1180ms (next.js: 416ms, application-code: 764ms)
+✓ Compiled in 873ms
+⨯ The directory at "C:\Developer\AI Native Editor\.next\dev" was deleted.
+
+Deleting this directory removes caches and will cause slower performance.
+
+Deleting this directory while Next.js is running can lead to undefined behavior. Restarting the server to recover...
+▲ Next.js 16.4.3 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://10.39.249.47:3000
+- Environments: .env.local
+✓ Ready in 532ms
+✓ Running next.config.ts took 47ms
+- Cache Components enabled
+- Partial Prefetching enabled
+
+[browser] A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <RenderFromTemplateContext>
+      <ScrollHandler renderTree={{...}}>
+        <InnerScrollHandler scrollRef={{scrollRef:null, ...}} renderTree={{...}}>
+          <ErrorBoundary errorComponent={undefined} errorStyles={undefined} errorScripts={undefined}>
+            <LoadingBoundary name="/" loading={null}>
+              <HTTPAccessFallbackBoundary notFound={{...}} forbidden={undefined} unauthorized={undefined}>
+                <HTTPAccessFallbackErrorBoundary pathname="/" notFound={{...}} forbidden={undefined} ...>
+                  <RedirectBoundary>
+                    <RedirectErrorBoundary router={{...}}>
+                      <InnerLayoutRouter url="/" tree={[...]} params={{}} renderTree={{...}} segmentPath={[...]} ...>
+                        <SegmentViewNode type="page" pagePath="page.tsx">
+                          <SegmentTrieNode>
+                          <Home>
+                            <SiteShell>
+                              <div className="site min-h...">
+                                <script>
+                                <div
+                                  className="app-frame lg:grid"
+-                                 data-sidebar="expanded"
+                                >
+                        ...
+                      ...
+          ...
+ 
+    at <unknown> (file://C:/Developer/AI Native Editor/.next/dev/static/chunks/1daa_next_dist_compiled_react-dom_cjs_react-dom-client_development_0mp0cp_t-ezj9.js:3263:25)
+    at runWithFiberInDEV (file://C:/Developer/AI Native Editor/.next/dev/static/chunks/1daa_next_dist_compiled_react-dom_cjs_react-dom-client_development_0mp0cp_t-ezj9.js:777:74)
+    at emitPendingHydrationWarnings (file://C:/Developer/AI Native Editor/.next/dev/static/chunks/1daa_next_dist_compiled_react-dom_cjs_react-dom-client_development_0mp0cp_t-ezj9.js:3262:13)
+    at completeWork (file://C:/Developer/AI Native Editor/.next/dev/static/chunks/1daa_next_dist_compiled_react-dom_cjs_react-dom-client_development_0mp0cp_t-ezj9.js:6897:32)
+    at runWithFiberInDEV (file://C:/Developer/AI Native Editor/.next/dev/static/chunks/1daa_next_dist_compiled_react-dom_cjs_react-dom-client_development_0mp0cp_t-ezj9.js:777:74)
+    at completeUnitOfWork (file://C:/Developer/AI Native Editor/.next/dev/static/chunks/1daa_next_dist_compiled_react-dom_cjs_react-dom-client_development_0mp0cp_t-ezj9.js:9507:23)
+    at performUnitOfWork (file://C:/Developer/AI Native Editor/.next/dev/static/chunks/1daa_next_dist_compiled_react-dom_cjs_react-dom-client_development_0mp0cp_t-ezj9.js:9442:28)
+    at workLoopConcurrentByScheduler (file://C:/Developer/AI Native Editor/.next/dev/static/chunks/1daa_next_dist_compiled_react-dom_cjs_react-dom-client_development_0mp0cp_t-ezj9.js:9436:58)
+    at renderRootConcurrent (file://C:/Developer/AI Native Editor/.next/dev/static/chunks/1daa_next_dist_compiled_react-dom_cjs_react-dom-client_development_0mp0cp_t-ezj9.js:9419:71)
+    at performWorkOnRoot (file://C:/Developer/AI Native Editor/.next/dev/static/chunks/1daa_next_dist_compiled_react-dom_cjs_react-dom-client_development_0mp0cp_t-ezj9.js:8947:150)
+    at performWorkOnRootViaSchedulerTask (file://C:/Developer/AI Native Editor/.next/dev/static/chunks/1daa_next_dist_compiled_react-dom_cjs_react-dom-client_development_0mp0cp_t-ezj9.js:10140:9)
+    at MessagePort.performWorkUntilDeadline (file://C:/Developer/AI Native Editor/.next/dev/static/chunks/node_modules_next_dist_compiled_1amofcmz--cdp._.js:1864:64) (file://C:/Developer/AI Native Editor/.next/dev/static/chunks/1daa_next_dist_compiled_react-dom_cjs_react-dom-client_development_0mp0cp_t-ezj9.js:3263:25)
+○ Compiling / ...
+ GET / 200 in 1154ms (next.js: 423ms, application-code: 731ms)
+[browser] A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <RenderFromTemplateContext>
+      <ScrollHandler renderTree={{...}}>
+        <InnerScrollHandler scrollRef={{scrollRef:null, ...}} renderTree={{...}}>
+          <ErrorBoundary errorComponent={undefined} errorStyles={undefined} errorScripts={undefined}>
+            <LoadingBoundary name="/" loading={null}>
+              <HTTPAccessFallbackBoundary notFound={{...}} forbidden={undefined} unauthorized={undefined}>
+                <HTTPAccessFallbackErrorBoundary pathname="/" notFound={{...}} forbidden={undefined} ...>
+                  <RedirectBoundary>
+                    <RedirectErrorBoundary router={{...}}>
+                      <InnerLayoutRouter url="/" tree={[...]} params={{}} renderTree={{...}} segmentPath={[...]} ...>
+                        <SegmentViewNode type="page" pagePath="page.tsx">
+                          <SegmentTrieNode>
+                          <Home>
+                            <SiteShell>
+                              <div className="site min-h...">
+                                <script>
+                                <div
+                                  className="app-frame lg:grid"
+-                                 data-sidebar="expanded"
+                                >
+                        ...
+                      ...
+          ...
+ 
+    at <unknown> (file://C:/Developer/AI Native Editor/.next/dev/static/chunks/1daa_next_dist_compiled_react-dom_cjs_react-dom-client_development_0mp0cp_t-ezj9.js:3263:25)
+    at runWithFiberInDEV (file://C:/Developer/AI Native Editor/.next/dev/static/chunks/1daa_next_dist_compiled_react-dom_cjs_react-dom-client_development_0mp0cp_t-ezj9.js:777:74)
+    at emitPendingHydrationWarnings (file://C:/Developer/AI Native Editor/.next/dev/static/chunks/1daa_next_dist_compiled_react-dom_cjs_react-dom-client_development_0mp0cp_t-ezj9.js:3262:13)
+    at completeWork (file://C:/Developer/AI Native Editor/.next/dev/static/chunks/1daa_next_dist_compiled_react-dom_cjs_react-dom-client_development_0mp0cp_t-ezj9.js:6897:32)
+    at runWithFiberInDEV (file://C:/Developer/AI Native Editor/.next/dev/static/chunks/1daa_next_dist_compiled_react-dom_cjs_react-dom-client_development_0mp0cp_t-ezj9.js:777:74)
+    at completeUnitOfWork (file://C:/Developer/AI Native Editor/.next/dev/static/chunks/1daa_next_dist_compiled_react-dom_cjs_react-dom-client_development_0mp0cp_t-ezj9.js:9507:23)
+    at performUnitOfWork (file://C:/Developer/AI Native Editor/.next/dev/static/chunks/1daa_next_dist_compiled_react-dom_cjs_react-dom-client_development_0mp0cp_t-ezj9.js:9442:28)
+    at workLoopConcurrentByScheduler (file://C:/Developer/AI Native Editor/.next/dev/static/chunks/1daa_next_dist_compiled_react-dom_cjs_react-dom-client_development_0mp0cp_t-ezj9.js:9436:58)
+    at renderRootConcurrent (file://C:/Developer/AI Native Editor/.next/dev/static/chunks/1daa_next_dist_compiled_react-dom_cjs_react-dom-client_development_0mp0cp_t-ezj9.js:9419:71)
+    at performWorkOnRoot (file://C:/Developer/AI Native Editor/.next/dev/static/chunks/1daa_next_dist_compiled_react-dom_cjs_react-dom-client_development_0mp0cp_t-ezj9.js:8947:150)
+    at performWorkOnRootViaSchedulerTask (file://C:/Developer/AI Native Editor/.next/dev/static/chunks/1daa_next_dist_compiled_react-dom_cjs_react-dom-client_development_0mp0cp_t-ezj9.js:10140:9)
+    at MessagePort.performWorkUntilDeadline (file://C:/Developer/AI Native Editor/.next/dev/static/chunks/node_modules_next_dist_compiled_1amofcmz--cdp._.js:1864:64) (file://C:/Developer/AI Native Editor/.next/dev/static/chunks/1daa_next_dist_compiled_react-dom_cjs_react-dom-client_development_0mp0cp_t-ezj9.js:3263:25)
+ GET / 200 in 323ms (next.js: 5ms, application-code: 318ms)
+[browser] A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <RenderFromTemplateContext>
+      <ScrollHandler renderTree={{...}}>
+        <InnerScrollHandler scrollRef={{scrollRef:null, ...}} renderTree={{...}}>
+          <ErrorBoundary errorComponent={undefined} errorStyles={undefined} errorScripts={undefined}>
+            <LoadingBoundary name="/" loading={null}>
+              <HTTPAccessFallbackBoundary notFound={{...}} forbidden={undefined} unauthorized={undefined}>
+                <HTTPAccessFallbackErrorBoundary pathname="/" notFound={{...}} forbidden={undefined} ...>
+                  <RedirectBoundary>
+                    <RedirectErrorBoundary router={{...}}>
+                      <InnerLayoutRouter url="/" tree={[...]} params={{}} renderTree={{...}} segmentPath={[...]} ...>
+                        <SegmentViewNode type="page" pagePath="page.tsx">
+                          <SegmentTrieNode>
+                          <Home>
+                            <SiteShell>
+                              <div className="site min-h...">
+                                <script>
+                                <div
+                                  className="app-frame lg:grid"
+-                                 data-sidebar="collapsed"
+                                >
+                        ...
+                      ...
+          ...
+ 
+    at <unknown> (file://C:/Developer/AI Native Editor/.next/dev/static/chunks/1daa_next_dist_compiled_react-dom_cjs_react-dom-client_development_0mp0cp_t-ezj9.js:3263:25)
+    at runWithFiberInDEV (file://C:/Developer/AI Native Editor/.next/dev/static/chunks/1daa_next_dist_compiled_react-dom_cjs_react-dom-client_development_0mp0cp_t-ezj9.js:777:74)
+    at emitPendingHydrationWarnings (file://C:/Developer/AI Native Editor/.next/dev/static/chunks/1daa_next_dist_compiled_react-dom_cjs_react-dom-client_development_0mp0cp_t-ezj9.js:3262:13)
+    at completeWork (file://C:/Developer/AI Native Editor/.next/dev/static/chunks/1daa_next_dist_compiled_react-dom_cjs_react-dom-client_development_0mp0cp_t-ezj9.js:6897:32)
+    at runWithFiberInDEV (file://C:/Developer/AI Native Editor/.next/dev/static/chunks/1daa_next_dist_compiled_react-dom_cjs_react-dom-client_development_0mp0cp_t-ezj9.js:777:74)
+    at completeUnitOfWork (file://C:/Developer/AI Native Editor/.next/dev/static/chunks/1daa_next_dist_compiled_react-dom_cjs_react-dom-client_development_0mp0cp_t-ezj9.js:9507:23)
+    at performUnitOfWork (file://C:/Developer/AI Native Editor/.next/dev/static/chunks/1daa_next_dist_compiled_react-dom_cjs_react-dom-client_development_0mp0cp_t-ezj9.js:9442:28)
+    at workLoopConcurrentByScheduler (file://C:/Developer/AI Native Editor/.next/dev/static/chunks/1daa_next_dist_compiled_react-dom_cjs_react-dom-client_development_0mp0cp_t-ezj9.js:9436:58)
+    at renderRootConcurrent (file://C:/Developer/AI Native Editor/.next/dev/static/chunks/1daa_next_dist_compiled_react-dom_cjs_react-dom-client_development_0mp0cp_t-ezj9.js:9419:71)
+    at performWorkOnRoot (file://C:/Developer/AI Native Editor/.next/dev/static/chunks/1daa_next_dist_compiled_react-dom_cjs_react-dom-client_development_0mp0cp_t-ezj9.js:8947:150)
+    at performWorkOnRootViaSchedulerTask (file://C:/Developer/AI Native Editor/.next/dev/static/chunks/1daa_next_dist_compiled_react-dom_cjs_react-dom-client_development_0mp0cp_t-ezj9.js:10140:9)
+    at MessagePort.performWorkUntilDeadline (file://C:/Developer/AI Native Editor/.next/dev/static/chunks/node_modules_next_dist_compiled_1amofcmz--cdp._.js:1864:64) (file://C:/Developer/AI Native Editor/.next/dev/static/chunks/1daa_next_dist_compiled_react-dom_cjs_react-dom-client_development_0mp0cp_t-ezj9.js:3263:25)
+✓ Compiled in 368ms
+ GET / 200 in 72ms (next.js: 4ms, application-code: 68ms)
+✓ Compiled in 737ms
+✓ Compiled in 306ms
+✓ Compiled in 499ms
+ GET / 200 in 98ms (next.js: 6ms, application-code: 92ms)
+✓ Compiled in 380ms
+⨯ The directory at "C:\Developer\AI Native Editor\.next\dev" was deleted.
+
+Deleting this directory removes caches and will cause slower performance.
+
+Deleting this directory while Next.js is running can lead to undefined behavior. Restarting the server to recover...
+▲ Next.js 16.4.3 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://10.220.58.47:3000
+- Environments: .env.local
+✓ Ready in 937ms
+✓ Running next.config.ts took 51ms
+- Cache Components enabled
+- Partial Prefetching enabled
+
+○ Compiling / ...
+ GET / 200 in 1294ms (next.js: 687ms, application-code: 607ms)
+✓ Compiled in 399ms
+⨯ The directory at "C:\Developer\AI Native Editor\.next\dev" was deleted.
+
+Deleting this directory removes caches and will cause slower performance.
+
+Deleting this directory while Next.js is running can lead to undefined behavior. Restarting the server to recover...
+▲ Next.js 16.4.3 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://10.220.58.47:3000
+- Environments: .env.local
+✓ Ready in 549ms
+✓ Running next.config.ts took 37ms
+- Cache Components enabled
+- Partial Prefetching enabled
+
+○ Compiling / ...
+ GET / 200 in 494ms (next.js: 195ms, application-code: 300ms)
+ GET / 200 in 328ms (next.js: 4ms, application-code: 324ms)
+✓ Compiled in 362ms
+✓ Compiled in 316ms
+✓ Compiled in 335ms
+⨯ The directory at "C:\Developer\AI Native Editor\.next\dev" was deleted.
+
+Deleting this directory removes caches and will cause slower performance.
+
+Deleting this directory while Next.js is running can lead to undefined behavior. Restarting the server to recover...
+▲ Next.js 16.4.3 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://10.220.58.47:3000
+- Environments: .env.local
+✓ Ready in 697ms
+✓ Running next.config.ts took 65ms
+- Cache Components enabled
+- Partial Prefetching enabled
+
+○ Compiling / ...
+ GET / 200 in 706ms (next.js: 295ms, application-code: 410ms)
+✓ Compiled in 279ms
+⨯ The directory at "C:\Developer\AI Native Editor\.next\dev" was deleted.
+
+Deleting this directory removes caches and will cause slower performance.
+
+Deleting this directory while Next.js is running can lead to undefined behavior. Restarting the server to recover...
+▲ Next.js 16.4.3 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://10.220.58.47:3000
+- Environments: .env.local
+✓ Ready in 811ms
+✓ Running next.config.ts took 41ms
+- Cache Components enabled
+- Partial Prefetching enabled
+
+○ Compiling / ...
+ GET / 200 in 609ms (next.js: 236ms, application-code: 373ms)
+✓ Compiled in 331ms
+⨯ The directory at "C:\Developer\AI Native Editor\.next\dev" was deleted.
+
+Deleting this directory removes caches and will cause slower performance.
+
+Deleting this directory while Next.js is running can lead to undefined behavior. Restarting the server to recover...
+▲ Next.js 16.4.3 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://10.220.58.47:3000
+- Environments: .env.local
+✓ Ready in 443ms
+✓ Running next.config.ts took 58ms
+- Cache Components enabled
+- Partial Prefetching enabled
+
+○ Compiling / ...
+ GET / 200 in 640ms (next.js: 257ms, application-code: 383ms)
+✓ Finished writing to filesystem cache in 12.2s
+ GET / 200 in 280ms (next.js: 5ms, application-code: 276ms)
+✓ Compiled in 395ms
+⨯ The directory at "C:\Developer\AI Native Editor\.next\dev" was deleted.
+
+Deleting this directory removes caches and will cause slower performance.
+
+Deleting this directory while Next.js is running can lead to undefined behavior. Restarting the server to recover...
+▲ Next.js 16.4.3 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://10.220.58.47:3000
+- Environments: .env.local
+✓ Ready in 756ms
+✓ Running next.config.ts took 45ms
+- Cache Components enabled
+- Partial Prefetching enabled
+
+○ Compiling / ...
+ GET / 200 in 690ms (next.js: 291ms, application-code: 398ms)
+ GET / 200 in 236ms (next.js: 3ms, application-code: 233ms)
+ GET / 200 in 286ms (next.js: 4ms, application-code: 282ms)

@@ -1,12 +1,16 @@
 import type { MediaInfo, MediaRequest, MediaResult, Peaks } from "./engine";
 import type { GifResult } from "./gif";
 import type { AudioVideoResult } from "./audiovideo";
+import type { MixResult } from "./mixer";
+import type { BurnResult } from "../subtitles/burn";
 
 /** Runs one media task in a fresh worker. Aborting, a crash or 90 s without progress terminates it. Nothing is uploaded. */
 export function runMediaTask(request: MediaRequest & { kind: "inspect" }, signal: AbortSignal): Promise<MediaInfo>;
 export function runMediaTask(request: MediaRequest & { kind: "peaks" }, signal: AbortSignal): Promise<Peaks>;
 export function runMediaTask(request: MediaRequest & { kind: "process" }, signal: AbortSignal, onProgress?: (value: number) => void, onPhase?: (value: string) => void): Promise<MediaResult>;
 export function runMediaTask(request: MediaRequest & { kind: "audiovideo" }, signal: AbortSignal, onProgress?: (value: number) => void, onPhase?: (value: string) => void): Promise<AudioVideoResult>;
+export function runMediaTask(request: MediaRequest & { kind: "burn" }, signal: AbortSignal, onProgress?: (value: number) => void, onPhase?: (value: string) => void): Promise<BurnResult>;
+export function runMediaTask(request: MediaRequest & { kind: "mix" }, signal: AbortSignal, onProgress?: (value: number) => void, onPhase?: (value: string) => void): Promise<MixResult>;
 export function runMediaTask(request: MediaRequest & { kind: "gif" }, signal: AbortSignal, onProgress?: (value: number) => void, onPhase?: (value: string) => void): Promise<GifResult>;
 export function runMediaTask(request: MediaRequest, signal: AbortSignal, onProgress?: (value: number) => void, onPhase?: (value: string) => void): Promise<unknown> {
   if (signal.aborted) return Promise.reject(new DOMException("Cancelled", "AbortError"));

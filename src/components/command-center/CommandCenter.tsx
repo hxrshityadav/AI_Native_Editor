@@ -6,14 +6,13 @@ import { CATEGORIES, type ToolCategory, type ToolEntry } from "@/lib/tools/catal
 import { QUICK_ACTIONS, commandTools, searchTools, toolByHref, type CategoryFilter } from "@/lib/command-center/catalog";
 import { TOOL_ICONS } from "@/components/site/toolIcons";
 import { buttonClass } from "@/components/site/ui";
-import { CommandPaletteLauncher } from "./CommandPalette";
 import { useWorkspace, workspaceStore } from "./useWorkspace";
 import "./command-center.css";
 
 type View = "overview" | "all" | ToolCategory | "favorites" | "recent" | "settings";
 const NAV: { id: View; label: string; icon: LucideIcon }[][] = [
   [{ id: "overview", label: "Overview", icon: LayoutDashboard }, { id: "all", label: "All tools", icon: LayoutGrid }],
-  [{ id: "photo", label: "Photo", icon: ImageIcon }, { id: "video", label: "Video", icon: Video }, { id: "audio", label: "Audio", icon: AudioLines }, { id: "ai", label: "AI Studio", icon: Sparkles }],
+  [{ id: "photo", label: "Photo", icon: ImageIcon }, { id: "video", label: "Video", icon: Video }, { id: "audio", label: "Audio", icon: AudioLines }, { id: "ai", label: "AI tools", icon: Sparkles }],
   [{ id: "favorites", label: "Favorites", icon: Heart }, { id: "recent", label: "Recent activity", icon: Clock3 }, { id: "settings", label: "Settings", icon: Settings2 }],
 ];
 const VIEW_IDS = NAV.flat().map(item => item.id);
@@ -75,11 +74,10 @@ export function CommandCenter() {
 
   return <main className="command-center-page">
     <header className="cc-header">
-      <div><h1>Command Center</h1><p>Find a tool, pin the ones you use, and pick up where you left off. Everything here stays in this browser; your files stay inside each tool.</p></div>
-      <div className="cc-header-search"><CommandPaletteLauncher /></div>
+      <div><h1>Command Center</h1><p className="cc-lead">Find a tool, pin the ones you use, and pick up where you left off. Everything here stays in this browser; your files stay inside each tool.</p></div>
     </header>
     {state.loaded && state.storage === "temporary" && <p className="cc-storage-message" role="status">Browser storage is unavailable, so favorites and visits last only while this tab is open. Allow site storage for this site to keep them.</p>}
-    {state.loaded && state.storage === "recovered" && <p className="cc-storage-message" role="status">Your saved Command Center preferences could not be read, so they were reset. Pin your tools again; Studio projects and other site data are untouched.</p>}
+    {state.loaded && state.storage === "recovered" && <p className="cc-storage-message" role="status">Your saved Command Center preferences could not be read, so they were reset. Pin your tools again; other site data is untouched.</p>}
     <div className="cc-layout">
       <nav className="cc-rail" aria-label="Command Center sections">{NAV.map((group, index) => <ul key={index}>{group.map(item => { const total = badge(item.id); return <li key={item.id}>
         <button type="button" aria-current={view === item.id ? "page" : undefined} onClick={() => setView(item.id)}><item.icon aria-hidden size={17} strokeWidth={1.75} /><span>{item.label}</span>{total !== undefined && <small className="tabular">{total}</small>}</button>
@@ -98,7 +96,7 @@ export function CommandCenter() {
             <section aria-labelledby="overview-recent"><div className="cc-section-title"><h2 id="overview-recent">Recently opened</h2>{recent.length > 4 && <button type="button" onClick={() => setView("recent")}>All {recent.length} <ArrowUpRight aria-hidden size={15} /></button>}</div><ToolCollection tools={recent.slice(0, 4)} favorites={state.favorites} times={times} empty={state.recordHistory ? "Tools you open appear here. File names and results are never recorded." : "Visit history is paused. Turn it back on in Settings."} /></section>
           </div>
           <section className="cc-categories" aria-labelledby="categories-title"><div className="cc-section-title"><h2 id="categories-title">Browse by category</h2></div>
-            <ul>{CATEGORIES.map(category => <li key={category.id}><button type="button" onClick={() => setView(category.id)}><strong>{category.id === "ai" ? "AI Studio" : category.title}</strong><span>{category.blurb}</span><small className="tabular">{count(category.id)} tools</small></button></li>)}</ul>
+            <ul>{CATEGORIES.map(category => <li key={category.id}><button type="button" onClick={() => setView(category.id)}><strong>{category.id === "ai" ? "AI tools" : category.title}</strong><span>{category.blurb}</span><small className="tabular">{count(category.id)} tools</small></button></li>)}</ul>
           </section>
         </>}
         {(view === "all" || isCategory(view)) && <Directory key={view} category={view} favorites={state.favorites} />}
@@ -108,7 +106,7 @@ export function CommandCenter() {
           <label className="cc-setting"><span><strong>Remember recently opened tools</strong><small>Stores only tool routes and visit times. Turning this off stops new records; existing visits stay until you clear them.</small></span><input type="checkbox" checked={state.recordHistory} onChange={event => workspaceStore.setRecordHistory(event.target.checked)} /></label>
           <div className="cc-setting"><span><strong>Clear recent activity</strong><small>Removes the list of tool visits.</small></span><button type="button" className="cc-clear" disabled={!recent.length} onClick={() => workspaceStore.clearHistory()}>Clear history</button></div>
           <div className="cc-setting"><span><strong>Clear favorites</strong><small>Removes pinned tools. You can pin them again at any time.</small></span><button type="button" className="cc-clear" disabled={!favorites.length} onClick={() => workspaceStore.clearFavorites()}>Clear favorites</button></div>
-          <p className="cc-safety"><ShieldCheck aria-hidden size={20} />These controls never remove Studio projects, source media, downloaded AI models or any other stored data.</p>
+          <p className="cc-safety"><ShieldCheck aria-hidden size={20} />These controls never remove source media, downloaded AI models or any other stored data.</p>
           <Link prefetch={false} href="/privacy">Read the privacy notes <ArrowUpRight aria-hidden size={15} /></Link>
         </section>}
       </div>
