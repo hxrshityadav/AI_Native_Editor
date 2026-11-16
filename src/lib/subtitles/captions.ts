@@ -181,7 +181,7 @@ export function safeArea(width: number, height: number, scale = 1) {
   return { x: base.x * scale, top: base.top * scale, bottom: base.bottom * scale };
 }
 /** @deprecated kept for older callers; use safeArea(width, height). */
-export const SAFE = { x: 0.06, top: 0.08, bottom: 0.14 };
+
 
 /* ---------- Validation ---------- */
 

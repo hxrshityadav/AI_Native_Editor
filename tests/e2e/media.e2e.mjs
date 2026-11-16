@@ -1,11 +1,12 @@
+import { mediaExec } from "./helpers.mjs";
 import { chromium, devices } from "playwright";
-import { execFileSync, spawnSync } from "node:child_process";
+import { mediaSpawn as spawnSync } from "./helpers.mjs";
 import { mkdirSync } from "node:fs";
 import { join } from "node:path";
 import { ROOT, startServer, stopServer, createChecks, ff, probe, streams, decodeErrors } from "./helpers.mjs";
 
 // Local audio/video utilities (src/lib/mediatools), verified on real downloaded files with ffprobe/ffmpeg.
-const OUT = join(ROOT, "output/launch-media"), PORT = Number(process.env.MEDIA_TEST_PORT || 3159), BASE = `http://localhost:${PORT}`;
+const OUT = join(ROOT, "output/launch-media"), PORT = Number(process.env.REEL_E2E_PORT || process.env.MEDIA_TEST_PORT || 3159), BASE = `http://localhost:${PORT}`;
 mkdirSync(OUT, { recursive: true });
 const f = name => join(OUT, name);
 ff("-f", "lavfi", "-i", "testsrc2=size=640x360:rate=30", "-f", "lavfi", "-i", "sine=frequency=440:sample_rate=48000", "-t", "6", "-c:v", "libx264", "-g", "60", "-keyint_min", "60", "-sc_threshold", "0", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "128k", "-shortest", f("source.mp4"));
@@ -112,7 +113,7 @@ try {
   await open("video-to-gif", f("source.mp4")); await page.getByRole("button", { name: "Create GIF", exact: true }).waitFor();
   await range(1, 3); await page.getByRole("radio", { name: "240", exact: true }).check();
   const gif = await run("Create GIF", "Download GIF", "clip.gif");
-  const gifStream = probe(gif.path).streams[0], gifFrames = Number(execFileSync("ffprobe", ["-v", "error", "-count_frames", "-select_streams", "v:0", "-show_entries", "stream=nb_read_frames", "-of", "csv=p=0", gif.path]).toString().trim());
+  const gifStream = probe(gif.path).streams[0], gifFrames = Number(mediaExec("ffprobe", ["-v", "error", "-count_frames", "-select_streams", "v:0", "-show_entries", "stream=nb_read_frames", "-of", "csv=p=0", gif.path]).toString().trim());
   check("gif: real animated GIF at the chosen width with the expected frames", gifStream.codec_name === "gif" && gifStream.width === 240 && Math.abs(gifFrames - 24) <= 1 && gif.suggested === "source.gif", `${gifStream.width}px, ${gifFrames} frames`);
 
   // Compress Video to Size

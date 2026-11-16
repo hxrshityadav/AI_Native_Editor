@@ -23,14 +23,27 @@ export function createChecks() {
 }
 
 export function ff(...args) {
-  execFileSync("ffmpeg", ["-hide_banner", "-loglevel", "error", "-y", ...args], { stdio: "inherit" });
+  mediaExec("ffmpeg", ["-hide_banner", "-loglevel", "error", "-y", ...args], { stdio: "inherit" });
 }
 
-export function probe(file) {
-  return JSON.parse(
-    execFileSync("ffprobe", ["-v", "error", "-show_streams", "-show_format", "-of", "json", file]).toString(),
-  );
+/** Retry only an OS-cancelled media subprocess, never a format/content failure. */
+export function mediaExec(command,args,options={}) {
+  for(let attempt=0;attempt<2;attempt++){
+    try{return execFileSync(command,args,{...options,windowsHide:true});}
+    catch(error){
+      if(attempt || error.status !== 0xC000013A)throw error;
+      console.warn('Media subprocess interrupted by Windows (0xC000013A); retrying once.');
+    }
+  }
 }
+export function mediaSpawn(command,args,options={}) {
+  for(let attempt=0;attempt<2;attempt++){
+    const result=spawnSync(command,args,{...options,windowsHide:true});
+    if(attempt || result.status !== 0xC000013A)return result;
+    console.warn('Media subprocess interrupted by Windows (0xC000013A); retrying once.');
+  }
+}
+export function probe(file) { return JSON.parse(mediaExec('ffprobe', ['-v','error','-show_streams','-show_format','-of','json',file]).toString()); }
 
 /** Generates every fixture into `dir` and returns a path helper. */
 export function makeFixtures(dir) {
@@ -57,12 +70,18 @@ export function makeFixtures(dir) {
 
 /** Starts `next start` (or `next dev` with `dev: true`) on `port`, with optional extra environment variables. */
 export async function startServer(port, { env: extra = {}, dev = false } = {}) {
+  if (process.env.REEL_E2E_PORT) {
+    if (dev || port !== Number(process.env.REEL_E2E_PORT)) throw new Error('Suite must use the owned production server port');
+    if (!(await fetch(`http://localhost:${port}/`)).ok) throw new Error('Shared test server is not ready');
+    for (const [key, value] of Object.entries(extra)) if (process.env[key] !== value) throw new Error(`Shared server environment mismatch: ${key}`);
+    return { shared: true };
+  }
   const env = { ...process.env, PORT: String(port), ...extra };
   const server = spawn(process.execPath, [join(ROOT, "node_modules/next/dist/bin/next"), ...(dev ? ["dev", "--webpack"] : ["start"]), "-p", String(port)], {
     cwd: ROOT,
     env,
     stdio: "pipe",
-    detached: true, // own process group, so stopServer() also kills next-server children
+    detached: true, windowsHide: true, // own process group, so stopServer() also kills next-server children
   });
   server.stderr.on("data", (d) => process.stderr.write(d));
   for (let i = 0; i < 60; i++) {
@@ -76,6 +95,7 @@ export async function startServer(port, { env: extra = {}, dev = false } = {}) {
 }
 
 export function stopServer(server) {
+  if (server.shared) return;
   try {
     if (process.platform === "win32") execFileSync("taskkill", ["/pid", String(server.pid), "/T", "/F"], { stdio: "ignore" });
     else process.kill(-server.pid, "SIGTERM");
@@ -93,7 +113,7 @@ export async function download(page, testId, dest) {
 /** Mean absolute luma difference between two files' frames at time t, within a horizontal band. */
 export function frameDiff(a, b, t, width, height, bandTop, bandBottom) {
   const gray = (file) =>
-    execFileSync("ffmpeg", ["-v", "error", "-ss", String(t), "-i", file, "-frames:v", "1", "-f", "rawvideo", "-pix_fmt", "gray", "-"], { maxBuffer: 64 << 20 });
+    mediaExec("ffmpeg", ["-v", "error", "-ss", String(t), "-i", file, "-frames:v", "1", "-f", "rawvideo", "-pix_fmt", "gray", "-"], { maxBuffer: 64 << 20 });
   const ga = gray(a);
   const gb = gray(b);
   let sum = 0;
@@ -109,7 +129,7 @@ export function frameDiff(a, b, t, width, height, bandTop, bandBottom) {
 
 /** Counts pixels in a horizontal band of the frame at time t whose RGB matches `match`. */
 export function countPixels(file, t, width, height, bandTop, bandBottom, match) {
-  const rgb = execFileSync("ffmpeg", ["-v", "error", "-ss", String(t), "-i", file, "-frames:v", "1", "-f", "rawvideo", "-pix_fmt", "rgb24", "-"], { maxBuffer: 64 << 20 });
+  const rgb = mediaExec("ffmpeg", ["-v", "error", "-ss", String(t), "-i", file, "-frames:v", "1", "-f", "rawvideo", "-pix_fmt", "rgb24", "-"], { maxBuffer: 64 << 20 });
   let n = 0;
   for (let y = Math.floor(height * bandTop); y < Math.floor(height * bandBottom); y++) {
     for (let x = 0; x < width; x++) {
@@ -139,6 +159,6 @@ export function topLevelBoxes(file) {
 /** Decodes every frame and sample; returns ffmpeg's error output (empty when the file is clean). */
 export function decodeErrors(file) {
   // Keep sub-frame cut timestamps: the null muxer's default 1/fps clock merges distinct frames.
-  const result = spawnSync("ffmpeg", ["-v", "error", "-i", file, "-enc_time_base:v", "1:1000000", "-f", "null", "-"], { stdio: ["ignore", "ignore", "pipe"] });
+  const result = mediaSpawn("ffmpeg", ["-v", "error", "-i", file, "-enc_time_base:v", "1:1000000", "-f", "null", "-"], { stdio: ["ignore", "ignore", "pipe"] });
   return result.stderr?.toString() || result.error?.message || (result.status !== 0 ? `Decoder exited ${result.status}` : "");
 }

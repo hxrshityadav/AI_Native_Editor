@@ -5,7 +5,7 @@ import { join } from "node:path";
 import { ROOT, startServer, stopServer, createChecks, ff, probe, streams, decodeErrors } from "./helpers.mjs";
 
 // Music Mixer: real mixed files from real inputs, with ducking measured by ffmpeg on the downloaded output.
-const OUT = join(ROOT, "output/launch-mixer"), PORT = Number(process.env.MIXER_TEST_PORT || 3163), BASE = `http://localhost:${PORT}`;
+const OUT = join(ROOT, "output/launch-mixer"), PORT = Number(process.env.REEL_E2E_PORT || process.env.MIXER_TEST_PORT || 3163), BASE = `http://localhost:${PORT}`;
 mkdirSync(OUT, { recursive: true });
 const f = name => join(OUT, name);
 // "Voice": a 300 Hz tone that is present only from 2–4 s and 6–8 s, over silence. "Music": a 4 s 1 kHz MP3 at 44.1 kHz,

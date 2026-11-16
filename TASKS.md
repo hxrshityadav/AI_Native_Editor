@@ -250,3 +250,14 @@ Per-milestone files, manual test instructions, limitations and next steps: `docs
 - Undo history is not saved; after a restore, undo starts empty.
 - Drafts live in one browser profile; clearing site data or private browsing loses them (the UI says so when saving fails).
 - Timing is edited by nudging, not by dragging on a waveform or timeline.
+
+## Engineering recovery — 16 November 2026
+
+- Tested: generated output untracked (1,230 files, 256,246,808 bytes retained locally); /output/ ignored. No commits/history rewrite.
+- Implemented: serial build-once owned-server regression runner, stale geometry assertions, UI sweep nonzero failures, bounded caption benchmarks and scorer module build.
+- Tested (unit): timestamp validation refuses missing/reversed/overlapping/multiword timing; no interpolation or cross-model positional timing. Raw ASR output retained.
+- Tested (unit): model Range forwarding, invalid partial rejection and Content-Length truncation detection. Persistent partial-download resume remains Not started.
+- In progress: uninterrupted production regression chain and identical-audio Tiny/Base/Swift comparison; see docs/engineering-recovery.md for final results.
+- Blocked: diverse consented natural Hinglish corpus and manually annotated word times; current one technical recording does not support a production accuracy claim.
+- Requires physical device testing: low-memory Android/iOS, background jobs, five/ten-minute inference and peak process/WASM memory.
+- Deferred by this sprint: MP3 export, Hindi TTS, AI Reel Generator, Shorts Maker rebuild and SEO landing pages. Existing implementations, if any, are not removed or expanded.

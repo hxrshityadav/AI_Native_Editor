@@ -4,7 +4,7 @@ import { chromium } from "playwright";
 import { mkdirSync } from "node:fs";
 import { join } from "node:path";
 import { ROOT, startServer, stopServer, createChecks } from "./helpers.mjs";
-const OUT = join(ROOT, "output/scrollbar"), PORT = 3214, BASE = `http://localhost:${PORT}`;
+const OUT = join(ROOT, "output/scrollbar"), PORT=Number(process.env.REEL_E2E_PORT || 3214), BASE = `http://localhost:${PORT}`;
 mkdirSync(OUT, { recursive: true });
 const { check, finish } = createChecks();
 const server = await startServer(PORT), browser = await chromium.launch({ channel: "chrome" });

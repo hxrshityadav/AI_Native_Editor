@@ -1,10 +1,11 @@
+import { mediaExec } from "./helpers.mjs";
 // Opt-in release measurements; generated noises are controlled proxies, not field recordings.
 import { chromium } from "playwright";
 import { execFileSync } from "node:child_process";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { ROOT, ff, probe, decodeErrors, startServer, stopServer } from "./helpers.mjs";
-const OUT=join(ROOT,"output/release-certification"),PORT=3186,BASE=`http://localhost:${PORT}`;
+const OUT=join(ROOT,"output/release-certification"),PORT=Number(process.env.REEL_E2E_PORT || 3186),BASE=`http://localhost:${PORT}`;
 mkdirSync(OUT,{recursive:true});
 const recordings=JSON.parse(readFileSync(join(OUT,"recordings.json"),"utf8"));
 const server=await startServer(PORT,{env:{REEL_ENABLE_CLOUD:""}}),browser=await chromium.launch({channel:"chrome"});
@@ -91,7 +92,7 @@ try{
   const input=join(OUT,label+"-original.wav");if(noise)ff("-i",noiseClean,"-f","lavfi","-i",noise,"-filter_complex","amix=inputs=2:duration=first:normalize=0",input);else ff("-i",noiseClean,input);
   const output=await run(label+"-processed",{kind:"noise",neural:true},{file:input,worker:"noise"});
   if(output.path){
-   const decode=path=>{const bytes=execFileSync("ffmpeg",["-v","error","-i",path,"-f","f32le","-"],{maxBuffer:10000000});return new Float32Array(bytes.buffer.slice(bytes.byteOffset,bytes.byteOffset+bytes.byteLength));};
+   const decode=path=>{const bytes=mediaExec("ffmpeg",["-v","error","-i",path,"-f","f32le","-"],{maxBuffer:10000000});return new Float32Array(bytes.buffer.slice(bytes.byteOffset,bytes.byteOffset+bytes.byteLength));};
    const original=decode(input),processed=decode(output.path),reference=decode(noiseClean),rms=s=>Math.sqrt(s.reduce((sum,x)=>sum+x*x,0)/s.length);
    let dot=0,a=0,b=0;for(let i=0;i<Math.min(reference.length,processed.length);i++){dot+=reference[i]*processed[i];a+=reference[i]**2;b+=processed[i]**2;}
    report.jobs.at(-1).audioMetrics={originalFrames:original.length,processedFrames:processed.length,rmsRatio:rms(processed)/rms(original),cleanCorrelation:dot/Math.sqrt(a*b),clippedSamples:processed.filter(x=>Math.abs(x)>=32767/32768).length};

@@ -4,7 +4,7 @@ import { join } from "node:path";
 import { ROOT, startServer, stopServer, createChecks, ff, probe, streams, decodeErrors } from "./helpers.mjs";
 
 // Audio Cutter zoomable waveform: zoom and scroll bounds, windowed detail, keyboard nudging, playback and export in sync.
-const OUT = join(ROOT, "output/launch-cutter-zoom"), PORT = Number(process.env.ZOOM_TEST_PORT || 3167), BASE = `http://localhost:${PORT}`;
+const OUT = join(ROOT, "output/launch-cutter-zoom"), PORT = Number(process.env.REEL_E2E_PORT || process.env.ZOOM_TEST_PORT || 3167), BASE = `http://localhost:${PORT}`;
 mkdirSync(OUT, { recursive: true });
 const f = name => join(OUT, name);
 ff("-f", "lavfi", "-i", "sine=frequency=440:sample_rate=44100", "-t", "60", "-af", "volume='0.2+0.8*mod(floor(t),2)':eval=frame", "-c:a", "libmp3lame", "-b:a", "128k", f("long.mp3"));

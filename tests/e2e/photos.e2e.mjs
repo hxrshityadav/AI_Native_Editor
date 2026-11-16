@@ -1,10 +1,11 @@
+import { mediaExec } from "./helpers.mjs";
 import { chromium, firefox, devices } from "playwright";
-import { execFileSync } from "node:child_process";
+
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { ROOT, startServer, stopServer, createChecks, probe, streams } from "./helpers.mjs";
 
-const OUT = join(ROOT, process.env.PHOTO_TEST_DIR || "output/launch-photos"), PORT = Number(process.env.PHOTO_TEST_PORT || 3150), BASE = `http://localhost:${PORT}`;
+const OUT = join(ROOT, process.env.PHOTO_TEST_DIR || "output/launch-photos"), PORT = Number(process.env.REEL_E2E_PORT || process.env.PHOTO_TEST_PORT || 3150), BASE = `http://localhost:${PORT}`;
 mkdirSync(OUT, { recursive: true });
 const { check, finish } = createChecks();
 const server = await startServer(PORT);
@@ -30,7 +31,7 @@ async function download(name) {
   const event = page.waitForEvent("download"); await page.getByRole("link", { name: DOWNLOAD }).click();
   const file = await event, path = join(OUT, name); await file.saveAs(path); return { path, suggested: file.suggestedFilename() };
 }
-const pixels = path => execFileSync("ffmpeg", ["-v", "error", "-i", path, "-frames:v", "1", "-f", "rawvideo", "-pix_fmt", "rgba", "-"], { maxBuffer: 4 * 1024 * 1024 });
+const pixels = path => mediaExec("ffmpeg", ["-v", "error", "-i", path, "-frames:v", "1", "-f", "rawvideo", "-pix_fmt", "rgba", "-"], { maxBuffer: 4 * 1024 * 1024 });
 const dimensions = path => { const stream = streams(probe(path), "video")[0]; return [stream.width, stream.height]; };
 const measuredBytes = text => Number(text.match(/([\d,\s]+) bytes/)?.[1].replace(/\D/g, ""));
 

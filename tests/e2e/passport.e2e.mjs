@@ -1,11 +1,12 @@
+import { mediaExec } from "./helpers.mjs";
 import { chromium, devices } from "playwright";
-import { execFileSync } from "node:child_process";
+
 import { mkdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { ROOT, startServer, stopServer, createChecks, probe, streams } from "./helpers.mjs";
 
 // Passport Photo and the resizer's target size, verified on real downloaded files.
-const OUT = join(ROOT, "output/launch-passport"), PORT = Number(process.env.PASSPORT_TEST_PORT || 3155), BASE = `http://localhost:${PORT}`;
+const OUT = join(ROOT, "output/launch-passport"), PORT = Number(process.env.REEL_E2E_PORT || process.env.PASSPORT_TEST_PORT || 3155), BASE = `http://localhost:${PORT}`;
 mkdirSync(OUT, { recursive: true });
 const { check, finish } = createChecks();
 const server = await startServer(PORT);
@@ -15,7 +16,7 @@ const requests = []; context.on("request", req => requests.push({ url: req.url()
 const page = await context.newPage();
 const dimensions = path => { const stream = streams(probe(path), "video")[0]; return [stream.width, stream.height]; };
 // 2 × 2 sample at even coordinates: 4:2:0 JPEG chroma cannot be cropped to a single pixel.
-const pixel = (path, x, y) => execFileSync("ffmpeg", ["-v", "error", "-i", path, "-vf", `crop=2:2:${x - x % 2}:${y - y % 2},format=rgb24`, "-frames:v", "1", "-f", "rawvideo", "-pix_fmt", "rgb24", "-"]).subarray(0, 3);
+const pixel = (path, x, y) => mediaExec("ffmpeg", ["-v", "error", "-i", path, "-vf", `crop=2:2:${x - x % 2}:${y - y % 2},format=rgb24`, "-frames:v", "1", "-f", "rawvideo", "-pix_fmt", "rgb24", "-"]).subarray(0, 3);
 const near = (rgb, [r, g, b], tolerance = 14) => Math.abs(rgb[0] - r) <= tolerance && Math.abs(rgb[1] - g) <= tolerance && Math.abs(rgb[2] - b) <= tolerance;
 async function save(link, name) { const event = page.waitForEvent("download"); await page.getByRole("link", { name: link, exact: true }).click(); const file = await event, path = join(OUT, name); await file.saveAs(path); return { path, suggested: file.suggestedFilename() }; }
 const adjust = async () => { const button = page.getByRole("button", { name: "Adjust settings" }); if (await button.count()) await button.click(); };

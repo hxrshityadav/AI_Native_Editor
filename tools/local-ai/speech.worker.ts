@@ -6,7 +6,7 @@ import type { SpeechRequest } from "../../src/lib/localtools/speechClient";
 import { documentChunks } from "../../src/lib/localtools/documentText";
 import { LOCAL_MODEL_VERSION } from "../../src/lib/localtools/modelAssets";
 import { dropLoops } from "../../src/lib/subtitles/transcript";
-import { bannedTokens } from "../../src/lib/subtitles/scriptConstraint";
+import { measuredWords } from "../../src/lib/subtitles/timing";
 import { publicModelCache, speakerVector } from "../../src/lib/localtools/modelCache";
 const scope=self as unknown as {onmessage:(event:MessageEvent<SpeechRequest>)=>void;postMessage:(message:unknown)=>void;location:Location};
 const modelCache=publicModelCache(scope.location.origin);
@@ -32,7 +32,7 @@ scope.onmessage=async({data})=>{try{
   const CAPTION_MODELS:Record<string,{id:string;dtype:string}>={tiny:{id:"onnx-community/whisper-tiny_timestamped",dtype:"q4"},base:{id:"onnx-community/whisper-base_timestamped",dtype:"q4"},"hinglish-swift":{id:"Hirecentive-D3l/Whisper-Hindi2Hinglish-Swift-ONNX",dtype:"q8"}};
   const caption=data.captionModel,chosen=caption?CAPTION_MODELS[caption]:undefined,model=chosen?.id??"onnx-community/whisper-tiny";
   phase(caption?`Loading ${model.split("/")[1]} (first use downloads the model once)`:"Loading Whisper Tiny (first use downloads about 100 MB)");
-  const transcribe=await pipeline("automatic-speech-recognition",model,{device:"wasm",dtype:caption?(data.captionDtype??chosen?.dtype??"q4"):"q4",progress_callback:modelProgress});
+  const transcribe=await pipeline("automatic-speech-recognition",model,{device:"wasm",dtype:caption?(chosen?.dtype??"q4"):"q4",progress_callback:modelProgress});
   // Transformers.js 3.8 has no Whisper language identification: without a language it silently forces English, which
   // turns Hindi speech into English text. "auto" therefore runs real identification first: one decoder step after
   // <|startoftranscript|>, read as probabilities over the language tokens, on the first 30 seconds.
@@ -40,23 +40,23 @@ scope.onmessage=async({data})=>{try{
   if(language==="auto"){phase("Identifying the spoken language");detected=await identifyLanguage(transcribe,audio);language=detected.code;}
   const started=performance.now();phase(data.translate?"Translating speech to English locally":"Recognizing speech locally");
   const words=!!caption;
-  // Script-constrained decoding (captions only): small Whisper models often write Hindi in Latin or Urdu script even
-  // with <|hi|>. Banning other scripts' tokens makes the decoder spell in the requested script.
-  const script=caption&&!data.translate?data.script:undefined; // opt-in only: on FLEURS Hindi it made Tiny and Base loop (2026-11-15)
-  const asr=transcribe as unknown as {tokenizer:{model:{vocab:string[]}};model:{generation_config:{eos_token_id:number}}};
-  const bad=script?bannedTokens(asr.tokenizer.model.vocab,asr.model.generation_config.eos_token_id,script).map(id=>[id]):undefined;
   type Out={text:string;chunks?:{text:string;timestamp:[number|null,number|null]}[]};
-  const options={language,task:data.translate?"translate":"transcribe",chunk_length_s:30,stride_length_s:5,...(bad?{bad_words_ids:bad}:{})};
+  const options={language,task:data.translate?"translate":"transcribe",chunk_length_s:30,stride_length_s:5};
   let wordTiming=words,result:Out;
   // Some fine-tuned exports lack the cross-attention outputs word timing needs; they fall back to phrase timing.
   try{result=await transcribe(audio,{...options,return_timestamps:words?"word":true}) as Out;}
   catch(error){if(!words||!/attention|alignment/i.test(String(error)))throw error;wordTiming=false;phase("This model has no word timing; using phrase timing");result=await transcribe(audio,{...options,return_timestamps:true}) as Out;}
-  const seconds=(performance.now()-started)/1000;
-  let previous=0;const cues:Cue[]=[],wordList:{text:string;start:number;end:number}[]=[];
-  for(const chunk of result.chunks??[]){const start=Math.max(previous,chunk.timestamp[0]??previous),end=Math.min(info.duration,chunk.timestamp[1]??info.duration),text=chunk.text.trim();if(!text)continue;
-    if(wordTiming){const s=Math.min(start,info.duration),e=Math.max(s+0.02,end);wordList.push({text,start:s,end:Math.min(info.duration,e)});previous=s;}
-    else if(end>start){cues.push({text,start,end});previous=end;}}
+  if(wordTiming&&!measuredWords(result.chunks??[],info.duration,result.text)){
+    wordTiming=false;phase("Incomplete word timestamps; retrying with phrase timing. Word highlighting is unavailable.");
+    result=await transcribe(audio,{...options,return_timestamps:true}) as Out;
+  }
+  const seconds=(performance.now()-started)/1000,rawText=result.text?.trim()??"";
+  const cues:Cue[]=[],wordList=wordTiming?measuredWords(result.chunks??[],info.duration,result.text)!:[];
+  if(!wordTiming)for(const chunk of result.chunks??[]){
+    const [start,end]=chunk.timestamp,text=chunk.text.trim();
+    if(text&&typeof start==="number"&&typeof end==="number"&&Number.isFinite(start)&&Number.isFinite(end)&&start>=0&&end>start&&end<=info.duration)cues.push({text,start,end});
+  }
   const looped=wordTiming?dropLoops(wordList):{words:wordList,removed:0};
-  if(!result.text?.trim()||(!cues.length&&!wordList.length))throw new Error("No timed speech was recognized. Try clearer speech, choose its language explicitly, or write captions by hand.");
-  scope.postMessage({type:"done",result:{cues,duration:info.duration,language,detected,words:wordTiming?looped.words:undefined,wordTiming,loopsRemoved:looped.removed,script,text:wordTiming?looped.words.map(word=>word.text).join(" "):result.text.trim(),model,seconds}});
+  if(!rawText)throw new Error("No timed speech was recognized. Try clearer speech, choose its language explicitly, or write captions by hand.");
+  scope.postMessage({type:"done",result:{cues,duration:info.duration,language,detected,words:wordTiming?looped.words:undefined,wordTiming,loopsRemoved:looped.removed,rawText,text:wordTiming?looped.words.map(word=>word.text).join(" "):result.text.trim(),model,seconds}});
 }catch(error){scope.postMessage({type:"error",message:error instanceof Error?error.message:"Local speech processing failed. Retry with a shorter recording."});}};

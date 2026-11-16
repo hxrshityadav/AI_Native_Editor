@@ -2,7 +2,7 @@ import { chromium } from 'playwright';
 import { readFileSync, readdirSync, existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { ROOT, startServer, stopServer, createChecks, probe } from './helpers.mjs';
-const OUT=join(ROOT,'output/redesign'), PORT=3192, BASE=`http://localhost:${PORT}`;
+const OUT=join(ROOT,'output/redesign'), PORT=Number(process.env.REEL_E2E_PORT || 3192), BASE=`http://localhost:${PORT}`;
 mkdirSync(OUT,{recursive:true});
 const {check,finish}=createChecks();
 const server=await startServer(PORT);

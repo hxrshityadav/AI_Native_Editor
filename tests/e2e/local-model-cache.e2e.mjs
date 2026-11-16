@@ -2,12 +2,21 @@ import { chromium, firefox } from "playwright";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { ROOT, probe, streams, decodeErrors, startServer, stopServer, createChecks } from "./helpers.mjs";
-const OUT=join(ROOT,"output/local-ai-cache"),PORT=3184,BASE=`http://localhost:${PORT}`,CACHE="reel-finisher-models-v1";
+const OUT=join(ROOT,"output/local-ai-cache"),PORT=Number(process.env.REEL_E2E_PORT || 3184),BASE=`http://localhost:${PORT}`,CACHE="reel-finisher-models-v1";
 mkdirSync(OUT,{recursive:true});const {check,finish}=createChecks();
 const server=await startServer(PORT,{env:{REEL_ENABLE_CLOUD:""}}),browser=process.env.LOCAL_CACHE_BROWSER==="firefox"?await firefox.launch({executablePath:join(ROOT,"output/firefox-test/firefox/firefox.exe")}):await chromium.launch({channel:process.env.LOCAL_CACHE_BROWSER||"chrome"});
 try{
  const context=await browser.newContext({acceptDownloads:true}),page=await context.newPage(),requests=[];context.on("request",r=>requests.push({url:r.url(),method:r.method()}));
  await page.goto(BASE+"/tools/text-to-speech");check("cache: speech page does not load a model/runtime before consent",requests.every(r=>!r.url.includes("/local-ai/")&&!r.url.includes("/local-models/")&&!r.url.includes("/pdfjs/")));
+ const ranged=await page.evaluate(async()=>{
+  const path='/local-models/v1/Hirecentive-D3l/Whisper-Hindi2Hinglish-Swift-ONNX/resolve/main/onnx/encoder_model_quantized.onnx';
+  const response=await fetch(path,{headers:{Range:'bytes=0-1023'}});
+  const bytes=(await response.arrayBuffer()).byteLength;
+  const rejected=await fetch(path,{headers:{Range:'bytes=0-1,4-5'}});
+  return {status:response.status,range:response.headers.get('Content-Range'),bytes,rejected:rejected.status};
+ });
+ check('delivery: real same-origin Range preserves HTTP 206 and exactly 1KiB',ranged.status===206&&ranged.range==='bytes 0-1023/23145769'&&ranged.bytes===1024);
+ check('delivery: unsupported multi-range fails explicitly',ranged.rejected===416);
  const decoderPath="/local-models/v1/Xenova/speecht5_tts/resolve/main/onnx/decoder_model_merged.onnx";
  const interrupted=await page.evaluate(async path=>Promise.all([1,2].map(async()=>{
   const controller=new AbortController(),response=await fetch(path,{signal:controller.signal,cache:"no-store"}),reader=response.body.getReader();

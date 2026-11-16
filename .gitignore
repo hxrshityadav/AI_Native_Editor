@@ -41,6 +41,7 @@ yarn-error.log*
 next-env.d.ts
 
 # e2e fixtures and outputs
+/output/
 /tests/e2e/.out/
 
 # env (keep the example)

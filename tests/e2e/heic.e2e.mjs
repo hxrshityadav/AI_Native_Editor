@@ -1,11 +1,12 @@
+import { mediaExec } from "./helpers.mjs";
 import { chromium, devices } from "playwright";
-import { execFileSync } from "node:child_process";
+
 import { mkdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { ROOT, startServer, stopServer, createChecks, probe, streams } from "./helpers.mjs";
 
 // HEIC to JPG, verified on real downloaded JPEGs. Fixtures were encoded with pillow-heif (tests/fixtures/README.md).
-const OUT = join(ROOT, "output/launch-heic"), PORT = Number(process.env.HEIC_TEST_PORT || 3157), BASE = `http://localhost:${PORT}`;
+const OUT = join(ROOT, "output/launch-heic"), PORT = Number(process.env.REEL_E2E_PORT || process.env.HEIC_TEST_PORT || 3157), BASE = `http://localhost:${PORT}`;
 const SAMPLE = join(ROOT, "tests/fixtures/sample.heic"), PORTRAIT = join(ROOT, "tests/fixtures/portrait.heic");
 mkdirSync(OUT, { recursive: true });
 const { check, finish } = createChecks();
@@ -16,7 +17,7 @@ const requests = []; context.on("request", req => requests.push({ url: req.url()
 const page = await context.newPage();
 let workerUrl; page.on("worker", worker => { workerUrl = worker.url(); });
 const dimensions = path => { const stream = streams(probe(path), "video")[0]; return [stream.width, stream.height]; };
-const pixel = (path, x, y) => execFileSync("ffmpeg", ["-v", "error", "-i", path, "-vf", `crop=2:2:${x - x % 2}:${y - y % 2},format=rgb24`, "-frames:v", "1", "-f", "rawvideo", "-pix_fmt", "rgb24", "-"]).subarray(0, 3);
+const pixel = (path, x, y) => mediaExec("ffmpeg", ["-v", "error", "-i", path, "-vf", `crop=2:2:${x - x % 2}:${y - y % 2},format=rgb24`, "-frames:v", "1", "-f", "rawvideo", "-pix_fmt", "rgb24", "-"]).subarray(0, 3);
 const near = (rgb, [r, g, b], tolerance = 18) => Math.abs(rgb[0] - r) <= tolerance && Math.abs(rgb[1] - g) <= tolerance && Math.abs(rgb[2] - b) <= tolerance;
 const choose = files => page.getByLabel("Choose HEIC photos", { exact: true }).setInputFiles(files);
 async function save(name) { const event = page.waitForEvent("download"); await page.getByRole("link", { name: `Download ${name}`, exact: true }).click(); const file = await event, path = join(OUT, name); await file.saveAs(path); return { path, suggested: file.suggestedFilename() }; }

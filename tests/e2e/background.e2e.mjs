@@ -1,11 +1,12 @@
+import { mediaExec } from "./helpers.mjs";
 import { chromium, devices } from "playwright";
-import { execFileSync } from "node:child_process";
+
 import { mkdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { ROOT, startServer, stopServer, createChecks, probe, streams } from "./helpers.mjs";
 
 // Background Remover, verified on real downloaded files (alpha and colour sampled with ffmpeg).
-const OUT = join(ROOT, "output/launch-background"), PORT = Number(process.env.BACKGROUND_TEST_PORT || 3158), BASE = `http://localhost:${PORT}`;
+const OUT = join(ROOT, "output/launch-background"), PORT = Number(process.env.REEL_E2E_PORT || process.env.BACKGROUND_TEST_PORT || 3158), BASE = `http://localhost:${PORT}`;
 mkdirSync(OUT, { recursive: true });
 const { check, finish } = createChecks();
 const server = await startServer(PORT);
@@ -15,7 +16,7 @@ const requests = []; context.on("request", req => requests.push({ url: req.url()
 const page = await context.newPage();
 let workerUrl; page.on("worker", worker => { workerUrl = worker.url(); });
 const dimensions = path => { const stream = streams(probe(path), "video")[0]; return [stream.width, stream.height]; };
-const rgba = (path, x, y) => [...execFileSync("ffmpeg", ["-v", "error", "-i", path, "-vf", `crop=1:1:${x}:${y},format=rgba`, "-frames:v", "1", "-f", "rawvideo", "-pix_fmt", "rgba", "-"]).subarray(0, 4)];
+const rgba = (path, x, y) => [...mediaExec("ffmpeg", ["-v", "error", "-i", path, "-vf", `crop=1:1:${x}:${y},format=rgba`, "-frames:v", "1", "-f", "rawvideo", "-pix_fmt", "rgba", "-"]).subarray(0, 4)];
 async function save(name, saveAs) { const event = page.waitForEvent("download"); await page.getByRole("link", { name, exact: true }).click(); const file = await event, path = join(OUT, saveAs); await file.saveAs(path); return { path, suggested: file.suggestedFilename() }; }
 const adjust = async () => { const button = page.getByRole("button", { name: "Adjust settings" }); if (await button.count()) await button.click(); };
 const remove = async link => { await page.getByRole("button", { name: "Remove background", exact: true }).click(); await page.getByRole("link", { name: link, exact: true }).waitFor({ timeout: 120000 }); };

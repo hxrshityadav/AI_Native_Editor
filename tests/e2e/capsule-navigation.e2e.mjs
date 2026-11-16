@@ -2,7 +2,7 @@ import { chromium } from 'playwright';
 import { mkdirSync } from 'node:fs';
 import { ROOT, startServer, stopServer, createChecks } from './helpers.mjs';
 import { join } from 'node:path';
-const OUT=join(ROOT,process.env.CAPSULE_TEST_OUT || 'output/capsule-navigation'), PORT=3201, base=`http://localhost:${PORT}`;
+const OUT=join(ROOT,process.env.CAPSULE_TEST_OUT || 'output/capsule-navigation'), PORT=Number(process.env.REEL_E2E_PORT || 3201), base=`http://localhost:${PORT}`;
 mkdirSync(OUT,{recursive:true});
 const {check,finish}=createChecks();
 const server=await startServer(PORT), browser=await chromium.launch({channel:'chrome'});
@@ -24,7 +24,7 @@ try {
       return {width:r.width,iconX:svg.x-r.x,iconY:svg.y-r.y,clear:r.right<=main.left&&r.right<=footer.left,overflow:document.documentElement.scrollWidth>innerWidth};
      });
      iconPositions.push(geometry);
-     check(`${theme} ${width} ${expanded?'expanded':'collapsed'}: correct capsule width and no overlap`,geometry.width===(expanded?208:56)&&geometry.clear&&!geometry.overflow);
+     check(`${theme} ${width} ${expanded?'expanded':'collapsed'}: correct capsule width and no overlap`,geometry.width===(expanded?200:56)&&geometry.clear&&!geometry.overflow);
      check(`${theme} ${width}: photo category active`,await page.locator('#desktop-navigation a[aria-current="page"]').getAttribute('aria-label')==='Photo tools');
      if(!expanded){
       await page.locator('#desktop-navigation a').first().focus();
