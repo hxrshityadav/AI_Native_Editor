@@ -14,7 +14,7 @@ export const MODEL_INFO: Record<CaptionModel, { label: string; size: string; not
 export const MODE_LABEL: Record<SpeechMode, string> = { auto: "Auto detect", en: "English", hi: "Hindi", hinglish: "Roman Hinglish" };
 export const LANGUAGE_NAME: Record<string, string> = { en: "English", hi: "Hindi", ur: "Urdu", mr: "Marathi", bn: "Bengali", pa: "Punjabi", ne: "Nepali", gu: "Gujarati", ta: "Tamil", te: "Telugu" };
 
-export type Recognition = { mode: SpeechMode; model: CaptionModel; romanised?: number; language: string; wordTiming?: boolean; detected?: { code: string; probability: number; top: [string, number][] }; seconds?: number; words: number; loopsRemoved?: number; translatedWarning?: boolean };
+export type Recognition = { mode: SpeechMode; model: CaptionModel; romanised?: number; language: string; wordTiming?: boolean; timingMode?:"word"|"phrase"|"manual"; detected?: { code: string; probability: number; top: [string, number][] }; seconds?: number; words: number; loopsRemoved?: number; translatedWarning?: boolean };
 
 export function TranscribePanel({ mode, setMode, model, setModel, consent, setConsent, busy, hasAudio, onTranscribe, onManual, recognition, hasCaptions }: {
   mode: SpeechMode; setMode: (mode: SpeechMode) => void; model: CaptionModel; setModel: (model: CaptionModel) => void;
@@ -38,7 +38,7 @@ export function TranscribePanel({ mode, setMode, model, setModel, consent, setCo
     {!hasAudio && <InlineMessage>This video has no audio track, so there is nothing to transcribe. Write captions by hand instead.</InlineMessage>}
     {recognition && <InlineMessage tone={recognition.translatedWarning ? "warn" : "ok"} role="status" title={`Transcribed as ${LANGUAGE_NAME[recognition.language] ?? recognition.language}`}>
       {recognition.detected ? `Auto detect chose ${LANGUAGE_NAME[recognition.detected.code] ?? recognition.detected.code} (${Math.round(recognition.detected.probability * 100)}% likely; next: ${recognition.detected.top.slice(1).map(([code, p]) => `${LANGUAGE_NAME[code] ?? code} ${Math.round(p * 100)}%`).join(", ")}). ` : `Language set to ${MODE_LABEL[recognition.mode]}. `}
-      {recognition.wordTiming === false ? `Phrase timing (this model has no word timing)` : `${recognition.words} words with timings`}{recognition.seconds ? `, recognised in ${recognition.seconds.toFixed(1)} s` : ""} by {MODEL_INFO[recognition.model].label}.
+      {recognition.timingMode === "manual" ? "No reliable timestamps; manual timing required" : recognition.wordTiming === false ? "Phrase timing; word timing unavailable or rejected" : `${recognition.words} words with timings`}{recognition.seconds ? `, recognised in ${recognition.seconds.toFixed(1)} s` : ""} by {MODEL_INFO[recognition.model].label}.
       {recognition.romanised ? ` ${recognition.romanised} words came out in Devanagari and were written in Roman letters.` : ""}
       {recognition.detected && recognition.detected.probability < 0.6 ? " Language detection was uncertain. If this is wrong, choose the language above and transcribe again." : ""}
       {recognition.loopsRemoved ? ` ${recognition.loopsRemoved} repeated words from a recognition loop were removed; check that part.` : ""}

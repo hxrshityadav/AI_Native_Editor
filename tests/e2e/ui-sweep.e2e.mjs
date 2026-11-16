@@ -5,7 +5,7 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { ROOT, startServer, stopServer } from './helpers.mjs';
 
-const OUT = join(ROOT, process.env.SWEEP_OUT || 'output/ui-sweep'), PORT = Number(process.env.SWEEP_PORT || 3201), BASE = `http://localhost:${PORT}`;
+const OUT = join(ROOT, process.env.SWEEP_OUT || 'output/ui-sweep'), PORT = Number(process.env.REEL_E2E_PORT || process.env.SWEEP_PORT || 3201), BASE = `http://localhost:${PORT}`;
 const WIDTHS = (process.env.SWEEP_WIDTHS || '1920,1440,1280,1024,768,390,375').split(',').map(Number);
 const SHOTS = new Set((process.env.SWEEP_SHOTS || '1440,768,390').split(',').map(Number));
 mkdirSync(OUT, { recursive: true });
@@ -24,12 +24,14 @@ try {
       await page.waitForTimeout(500);
       const facts = await page.evaluate(() => {
         const out = { overflow: document.documentElement.scrollWidth - innerWidth, clipped: [], small: [], offScale: {}, heavy: [], tracked: [], emoji: [] };
-        const visible = el => { const r = el.getBoundingClientRect(); const s = getComputedStyle(el); return r.width > 0 && r.height > 0 && s.visibility !== 'hidden' && s.display !== 'none'; };
+        const visible = el => { const r = el.getBoundingClientRect(); const s = getComputedStyle(el); return !el.closest('.sr-only') && r.width > 0 && r.height > 0 && s.visibility !== 'hidden' && s.display !== 'none'; };
         const label = el => (el.getAttribute('aria-label') || el.textContent || el.tagName).trim().replace(/\s+/g, ' ').slice(0, 40);
         for (const el of document.querySelectorAll('main *, header *, nav *, footer *')) {
           if (!visible(el)) continue;
           const s = getComputedStyle(el), r = el.getBoundingClientRect();
-          if (/^(A|BUTTON|SUMMARY|SELECT|INPUT)$/.test(el.tagName) && el.type !== 'hidden' && !el.classList.contains('sr-only') && (r.height < 24 || r.width < 24) && s.position !== 'absolute') out.small.push(`${label(el)} ${Math.round(r.width)}x${Math.round(r.height)}`);
+          const target = el.tagName === "INPUT" && el.labels?.length ? el.labels[0].getBoundingClientRect() : r;
+          // WCAG target-size inline-text exception; standalone controls still require 24px.
+          if (/^(A|BUTTON|SUMMARY|SELECT|INPUT)$/.test(el.tagName) && !(el.tagName === 'A' && el.closest('p')) && el.type !== 'hidden' && !el.classList.contains('sr-only') && (target.height < 24 || target.width < 24) && s.position !== 'absolute') out.small.push(`${label(el)} ${Math.round(r.width)}x${Math.round(r.height)}`);
           if (el.children.length === 0 && el.textContent.trim() && el.scrollWidth > el.clientWidth + 1 && s.overflow !== 'visible' && s.textOverflow !== 'ellipsis') out.clipped.push(label(el));
           for (const prop of ['paddingTop', 'paddingBottom', 'paddingLeft', 'paddingRight', 'marginTop', 'marginBottom', 'rowGap', 'columnGap']) {
             const v = parseFloat(s[prop]); if (v > 2 && v % 4 !== 0 && Math.abs(v - Math.round(v)) < 0.01) out.offScale[`${prop}:${v}`] = (out.offScale[`${prop}:${v}`] || 0) + 1;
@@ -55,3 +57,4 @@ writeFileSync(join(OUT, 'report.json'), JSON.stringify(report, null, 1));
 const bad = report.filter(r => r.overflow > 0 || r.clipped.length || r.small.length || r.h1 !== 1 || r.errors.length);
 console.log(`${report.length} route×width checks; ${bad.length} with overflow, clipping, small targets, h1≠1 or errors`);
 for (const r of bad.slice(0, 60)) console.log(r.route, r.width, JSON.stringify({ overflow: r.overflow, h1: r.h1, clipped: r.clipped.slice(0, 4), small: r.small.slice(0, 4), errors: r.errors.slice(0, 2) }));
+if (bad.length) process.exitCode = 1;

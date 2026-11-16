@@ -15,9 +15,10 @@
     "local-ai:build": "node scripts/build-local-ai.mjs",
     "e2e:photos": "node tests/e2e/photos.e2e.mjs && node tests/e2e/passport.e2e.mjs && node tests/e2e/heic.e2e.mjs && node tests/e2e/background.e2e.mjs",
     "e2e:video": "node tests/e2e/video-compressor.e2e.mjs && node tests/e2e/media.e2e.mjs && node tests/e2e/mixer.e2e.mjs && node tests/e2e/cutter-zoom.e2e.mjs && node tests/e2e/subtitle-studio.e2e.mjs",
-    "e2e:site": "node tests/e2e/site.e2e.mjs && node tests/e2e/redesign.e2e.mjs && node tests/e2e/command-center.e2e.mjs",
+    "e2e:site": "node tests/e2e/site.e2e.mjs && node tests/e2e/redesign.e2e.mjs && node tests/e2e/command-center.e2e.mjs && node tests/e2e/capsule-navigation.e2e.mjs && node tests/e2e/dynamic-sidebar.e2e.mjs && node tests/e2e/hover-sidebar.e2e.mjs && node tests/e2e/sidebar-layout.e2e.mjs && node tests/e2e/header-spacing.e2e.mjs && node tests/e2e/scrollbar.e2e.mjs && node tests/e2e/ui-sweep.e2e.mjs",
     "e2e:models": "node tests/e2e/local-model-cache.e2e.mjs",
-    "e2e:local": "node tests/e2e/localtools.e2e.mjs && node tests/e2e/notes.e2e.mjs && node tests/e2e/pdf-audio.e2e.mjs"
+    "e2e:local": "node tests/e2e/localtools.e2e.mjs && node tests/e2e/notes.e2e.mjs && node tests/e2e/pdf-audio.e2e.mjs",
+    "e2e:recovery": "node scripts/regression.mjs"
   },
   "dependencies": {
     "gifenc": "1.0.3",

@@ -150,3 +150,11 @@ Current source/revision/size/license/integrity inventory and the actual speech-c
 - **Speakers:** all 20 are labelled female in the dataset, so speaker variety is limited.
 - **Storage:** `output/caption-bench/fleurs-hi/`, with reference transcriptions (`raw_transcription`) and `SOURCE.json`.
   Used only for local benchmarking; not shipped with the app.
+
+## Recovery audit, 16 November 2026
+
+Pinned Swift conversion card and HF LFS metadata reviewed; recorded declaration,
+revision, sizes and hashes are in ../engineering-recovery.md. A direct 1KiB
+range probe returned HTTP 206. Conversion equivalence, every weight's runtime
+checksum and production-host resume behavior remain unverified. No private
+recording was sent to a third party for this review.

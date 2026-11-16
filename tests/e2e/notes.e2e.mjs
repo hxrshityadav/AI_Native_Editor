@@ -3,7 +3,7 @@ import { execFileSync } from "node:child_process";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { ROOT, ff, startServer, stopServer, createChecks } from "./helpers.mjs";
-const OUT=join(ROOT,"output/local-ai-notes"),PORT=3176,BASE=`http://localhost:${PORT}`;
+const OUT=join(ROOT,"output/local-ai-notes"),PORT=Number(process.env.REEL_E2E_PORT || 3176),BASE=`http://localhost:${PORT}`;
 mkdirSync(OUT,{recursive:true});const {check,finish}=createChecks();
 const audio=join(OUT,"lecture.wav"),invalid=join(OUT,"corrupt.wav"),long=join(OUT,"long.mp4");
 ff("-f","lavfi","-i","sine=frequency=440:duration=12","-ar","44100","-ac","2",audio);writeFileSync(invalid,"corrupted audio");ff("-f","lavfi","-i","color=s=16x16:r=1:d=601","-c:v","libx264",long);

@@ -2,7 +2,7 @@ import { chromium } from 'playwright';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { ROOT, startServer, stopServer, createChecks } from './helpers.mjs';
-const OUT=join(ROOT,process.env.HOVER_TEST_OUT || 'output/hover-sidebar'), PORT=3203, BASE=`http://localhost:${PORT}`;
+const OUT=join(ROOT,process.env.HOVER_TEST_OUT || 'output/hover-sidebar'), PORT=Number(process.env.REEL_E2E_PORT || 3203), BASE=`http://localhost:${PORT}`;
 mkdirSync(OUT,{recursive:true});
 const {check,finish}=createChecks(), evidence=[];
 const server=await startServer(PORT), browser=await chromium.launch({channel:'chrome'});
@@ -23,7 +23,7 @@ try {
   await nav.getByRole('link',{name:'Home',exact:true}).hover();
   await page.waitForTimeout(50);check(`${width}: expand delay`,await button.getAttribute('aria-expanded')==='false');
   if(width===1440){await page.waitForTimeout(100);await page.screenshot({path:join(OUT,'1440-transition.png')});}
-  await page.waitForTimeout(350);check(`${width}: hover expands`,await nav.evaluate(el=>el.getBoundingClientRect().width)===208);
+  await page.waitForTimeout(350);check(`${width}: hover expands`,await nav.evaluate(el=>el.getBoundingClientRect().width)===200);
   check(`${width}: expanded labels are readable`,await nav.locator('.rail-label').evaluateAll(labels=>labels.every(el=>el.getBoundingClientRect().width>0&&getComputedStyle(el).opacity==='1')));
   check(`${width}: reference capsule color and geometry`,await nav.evaluate(el=>{const c=getComputedStyle(el),a=getComputedStyle(el.querySelector('a'));return c.backgroundColor==='rgb(19, 19, 21)'&&c.padding==='6px'&&c.borderRadius==='28px'&&a.height==='44px';}));
   check(`${width}: independent logo stays above the icon lane`,Math.abs((await page.locator('.rail-mark').boundingBox()).x-logoBefore.x)<.1&&(await page.locator('.rail-mark').boundingBox()).width===56);
@@ -37,7 +37,7 @@ try {
   await page.mouse.move(width-60,700);await page.waitForTimeout(600);
   check(`${width}: leave eventually collapses`,await nav.evaluate(el=>el.getBoundingClientRect().width)===56);
   const positions=await page.evaluate(()=>{window.__sample=false;return window.__positions;});
-  check(`${width}: main genuinely resizes within the grid bounds`,positions.some(([x,w])=>Math.abs(x-before.x-152)<.1&&Math.abs(w-before.width+152)<.1)&&positions.every(([x,w])=>x>=before.x-.1&&x<=before.x+152.1&&w>=before.width-152.1&&w<=before.width+.1));
+  check(`${width}: main genuinely resizes within the grid bounds`,positions.some(([x,w])=>Math.abs(x-before.x-144)<.1&&Math.abs(w-before.width+144)<.1)&&positions.every(([x,w])=>x>=before.x-.1&&x<=before.x+144.1&&w>=before.width-144.1&&w<=before.width+.1));
   evidence.push({width,frames:positions.length,positions});
   await nav.getByRole('link',{name:'Photo tools',exact:true}).focus();await page.waitForTimeout(300);
   check(`${width}: keyboard focus expands`,await button.getAttribute('aria-expanded')==='true');

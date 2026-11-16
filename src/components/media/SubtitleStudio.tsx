@@ -37,6 +37,9 @@ const devanagariShare = (text: string) => { const letters = [...text].filter(c =
 
 type History = { past: Caption[][]; present: Caption[]; future: Caption[][]; key: string; at: number };
 const EMPTY: History = { past: [], present: [], future: [], key: "", at: 0 };
+function RawTranscript({raw}:{raw?:string}) {
+  return raw ? <details className={css.section}><summary>Raw transcription</summary><div className={css.sectionBody}><p className={styles.help}>Exactly what the model returned, before captions, Roman conversion or any clean-up. Kept for comparison.</p><p className={css.raw} data-testid="raw-transcript">{raw}</p></div></details> : null;
+}
 type Original = { words: TimedWord[]; mode: SpeechMode; raw: string };
 
 export function SubtitleStudio() {
@@ -46,8 +49,8 @@ export function SubtitleStudio() {
   const [selected, setSelected] = useState(-1), [tab, setTab] = useState<Tab>("transcribe");
   const [style, setStyleState] = useState<CaptionStyle>(PRESETS.clean.style), [composition, setComposition] = useState<Composition>(DEFAULT_COMPOSITION), [guides, setGuides] = useState(true);
   const [mode, setModeState] = useState<SpeechMode>("auto"), [model, setModel] = useState<CaptionModel>("tiny"), [consent, setConsentState] = useState<Record<CaptionModel, boolean>>({ tiny: false, base: false, "hinglish-swift": false });
-  // Hindi and Hinglish default to the Hindi-tuned model (best measured); other languages to Tiny.
-  const setMode = (next: SpeechMode) => { setModeState(next); setModel(next === "hi" || next === "hinglish" ? "hinglish-swift" : model === "hinglish-swift" ? "tiny" : model); };
+  // Swift writes Roman Hinglish; Hindi mode must keep a multilingual model instead.
+  const setMode = (next: SpeechMode) => { setModeState(next); setModel(next === "hinglish" ? "hinglish-swift" : model === "hinglish-swift" ? "tiny" : model); };
   const [busy, setBusy] = useState(""), [progress, setProgress] = useState<number>(), [error, setError] = useState(""), [notice, setNotice] = useState(""), [fontError, setFontError] = useState("");
   const [fontReady, setFontReady] = useState(""), [allFonts, setAllFonts] = useState(false), [customFonts, setCustomFonts] = useState<StoredFont[]>([]);
   const [result, setResult] = useState<BurnResult>(), [resultKey, setResultKey] = useState("");
@@ -120,10 +123,11 @@ export function SubtitleStudio() {
       const built = words.length ? buildCaptions(words, grouping) : fromCues(transcript.cues.map(cue => ({ ...cue, text: roman(cue.text), end: Math.min(cue.end, info.duration) })));
       const language = transcript.language ?? (mode === "en" ? "en" : "hi");
       const translatedWarning = mode !== "hinglish" && language === "hi" && devanagariShare(transcript.text) < 0.3;
-      commit(built); setOriginal({ words, mode, raw: transcript.text }); setSelected(built.length ? 0 : -1);
-      setRecognition({ mode, model, language, romanised, wordTiming: transcript.wordTiming !== false && words.length > 0, detected: transcript.detected, seconds: transcript.seconds, words: words.length, loopsRemoved: transcript.loopsRemoved, translatedWarning });
-      setNotice(words.length ? `${built.length} captions built from ${words.length} timed words. Review every line before export.` : `${built.length} captions with phrase timing. Review every line before export.`);
-      setTab("captions");
+      if (built.length) { commit(built); setSelected(0); }
+      setOriginal({ words, mode, raw: transcript.rawText ?? transcript.text });
+      setRecognition({ mode, model, language, romanised, wordTiming: transcript.wordTiming !== false && words.length > 0, timingMode: words.length ? "word" : built.length ? "phrase" : "manual", detected: transcript.detected, seconds: transcript.seconds, words: words.length, loopsRemoved: transcript.loopsRemoved, translatedWarning });
+      setNotice(!built.length ? "Speech was recognized but reliable timestamps are unavailable. Existing captions are unchanged. Review the raw transcription and write captions by hand." : words.length ? `${built.length} captions built from ${words.length} timed words. Review every line before export.` : `${built.length} captions with phrase timing. Review every line before export.`);
+      setTab(built.length ? "captions" : "transcribe");
     } catch (failure) { if (!controller.signal.aborted) setError(failure instanceof Error ? failure.message : "Transcription failed. Try a shorter video."); }
     finally { if (active.current === controller) { active.current = null; setBusy(""); setProgress(undefined); } }
   }
@@ -191,10 +195,11 @@ export function SubtitleStudio() {
           <TranscribePanel mode={mode} setMode={setMode} model={model} setModel={setModel} consent={consent} setConsent={(id, value) => setConsentState(current => ({ ...current, [id]: value }))}
             busy={!!busy} hasAudio={!!info.audio} onTranscribe={() => void transcribe()} onManual={addCaption} recognition={recognition} hasCaptions={captions.length > 0} />
           {messages}
+          <RawTranscript raw={original?.raw} />
         </div>}
 
         {tab === "captions" && <div role="tabpanel" id="panel-captions" aria-labelledby="tab-captions" className={css.body}>
-          {!captions.length ? <><InlineMessage>No captions yet. Transcribe the video, or add a caption at the playhead.</InlineMessage><button type="button" className={styles.secondary} onClick={addCaption}>Write captions by hand</button>{messages}</> : <>
+          {!captions.length ? <><InlineMessage>No captions yet. Transcribe the video, or add a caption at the playhead.</InlineMessage><button type="button" className={styles.secondary} onClick={addCaption}>Write captions by hand</button>{messages}<RawTranscript raw={original?.raw} /></> : <>
             <div className={css.toolbar}>
               <button type="button" className={css.icon} aria-label="Undo" title="Undo (Ctrl+Z)" disabled={!history.past.length} onClick={undo}><Undo2 aria-hidden size={16} /></button>
               <button type="button" className={css.icon} aria-label="Redo" title="Redo (Ctrl+Shift+Z)" disabled={!history.future.length} onClick={redo}><Redo2 aria-hidden size={16} /></button>
@@ -246,7 +251,7 @@ export function SubtitleStudio() {
               </>}
             </div></details>
             <VocabularyPanel captions={captions} onApply={(next, label) => { commit(next); setNotice(`${label}. Undo restores the previous text.`); }} />
-            {original?.raw && <details className={css.section}><summary>Raw transcription</summary><div className={css.sectionBody}><p className={styles.help}>Exactly what the model returned, before captions, Roman conversion or any clean-up. Kept for comparison.</p><p className={css.raw} data-testid="raw-transcript">{original.raw}</p></div></details>}
+            <RawTranscript raw={original?.raw} />
             <details className={css.keys}><summary>Keyboard shortcuts</summary>
               <dl><dt><kbd>Ctrl</kbd> <kbd>Z</kbd></dt><dd>Undo</dd><dt><kbd>Ctrl</kbd> <kbd>Shift</kbd> <kbd>Z</kbd></dt><dd>Redo</dd><dt><kbd>Alt</kbd> <kbd>↑</kbd> <kbd>↓</kbd></dt><dd>Previous or next caption</dd><dt><kbd>Ctrl</kbd> <kbd>Enter</kbd></dt><dd>Split at the text cursor</dd></dl></details>
           </>}

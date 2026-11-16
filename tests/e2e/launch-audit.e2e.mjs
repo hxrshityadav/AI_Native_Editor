@@ -3,7 +3,7 @@ import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { ROOT, startServer, stopServer, createChecks } from "./helpers.mjs";
 
-const PORT = 3144, BASE = `http://localhost:${PORT}`, OUT = join(ROOT, "output/launch-browser");
+const PORT=Number(process.env.REEL_E2E_PORT || 3144), BASE = `http://localhost:${PORT}`, OUT = join(ROOT, "output/launch-browser");
 mkdirSync(OUT, { recursive: true });
 const { check, finish } = createChecks();
 const server = await startServer(PORT);

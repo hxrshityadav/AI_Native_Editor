@@ -1,10 +1,11 @@
+import { mediaExec } from "./helpers.mjs";
 import { chromium, firefox, devices } from "playwright";
-import { execFileSync } from "node:child_process";
+
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { ROOT, startServer, stopServer, ff, probe, streams, decodeErrors, createChecks } from "./helpers.mjs";
 
-const PORT = Number(process.env.VIDEO_TEST_PORT || 3153), BASE = `http://localhost:${PORT}`, OUT = join(ROOT, process.env.VIDEO_TEST_DIR || "output/launch-video");
+const PORT = Number(process.env.REEL_E2E_PORT || process.env.VIDEO_TEST_PORT || 3153), BASE = `http://localhost:${PORT}`, OUT = join(ROOT, process.env.VIDEO_TEST_DIR || "output/launch-video");
 mkdirSync(OUT, { recursive: true });
 const { check, finish } = createChecks();
 const source = join(OUT, "source.mp4"), silent = join(OUT,"silent.webm"), rotated = join(OUT,"rotated.mp4"), vfr = join(OUT,"vfr.mp4"), long = join(OUT,"too-long.mp4"), mov = join(OUT,"source.mov");
@@ -42,7 +43,7 @@ async function encoderPatch(script) {
   await page.route(workerUrl, async route=>{ const response=await route.fetch(); const headers={...response.headers(),"cache-control":"no-store"}; delete headers["content-encoding"]; delete headers["content-length"]; await route.fulfill({ status:response.status(), headers, body:script+"\n"+await response.text() }); });
 }
 const videoInfo=path=>streams(probe(path),"video")[0];
-const pcm=path=>{ const bytes=execFileSync("ffmpeg",["-v","error","-i",path,"-vn","-ac","1","-ar","16000","-f","f32le","-"],{maxBuffer:2000000}); return new Float32Array(bytes.buffer.slice(bytes.byteOffset,bytes.byteOffset+bytes.byteLength)); };
+const pcm=path=>{ const bytes=mediaExec("ffmpeg",["-v","error","-i",path,"-vn","-ac","1","-ar","16000","-f","f32le","-"],{maxBuffer:2000000}); return new Float32Array(bytes.buffer.slice(bytes.byteOffset,bytes.byteOffset+bytes.byteLength)); };
 function firstSound(samples, start=0) { for(let i=Math.floor(start*16000);i<samples.length-160;i+=160){let sum=0;for(let j=0;j<160;j++)sum+=samples[i+j]**2;if(Math.sqrt(sum/160)>.03)return i/16000;}return Infinity; }
 try {
   await open();
@@ -75,7 +76,7 @@ try {
   await page.screenshot({path:join(OUT,"desktop-result.png"),fullPage:true});
   check("sync: decoded A/V end times remain aligned",Math.abs(Number(video.duration)-Number(audio.duration))<.06&&Math.abs(Number(video.duration)-4)<.08);
   const sourceSound=firstSound(pcm(source)), resultSound=firstSound(pcm(output.path));
-  const frames=execFileSync("ffmpeg",["-v","error","-i",output.path,"-vf","crop=32:32:0:0","-f","rawvideo","-pix_fmt","rgb24","-"],{maxBuffer:2000000});let white=Infinity;for(let f=0;f<frames.length/3072;f++){let sum=0;for(let i=f*3072;i<(f+1)*3072;i++)sum+=frames[i];if(sum/3072>240){white=f/Number(video.avg_frame_rate.split('/')[0])*Number(video.avg_frame_rate.split('/')[1]);break;}}
+  const frames=mediaExec("ffmpeg",["-v","error","-i",output.path,"-vf","crop=32:32:0:0","-f","rawvideo","-pix_fmt","rgb24","-"],{maxBuffer:2000000});let white=Infinity;for(let f=0;f<frames.length/3072;f++){let sum=0;for(let i=f*3072;i<(f+1)*3072;i++)sum+=frames[i];if(sum/3072>240){white=f/Number(video.avg_frame_rate.split('/')[0])*Number(video.avg_frame_rate.split('/')[1]);break;}}
   check("sync: actual flash/beep content stays synchronized",Math.abs(resultSound-sourceSound)<.05&&Math.abs(resultSound-white)<.06,`audio ${resultSound.toFixed(3)}s / picture ${white.toFixed(3)}s`);
   const independent=await context.newPage();await independent.goto(BASE);await independent.evaluate(async encoded=>{const video=document.createElement("video");video.src=URL.createObjectURL(new Blob([Uint8Array.from(atob(encoded),c=>c.charCodeAt(0))],{type:"video/mp4"}));video.muted=true;document.body.replaceChildren(video);await video.play();await new Promise((resolve,reject)=>{video.onended=resolve;video.onerror=()=>reject(new Error("Output playback failed"));});if(Math.abs(video.currentTime-4)>.1)throw new Error("Wrong playback duration");URL.revokeObjectURL(video.src);},readFileSync(output.path).toString("base64"));await independent.close();check("playback: independently downloaded output plays to its end",true);
   await adjust();await page.getByLabel("Mute audio",{exact:true}).check();check("settings: mute invalidates the old download",await page.getByRole("link",{name:"Download compressed video"}).count()===0);
@@ -91,7 +92,7 @@ try {
     ["empty.mp4","video/mp4",Buffer.alloc(0),/non-empty/],
     ["corrupt.mp4","video/mp4",readFileSync(join(OUT,"corrupt.mp4")),/contents|could not be read/],
     ["mislabeled.webm","video/webm",readFileSync(source),/does not match/],
-    ["audio.mp4","video/mp4",execFileSync("ffmpeg",["-v","error","-i",source,"-vn","-c:a","copy","-f","mp4","-movflags","frag_keyframe+empty_moov","pipe:1"]),/no video track/],
+    ["audio.mp4","video/mp4",mediaExec("ffmpeg",["-v","error","-i",source,"-vn","-c:a","copy","-f","mp4","-movflags","frag_keyframe+empty_moov","pipe:1"]),/no video track/],
   ]){await page.getByLabel("Choose video").setInputFiles({name,mimeType,buffer});await page.getByRole("alert").filter({hasText:message}).waitFor();check(`validation: ${name} rejected with recovery`,await page.getByRole("link",{name:"Download compressed video"}).count()===0);}
   await page.getByLabel("Choose video").setInputFiles(long);await page.getByRole("alert").filter({hasText:/10 minutes/}).waitFor();check("duration: actual 601-second file is rejected",true);
   // Declared unsupported codec: the source remains valid MP4 but its avc1 sample entry is unknown.

@@ -1,5 +1,6 @@
+import { mediaExec } from "./helpers.mjs";
 import { chromium, devices } from "playwright";
-import { execFileSync } from "node:child_process";
+
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { ROOT, startServer, stopServer, createChecks, ff, probe, streams, decodeErrors, frameDiff } from "./helpers.mjs";
@@ -7,7 +8,7 @@ import { ROOT, startServer, stopServer, createChecks, ff, probe, streams, decode
 // Subtitle Studio 2.0 in a real browser. Plain grey fixtures make every changed pixel attributable to captions.
 // SUBTITLE_INFERENCE=1 adds real Whisper Tiny transcription with word timings and checks word highlighting in the
 // exported frames (one-time model download through the same-origin model route, after the consent box is ticked).
-const OUT = join(ROOT, "output/launch-subtitles"), PORT = Number(process.env.SUBTITLE_TEST_PORT || 3171), BASE = `http://localhost:${PORT}`, inference = process.env.SUBTITLE_INFERENCE === "1";
+const OUT = join(ROOT, "output/launch-subtitles"), PORT = Number(process.env.REEL_E2E_PORT || process.env.SUBTITLE_TEST_PORT || 3171), BASE = `http://localhost:${PORT}`, inference = process.env.SUBTITLE_INFERENCE === "1";
 mkdirSync(OUT, { recursive: true });
 const f = name => join(OUT, name);
 ff("-f", "lavfi", "-i", "color=c=0x606060:s=720x1280:r=30:d=8", "-f", "lavfi", "-i", "sine=frequency=440:sample_rate=48000:d=8", "-c:v", "libx264", "-pix_fmt", "yuv420p", "-c:a", "aac", "-shortest", f("portrait.mp4"));
@@ -26,12 +27,15 @@ const rows = () => page.getByRole("list", { name: "Captions" }).locator("li");
 const seekTo = t => page.locator("video").first().evaluate((v, t) => new Promise(resolve => { v.pause(); v.addEventListener("seeked", () => setTimeout(resolve, 250), { once: true }); v.currentTime = t; }), t);
 /** Bounding box of preview-canvas pixels that differ from the grey source (the captions), in canvas pixels. */
 const canvasBox = () => page.getByTestId("caption-canvas").evaluate(c => { const d = c.getContext("2d").getImageData(0, 0, c.width, c.height).data; let x0 = c.width, y0 = c.height, x1 = -1, y1 = -1; for (let y = 0; y < c.height; y += 1) for (let x = 0; x < c.width; x += 1) { const i = (y * c.width + x) * 4, g = (d[i] + d[i + 1] + d[i + 2]) / 3; if (Math.abs(g - 0x60) > 60) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; } } return x1 < 0 ? null : { x0, y0, x1, y1, w: c.width, h: c.height }; });
-const frameBox = (file, t, width, height) => { const g = execFileSync("ffmpeg", ["-v", "error", "-ss", String(t), "-i", file, "-frames:v", "1", "-f", "rawvideo", "-pix_fmt", "gray", "-"], { maxBuffer: 64 << 20 }); let x0 = width, y0 = height, x1 = -1, y1 = -1; for (let y = 0; y < height; y++) for (let x = 0; x < width; x++) if (Math.abs(g[y * width + x] - 0x60) > 60) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; } return x1 < 0 ? null : { x0, y0, x1, y1 }; };
-const yellow = (file, t, width, height) => { const rgb = execFileSync("ffmpeg", ["-v", "error", "-ss", String(t), "-i", file, "-frames:v", "1", "-f", "rawvideo", "-pix_fmt", "rgb24", "-"], { maxBuffer: 64 << 20 }); let n = 0; for (let i = 0; i < width * height * 3; i += 3) if (rgb[i] > 200 && rgb[i + 1] > 170 && rgb[i + 2] < 110) n++; return n; };
+const frameBox = (file, t, width, height) => { const g = mediaExec("ffmpeg", ["-v", "error", "-ss", String(t), "-i", file, "-frames:v", "1", "-f", "rawvideo", "-pix_fmt", "gray", "-"], { maxBuffer: 64 << 20 }); let x0 = width, y0 = height, x1 = -1, y1 = -1; for (let y = 0; y < height; y++) for (let x = 0; x < width; x++) if (Math.abs(g[y * width + x] - 0x60) > 60) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; } return x1 < 0 ? null : { x0, y0, x1, y1 }; };
+const yellow = (file, t, width, height) => { const rgb = mediaExec("ffmpeg", ["-v", "error", "-ss", String(t), "-i", file, "-frames:v", "1", "-f", "rawvideo", "-pix_fmt", "rgb24", "-"], { maxBuffer: 64 << 20 }); let n = 0; for (let i = 0; i < width * height * 3; i += 3) if (rgb[i] > 200 && rgb[i + 1] > 170 && rgb[i + 2] < 110) n++; return n; };
 const download = async (name, label) => { const event = page.waitForEvent("download"); await page.getByRole(label === "Download MP4" ? "link" : "button", { name: label, exact: true }).click(); const file = await event, path = f(name); await file.saveAs(path); return { path, suggested: file.suggestedFilename() }; };
 const exportMp4 = async name => { await tab("Export").click(); await page.getByRole("button", { name: "Export MP4 with captions" }).click(); await page.getByRole("link", { name: "Download MP4", exact: true }).waitFor({ timeout: 240000 }); return download(name, "Download MP4"); };
 
 try {
+  const recoveryOnly=process.argv.includes('--recovery-only');
+  if(recoveryOnly)console.log('FOCUSED untimed-ASR recovery case only; not the full subtitle regression.');
+  if(!recoveryOnly){
   await page.goto(`${BASE}/tools/subtitle-studio`);
   check("page: route renders with a unique title and H1", /Subtitle Studio/.test(await page.getByRole("heading", { level: 1 }).innerText()) && /· Reel Finisher$/.test(await page.title()));
   await page.getByLabel("Choose video", { exact: true }).setInputFiles({ name: "notes.txt", mimeType: "text/plain", buffer: Buffer.from("not a video") });
@@ -48,6 +52,7 @@ try {
   check("Roman Hinglish: selects the Hindi-tuned model and states Roman output and measured accuracy", await page.getByRole("radio", { name: /Hindi2Hinglish Swift/ }).isChecked() && await page.getByText(/never contain Devanagari/).isVisible() && /Roman Hinglish/.test(await page.getByText(/Ready to transcribe as/).innerText()));
   await page.getByRole("radio", { name: "Hindi", exact: true }).check();
   check("Hindi: Devanagari, never translated, honest about measured results, no Roman model", await page.getByText(/never translates to English/).isVisible() && await page.getByText(/no model that runs in this browser produced reliable Devanagari/).isVisible() && await page.getByRole("radio", { name: /Hindi2Hinglish Swift/ }).count() === 0);
+  check("Hindi: an offered multilingual model is actually selected", await page.getByRole('radio',{name:/Whisper Tiny/}).isChecked() || await page.getByRole('radio',{name:/Whisper Base/}).isChecked());
   check("consent: no model file requested before consent", !requests.some(r => /local-models|whisper/.test(r.url)));
 
   // Editor.
@@ -129,7 +134,7 @@ try {
   check("1:1 crop export: 1080×1080 H.264 with the captions", sq.width === 1080 && sq.height === 1080 && frameBox(square.path, 1, 1080, 1080) !== null);
   await tab("Layout").click(); await page.locator("label", { hasText: "16:9 Landscape" }).click(); await page.getByRole("radio", { name: "Whole picture" }).check();
   const wide = await exportMp4("wide.mp4"), wv = streams(probe(wide.path), "video")[0];
-  const bar = execFileSync("ffmpeg", ["-v", "error", "-ss", "2.8", "-i", wide.path, "-frames:v", "1", "-f", "rawvideo", "-pix_fmt", "gray", "-"], { maxBuffer: 64 << 20 });
+  const bar = mediaExec("ffmpeg", ["-v", "error", "-ss", "2.8", "-i", wide.path, "-frames:v", "1", "-f", "rawvideo", "-pix_fmt", "gray", "-"], { maxBuffer: 64 << 20 });
   check("16:9 contain export: 1920×1080, portrait video letterboxed (black sides, grey centre)", wv.width === 1920 && wv.height === 1080 && bar[540 * 1920 + 40] < 20 && Math.abs(bar[540 * 1920 + 960] - 0x60) < 12, `edge ${bar[540 * 1920 + 40]} centre ${bar[540 * 1920 + 960]}`);
   await tab("Layout").click(); await page.locator("label", { hasText: "Original" }).first().click();
 
@@ -218,10 +223,28 @@ try {
         await page.getByRole("button", { name: "Tidy spacing and capitals" }).click();
         check("Roman Hinglish: clean-up output also has no Devanagari", !/[\u0900-\u097f]/.test(await page.getByRole("list", { name: "Captions" }).innerText()));
         await tab("Transcribe").click();
-        check("Roman Hinglish: phrase timing is stated honestly", await page.getByText(/Phrase timing \(this model has no word timing\)/).isVisible());
+        check("Roman Hinglish: phrase timing is stated honestly", await page.getByText(/Phrase timing; word timing unavailable or rejected|No reliable timestamps; manual timing required/).isVisible());
       }
     }
   }
+  }
+  // Controlled worker fixture tests untimed-result recovery; real model quality is measured by caption-bench.
+  await page.goto(`${BASE}/tools/subtitle-studio`);
+  await page.getByLabel('Choose video',{exact:true}).setInputFiles(f('portrait.mp4'));
+  await page.getByRole('button',{name:'Write captions by hand',exact:true}).click();
+  await page.getByLabel('Caption 1 text').fill('Keep existing caption');
+  await tab('Transcribe').click();
+  await page.getByRole('radio',{name:'English',exact:true}).check();
+  await page.getByRole('radio',{name:/Whisper Tiny/}).check({force:true});
+  await page.getByLabel('Allow speech model download',{exact:true}).check();
+  await page.route('**/local-ai/speech.worker.js',route=>route.fulfill({contentType:'application/javascript',body:'self.onmessage=()=>self.postMessage({type:"done",result:{text:"Untimed ASR fixture",rawText:"Untimed ASR fixture",cues:[],duration:6,wordTiming:false}});'}));
+  await page.getByRole('button',{name:'Transcribe again',exact:true}).click();
+  await page.getByText(/Existing captions are unchanged/).waitFor();
+  check('untimed ASR: reports manual timing instead of claiming phrase boundaries',await page.getByText(/No reliable timestamps; manual timing required/).isVisible());
+  await page.locator('summary',{hasText:'Raw transcription'}).click();
+  check('untimed ASR: raw text survives with manual-timing recovery',await page.getByTestId('raw-transcript').textContent()==='Untimed ASR fixture');
+  await tab('Captions').click();
+  check('untimed ASR: existing captions are not replaced by an empty result',await page.getByLabel('Caption 1 text').inputValue()==='Keep existing caption');
   check("no browser exceptions", errors.length === 0, errors.join(" | "));
   check("privacy: only same-origin GET/HEAD requests", requests.every(req => ["GET", "HEAD"].includes(req.method) && (req.url.startsWith(BASE) || /^(blob:|data:)/.test(req.url))));
 } catch (error) { await page.screenshot({ path: f("failure.png"), fullPage: true }).catch(() => {}); console.log("VISIBLE_ERRORS", await page.getByRole("alert").allTextContents().catch(() => [])); throw error; }

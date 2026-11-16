@@ -4,7 +4,7 @@ import { join } from "node:path";
 import { ROOT, startServer, stopServer, createChecks } from "./helpers.mjs";
 
 // Public site shell: navigation, keyboard access, responsive layout and request isolation.
-const OUT = join(ROOT, process.env.SITE_TEST_OUT || "output/site"), PORT = Number(process.env.SITE_TEST_PORT || 3160), BASE = `http://localhost:${PORT}`;
+const OUT = join(ROOT, process.env.SITE_TEST_OUT || "output/site"), PORT = Number(process.env.REEL_E2E_PORT || process.env.SITE_TEST_PORT || 3160), BASE = `http://localhost:${PORT}`;
 mkdirSync(OUT, { recursive: true });
 const { check, finish } = createChecks();
 const server = await startServer(PORT);

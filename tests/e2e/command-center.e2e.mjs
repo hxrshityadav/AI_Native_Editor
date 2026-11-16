@@ -4,7 +4,7 @@ import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { ROOT, startServer, stopServer, createChecks } from './helpers.mjs';
 
-const OUT = join(ROOT, process.env.COMMAND_TEST_OUT || 'output/command-center'), PORT = 3194, BASE = `http://localhost:${PORT}`;
+const OUT = join(ROOT, process.env.COMMAND_TEST_OUT || 'output/command-center'), PORT=Number(process.env.REEL_E2E_PORT || 3194), BASE = `http://localhost:${PORT}`;
 mkdirSync(OUT, { recursive: true });
 const { check, finish } = createChecks();
 const server = await startServer(PORT);

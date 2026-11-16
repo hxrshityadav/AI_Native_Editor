@@ -3,7 +3,7 @@ import { mkdirSync } from "node:fs";
 import { join } from "node:path";
 import { ROOT, ff, probe, streams, decodeErrors, startServer, stopServer, createChecks } from "./helpers.mjs";
 
-const OUT=join(ROOT,"output/local-ai-firefox"),PORT=3172,BASE=`http://localhost:${PORT}`;
+const OUT=join(ROOT,"output/local-ai-firefox"),PORT=Number(process.env.REEL_E2E_PORT || 3172),BASE=`http://localhost:${PORT}`;
 mkdirSync(OUT,{recursive:true});const {check,finish}=createChecks();
 const input=join(OUT,"noise.wav");ff("-f","lavfi","-i","anoisesrc=amplitude=0.05:sample_rate=48000:duration=3:seed=31",input);
 const server=await startServer(PORT,{env:{REEL_ENABLE_CLOUD:""}});

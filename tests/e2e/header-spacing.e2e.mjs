@@ -3,7 +3,7 @@ import { mkdirSync, readdirSync, existsSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { ROOT, startServer, stopServer, createChecks } from './helpers.mjs';
 
-const OUT = join(ROOT, 'output/header-root-cause/final'), PORT = 3213;
+const OUT = join(ROOT, 'output/header-root-cause/final'), PORT=Number(process.env.REEL_E2E_PORT || 3213);
 mkdirSync(OUT, { recursive: true });
 const { check, finish } = createChecks(), evidence = [];
 const tools = readdirSync(join(ROOT, 'src/app/tools'), { withFileTypes:true }).filter(e => e.isDirectory() && existsSync(join(ROOT, 'src/app/tools', e.name, 'page.tsx'))).map(e => `/tools/${e.name}`);

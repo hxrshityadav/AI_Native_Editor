@@ -1,5 +1,10 @@
 const FILES=new Set(["config.json","generation_config.json","preprocessor_config.json","processor_config.json","tokenizer.json","tokenizer_config.json","special_tokens_map.json","added_tokens.json","vocab.json","merges.txt","normalizer.json"]);
 export const LOCAL_MODEL_VERSION="v1";
+// Authoritative LFS metadata at the exact converted repository revision (audit: docs/engineering-recovery.md).
+export const LOCAL_MODEL_INTEGRITY:Record<string,{bytes:number;sha256:string}>={
+  'Hirecentive-D3l/Whisper-Hindi2Hinglish-Swift-ONNX/resolve/24211661105a7bb9e96a170fb92db173667e31fd/onnx/encoder_model_quantized.onnx':{bytes:23145769,sha256:'0cd4fb050fa9138a075571d9bc0228e2a06ae58951cd4210d3d78bfdf1fd5b9f'},
+  'Hirecentive-D3l/Whisper-Hindi2Hinglish-Swift-ONNX/resolve/24211661105a7bb9e96a170fb92db173667e31fd/onnx/decoder_model_merged_quantized.onnx':{bytes:79336412,sha256:'ffab3719c07a7055cd818d194e166c8ed6b214e3e80f6c4ea04b201a4cf12cbe'},
+};
 export const LOCAL_MODEL_REVISIONS:Record<string,string>={
   "onnx-community/whisper-tiny":"ff4177021cc41f7db950912b73ea4fdf7d01d8e7",
   // Timestamped exports (cross-attention outputs) for real word timings in Subtitle Studio. Apache-2.0 via openai/whisper-*.
