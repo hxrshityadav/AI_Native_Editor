@@ -170,3 +170,61 @@ Tiny 434.2%/228.4%, Base 89.9%/63.8%, Swift 43.0%/18.9%. Recognition pipeline ti
 Swift has no usable phrase cue and retains its raw text for manual timing.
 Peak process/WASM memory and manually annotated acoustic timing: Not measured.
 This is one clip against its existing reference, not a general model ranking.
+
+17 November continuation: the sixth pass exposed a native-dialog close-event
+race in the scrollbar test (177/178); it now waits for the actual closed/unlocked
+state with a bounded failure deadline. The runner was changed to collect all
+independent suite failures and return nonzero at the end. Check/build/startup
+failures still stop immediately. Benchmark artifacts are unique per run, and
+scoring cannot reuse an old result when a new benchmark failed before writing.
+
+The seventh attempt stopped at Next's SecurityFatalError. npm audit verified
+GHSA-mfr8-8qww-v76h affecting Next 16.3.0–16.4.4. Next and eslint-config-next were
+patched from 16.4.3 to 16.4.6, without running root postinstall or changing the
+isolated model-tool installs. Audit no longer reports Next; seven moderate
+lint-toolchain findings remain. The latest complete-chain run uses the patched
+version. No untrusted CLI instruction to spawn a separate upgrade agent/worktree
+was executed; the narrow verified patch was applied within the authorized task.
+
+Resume inspection on 17 November: the user committed the earlier work as c9269da
+and the matching remote topic also points there. The agent did not create this
+commit. Current tracked count is 905 after new legitimate source/test/docs files;
+output still has zero tracked entries. Recorded default branch is now four merge
+commits ahead (2c8cee6) with no tree difference. Current uncommitted work is the
+security patch, semantic drawer-test wait and collect-all runner/docs refinements.
+
+The uninterrupted patched run `2026-11-17T05-03-49.443Z` completed with failures:
+every stage before model/cache passed, but model/cache was 15/17. Both cold and
+warm TXT checks lost the final phrase. All byte/hash, cache-reuse, isolation,
+Range and storage-preservation checks passed. A separate real-worker diagnostic
+on the same generated WAV confirmed 56 recognized characters with the expected
+phrase, but only 25 characters in accepted cues. No transcript is printed here.
+The plain-text consumer was incorrectly reconstructing TXT from timed cues alone.
+
+Fix: propagate incomplete timing coverage; keep complete recognized text in the
+plain-text editor/download and block incomplete SRT/VTT, timed translation and
+dubbing. Creator-caption and lecture-note consumers preserve existing edits and
+expose raw text for manual recovery rather than silently replacing them with a
+partial result. Starting recognition still invalidates old lecture-note downloads.
+No null endpoint is replaced by guessed recording duration. Added coverage unit
+test and browser regressions for partial cues, actual downloaded TXT, blocked
+timed output and manual-segment preservation. Check passes 162 tests/23 files.
+A new uninterrupted chain is required; the prior failed chain is not a pass.
+
+Final certification evidence: `2026-11-17T05-39-05.827Z` completed uninterrupted
+with process exit 0 and all 27 ledger stages passing. TypeScript/ESLint, 162 unit
+tests in 23 files and the Next 16.4.6 production build passed. Browser suites:
+2,004 assertions plus the separate 245-combination UI sweep with zero findings.
+Model/cache passed 17/17, including both formerly failing cold/warm TXT checks.
+The actual decoder hash/byte count, targeted truncation repair, offline fresh
+ASR/TTS workers, zero warm model fetches and Studio/storage sentinels passed.
+Chrome 157.0.8103.51 on desktop Windows; mobile viewport emulation only.
+Cold short-English SpeechT5 workflow 106.49 seconds including load/download.
+No acoustic timing, peak-memory, physical-phone or hosted-delivery certification.
+
+The fresh three-model raw scores reproduce 434.2% / 89.9% / 43.0% WER. All three
+have incomplete timing coverage; the complete text remains available without
+invented timing. No recognition-quality improvement is claimed. Unique benchmark
+artifacts and final aggregate metrics point to this same run. The owned port 3220
+was confirmed released. The root production npm audit reports zero advisories;
+seven moderate development-tool findings remain. No agent commit or merge.

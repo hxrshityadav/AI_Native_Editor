@@ -5,6 +5,15 @@ Statuses: **Not started** · **In progress** · **Implemented** (code exists, no
 
 Automated media checks use generated fixtures on Windows, including installed Chrome/Edge, Firefox and Pixel 7 viewport emulation. Earlier milestones retain their original platform notes. No task is verified on a real phone yet.
 
+## Independent ASR evaluation and diagnostics — 17 November 2026
+
+- Implemented: versioned local dataset/annotation schema, Roman-only references, speaker-independent splits, deterministic alignment, strict/normalized WER/CER, reference-language and switch-window metrics, entity/technical scoring and independent timing diagnostics.
+- Implemented: sequential adapters around the existing speech worker, revision/audio/config/annotation fingerprints, cancellable scoring workers, safe isolated report persistence, JSON/CSV exports and CLI commands. Production speech/caption behavior is unchanged.
+- Tested initially: 219 unit tests overall; production build; internal dashboard controlled-fixture workflow 22/22 including production 404, consent, downloads, cache, seeking, restore, cancellation and responsive layout. Expanded final run remains in progress; see docs/transcription-evaluation-report.md.
+- In progress: real Tiny/Base/Swift run through the new workflow and the complete regression chain. Failed/interrupted attempts are not benchmark evidence.
+- Not demonstrated: Hindi/English/switch accuracy or acoustic timing on reviewed natural Hinglish; the available user reference lacks structured reviewed language/timing annotations. All promotion gates remain insufficient for that corpus.
+- Not measured: peak process/WASM memory, physical-device compatibility and forced-aligner browser performance. No new model, dependency, public tool or cloud provider is added.
+
 ## Roman Hinglish transcription fix (2026-11-15)
 
 - **Tested (root causes):**
@@ -251,13 +260,16 @@ Per-milestone files, manual test instructions, limitations and next steps: `docs
 - Drafts live in one browser profile; clearing site data or private browsing loses them (the UI says so when saving fails).
 - Timing is edited by nudging, not by dragging on a waveform or timeline.
 
-## Engineering recovery — 16 November 2026
+## Engineering recovery — 16–17 November 2026
 
-- Tested: generated output untracked (1,230 files, 256,246,808 bytes retained locally); /output/ ignored. No commits/history rewrite.
-- Implemented: serial build-once owned-server regression runner, stale geometry assertions, UI sweep nonzero failures, bounded caption benchmarks and scorer module build.
+- Tested: generated output untracked (1,230 files, 256,246,808 bytes retained locally); /output/ ignored. All original paths and content archive retained. No agent commits/history rewrite; user committed prior recovery as c9269da.
+- Tested: serial build-once owned-server regression runner, stale geometry assertions, UI sweep nonzero failures, bounded caption benchmarks and scorer module build.
 - Tested (unit): timestamp validation refuses missing/reversed/overlapping/multiword timing; no interpolation or cross-model positional timing. Raw ASR output retained.
 - Tested (unit): model Range forwarding, invalid partial rejection and Content-Length truncation detection. Persistent partial-download resume remains Not started.
-- In progress: uninterrupted production regression chain and identical-audio Tiny/Base/Swift comparison; see docs/engineering-recovery.md for final results.
+- Tested: fresh identical-audio Tiny/Base/Swift comparison on the existing 21.7s user clip. Raw strict WER 434.2% / 89.9% / 43.0%; no accepted word timing. Recognition accuracy is NOT fixed. See docs/engineering-recovery.md.
+- Tested: Next.js and eslint-config-next patched to 16.4.6; TypeScript, lint, 162 unit tests and production build pass. Root production audit has zero findings; seven moderate development-tool findings remain.
+- Tested: complete uninterrupted recovery chain, all 27 stages, 2,004 browser assertions, 245 UI combinations and three real ASR runs, exit 0. Model/cache 17/17 includes the real 244,486,683-byte decoder; hosting compatibility remains unverified. Evidence in docs/engineering-recovery.md.
+- Tested: incomplete timing preserves full TXT; incomplete SRT/VTT/segment translation/dubbing are blocked. Subtitle Studio and lecture notes preserve existing edits and provide raw-text/manual recovery. No endpoint guessing.
 - Blocked: diverse consented natural Hinglish corpus and manually annotated word times; current one technical recording does not support a production accuracy claim.
 - Requires physical device testing: low-memory Android/iOS, background jobs, five/ten-minute inference and peak process/WASM memory.
 - Deferred by this sprint: MP3 export, Hindi TTS, AI Reel Generator, Shorts Maker rebuild and SEO landing pages. Existing implementations, if any, are not removed or expanded.

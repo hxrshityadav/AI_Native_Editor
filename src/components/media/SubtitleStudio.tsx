@@ -4,6 +4,7 @@ import { Captions, Merge, Plus, Redo2, Scissors, Trash2, Undo2 } from "lucide-re
 import type { MediaInfo } from "@/lib/mediatools/engine";
 import { runMediaTask } from "@/lib/mediatools/client";
 import { runSpeech, type Transcript } from "@/lib/localtools/speechClient";
+import { hasCompleteCueText } from "@/lib/localtools/text";
 import { CAPTION_FONTS, PRESETS, add, captionId, fontById, fromCues, hasWordTiming, merge, remove, setText, setTiming, split, toSrt, toVtt, validate, type Caption, type CaptionStyle } from "@/lib/subtitles/captions";
 import { DEFAULT_COMPOSITION, type Composition } from "@/lib/subtitles/compose";
 import { burnSize, loadCaptionFont, uprightSize, type BurnResult } from "@/lib/subtitles/burn";
@@ -120,7 +121,8 @@ export function SubtitleStudio() {
       let romanised = 0;
       const roman = (text: string) => { if (mode !== "hinglish") return text; const result = enforceRoman(text); romanised += result.converted; return result.text; };
       const words = (transcript.words ?? []).map(word => ({ ...word, text: roman(word.text), end: Math.min(word.end, info.duration) })).filter(word => word.text.trim());
-      const built = words.length ? buildCaptions(words, grouping) : fromCues(transcript.cues.map(cue => ({ ...cue, text: roman(cue.text), end: Math.min(cue.end, info.duration) })));
+      const incomplete = transcript.timingIncomplete ?? !hasCompleteCueText(transcript.text,transcript.cues);
+      const built = words.length ? buildCaptions(words, grouping) : incomplete ? [] : fromCues(transcript.cues.map(cue => ({ ...cue, text: roman(cue.text), end: Math.min(cue.end, info.duration) })));
       const language = transcript.language ?? (mode === "en" ? "en" : "hi");
       const translatedWarning = mode !== "hinglish" && language === "hi" && devanagariShare(transcript.text) < 0.3;
       if (built.length) { commit(built); setSelected(0); }

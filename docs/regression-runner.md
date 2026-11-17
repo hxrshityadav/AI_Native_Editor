@@ -13,12 +13,17 @@ Order: actual Tiny/Base/Swift caption benchmark and scorer first, then site,
 redesign, Command Center, capsule, dynamic sidebar, hover sidebar,
 sidebar layout, header spacing, scrollbar, UI sweep; photo utilities/passport/
 HEIC/cutout; video compressor/media/mixer/cutter/subtitle studio; local tools/
-notes/PDF audio; actual model download/cache. Failure stops the chain with a nonzero exit; no suite is skipped
-and counted as passing. A failed chain is incomplete even when earlier suites
-passed. Fix then run the whole command again for uninterrupted certification.
+notes/PDF audio; actual model download/cache. Check/build or server-start failure stops immediately. Independent suite failures are recorded and later suites still run; the final exit remains nonzero if any stage fails. A missing fresh ASR artifact marks scoring blocked/failed instead of reusing historical output. No failure is counted as passing.
+
+The final `transcription-benchmark` stage checks production 404/noindex exclusion,
+then starts its own development server on port 3230 to test the private dashboard.
+It preserves the shared production server and shuts down only its own dev process.
+Its worker outputs are explicitly controlled synthetic fixtures, not recognition
+accuracy results. Run `npm run asr:benchmark -- ... --consent-model-downloads` for
+actual measurements through the new system. See docs/transcription-evaluation.md.
 
 Logs and a per-stage JSON ledger are in a unique timestamped folder under
-ignored `output/recovery/regression/`. Captures/media use each suite's existing
+ignored `output/recovery/regression/`. Unique per-run ASR result/report names are recorded in artifacts.json. Captures/media use each suite's existing
 output directory. Do not run another production build while this chain runs.
 Standalone suite commands still create/clean their own production server.
 

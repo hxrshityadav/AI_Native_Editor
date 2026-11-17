@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "id": "algorithm-fixtures",
+  "version": "1.0.0",
+  "kind": "synthetic",
+  "recordings": [
+    {
+      "id": "tone-01",
+      "speakerId": "synthetic-a",
+      "audio": {
+        "path": "algorithm-tone.wav",
+        "sha256": "f0a9e1ef6671f2237a230444594de8150f33e15c354b67b3fc26e47a64c7348b"
+      },
+      "duration": 4,
+      "split": "development",
+      "conditions": {
+        "environment": "generated tone; not speech",
+        "speed": "unknown",
+        "noise": "none"
+      },
+      "provenance": {
+        "kind": "synthetic",
+        "permission": "synthetic",
+        "source": "Deterministic 220 Hz tone. Text and times below are constructed solely to test algorithms, not a transcript of this tone."
+      },
+      "reference": {
+        "text": "aaj React API chalega.",
+        "words": [
+          {
+            "text": "aaj",
+            "language": "hi",
+            "start": 0,
+            "end": 0.5
+          },
+          {
+            "text": "React",
+            "language": "en",
+            "start": 1,
+            "end": 1.5,
+            "isProperNoun": true,
+            "entityId": "entity-01",
+            "isTechnicalTerm": true,
+            "termId": "term-01"
+          },
+          {
+            "text": "API",
+            "language": "en",
+            "start": 2,
+            "end": 2.5,
+            "isTechnicalTerm": true,
+            "termId": "term-02"
+          },
+          {
+            "text": "chalega",
+            "punctuation": ".",
+            "language": "hi",
+            "start": 3,
+            "end": 3.5
+          }
+        ],
+        "review": {
+          "status": "draft",
+          "timingReviewed": false
+        }
+      }
+    }
+  ]
+}

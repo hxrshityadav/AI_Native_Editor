@@ -1,5 +1,13 @@
 # Local ASR evaluation gate
 
+The independent evaluation system is now documented in
+[transcription-evaluation.md](transcription-evaluation.md), with the versioned
+[annotation guide](transcription-annotation-guide.md). Use `asr:validate`,
+`asr:benchmark`, `asr:compare` and the development-only
+`/dev/transcription-benchmark` dashboard. Historical scores below used different
+transliteration/tolerant conventions; new strict/normalized raw scores do not
+silently transliterate or fix spellings. Compare only declared matching profiles.
+
 Do not promote a model based on one recording or on spelling substitutions.
 
 Available local data (16 November 2026):

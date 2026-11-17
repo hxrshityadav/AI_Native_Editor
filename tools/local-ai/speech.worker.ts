@@ -1,7 +1,7 @@
 import { env, pipeline, Tensor } from "./transformers.min.js";
 import { readPcm } from "../../src/lib/localtools/audio";
 import { wav } from "../../src/lib/localtools/dsp";
-import { fitSpeech, speechText, joinSpeech, validateCues, type Cue } from "../../src/lib/localtools/text";
+import { fitSpeech, speechText, joinSpeech, validateCues, hasCompleteCueText, type Cue } from "../../src/lib/localtools/text";
 import type { SpeechRequest } from "../../src/lib/localtools/speechClient";
 import { documentChunks } from "../../src/lib/localtools/documentText";
 import { LOCAL_MODEL_VERSION } from "../../src/lib/localtools/modelAssets";
@@ -58,5 +58,5 @@ scope.onmessage=async({data})=>{try{
   }
   const looped=wordTiming?dropLoops(wordList):{words:wordList,removed:0};
   if(!rawText)throw new Error("No timed speech was recognized. Try clearer speech, choose its language explicitly, or write captions by hand.");
-  scope.postMessage({type:"done",result:{cues,duration:info.duration,language,detected,words:wordTiming?looped.words:undefined,wordTiming,loopsRemoved:looped.removed,rawText,text:wordTiming?looped.words.map(word=>word.text).join(" "):result.text.trim(),model,seconds}});
+  scope.postMessage({type:"done",result:{cues,duration:info.duration,language,detected,words:wordTiming?looped.words:undefined,wordTiming,timingIncomplete:!wordTiming&&!hasCompleteCueText(rawText,cues),loopsRemoved:looped.removed,rawText,text:wordTiming?looped.words.map(word=>word.text).join(" "):result.text.trim(),model,seconds}});
 }catch(error){scope.postMessage({type:"error",message:error instanceof Error?error.message:"Local speech processing failed. Retry with a shorter recording."});}};

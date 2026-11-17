@@ -1,9 +1,18 @@
 import { expect, it, vi } from "vitest";
 import { denoise, resampleMono, stereoStems, wav } from "../../src/lib/localtools/dsp";
-import { fitSpeech, speechText, subtitles, validateCues } from "../../src/lib/localtools/text";
+import { fitSpeech, speechText, subtitles, validateCues, hasCompleteCueText } from "../../src/lib/localtools/text";
 import { localModelAsset } from "../../src/lib/localtools/modelAssets";
 import { translateCues } from "../../src/lib/localtools/translate";
 import { GET as modelAssetGet } from "../../src/app/local-models/[...asset]/route";
+
+it("detects missing timed text without discarding raw words or guessing their times",()=>{
+  const cues=[{text:"Hello.",start:0,end:1}];
+  expect(hasCompleteCueText("Hello. Keep your work on this device.",cues)).toBe(false);
+  expect(hasCompleteCueText(" Hello. \n",cues)).toBe(true);
+  expect(hasCompleteCueText("Hello.",[])).toBe(false);
+  expect(hasCompleteCueText("",[])).toBe(false);
+  expect(hasCompleteCueText("Hello. Hello.",cues)).toBe(false);
+});
 
 it("validates speech before loading optional model assets",()=>{
   expect(speechText(" Hello ")).toBe("Hello");

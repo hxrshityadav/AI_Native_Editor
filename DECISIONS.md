@@ -1,5 +1,34 @@
 # Decisions
 
+## 2026-11-17: Independent, development-only transcription evaluation
+
+Keep production inference and caption editing unchanged. Reuse its existing
+`runSpeech` worker behind Tiny/Base/Swift adapters, with sequential resource
+disposal and explicit model-download consent. Score raw output with declared strict
+and normalized profiles; never use vocabulary replacement or transliteration to
+claim ASR gains. Language and switch metrics use manually supplied reference labels.
+Boundary windows reuse one global edit alignment and union their reference anchors.
+
+References require explicit review provenance. Synthetic algorithm fixtures,
+unreviewed natural data, and verified held-out recordings remain distinguishable.
+Partial annotation populations cannot pass language/timing gates. Native phrase
+bounds are not word timings; independently supplied alignments must match the same
+model transcript and include provenance. No new forced-alignment model is installed.
+
+The dashboard exists only under Next development mode at
+`/dev/transcription-benchmark`; production returns 404, with no env override.
+Datasets/audio are selected locally, not read from a server API. Reports/references
+are saved only by explicit action in an isolated IndexedDB; media is not persisted.
+Cache matching includes exact input, revision, precision, preprocessing/runtime,
+configuration, annotation and scorer identity. No unrelated caches/databases are cleared.
+
+Keep the current public design system. The internal diagnostic surface uses the
+True-black flat app direction (seed 711662492), preserving palette/type and the
+existing shell. Its signature is the reference/model edit alignment beside local
+audio, rather than illustrative KPI data. No marketing or tool redesign is included.
+See docs/transcription-evaluation.md for definitions and release gates. No automatic
+production-model promotion exists, even for the best model in a weak comparison.
+
 ## 2026-10-25: Extend the existing renderer for the professional studio
 
 Keep `useReelSession`, Mediabunny, Canvas, IndexedDB and worker/OPFS export. A versioned editing model
@@ -469,3 +498,40 @@ No model produced reliable Devanagari: 1 of 80 generic runs wrote mostly Devanag
 
 **Not measured:** peak memory, real code-switched recordings from many speakers, and noise robustness. These need real
 Hinglish recordings with verified references; none are available locally yet.
+
+## 2026-11-17: Recovery preserves text without inventing timing or promoting a model
+
+The fresh one-clip natural Hinglish comparison reproduces unacceptable raw strict
+WER: Tiny 434.2%, Base 89.9%, Swift 43.0%. This is not a general ranking or an
+accuracy improvement. Keep raw ASR separate from cleanup; remove benchmark-only
+script/precision controls. No dictionary-based replacement or external fallback
+is introduced. A broader consented corpus and manual references remain required.
+
+Accept only a model's own finite, ordered, bounded words covering its transcript.
+Otherwise use actual phrase bounds; when those are absent, preserve existing
+captions and retain raw recognition for explicit manual timing. Do not transfer
+Whisper timestamps to Swift by position. Structural validation does not certify
+acoustic timing or automatic karaoke quality. This supersedes the earlier blanket
+description of Swift as providing phrase timing: usable bounds are not guaranteed.
+
+A real download regression also demonstrated partial timing coverage: the worker
+recognized 56 characters but accepted cues covered only 25. Preserve the complete
+TXT independently of cues. Require complete transcript coverage for timed exports,
+segment translation and dubbing; retain creator edits and expose raw text for
+manual timing when coverage is incomplete. Never fix this by guessing the final
+timestamp. The final uninterrupted recovery chain passed all 27 stages; quality
+and deployment gates above remain separate.
+
+Model delivery gains single-range forwarding, bounded transient retries and
+streamed checks against pinned authoritative Swift hashes for fresh full responses.
+Persistent partial storage/resume, hashing every model and old-cache integrity are
+still incomplete. Keep exact revisions, allowlists, consent and isolated caches.
+
+The recovery runner owns one production build/server and runs suites serially.
+Prerequisite failures stop; independent test failures are collected and always
+produce a failing final exit. ASR artifacts are unique per run. No historical or
+separate passes may be combined into a claimed uninterrupted regression success.
+
+Patch existing Next.js dependencies to 16.4.6 for the verified advisory; avoid an
+unrelated framework migration. See docs/engineering-recovery.md for measurements,
+test evidence and unresolved release gates.

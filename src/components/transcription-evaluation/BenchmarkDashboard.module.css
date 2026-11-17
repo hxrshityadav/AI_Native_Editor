@@ -1,0 +1,52 @@
+.root { width:100%; min-width:0; padding:24px; color:var(--ink); font-size:14px; line-height:1.5; }
+.header { display:flex; justify-content:space-between; gap:24px; align-items:start; margin-bottom:24px; }
+.root h1 { font-size:26px; font-weight:600; line-height:1.2; margin-bottom:8px; }
+.root h2 { font-size:18px; font-weight:600; margin-bottom:12px; }
+.root h3 { font-size:14px; font-weight:600; margin:16px 0 8px; }
+.root p { margin:8px 0; max-width:85ch; }
+.muted { color:var(--ink-2); }
+.layout { display:grid; grid-template-columns:minmax(0,1fr) 288px; gap:24px; align-items:start; }
+.workspace { min-width:0; }
+.section { padding:20px; background:var(--raised); border-radius:var(--radius-md,12px); margin-bottom:20px; min-width:0; }
+.controls { min-width:0; display:grid; gap:16px; }
+.controlSections { display:grid; gap:16px; }
+.controlsToggle { display:none; }
+.controls .section { display:grid; gap:12px; margin-bottom:0; }
+.controls fieldset label { min-height:44px; }
+.controls label,.filters label { display:grid; gap:6px; min-width:0; }
+.controls input[type=file] { max-width:100%; font-size:13px; }
+.controls input[type=file]::file-selector-button { min-height:36px; padding:6px 10px; margin-right:8px; border:1px solid var(--edge); border-radius:6px; background:var(--sunken); color:var(--ink); font:inherit; cursor:pointer; }
+.actions,.filters { display:flex; flex-wrap:wrap; gap:12px; align-items:end; }
+.actions { margin:12px 0; }
+.filters { margin-bottom:16px; }
+.filters label { flex:1 1 130px; }
+.overview { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; margin:16px 0; }
+.overview dt { color:var(--ink-2); font-size:13px; }
+.overview dd { margin:4px 0 0; font-size:22px; font-variant-numeric:tabular-nums; }
+.tableWrap { overflow-x:auto; max-width:100%; }
+.root table { border-collapse:collapse; width:100%; font-variant-numeric:tabular-nums; }
+.comparison { min-width:790px; }
+.root th,.root td { text-align:right; padding:10px 8px; border-bottom:1px solid var(--edge); vertical-align:top; }
+.root th { font-size:12px; color:var(--ink-2); font-weight:500; }
+.root th:first-child,.root td:first-child { text-align:left; }
+.comparison th:first-child,.comparison td:first-child { position:sticky; left:0; background:var(--raised); min-width:156px; }
+.root td small { display:block; color:var(--ink-2); }
+.root audio { display:block; width:100%; margin:12px 0; }
+.root summary { cursor:pointer; min-height:36px; padding:6px 0; }
+.words { display:flex; flex-wrap:wrap; gap:8px; padding:12px 0; }
+.word { padding:6px 10px; border-radius:4px; background:var(--sunken); color:var(--ink); border:1px solid transparent; text-align:left; }
+.word[data-error=substitution],.word[data-error=deletion] { border-color:var(--warning,#d69e57); }
+.word[data-error=insertion] { border-style:dashed; border-color:var(--warning,#d69e57); }
+.word[data-active=true] { outline:2px solid var(--brand); }
+.word[data-language=en] { text-decoration:underline; text-underline-offset:4px; }
+.word[data-switch=true]::before { content:"↔ "; }
+.word small { display:block; font-size:11px; }
+.word:disabled { cursor:default; opacity:1; }
+.root button:focus-visible,.root select:focus-visible,.root summary:focus-visible { outline:2px solid var(--brand); outline-offset:3px; }
+.gate { font-size:12px; white-space:nowrap; }
+.gate[data-status=FAIL] { color:var(--warning,#d69e57); }
+.root progress,.root meter { width:100%; accent-color:var(--brand); }
+.thresholds { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.empty { padding:20px 0; }
+@media(max-width:1100px) { .layout { grid-template-columns:minmax(0,1fr); } .controls { grid-row:1; } .controlsToggle { display:list-item; padding:12px; background:var(--raised); border-radius:8px; } .controlSections { margin-top:12px; } }
+@media(max-width:600px) { .root { padding:16px; } .header { flex-direction:column; gap:12px; } .section { padding:16px; } .overview { grid-template-columns:1fr 1fr; } .overview>div:last-child:nth-child(odd) { grid-column:1/-1; } .root h1 { font-size:24px; } .actions>* { max-width:100%; } }

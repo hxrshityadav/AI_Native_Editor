@@ -9,6 +9,7 @@ export function TranscriptControls({ session }: { session: Session }) {
     <button className={styles.primary} disabled={!!session.busy || !session.info?.audio || !session.consent} onClick={() => void session.recognize()}>Transcribe locally</button>
     {session.info && !session.info.audio && <InlineMessage>No audio track. Add manual caption segments below.</InlineMessage>}
     <InlineMessage>These are estimated segment timestamps, not verified word timings. Review language, wording and times before export. Long jobs may be slow; use a desktop browser or shorter source if memory is limited.</InlineMessage>
+    {session.untimedText&&<details><summary className="min-h-9 cursor-pointer">Raw transcription without complete timing</summary><textarea aria-label="Raw transcription without complete timing" className={styles.field} rows={5} readOnly value={session.untimedText}/></details>}
   </div>;
 }
 export function TranscriptEditor({ session }: { session: Session }) {

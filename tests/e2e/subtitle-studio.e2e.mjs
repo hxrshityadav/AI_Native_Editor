@@ -237,7 +237,7 @@ try {
   await page.getByRole('radio',{name:'English',exact:true}).check();
   await page.getByRole('radio',{name:/Whisper Tiny/}).check({force:true});
   await page.getByLabel('Allow speech model download',{exact:true}).check();
-  await page.route('**/local-ai/speech.worker.js',route=>route.fulfill({contentType:'application/javascript',body:'self.onmessage=()=>self.postMessage({type:"done",result:{text:"Untimed ASR fixture",rawText:"Untimed ASR fixture",cues:[],duration:6,wordTiming:false}});'}));
+  await page.route('**/local-ai/speech.worker.js',route=>route.fulfill({contentType:'application/javascript',body:'self.onmessage=()=>self.postMessage({type:"done",result:{text:"Untimed ASR fixture",rawText:"Untimed ASR fixture",cues:[{text:"Untimed",start:0,end:1}],duration:6,wordTiming:false}});'}));
   await page.getByRole('button',{name:'Transcribe again',exact:true}).click();
   await page.getByText(/Existing captions are unchanged/).waitFor();
   check('untimed ASR: reports manual timing instead of claiming phrase boundaries',await page.getByText(/No reliable timestamps; manual timing required/).isVisible());

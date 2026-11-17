@@ -1,4 +1,9 @@
 export type Cue = { text: string; start: number; end: number };
+/** Timing coverage must not silently drop recognized text, including the final phrase. */
+export function hasCompleteCueText(text:string,cues:Cue[]):boolean {
+  const normalized=(value:string)=>value.trim().replace(/\s+/g," ");
+  return !!text.trim() && normalized(text)===normalized(cues.map(cue=>cue.text).join(" "));
+}
 export function assertEnglishSpeech(text:string) {
   if(/[^\p{Script=Latin}\p{Script=Common}\p{Script=Inherited}]/u.test(text))throw new Error("This voice supports English text only. Use English wording; Hindi and other non-Latin scripts cannot be synthesized. Keep the original text for another reader.");
 }

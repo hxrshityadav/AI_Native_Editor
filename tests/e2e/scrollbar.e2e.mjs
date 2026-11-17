@@ -37,6 +37,7 @@ try {
       await page.getByRole("button", { name: "Menu", exact: true }).click();
       const locked = await page.evaluate(() => getComputedStyle(document.documentElement).overflowY);
       await page.keyboard.press("Escape");
+      await page.waitForFunction(()=>!document.querySelector('#mobile-navigation').open && getComputedStyle(document.documentElement).overflowY!=='hidden',{},{timeout:3000});
       check(`${width}: mobile drawer locks page scroll while open`, locked === "hidden" && await page.evaluate(() => getComputedStyle(document.documentElement).overflowY) !== "hidden");
     }
     await page.close();
